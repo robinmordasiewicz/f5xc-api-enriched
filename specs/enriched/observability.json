@@ -7883,6 +7883,336 @@
       "x-ves-proto-service": "ves.io.schema.observability.synthetic_monitor.v1_http_monitor.API",
       "x-ves-proto-service-type": "AUTO_CRUD_PUBLIC"
     },
+    "/api/config/namespaces/{namespace}/lma_regions": {
+      "get": {
+        "summary": "List LMA Region.",
+        "description": "List the set of lma_region in a namespace.",
+        "operationId": "ves.io.schema.data_privacy.lma_region.API.List",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/lma_regionListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\nNamespace to scope the listing of lma_region.",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            },
+            "x-ves-example": "Ns1"
+          },
+          {
+            "name": "label_filter",
+            "description": "A LabelSelectorType expression that every item in list response will satisfy.",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Label Filter.",
+            "schema": {
+              "type": "string"
+            },
+            "x-ves-example": "Env in (staging, testing), tier in (web, db)"
+          },
+          {
+            "name": "report_fields",
+            "description": "X-example: \"\"\nExtra fields to return along with summary fields.",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Report Fields.",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "report_status_fields",
+            "description": "X-example: \"\"\nExtra status fields to return along with summary fields.",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Report Status Fields.",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation.",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-data_privacy-lma_region-api-list"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.data_privacy.lma_region.API.List",
+        "tags": [
+          "Other"
+        ]
+      },
+      "x-displayname": "LMA Region.",
+      "x-ves-proto-service": "ves.io.schema.data_privacy.lma_region.API",
+      "x-ves-proto-service-type": "AUTO_CRUD_PUBLIC"
+    },
+    "/api/config/namespaces/{namespace}/lma_regions/{name}": {
+      "get": {
+        "summary": "GET LMA Region.",
+        "description": "Shape of the lma region specification.",
+        "operationId": "ves.io.schema.data_privacy.lma_region.API.Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/lma_regionGetResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\nThe namespace in which the configuration object is present.",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            },
+            "x-ves-example": "Ns1"
+          },
+          {
+            "name": "name",
+            "description": "Name\nThe name of the configuration object to be fetched.",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Name",
+            "schema": {
+              "type": "string"
+            },
+            "x-ves-example": "Name"
+          },
+          {
+            "name": "response_format",
+            "description": "The format in which the configuration object is to be fetched. This could be for example\n - in GetSpec form for the contents of object\n - in CreateRequest form to create a new similar object\n - to ReplaceRequest form to replace changeable values\n\nDefault format of returned resource\nResponse should be in StatusObject(s) format\nResponse should be in format of GetSpecType\nResponse should have other objects referring to this object\nResponse should have deleted and disabled objects referrred by this object.",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Broken Referred Objects.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "GET_RSP_FORMAT_DEFAULT",
+                "GET_RSP_FORMAT_STATUS",
+                "GET_RSP_FORMAT_READ",
+                "GET_RSP_FORMAT_REFERRING_OBJECTS",
+                "GET_RSP_FORMAT_BROKEN_REFERENCES"
+              ],
+              "default": "GET_RSP_FORMAT_DEFAULT"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation.",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-data_privacy-lma_region-api-get"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.data_privacy.lma_region.API.Get",
+        "tags": [
+          "Other"
+        ]
+      },
+      "x-displayname": "LMA Region.",
+      "x-ves-proto-service": "ves.io.schema.data_privacy.lma_region.API",
+      "x-ves-proto-service-type": "AUTO_CRUD_PUBLIC"
+    },
     "/api/config/namespaces/{metadata.namespace}/log_receivers": {
       "post": {
         "summary": "Create Log Receiver.",
@@ -29919,421 +30249,6 @@
       "x-ves-proto-service": "ves.io.schema.shape.bot_defense.reporting.CustomAPI",
       "x-ves-proto-service-type": "CUSTOM_PUBLIC"
     },
-    "/api/data/namespaces/{namespace}/graph/site": {
-      "post": {
-        "summary": "Site Graph Query.",
-        "description": "Request to GET inter-site traffic graph for an application.",
-        "operationId": "ves.io.schema.graph.site.CustomAPI.Query",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/siteResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Returned when operation is not authorized.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Returned when there is no permission to access resource.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Returned when resource is not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Returned when operation on resource is conflicting with current value.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Returned when operation has been rejected as it is happening too frequently.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Returned when server encountered an error in processing API.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Returned when service is unavailable temporarily.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "Returned when server timed out processing request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "namespace",
-            "description": "Namespace\nnamespace is used to scope the application traffic to a given namespace.\nFor system namespace, application traffic across all namespaces for the\ntenant will be considered.",
-            "in": "path",
-            "required": true,
-            "x-displayname": "Namespace",
-            "schema": {
-              "type": "string"
-            },
-            "x-ves-example": "Value"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/siteRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "externalDocs": {
-          "description": "Examples of this operation.",
-          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-graph-site-customapi-query"
-        },
-        "x-ves-proto-rpc": "ves.io.schema.graph.site.CustomAPI.Query",
-        "tags": [
-          "Observability"
-        ]
-      },
-      "x-displayname": "Site Graph.",
-      "x-ves-proto-service": "ves.io.schema.graph.site.CustomAPI",
-      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
-    },
-    "/api/data/namespaces/{namespace}/graph/site/edge": {
-      "post": {
-        "summary": "Site Edge Query.",
-        "description": "Request to GET time-series data for an edge returned in the site traffic graph.",
-        "operationId": "ves.io.schema.graph.site.CustomAPI.EdgeQuery",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/siteEdgeResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Returned when operation is not authorized.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Returned when there is no permission to access resource.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Returned when resource is not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Returned when operation on resource is conflicting with current value.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Returned when operation has been rejected as it is happening too frequently.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Returned when server encountered an error in processing API.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Returned when service is unavailable temporarily.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "Returned when server timed out processing request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "namespace",
-            "description": "Namespace\nnamespace is used to scope the application traffic to a given namespace.\nFor system namespace, application traffic across all namespaces for the\ntenant will be considered.",
-            "in": "path",
-            "required": true,
-            "x-displayname": "Namespace",
-            "schema": {
-              "type": "string"
-            },
-            "x-ves-example": "Value"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/siteEdgeRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "x-ves-proto-rpc": "ves.io.schema.graph.site.CustomAPI.EdgeQuery",
-        "tags": [
-          "Observability"
-        ]
-      },
-      "x-displayname": "Site Graph.",
-      "x-ves-proto-service": "ves.io.schema.graph.site.CustomAPI",
-      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
-    },
-    "/api/data/namespaces/{namespace}/graph/site/node": {
-      "post": {
-        "summary": "Site Node Query.",
-        "description": "Request to GET time-series data for a site returned in the site traffic graph.",
-        "operationId": "ves.io.schema.graph.site.CustomAPI.NodeQuery",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/siteNodeResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Returned when operation is not authorized.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Returned when there is no permission to access resource.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Returned when resource is not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Returned when operation on resource is conflicting with current value.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Returned when operation has been rejected as it is happening too frequently.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Returned when server encountered an error in processing API.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Returned when service is unavailable temporarily.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "Returned when server timed out processing request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "string"
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "namespace",
-            "description": "Namespace\nnamespace is used to scope the application traffic to a given namespace.\nFor system namespace, application traffic across all namespaces for the\ntenant will be considered.",
-            "in": "path",
-            "required": true,
-            "x-displayname": "Namespace",
-            "schema": {
-              "type": "string"
-            },
-            "x-ves-example": "Value"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/siteNodeRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "x-ves-proto-rpc": "ves.io.schema.graph.site.CustomAPI.NodeQuery",
-        "tags": [
-          "Observability"
-        ]
-      },
-      "x-displayname": "Site Graph.",
-      "x-ves-proto-service": "ves.io.schema.graph.site.CustomAPI",
-      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
-    },
     "/api/data/namespaces/{namespace}/{kind}/{name}/status_at_site": {
       "get": {
         "summary": "GET Status.",
@@ -46670,6 +46585,346 @@
           }
         }
       },
+      "lma_regionClickhouseParams": {
+        "type": "object",
+        "description": "Clickhouse parameters.",
+        "title": "Clickhouse Params.",
+        "x-displayname": "Clickhouse Params.",
+        "x-ves-proto-message": "ves.io.schema.data_privacy.lma_region.ClickhouseParams",
+        "properties": {
+          "host": {
+            "type": "string",
+            "description": "Clickhouse Host\n\nRequired: YES.",
+            "title": "Clickhouse Host.",
+            "x-displayname": "Clickhouse Host.",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true"
+            }
+          },
+          "password": {
+            "$ref": "#/components/schemas/schemaSecretType"
+          },
+          "port": {
+            "type": "integer",
+            "description": "Clickhouse Port\n\nRequired: YES.",
+            "title": "Clickhouse Port.",
+            "format": "int32",
+            "x-displayname": "Clickhouse Port.",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true"
+            }
+          },
+          "user": {
+            "type": "string",
+            "description": "Clickhouse User\n\nRequired: YES.",
+            "title": "Clickhouse User.",
+            "x-displayname": "Clickhouse User.",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true"
+            }
+          }
+        }
+      },
+      "lma_regionElasticParams": {
+        "type": "object",
+        "description": "Elastic parameters.",
+        "title": "Elastic Params.",
+        "x-displayname": "Elastic Params.",
+        "x-ves-proto-message": "ves.io.schema.data_privacy.lma_region.ElasticParams",
+        "properties": {
+          "urls": {
+            "type": "array",
+            "description": "Elastic Search URL\n\nRequired: YES.",
+            "title": "Elastic Search URLs.",
+            "items": {
+              "type": "string",
+              "maxLength": 8096
+            },
+            "x-displayname": "Elastic Search URLs.",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.max_len": "8096"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true",
+              "F5 XC.schema.rules.string.max_len": "8096"
+            }
+          }
+        }
+      },
+      "lma_regionGetResponse": {
+        "type": "object",
+        "description": "This is the output message of the 'GET' RPC.",
+        "title": "GetResponse is the shape of a read lma_region.",
+        "x-displayname": "GET Response.",
+        "x-ves-proto-message": "ves.io.schema.data_privacy.lma_region.GetResponse",
+        "properties": {
+          "deleted_referred_objects": {
+            "type": "array",
+            "description": "The set of deleted objects that are referred by this object.",
+            "title": "Deleted_referred_objects.",
+            "items": {
+              "$ref": "#/components/schemas/ioschemaObjectRefType"
+            },
+            "x-displayname": "Deleted Referred Objects."
+          },
+          "disabled_referred_objects": {
+            "type": "array",
+            "description": "The set of deleted objects that are referred by this object.",
+            "title": "Disabled_referred_objects.",
+            "items": {
+              "$ref": "#/components/schemas/ioschemaObjectRefType"
+            },
+            "x-displayname": "Disabled Referred Objects."
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/schemaObjectGetMetaType"
+          },
+          "referring_objects": {
+            "type": "array",
+            "description": "The set of objects that are referring to this object in their spec.",
+            "title": "Referring_objects.",
+            "items": {
+              "$ref": "#/components/schemas/ioschemaObjectRefType"
+            },
+            "x-displayname": "Referring Objects."
+          },
+          "spec": {
+            "$ref": "#/components/schemas/lma_regionGetSpecType"
+          },
+          "status": {
+            "type": "array",
+            "description": "The status reported by different services for this configuration object.",
+            "title": "Status",
+            "items": {
+              "$ref": "#/components/schemas/lma_regionStatusObject"
+            },
+            "x-displayname": "Status"
+          },
+          "system_metadata": {
+            "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
+          }
+        }
+      },
+      "lma_regionGetResponseFormatCode": {
+        "type": "string",
+        "description": "X-displayName: \"GET Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n- GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n- GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n- GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n- GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n- GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object.",
+        "title": "GetResponseFormatCode.",
+        "enum": [
+          "GET_RSP_FORMAT_DEFAULT",
+          "GET_RSP_FORMAT_STATUS",
+          "GET_RSP_FORMAT_READ",
+          "GET_RSP_FORMAT_REFERRING_OBJECTS",
+          "GET_RSP_FORMAT_BROKEN_REFERENCES"
+        ],
+        "default": "GET_RSP_FORMAT_DEFAULT"
+      },
+      "lma_regionGetSpecType": {
+        "type": "object",
+        "description": "Shape of the lma region specification.",
+        "title": "GET LMA Region.",
+        "x-displayname": "GET LMA Region.",
+        "x-ves-proto-message": "ves.io.schema.data_privacy.lma_region.GetSpecType",
+        "properties": {
+          "clickhouse_params": {
+            "$ref": "#/components/schemas/lma_regionClickhouseParams"
+          },
+          "elastic_params": {
+            "$ref": "#/components/schemas/lma_regionElasticParams"
+          },
+          "is_default": {
+            "type": "boolean",
+            "description": "Is this the default region.",
+            "format": "boolean",
+            "x-displayname": "Is Default.",
+            "x-ves-example": "True"
+          },
+          "kafka_params": {
+            "$ref": "#/components/schemas/lma_regionKafkaParams"
+          }
+        }
+      },
+      "lma_regionKafkaParams": {
+        "type": "object",
+        "description": "Kafka parameters.",
+        "title": "Kafka Params.",
+        "x-displayname": "Kafka Params.",
+        "x-ves-proto-message": "ves.io.schema.data_privacy.lma_region.KafkaParams",
+        "properties": {
+          "bootstrap_servers": {
+            "type": "array",
+            "description": "Servers in a Kafka cluster that a client should use to bootstrap its connection to the cluster.\n\nRequired: YES.",
+            "title": "Bootstrap servers.",
+            "items": {
+              "type": "string",
+              "maxLength": 8096
+            },
+            "x-displayname": "Bootstrap servers.",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true",
+              "ves.io.schema.rules.string.max_len": "8096"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true",
+              "F5 XC.schema.rules.string.max_len": "8096"
+            }
+          }
+        }
+      },
+      "lma_regionListResponse": {
+        "type": "object",
+        "description": "This is the output message of 'List' RPC.",
+        "title": "ListResponse is the collection of lma_region.",
+        "x-displayname": "List Response.",
+        "x-ves-proto-message": "ves.io.schema.data_privacy.lma_region.ListResponse",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "description": "Errors(if any) while listing items from collection.",
+            "title": "Errors",
+            "items": {
+              "$ref": "#/components/schemas/schemaErrorType"
+            },
+            "x-displayname": "Errors"
+          },
+          "items": {
+            "type": "array",
+            "description": "Items represents the collection in response.",
+            "title": "Items",
+            "items": {
+              "$ref": "#/components/schemas/lma_regionListResponseItem"
+            },
+            "x-displayname": "Items"
+          }
+        }
+      },
+      "lma_regionListResponseItem": {
+        "type": "object",
+        "description": "By default a summary of lma_region is returned in 'List'. By setting\n'report_fields' in the ListRequest more details of each item can be got.",
+        "title": "ListResponseItem is an individual item in a collection of lma_region.",
+        "x-displayname": "List Item",
+        "x-ves-proto-message": "ves.io.schema.data_privacy.lma_region.ListResponseItem",
+        "properties": {
+          "annotations": {
+            "type": "object",
+            "description": "The set of annotations present on this lma_region.",
+            "title": "Annotations.",
+            "x-displayname": "Annotations."
+          },
+          "description": {
+            "type": "string",
+            "description": "The description set for this lma_region.",
+            "title": "Description.",
+            "x-displayname": "Description."
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "A value of true indicates lma_region is administratively disabled.",
+            "title": "Disabled",
+            "format": "boolean",
+            "x-displayname": "Disabled"
+          },
+          "get_spec": {
+            "$ref": "#/components/schemas/lma_regionGetSpecType"
+          },
+          "labels": {
+            "type": "object",
+            "description": "The set of labels present on this lma_region.",
+            "title": "Labels",
+            "x-displayname": "Labels"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/schemaObjectGetMetaType"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of this lma_region.",
+            "title": "Name",
+            "x-displayname": "Name",
+            "x-ves-example": "Name"
+          },
+          "namespace": {
+            "type": "string",
+            "description": "The namespace this item belongs to.",
+            "title": "Namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "Ns1"
+          },
+          "owner_view": {
+            "$ref": "#/components/schemas/schemaViewRefType"
+          },
+          "status_set": {
+            "type": "array",
+            "description": "The status reported by different services for this configuration object.",
+            "title": "Status",
+            "items": {
+              "$ref": "#/components/schemas/lma_regionStatusObject"
+            },
+            "x-displayname": "Status"
+          },
+          "system_metadata": {
+            "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
+          },
+          "tenant": {
+            "type": "string",
+            "description": "The tenant this item belongs to.",
+            "title": "Tenant",
+            "x-displayname": "Tenant",
+            "x-ves-example": "Acmecorp"
+          },
+          "uid": {
+            "type": "string",
+            "description": "The unique uid of this lma_region.",
+            "title": "Uid",
+            "x-displayname": "UID",
+            "x-ves-example": "D27938ba-967e-40a7-9709-57b8627f9f75."
+          }
+        }
+      },
+      "lma_regionStatusObject": {
+        "type": "object",
+        "description": "Most recently observed status of object.",
+        "title": "Status for lma region.",
+        "x-displayname": "Status",
+        "x-ves-proto-message": "ves.io.schema.data_privacy.lma_region.StatusObject",
+        "properties": {
+          "conditions": {
+            "type": "array",
+            "description": "Conditions reported by various component of the system.",
+            "title": "Conditions.",
+            "items": {
+              "$ref": "#/components/schemas/schemaConditionType"
+            },
+            "x-displayname": "Conditions."
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/schemaStatusMetaType"
+          },
+          "object_refs": {
+            "type": "array",
+            "description": "Reference to object for current status.",
+            "title": "Object_refs.",
+            "items": {
+              "$ref": "#/components/schemas/ioschemaObjectRefType"
+            },
+            "x-displayname": "LMA Region Config Object."
+          }
+        }
+      },
       "log_receiverCreateRequest": {
         "type": "object",
         "description": "This is the input message of the 'Create' RPC.",
@@ -59385,518 +59640,6 @@
               "F5 XC.schema.rules.message.required": "true",
               "F5 XC.schema.rules.repeated.max_items": "64",
               "F5 XC.schema.rules.repeated.unique": "true"
-            }
-          }
-        }
-      },
-      "graphsiteLabel": {
-        "type": "string",
-        "description": "Metrics used to construct the site graph are tagged with these labels and therefore\nthe metrics can be sliced and diced based on one or more labels listed below.\n\nIndicates the field not being set\nIdentifies a site (CE or RE)",
-        "title": "Label",
-        "enum": [
-          "LABEL_NONE",
-          "LABEL_SITE"
-        ],
-        "default": "LABEL_NONE",
-        "x-displayname": "Label",
-        "x-ves-proto-enum": "ves.io.schema.graph.site.Label"
-      },
-      "siteEdgeData": {
-        "type": "object",
-        "description": "EdgeData wraps all the response data for an edge in the site graph response.",
-        "title": "Edge Data",
-        "x-displayname": "Edge Data",
-        "x-ves-proto-message": "ves.io.schema.graph.site.EdgeData",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/siteEdgeFieldData"
-          },
-          "dst_id": {
-            "$ref": "#/components/schemas/siteId"
-          },
-          "src_id": {
-            "$ref": "#/components/schemas/siteId"
-          }
-        }
-      },
-      "siteEdgeFieldData": {
-        "type": "object",
-        "description": "EdgeFieldData wraps all the metric and the healthscore data for an edge.",
-        "title": "Edge Field data.",
-        "x-displayname": "Edge Field Data.",
-        "x-ves-proto-message": "ves.io.schema.graph.site.EdgeFieldData",
-        "properties": {
-          "healthscore": {
-            "$ref": "#/components/schemas/graphHealthscoreData"
-          },
-          "metric": {
-            "$ref": "#/components/schemas/graphEdgeMetricData"
-          }
-        }
-      },
-      "siteEdgeFieldSelector": {
-        "type": "object",
-        "description": "EdgeFieldSelector is used to specify the list of fields that should be returned per edge in the response.",
-        "title": "Edge Field Selector.",
-        "x-displayname": "Edge Field Selector.",
-        "x-ves-proto-message": "ves.io.schema.graph.site.EdgeFieldSelector",
-        "properties": {
-          "healthscore": {
-            "$ref": "#/components/schemas/graphHealthscoreSelector"
-          },
-          "metric": {
-            "$ref": "#/components/schemas/graphEdgeMetricSelector"
-          }
-        }
-      },
-      "siteEdgeRequest": {
-        "type": "object",
-        "description": "Request to GET the time-series data for an edge in the site graph.\nWhile graph/site API is used to GET application traffic for all sites,\nwhere each node and edge contains the aggregated value for each field;\ngraph/site/edge API is used to GET the time-series data (drill-down of aggregated data)\nfor each field.",
-        "title": "Site Edge Request.",
-        "x-displayname": "Site Edge Request.",
-        "x-ves-proto-message": "ves.io.schema.graph.site.EdgeRequest",
-        "properties": {
-          "dst_id": {
-            "$ref": "#/components/schemas/siteId"
-          },
-          "end_time": {
-            "type": "string",
-            "description": "End time of metric collection from which data will be considered to build graph.\nFormat: unix_timestamp|rfc 3339\n\nOptional: If not specified, then the end_time will be evaluated to start_time+10m\nIf start_time is not specified, then the end_time will be evaluated to <current time>",
-            "title": "End time",
-            "x-displayname": "End Time",
-            "x-ves-example": "1570197600.",
-            "x-ves-validation-rules": {
-              "ves.io.schema.rules.string.query_time": "true"
-            },
-            "x-validation-rules": {
-              "F5 XC.schema.rules.string.query_time": "true"
-            }
-          },
-          "field_selector": {
-            "$ref": "#/components/schemas/siteEdgeFieldSelector"
-          },
-          "namespace": {
-            "type": "string",
-            "description": "Namespace is used to scope the application traffic to a given namespace.\nFor system namespace, application traffic across all namespaces for the\ntenant will be considered.",
-            "title": "Namespace",
-            "x-displayname": "Namespace",
-            "x-ves-example": "Value"
-          },
-          "range": {
-            "type": "string",
-            "description": "Range decides how far to go back in time to fetch values for each step.\nFor example, if the range is 5m, then for step t1, query will be evaluated for t1-5m and for\nt2, query will be evaluated for t2-5m and so on.\nFormat: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days\n\nNote: For non-timeseries query, i.e., for step=end_time-start_time, range should be set to end_time-start_time\n\nOptional: If not specified, range is set to 5m.",
-            "title": "Range",
-            "x-displayname": "Range",
-            "x-ves-example": "10m",
-            "x-ves-validation-rules": {
-              "ves.io.schema.rules.string.time_interval": "true"
-            },
-            "x-validation-rules": {
-              "F5 XC.schema.rules.string.time_interval": "true"
-            }
-          },
-          "src_id": {
-            "$ref": "#/components/schemas/siteId"
-          },
-          "start_time": {
-            "type": "string",
-            "description": "Start time of metric collection from which data will be considered to build graph.\nFormat: unix_timestamp|rfc 3339\n\nOptional: If not specified, then the start_time will be evaluated to end_time-10m\nIf end_time is not specified, then the start_time will be evaluated to <current time>-10m.",
-            "title": "Start time.",
-            "x-displayname": "Start Time.",
-            "x-ves-example": "1570194000.",
-            "x-ves-validation-rules": {
-              "ves.io.schema.rules.string.query_time": "true"
-            },
-            "x-validation-rules": {
-              "F5 XC.schema.rules.string.query_time": "true"
-            }
-          },
-          "step": {
-            "type": "string",
-            "description": "Step is the resolution width, which determines the number of the data points [x-axis (time)] to be returned in the response.\nThe timestamps in the response will be t1=start_time, t2=t1+step, ... Tn=tn-1+step, where tn <= end_time.\nFormat: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days\n\nOptional: If not specified, then step size is evaluated to <end_time - start_time>",
-            "title": "Step",
-            "x-displayname": "Step",
-            "x-ves-example": "5m",
-            "x-ves-validation-rules": {
-              "ves.io.schema.rules.string.query_step": "true"
-            },
-            "x-validation-rules": {
-              "F5 XC.schema.rules.string.query_step": "true"
-            }
-          }
-        }
-      },
-      "siteEdgeResponse": {
-        "type": "object",
-        "description": "Response for graph/site/edge API returns the time-series data for the site edge specified in the request.",
-        "title": "Site Edge Response.",
-        "x-displayname": "Site Edge Response.",
-        "x-ves-proto-message": "ves.io.schema.graph.site.EdgeResponse",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/siteEdgeFieldData"
-          },
-          "step": {
-            "type": "string",
-            "description": "Actual step size used in the response. It could be higher than the requested step due to metric rollups and the query duration.\nFormat: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days.",
-            "title": "Step",
-            "x-displayname": "Step",
-            "x-ves-example": "30m",
-            "x-ves-validation-rules": {
-              "ves.io.schema.rules.string.time_interval": "true"
-            },
-            "x-validation-rules": {
-              "F5 XC.schema.rules.string.time_interval": "true"
-            }
-          }
-        }
-      },
-      "siteFieldSelector": {
-        "type": "object",
-        "description": "FieldSelector is used to specify the list of fields to be returned in the response for site graph.",
-        "title": "Field Selector.",
-        "x-displayname": "Field Selector.",
-        "x-ves-proto-message": "ves.io.schema.graph.site.FieldSelector",
-        "properties": {
-          "edge": {
-            "$ref": "#/components/schemas/siteEdgeFieldSelector"
-          },
-          "node": {
-            "$ref": "#/components/schemas/siteNodeFieldSelector"
-          }
-        }
-      },
-      "siteGraphData": {
-        "type": "object",
-        "description": "GraphData wraps the response for the site graph request that contains\nall the nodes and the edges. Each node contains the application traffic\nflowing from/to site and each edge contains the application traffic flowing\nfrom/to the source site and the destination site.",
-        "title": "Graph Data.",
-        "x-displayname": "Graph Data.",
-        "x-ves-proto-message": "ves.io.schema.graph.site.GraphData",
-        "properties": {
-          "edges": {
-            "type": "array",
-            "description": "List of edges in the site graph. Each edge contains the application traffic\nflowing from/to the source site and the destination site.",
-            "title": "Edges",
-            "items": {
-              "$ref": "#/components/schemas/siteEdgeData"
-            },
-            "x-displayname": "Edges"
-          },
-          "nodes": {
-            "type": "array",
-            "description": "List of nodes in the site graph. Each node contains the application traffic\nflowing from/to the site.",
-            "title": "Nodes",
-            "items": {
-              "$ref": "#/components/schemas/siteNodeData"
-            },
-            "x-displayname": "Nodes"
-          }
-        }
-      },
-      "siteId": {
-        "type": "object",
-        "description": "ID uniquely identifies a node or an edge in the site graph.",
-        "title": "ID",
-        "x-displayname": "ID",
-        "x-ves-proto-message": "ves.io.schema.graph.site.Id",
-        "properties": {
-          "site": {
-            "type": "string",
-            "description": "Name of the site.",
-            "title": "Site",
-            "x-displayname": "Site",
-            "x-ves-example": "Ce01"
-          }
-        }
-      },
-      "siteIdField": {
-        "type": "string",
-        "description": "IdField is used to select one or more fields that uniquely identifies\na node or an edge in the site graph.\n\nIndicates the field not being set\nIdentifies a site (CE or RE)",
-        "title": "ID Field",
-        "enum": [
-          "NONE",
-          "SITE"
-        ],
-        "default": "NONE",
-        "x-displayname": "ID Field",
-        "x-ves-proto-enum": "ves.io.schema.graph.site.IdField"
-      },
-      "siteLabelFilter": {
-        "type": "object",
-        "description": "Metrics used to render the site graph are tagged with labels listed in the enum Label.\nLabel Filter is used to filter the timeseries that match the specified label key/value\nand the operator.",
-        "title": "Label Filter.",
-        "x-displayname": "Label Filter.",
-        "x-ves-proto-message": "ves.io.schema.graph.site.LabelFilter",
-        "properties": {
-          "label": {
-            "$ref": "#/components/schemas/graphsiteLabel"
-          },
-          "op": {
-            "$ref": "#/components/schemas/graphQueryOp"
-          },
-          "value": {
-            "type": "string",
-            "description": "Value of the label.",
-            "title": "Value",
-            "x-displayname": "Value",
-            "x-ves-example": "Ce01"
-          }
-        }
-      },
-      "siteNodeData": {
-        "type": "object",
-        "description": "NodeData wraps all the response data for a node in the site graph response.",
-        "title": "Node Data",
-        "x-displayname": "Node Data",
-        "x-ves-proto-message": "ves.io.schema.graph.site.NodeData",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/siteNodeFieldData"
-          },
-          "id": {
-            "$ref": "#/components/schemas/siteId"
-          }
-        }
-      },
-      "siteNodeFieldData": {
-        "type": "object",
-        "description": "NodeFieldData wraps all the metric and the healthscore data for a node.",
-        "title": "Node Field data.",
-        "x-displayname": "Node Field Data.",
-        "x-ves-proto-message": "ves.io.schema.graph.site.NodeFieldData",
-        "properties": {
-          "healthscore": {
-            "$ref": "#/components/schemas/graphHealthscoreData"
-          },
-          "metric": {
-            "$ref": "#/components/schemas/graphNodeMetricData"
-          }
-        }
-      },
-      "siteNodeFieldSelector": {
-        "type": "object",
-        "description": "NodeFieldSelector is used to specify the list of fields that should be returned per node in the response.",
-        "title": "Node Field Selector.",
-        "x-displayname": "Node Field Selector.",
-        "x-ves-proto-message": "ves.io.schema.graph.site.NodeFieldSelector",
-        "properties": {
-          "healthscore": {
-            "$ref": "#/components/schemas/graphHealthscoreSelector"
-          },
-          "metric": {
-            "$ref": "#/components/schemas/graphNodeMetricSelector"
-          }
-        }
-      },
-      "siteNodeRequest": {
-        "type": "object",
-        "description": "Request to GET time-series data for a node in the site graph.\nWhile graph/site API is used to GET application traffic for all sites,\nwhere each node and edge contains the aggregated value for each field;\ngraph/site/node API is used to GET the time-series data (drill-down of aggregated data)\nfor each field.",
-        "title": "Site Node Request.",
-        "x-displayname": "Site Node Request.",
-        "x-ves-proto-message": "ves.io.schema.graph.site.NodeRequest",
-        "properties": {
-          "end_time": {
-            "type": "string",
-            "description": "End time of metric collection from which data will be considered to build graph.\nFormat: unix_timestamp|rfc 3339\n\nOptional: If not specified, then the end_time will be evaluated to start_time+10m\nIf start_time is not specified, then the end_time will be evaluated to <current time>",
-            "title": "End time",
-            "x-displayname": "End Time",
-            "x-ves-example": "1570197600.",
-            "x-ves-validation-rules": {
-              "ves.io.schema.rules.string.query_time": "true"
-            },
-            "x-validation-rules": {
-              "F5 XC.schema.rules.string.query_time": "true"
-            }
-          },
-          "field_selector": {
-            "$ref": "#/components/schemas/siteNodeFieldSelector"
-          },
-          "id": {
-            "$ref": "#/components/schemas/siteId"
-          },
-          "namespace": {
-            "type": "string",
-            "description": "Namespace is used to scope the application traffic to a given namespace.\nFor system namespace, application traffic across all namespaces for the\ntenant will be considered.",
-            "title": "Namespace",
-            "x-displayname": "Namespace",
-            "x-ves-example": "Value"
-          },
-          "range": {
-            "type": "string",
-            "description": "Range decides how far to go back in time to fetch values for each step.\nFor example, if the range is 5m, then for step t1, query will be evaluated for t1-5m and for\nt2, query will be evaluated for t2-5m and so on.\nFormat: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days\n\nNote: For non-timeseries query, i.e., for step=end_time-start_time, range should be set to end_time-start_time\n\nOptional: If not specified, range is set to 5m.",
-            "title": "Range",
-            "x-displayname": "Range",
-            "x-ves-example": "10m",
-            "x-ves-validation-rules": {
-              "ves.io.schema.rules.string.time_interval": "true"
-            },
-            "x-validation-rules": {
-              "F5 XC.schema.rules.string.time_interval": "true"
-            }
-          },
-          "start_time": {
-            "type": "string",
-            "description": "Start time of metric collection from which data will be considered to build graph.\nFormat: unix_timestamp|rfc 3339\n\nOptional: If not specified, then the start_time will be evaluated to end_time-10m\nIf end_time is not specified, then the start_time will be evaluated to <current time>-10m.",
-            "title": "Start time.",
-            "x-displayname": "Start Time.",
-            "x-ves-example": "1570194000.",
-            "x-ves-validation-rules": {
-              "ves.io.schema.rules.string.query_time": "true"
-            },
-            "x-validation-rules": {
-              "F5 XC.schema.rules.string.query_time": "true"
-            }
-          },
-          "step": {
-            "type": "string",
-            "description": "Step is the resolution width, which determines the number of the data points [x-axis (time)] to be returned in the response.\nThe timestamps in the response will be t1=start_time, t2=t1+step, ... Tn=tn-1+step, where tn <= end_time.\nFormat: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days\n\nOptional: If not specified, then step size is evaluated to <end_time - start_time>",
-            "title": "Step",
-            "x-displayname": "Step",
-            "x-ves-example": "5m",
-            "x-ves-validation-rules": {
-              "ves.io.schema.rules.string.query_step": "true"
-            },
-            "x-validation-rules": {
-              "F5 XC.schema.rules.string.query_step": "true"
-            }
-          }
-        }
-      },
-      "siteNodeResponse": {
-        "type": "object",
-        "description": "Response for graph/site/node request returns the time-series data for the site\nspecified in the request.",
-        "title": "Site Node Response.",
-        "x-displayname": "Site Node Response.",
-        "x-ves-proto-message": "ves.io.schema.graph.site.NodeResponse",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/siteNodeFieldData"
-          },
-          "step": {
-            "type": "string",
-            "description": "Actual step size used in the response. It could be higher than the requested step due to metric rollups and the query duration.\nFormat: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days.",
-            "title": "Step",
-            "x-displayname": "Step",
-            "x-ves-example": "30m",
-            "x-ves-validation-rules": {
-              "ves.io.schema.rules.string.time_interval": "true"
-            },
-            "x-validation-rules": {
-              "F5 XC.schema.rules.string.time_interval": "true"
-            }
-          }
-        }
-      },
-      "siteRequest": {
-        "type": "object",
-        "description": "Graph/site API is used to GET intra-site and inter-site graph for application traffic.",
-        "title": "Site Graph Request.",
-        "x-displayname": "Site Graph Request.",
-        "x-ves-proto-message": "ves.io.schema.graph.site.Request",
-        "properties": {
-          "end_time": {
-            "type": "string",
-            "description": "End time of metric collection from which data will be considered to build graph.\nFormat: unix_timestamp|rfc 3339\n\nOptional: If not specified, then the end_time will be evaluated to start_time+10m\nIf start_time is not specified, then the end_time will be evaluated to <current time>",
-            "title": "End time",
-            "x-displayname": "End Time",
-            "x-ves-example": "1570197600.",
-            "x-ves-validation-rules": {
-              "ves.io.schema.rules.string.query_time": "true"
-            },
-            "x-validation-rules": {
-              "F5 XC.schema.rules.string.query_time": "true"
-            }
-          },
-          "field_selector": {
-            "$ref": "#/components/schemas/siteFieldSelector"
-          },
-          "group_by": {
-            "type": "array",
-            "description": "Aggregate data by site.\nOptional: If not specified, then the data is aggregated/grouped by site.",
-            "title": "Group by",
-            "items": {
-              "$ref": "#/components/schemas/siteIdField"
-            },
-            "x-displayname": "Group By"
-          },
-          "label_filter": {
-            "type": "array",
-            "description": "List of label filter expressions of the form \"label key\" QueryOp \"value\".\nResponse will only contain data that matches all the conditions specified in the label_filter.\n\nOptional: If not specified, application traffic for all sites will be returned in the response.",
-            "title": "Label Filter.",
-            "items": {
-              "$ref": "#/components/schemas/siteLabelFilter"
-            },
-            "x-displayname": "Label Filter."
-          },
-          "namespace": {
-            "type": "string",
-            "description": "Namespace is used to scope the application traffic to a given namespace.\nFor system namespace, application traffic across all namespaces for the\ntenant will be considered.",
-            "title": "Namespace",
-            "x-displayname": "Namespace",
-            "x-ves-example": "Value"
-          },
-          "range": {
-            "type": "string",
-            "description": "Range decides how far to go back in time to fetch values for each step.\nFor example, if the range is 5m, then for step t1, query will be evaluated for t1-5m and for\nt2, query will be evaluated for t2-5m and so on.\nFormat: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days\n\nNote: For non-timeseries query, i.e., for step=end_time-start_time, range should be set to end_time-start_time\n\nOptional: If not specified, range is set to 5m.",
-            "title": "Range",
-            "x-displayname": "Range",
-            "x-ves-example": "10m",
-            "x-ves-validation-rules": {
-              "ves.io.schema.rules.string.time_interval": "true"
-            },
-            "x-validation-rules": {
-              "F5 XC.schema.rules.string.time_interval": "true"
-            }
-          },
-          "start_time": {
-            "type": "string",
-            "description": "Start time of metric collection from which data will be considered to build graph.\nFormat: unix_timestamp|rfc 3339\n\nOptional: If not specified, then the start_time will be evaluated to end_time-10m\nIf end_time is not specified, then the start_time will be evaluated to <current time>-10m.",
-            "title": "Start time.",
-            "x-displayname": "Start Time.",
-            "x-ves-example": "1570194000.",
-            "x-ves-validation-rules": {
-              "ves.io.schema.rules.string.query_time": "true"
-            },
-            "x-validation-rules": {
-              "F5 XC.schema.rules.string.query_time": "true"
-            }
-          },
-          "step": {
-            "type": "string",
-            "description": "Step is the resolution width, which determines the number of the data points [x-axis (time)] to be returned in the response.\nThe timestamps in the response will be t1=start_time, t2=t1+step, ... Tn=tn-1+step, where tn <= end_time.\nFormat: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days\n\nOptional: If not specified, then step size is evaluated to <end_time - start_time>",
-            "title": "Step",
-            "x-displayname": "Step",
-            "x-ves-example": "5m",
-            "x-ves-validation-rules": {
-              "ves.io.schema.rules.string.query_step": "true"
-            },
-            "x-validation-rules": {
-              "F5 XC.schema.rules.string.query_step": "true"
-            }
-          }
-        }
-      },
-      "siteResponse": {
-        "type": "object",
-        "description": "Response for graph/site API contains list of nodes and edges.\nEach node contains application traffic flowing from/to site.\nEach edge contains application traffic flowing from src site to dst site.",
-        "title": "Site Graph Response.",
-        "x-displayname": "Site Graph Response.",
-        "x-ves-proto-message": "ves.io.schema.graph.site.Response",
-        "properties": {
-          "data": {
-            "$ref": "#/components/schemas/siteGraphData"
-          },
-          "step": {
-            "type": "string",
-            "description": "Actual step size used in the response. It could be higher than the requested step due to metric rollups and the query duration.\nFormat: [0-9][smhd], where s - seconds, m - minutes, h - hours, d - days.",
-            "title": "Step",
-            "x-displayname": "Step",
-            "x-ves-example": "30m",
-            "x-ves-validation-rules": {
-              "ves.io.schema.rules.string.time_interval": "true"
-            },
-            "x-validation-rules": {
-              "F5 XC.schema.rules.string.time_interval": "true"
             }
           }
         }
