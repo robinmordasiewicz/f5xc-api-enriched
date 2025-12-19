@@ -23578,6 +23578,128 @@
       }
     },
     "responses": {},
-    "parameters": {}
+    "parameters": {},
+    "requestBodies": {
+      "api_credentialRenewRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/api_credentialRenewRequest"
+            }
+          }
+        },
+        "required": true
+      },
+      "api_credentialGetRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/api_credentialGetRequest"
+            }
+          }
+        },
+        "required": true
+      },
+      "api_credentialBulkRevokeRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/api_credentialBulkRevokeRequest"
+            }
+          }
+        },
+        "required": true
+      },
+      "namespaceSuggestValuesReq": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/namespaceSuggestValuesReq"
+            }
+          }
+        },
+        "required": true
+      },
+      "schemauserEmpty": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/schemauserEmpty"
+            }
+          }
+        },
+        "required": true
+      },
+      "userUserRoleRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/userUserRoleRequest"
+            }
+          }
+        },
+        "required": true
+      },
+      "userUserGroupRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/userUserGroupRequest"
+            }
+          }
+        },
+        "required": true
+      },
+      "user_groupModifyRoleRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/user_groupModifyRoleRequest"
+            }
+          }
+        },
+        "required": true
+      },
+      "user_groupUserGroupRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/user_groupUserGroupRequest"
+            }
+          }
+        },
+        "required": true
+      },
+      "settingNtfnPreferencesMap": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/settingNtfnPreferencesMap"
+            }
+          }
+        },
+        "required": true
+      },
+      "settingNtfnToUnset": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/settingNtfnToUnset"
+            }
+          }
+        },
+        "required": true
+      },
+      "settingUserEmail": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/settingUserEmail"
+            }
+          }
+        },
+        "required": true
+      }
+    }
   }
 }

@@ -156,13 +156,14 @@ def create_base_spec(title: str, description: str, version: str) -> dict[str, An
             "schemas": {},
             "responses": {},
             "parameters": {},
+            "requestBodies": {},
         },
     }
 
 
 def merge_components(target: dict[str, Any], source: dict[str, Any], prefix: str = "") -> dict[str, int]:
     """Merge components from source into target with conflict resolution."""
-    stats = {"schemas": 0, "responses": 0, "parameters": 0}
+    stats = {"schemas": 0, "responses": 0, "parameters": 0, "requestBodies": 0}
 
     source_components = source.get("components", {})
     target_components = target.setdefault("components", {})
@@ -193,6 +194,15 @@ def merge_components(target: dict[str, Any], source: dict[str, Any], prefix: str
         if prefixed_name not in target_params:
             target_params[prefixed_name] = param
             stats["parameters"] += 1
+
+    # Merge requestBodies (critical for Scalar/Swagger UI compatibility)
+    source_request_bodies = source_components.get("requestBodies", {})
+    target_request_bodies = target_components.setdefault("requestBodies", {})
+    for name, request_body in source_request_bodies.items():
+        prefixed_name = f"{prefix}{name}" if prefix else name
+        if prefixed_name not in target_request_bodies:
+            target_request_bodies[prefixed_name] = request_body
+            stats["requestBodies"] += 1
 
     return stats
 
@@ -260,7 +270,7 @@ def merge_specs_by_domain(
     console.print(f"[blue]Found {len(spec_files)} specs across {len(domain_specs)} domains[/blue]")
 
     merged_specs = {}
-    stats = {"domains": 0, "specs": 0, "paths": 0, "schemas": 0}
+    stats = {"domains": 0, "specs": 0, "paths": 0, "schemas": 0, "requestBodies": 0}
 
     with Progress(
         SpinnerColumn(),
@@ -292,6 +302,7 @@ def merge_specs_by_domain(
                     # Merge components
                     comp_stats = merge_components(merged, spec)
                     stats["schemas"] += comp_stats["schemas"]
+                    stats["requestBodies"] += comp_stats["requestBodies"]
 
                     # Collect tags
                     all_tags.extend(extract_tags(spec))
@@ -326,6 +337,7 @@ def merge_specs_by_domain(
     table.add_row("Specs Processed", str(stats["specs"]))
     table.add_row("Paths Merged", str(stats["paths"]))
     table.add_row("Schemas Merged", str(stats["schemas"]))
+    table.add_row("RequestBodies Merged", str(stats["requestBodies"]))
     console.print(table)
 
     return merged_specs
@@ -420,8 +432,8 @@ def main() -> int:
     parser.add_argument(
         "--input-dir",
         type=Path,
-        default=Path("specs/enriched"),
-        help="Directory containing enriched specifications",
+        default=Path("specs/normalized"),
+        help="Directory containing normalized specifications",
     )
     parser.add_argument(
         "--output-dir",

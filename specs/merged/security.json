@@ -55610,6 +55610,148 @@
       }
     },
     "responses": {},
-    "parameters": {}
+    "parameters": {},
+    "requestBodies": {
+      "api_definitionAPInventoryReq": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/api_definitionAPInventoryReq"
+            }
+          }
+        },
+        "required": true
+      },
+      "app_firewallMetricsRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/app_firewallMetricsRequest"
+            }
+          }
+        },
+        "required": true
+      },
+      "bot_detection_ruleDeployBotDetectionRulesRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/bot_detection_ruleDeployBotDetectionRulesRequest"
+            }
+          }
+        },
+        "required": true
+      },
+      "service_policyServicePolicyHitsRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/service_policyServicePolicyHitsRequest"
+            }
+          }
+        },
+        "required": true
+      },
+      "reportingTrafficOverviewRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/reportingTrafficOverviewRequest"
+            }
+          }
+        },
+        "required": true
+      },
+      "reportingTopRequestAttackIntent": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/reportingTopRequestAttackIntent"
+            }
+          }
+        },
+        "required": true
+      },
+      "reportingInsightRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/reportingInsightRequest"
+            }
+          }
+        },
+        "required": true
+      },
+      "reportingPeerGroupRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/reportingPeerGroupRequest"
+            }
+          }
+        },
+        "required": true
+      },
+      "reportingTrafficOverviewExpandedRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/reportingTrafficOverviewExpandedRequest"
+            }
+          }
+        },
+        "required": true
+      },
+      "reportingTopRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/reportingTopRequest"
+            }
+          }
+        },
+        "required": true
+      },
+      "subscriptionSubscribeRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/subscriptionSubscribeRequest"
+            }
+          }
+        },
+        "required": true
+      },
+      "subscriptionUnsubscribeRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/subscriptionUnsubscribeRequest"
+            }
+          }
+        },
+        "required": true
+      },
+      "wafSecurityEventsCountRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/wafSecurityEventsCountRequest"
+            }
+          }
+        },
+        "required": true
+      },
+      "wafRuleHitsCountRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/wafRuleHitsCountRequest"
+            }
+          }
+        },
+        "required": true
+      }
+    }
   }
 }

@@ -1,0 +1,74 @@
+# F5 XC API Specification Linting Rules (Spectral)
+# Custom ruleset for validating OpenAPI specifications
+#
+# Severity levels:
+#   0 = error (blocks deployment)
+#   1 = warn (reported but doesn't block)
+#   2 = info (informational)
+#   3 = hint (suggestions)
+
+extends:
+  - spectral:oas
+
+# Override default rules
+rules:
+  # Disable overly strict rules for F5 specs
+  # These are common in auto-generated API specs
+
+  # Allow missing operation descriptions (many F5 APIs don't have them)
+  operation-description: off
+
+  # Allow missing operation summaries
+  operation-summary: off
+
+  # Allow missing parameter descriptions
+  oas3-parameter-description: off
+
+  # Don't require examples for everything
+  oas3-valid-schema-example: off
+
+  # Allow missing tags on operations (F5 specs don't always tag)
+  operation-tag-defined: off
+
+  # Info section rules - keep but as warnings
+  info-contact: warn
+  info-description: warn
+  info-license: off
+
+  # Path rules
+  path-params: error
+  path-declarations-must-exist: error
+  path-keys-no-trailing-slash: warn
+  path-not-include-query: error
+
+  # Operation rules
+  operation-operationId: warn
+  operation-operationId-unique: error
+  operation-operationId-valid-in-url: warn
+
+  # Schema rules - relaxed for compatibility
+  oas3-schema: error
+  oas3-unused-component: off  # Allow unused components (may be referenced externally)
+
+  # Security rules
+  oas3-api-servers: warn
+  oas3-operation-security-defined: off  # F5 uses custom auth
+
+  # Response rules
+  operation-success-response: warn
+
+  # Reference validation - CRITICAL for UI compatibility
+  # These catch the $ref issues that break Scalar
+  no-$ref-siblings: warn
+
+# Custom rules for F5 XC APIs
+overrides:
+  - files:
+      - "**/*.json"
+    rules:
+      # Be lenient with auto-generated specs
+      operation-description: off
+      oas3-parameter-description: off
+
+# Functions for custom rules (if needed in future)
+# functionsDir: ./spectral-functions

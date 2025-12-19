@@ -29329,6 +29329,18 @@
       }
     },
     "responses": {},
-    "parameters": {}
+    "parameters": {},
+    "requestBodies": {
+      "logLogScrollRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/logLogScrollRequest"
+            }
+          }
+        },
+        "required": true
+      }
+    }
   }
 }

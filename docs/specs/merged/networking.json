@@ -81440,6 +81440,28 @@
       }
     },
     "responses": {},
-    "parameters": {}
+    "parameters": {},
+    "requestBodies": {
+      "siteVirtualMachineInstancesMetricsRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/siteVirtualMachineInstancesMetricsRequest"
+            }
+          }
+        },
+        "required": true
+      },
+      "sitePodsMetricsRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/sitePodsMetricsRequest"
+            }
+          }
+        },
+        "required": true
+      }
+    }
   }
 }

@@ -74,11 +74,26 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y default-jre
 
+      - name: Setup Node.js for Spectral
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Spectral CLI
+        run: npm install -g @stoplight/spectral-cli
+
       - name: Download specifications
         run: python -m scripts.download --force
 
       - name: Enrich specifications
         run: python -m scripts.enrich
+
+      - name: Normalize specifications
+        run: python -m scripts.normalize
+
+      - name: Lint specifications
+        continue-on-error: true
+        run: python -m scripts.lint
 
       - name: Merge specifications
         run: python -m scripts.merge_specs
@@ -107,13 +122,19 @@ jobs:
 
           ### Changes
           - Updated API specifications from F5 Distributed Cloud
-          - Applied enrichment transformations:
-            - Acronym normalization
+          - Applied enrichment pipeline:
+            - Acronym normalization (100+ terms)
             - Grammar improvements
             - Branding updates (Volterra → F5 Distributed Cloud)
+          - Applied normalization pipeline:
+            - Fixed orphan \$ref references
+            - Removed empty operations
+            - Type standardization
+          - Validated with Spectral OpenAPI linter
 
           ### Statistics
-          - Specifications: $(ls specs/enriched/*.json 2>/dev/null | wc -l | xargs)
+          - Original specs: $(ls specs/original/*.json 2>/dev/null | wc -l | xargs)
+          - Normalized specs: $(ls specs/normalized/*.json 2>/dev/null | wc -l | xargs)
           - Domains: $(ls specs/merged/*.json 2>/dev/null | grep -v openapi.json | grep -v index.json | wc -l | xargs)
 
           ### Source
