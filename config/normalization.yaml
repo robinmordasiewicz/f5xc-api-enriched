@@ -2,15 +2,14 @@
 # This configuration controls how specs are normalized for UI compatibility
 #
 # Simplified two-folder architecture:
-#   specs/original/            - READ-ONLY source from F5
-#   specs/enriched/individual/ - Processed individual specs (in-place normalization)
-#   specs/enriched/            - Domain-merged specs at root level
+#   specs/original/          - READ-ONLY source from F5
+#   docs/specifications/api/ - Merged domain specs (served by GitHub Pages)
 
 # Directory paths
 paths:
   # Input/Output directory: same location for in-place processing
-  enriched: "specs/enriched/individual"
-  normalized: "specs/enriched/individual"
+  enriched: "docs/specifications/api"
+  normalized: "docs/specifications/api"
   # Reports directory
   reports: "reports"
 

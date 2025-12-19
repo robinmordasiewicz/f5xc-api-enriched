@@ -2,8 +2,8 @@
 # Local builds produce identical output to GitHub Actions workflow
 #
 # Simplified two-folder architecture:
-#   specs/original/   - READ-ONLY source from F5
-#   specs/enriched/   - Merged domain specs only (no individual files)
+#   specs/original/          - READ-ONLY source from F5
+#   docs/specifications/api/ - Merged domain specs (served directly by GitHub Pages)
 #
 # Usage:
 #   make build      - Full pipeline (download → enrich → normalize → merge)
@@ -14,8 +14,8 @@
 #   make serve      - Serve docs locally
 #
 # The pipeline ensures deterministic output:
-#   specs/original/   → READ-ONLY source from F5
-#   specs/enriched/   → Merged domain specs
+#   specs/original/          → READ-ONLY source from F5
+#   docs/specifications/api/ → Merged domain specs (GitHub Pages)
 #       ├── api_security.json
 #       ├── applications.json
 #       ├── bigip.json
@@ -29,7 +29,6 @@
 #       ├── networking.json
 #       ├── nginx.json
 #       ├── observability.json
-#       ├── other.json
 #       ├── security.json
 #       ├── service_mesh.json
 #       ├── shape_security.json
@@ -50,11 +49,10 @@ PIP := $(VENV)/bin/pip
 all: build
 
 # Full pipeline - matches GitHub Actions workflow exactly
-build: check-deps download pipeline copy-docs
+build: check-deps download pipeline
 	@echo ""
 	@echo "Build complete. Output in:"
-	@echo "  specs/enriched/           - Merged domain API specifications"
-	@echo "  docs/specs/enriched       - Copy for GitHub Pages"
+	@echo "  docs/specifications/api/  - Merged domain API specifications (GitHub Pages)"
 	@echo ""
 	@echo "Run 'make serve' to preview locally"
 
@@ -95,13 +93,7 @@ merge:
 
 # Lint specifications with Spectral (requires: npm install -g @stoplight/spectral-cli)
 lint:
-	$(PYTHON) scripts/lint.py --input-dir specs/enriched
-
-# Copy enriched specs to docs folder for GitHub Pages
-copy-docs:
-	@mkdir -p docs/specs
-	@rm -rf docs/specs/enriched
-	cp -r specs/enriched docs/specs/
+	$(PYTHON) scripts/lint.py --input-dir docs/specifications/api
 
 # Validate specifications with live API (optional, requires credentials)
 validate:
@@ -121,9 +113,8 @@ serve:
 
 # Clean generated files (preserves original specs)
 clean:
-	rm -rf specs/enriched
+	rm -rf docs/specifications/api/*.json
 	rm -rf reports
-	rm -rf docs/specs/enriched
 	@echo "Cleaned generated files. Original specs preserved."
 
 # Deep clean - removes everything including downloaded specs
@@ -134,7 +125,7 @@ clean-all: clean
 	@echo "Deep clean complete. Run 'make download' to fetch specs."
 
 # Quick rebuild - skip download, run pipeline only
-rebuild: pipeline copy-docs
+rebuild: pipeline
 
 # Install pre-commit hooks
 pre-commit-install: check-deps
@@ -156,13 +147,13 @@ help:
 	@echo "F5 XC API Enrichment Pipeline"
 	@echo ""
 	@echo "Simplified two-folder architecture:"
-	@echo "  specs/original/   - READ-ONLY source from F5"
-	@echo "  specs/enriched/   - Merged domain specs only"
+	@echo "  specs/original/          - READ-ONLY source from F5"
+	@echo "  docs/specifications/api/ - Merged domain specs (GitHub Pages)"
 	@echo ""
 	@echo "Usage: make [target]"
 	@echo ""
 	@echo "Main targets:"
-	@echo "  build       Full pipeline (download → pipeline → copy-docs)"
+	@echo "  build       Full pipeline (download → pipeline)"
 	@echo "  rebuild     Quick rebuild (skip download, use existing original specs)"
 	@echo "  serve       Start local server to preview docs"
 	@echo "  clean       Remove generated files (keeps original specs)"

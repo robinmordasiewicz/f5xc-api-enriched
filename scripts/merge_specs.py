@@ -660,13 +660,13 @@ def main() -> int:
     parser.add_argument(
         "--input-dir",
         type=Path,
-        default=Path("specs/enriched/individual"),
+        default=Path("docs/specifications/api"),
         help="Directory containing processed specifications",
     )
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path("specs/enriched"),
+        default=Path("docs/specifications/api"),
         help="Directory for merged specifications",
     )
     parser.add_argument(

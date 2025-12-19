@@ -611,7 +611,7 @@ def main() -> int:
     parser.add_argument(
         "--specs-dir",
         type=Path,
-        default=Path("specs/enriched"),
+        default=Path("docs/specifications/api"),
         help="Directory containing enriched specifications",
     )
     parser.add_argument(

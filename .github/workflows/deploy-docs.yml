@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - 'docs/**'
-      - 'specs/enriched/**'
 
 permissions:
   contents: read
@@ -27,14 +26,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-
-      - name: Prepare docs directory
-        run: |
-          # Ensure specs are in docs folder for serving
-          mkdir -p docs/specs
-          if [ -d "specs/enriched" ]; then
-            cp -r specs/enriched docs/specs/
-          fi
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

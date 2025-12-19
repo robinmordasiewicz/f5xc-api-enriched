@@ -264,7 +264,7 @@
             <div class="footer-links">
                 <a href="https://docs.cloud.f5.com" target="_blank">Official Documentation</a>
                 <a href="https://github.com/robinmordasiewicz/f5xc-api-enriched" target="_blank">GitHub Repository</a>
-                <a href="./specs/enriched/openapi.json" target="_blank">Download OpenAPI Spec</a>
+                <a href="./specifications/api/openapi.json" target="_blank">Download OpenAPI Spec</a>
             </div>
             <p class="footer-text">
                 Enriched API specifications for F5 Distributed Cloud Services
@@ -276,7 +276,7 @@
         // Load spec index to populate domains and version
         async function loadSpecIndex() {
             try {
-                const response = await fetch('./specs/enriched/index.json');
+                const response = await fetch('./specifications/api/index.json');
                 if (!response.ok) return;
 
                 const index = await response.json();

@@ -28,7 +28,7 @@ console = Console()
 # Default configuration
 DEFAULT_CONFIG = {
     "paths": {
-        "normalized": "specs/enriched/individual",
+        "normalized": "docs/specifications/api",
         "reports": "reports",
         "ruleset": "config/spectral.yaml",
     },

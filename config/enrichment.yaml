@@ -8,11 +8,11 @@ source:
 
 # Paths configuration
 # Simplified two-folder architecture:
-#   specs/original/   - READ-ONLY source from F5
-#   specs/enriched/   - Single output folder for all processed specs
+#   specs/original/           - READ-ONLY source from F5
+#   docs/specifications/api/  - Single output folder for all processed specs (served by GitHub Pages)
 paths:
   original: "specs/original"
-  enriched: "specs/enriched"
+  enriched: "docs/specifications/api"
   reports: "reports"
 
 # Branding transformations
