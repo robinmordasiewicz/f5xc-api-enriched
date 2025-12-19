@@ -17,6 +17,7 @@ class DescriptionStructureTransformer:
 
     Extracts Example: sections to x-ves-example field.
     Extracts Validation Rules: sections to x-validation-rules extension.
+    Extracts X-required markers to x-required extension field.
     Normalizes leading whitespace artifacts.
     """
 
@@ -36,6 +37,8 @@ class DescriptionStructureTransformer:
         self._remove_extracted_examples = True
         self._extract_validation_rules = True
         self._remove_extracted_validation = True
+        self._extract_required = True
+        self._remove_extracted_required = True
         self._preserve_fields: set[str] = set()
 
         self._load_config(config_path)
@@ -71,6 +74,8 @@ class DescriptionStructureTransformer:
         self._remove_extracted_examples = desc_config.get("remove_extracted_examples", True)
         self._extract_validation_rules = desc_config.get("extract_validation_rules", True)
         self._remove_extracted_validation = desc_config.get("remove_extracted_validation", True)
+        self._extract_required = desc_config.get("extract_required", True)
+        self._remove_extracted_required = desc_config.get("remove_extracted_required", True)
         self._preserve_fields = set(config.get("preserve_fields", []))
 
     def transform_spec(
@@ -102,6 +107,7 @@ class DescriptionStructureTransformer:
             result = {}
             extracted_example = None
             extracted_validation = None
+            extracted_required = False
 
             for key, value in obj.items():
                 # Skip preserved fields
@@ -110,14 +116,14 @@ class DescriptionStructureTransformer:
                     continue
 
                 if key in target_fields and isinstance(value, str):
-                    # Only extract examples/validation from 'description' field
+                    # Only extract examples/validation/required from 'description' field
                     # Other target fields just get whitespace normalization
                     if key == "description":
                         # Get existing x-ves-example if present
                         existing_example = obj.get("x-ves-example")
 
                         # Transform the description (extract metadata)
-                        new_value, extracted_example, extracted_validation = self._transform_description(
+                        new_value, extracted_example, extracted_validation, extracted_required = self._transform_description(
                             value, existing_example
                         )
                         result[key] = new_value
@@ -139,6 +145,9 @@ class DescriptionStructureTransformer:
             if extracted_validation:
                 result["x-validation-rules"] = extracted_validation
 
+            if extracted_required and "x-required" not in result:
+                result["x-required"] = True
+
             return result
         elif isinstance(obj, list):
             return [
@@ -152,7 +161,7 @@ class DescriptionStructureTransformer:
         self,
         description: str,
         existing_example: str | None,
-    ) -> tuple[str, str | None, dict[str, str] | None]:
+    ) -> tuple[str, str | None, dict[str, str] | None, bool]:
         """Transform a single description field.
 
         Args:
@@ -160,29 +169,34 @@ class DescriptionStructureTransformer:
             existing_example: Existing x-ves-example value if any.
 
         Returns:
-            Tuple of (cleaned description, extracted example, extracted validation rules).
+            Tuple of (cleaned description, extracted example, extracted validation rules, is_required).
         """
         result = description
         extracted_example = None
         extracted_validation = None
+        is_required = False
 
-        # 1. Extract validation rules FIRST (before whitespace normalization)
+        # 1. Extract X-required marker FIRST (before any other processing)
+        if self._extract_required:
+            result, is_required = self._extract_required_marker(result)
+
+        # 2. Extract validation rules (before whitespace normalization)
         # The rules pattern depends on leading whitespace to identify rule lines
         if self._extract_validation_rules:
             result, extracted_validation = self._extract_validation_section(result)
 
-        # 2. Extract examples
+        # 3. Extract examples
         if self._extract_examples:
             result, extracted_example = self._extract_example_section(result, existing_example)
 
-        # 3. Normalize leading spaces (after extraction to preserve pattern matching)
+        # 4. Normalize leading spaces (after extraction to preserve pattern matching)
         if self._normalize_leading_spaces:
             result = self._normalize_leading_whitespace(result)
 
         # Final cleanup - remove excessive whitespace
         result = self._cleanup_whitespace(result)
 
-        return result, extracted_example, extracted_validation
+        return result, extracted_example, extracted_validation, is_required
 
     def _normalize_leading_whitespace(self, text: str) -> str:
         """Strip leading spaces while preserving bullet point indentation."""
@@ -264,6 +278,38 @@ class DescriptionStructureTransformer:
 
         return result.strip(), rules if rules else None
 
+    def _extract_required_marker(
+        self,
+        description: str,
+    ) -> tuple[str, bool]:
+        """Extract X-required marker to x-required extension field.
+
+        Args:
+            description: Original description text.
+
+        Returns:
+            Tuple of (cleaned description, is_required flag).
+        """
+        # Patterns for required markers at the start of descriptions
+        patterns = [
+            r'^X-required\s*\n*',      # X-required at start
+            r'^x-required\s*\n*',      # lowercase variant
+            r'^Required:\s*\n*',       # Required: prefix
+            r'^X-Required\s*\n*',      # Mixed case variant
+        ]
+
+        is_required = False
+        result = description
+
+        for pattern in patterns:
+            if re.match(pattern, result, flags=re.IGNORECASE):
+                is_required = True
+                if self._remove_extracted_required:
+                    result = re.sub(pattern, '', result, count=1, flags=re.IGNORECASE)
+                break
+
+        return result.strip(), is_required
+
     def _cleanup_whitespace(self, text: str) -> str:
         """Final cleanup of whitespace in description."""
         # Remove excessive blank lines (more than 2 newlines in a row)
@@ -286,4 +332,6 @@ class DescriptionStructureTransformer:
             "remove_extracted_examples": self._remove_extracted_examples,
             "extract_validation_rules": self._extract_validation_rules,
             "remove_extracted_validation": self._remove_extracted_validation,
+            "extract_required": self._extract_required,
+            "remove_extracted_required": self._remove_extracted_required,
         }

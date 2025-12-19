@@ -25,8 +25,12 @@ from scripts.utils import (
     AcronymNormalizer,
     BrandingTransformer,
     BrandingValidator,
+    ConsistencyValidator,
     DescriptionStructureTransformer,
+    DescriptionValidator,
     GrammarImprover,
+    SchemaFixer,
+    TagGenerator,
 )
 
 console = Console()
@@ -73,8 +77,13 @@ class EnrichmentStats:
     acronyms_normalized: int = 0
     grammar_improved: int = 0
     branding_transformed: int = 0
+    schemas_fixed: int = 0
+    operations_tagged: int = 0
+    descriptions_generated: int = 0
+    required_fields_extracted: int = 0
     validation_passed: int = 0
     validation_failed: int = 0
+    consistency_issues: int = 0
     errors: list[dict[str, Any]] = field(default_factory=list)
 
 
@@ -180,6 +189,10 @@ def enrich_spec_file(
         acronym_normalizer = AcronymNormalizer()
         branding_transformer = BrandingTransformer()
         description_structure_transformer = DescriptionStructureTransformer()
+        schema_fixer = SchemaFixer()
+        tag_generator = TagGenerator()
+        description_validator = DescriptionValidator()
+        consistency_validator = ConsistencyValidator()
 
         grammar_config = config.get("grammar", {})
         grammar_improver = GrammarImprover(
@@ -197,17 +210,29 @@ def enrich_spec_file(
         # 1. Branding transformations first (most specific)
         spec = branding_transformer.transform_spec(spec, target_fields)
 
-        # 2. Description structure normalization (extract examples, validation rules)
+        # 2. Description structure normalization (extract examples, validation rules, X-required)
         spec = description_structure_transformer.transform_spec(spec, target_fields)
 
-        # 3. Acronym normalization
+        # 3. Schema fixes (add missing type field where format exists)
+        spec = schema_fixer.fix_spec(spec)
+
+        # 4. Acronym normalization
         spec = acronym_normalizer.normalize_spec(spec, target_fields)
 
-        # 4. Grammar improvements last (most general)
+        # 5. Grammar improvements
         spec = grammar_improver.improve_spec(spec, target_fields)
+
+        # 6. Tag generation (assign tags to operations)
+        spec = tag_generator.generate_tags(spec)
+
+        # 7. Description validation and generation (auto-generate missing descriptions)
+        spec = description_validator.validate_and_generate(spec)
 
         # Close grammar improver resources
         grammar_improver.close()
+
+        # Run consistency validation (read-only, generates report)
+        consistency_issues = consistency_validator.validate(spec)
 
         # Validate branding was applied correctly
         branding_validator = BrandingValidator()
@@ -230,12 +255,23 @@ def enrich_spec_file(
             sort_keys=output_config.get("sort_keys", False),
         )
 
+        # Collect stats from all transformers
+        schema_stats = schema_fixer.get_stats()
+        tag_stats = tag_generator.get_stats()
+        desc_stats = description_validator.get_stats()
+        consistency_stats = consistency_validator.get_stats()
+
         return EnrichmentResult(
             filename=filename,
             success=True,
             changes={
                 "text_fields_processed": original_field_count,
                 "legacy_branding_remaining": len(legacy_findings),
+                "schemas_fixed": schema_stats.get("fixes_applied", 0),
+                "operations_tagged": tag_stats.get("operations_tagged", 0),
+                "tags_generated": tag_stats.get("tags_generated", 0),
+                "descriptions_generated": desc_stats.get("operations_generated", 0),
+                "consistency_issues": consistency_stats.get("total_issues", 0),
             },
             validation_passed=validation_passed,
             error=validation_error if not validation_passed else None,
