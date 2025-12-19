@@ -34,12 +34,13 @@ DOMAIN_PATTERNS = {
         r"sensitive_data",
         r"rule_suggestion",
     ],
-    # Applications - app_*, workload
+    # Applications - app_*, workload, UI
     "applications": [
         r"app_setting",
         r"app_type",
         r"app_api_group",
         r"workload",
+        r"static_component",  # UI static components
     ],
     # BIG-IP Integration
     "bigip": [
@@ -68,6 +69,13 @@ DOMAIN_PATTERNS = {
         r"known_label_key",
         r"known_label",
         r"implicit_label",
+        r"view_internal",  # Internal view configurations
+    ],
+    # AI & Intelligence Features
+    "ai_intelligence": [
+        r"ai_assistant",  # Gen-AI assistant queries
+        r"ai_data",  # AI data features (bfdp)
+        r"\.gia\.",  # Global IP allocation intelligence
     ],
     # Identity & Access Management
     "identity": [
@@ -86,7 +94,7 @@ DOMAIN_PATTERNS = {
         r"signup",
         r"contact",
     ],
-    # Infrastructure - cloud sites
+    # Infrastructure - cloud sites, site management
     "infrastructure": [
         r"cloud_credentials",
         r"aws_vpc_site",
@@ -103,10 +111,27 @@ DOMAIN_PATTERNS = {
         r"registration",
         r"upgrade_status",
         r"module_management",
+        r"\.site\.",  # Site configuration (ves.io.schema.site)
+        r"virtual_appliance",
+        r"graph\.site",  # Site graph/topology
+        r"usb_policy",  # USB device policies
     ],
     # Infrastructure Protection (DDoS, etc.)
     "infrastructure_protection": [
         r"infraprotect",
+    ],
+    # Third-Party & External Integrations
+    "integrations": [
+        r"tpm_",  # Third-party management (general)
+        r"tpm_api_key",
+        r"tpm_category",
+        r"tpm_manager",
+        r"tpm_provision",
+        r"third_party",  # Third-party applications
+        r"ticket_tracking",  # Issue tracking systems
+        r"stored_object",  # Mobile SDKs, artifacts
+        r"terraform_param",  # IaC parameters
+        r"cminstance",  # Cluster management instances
     ],
     # Load Balancing
     "load_balancer": [
@@ -151,10 +176,24 @@ DOMAIN_PATTERNS = {
         r"virtual_site",
         r"external_connector",
         r"policy_based_routing",
+        r"geo_config",  # Geo-location config (data_privacy)
     ],
     # NGINX One
     "nginx": [
         r"nginx",
+    ],
+    # Site Operations & Diagnostics
+    "operations": [
+        r"operate\.debug",
+        r"operate\.ping",
+        r"operate\.traceroute",
+        r"operate\.tcpdump",
+        r"operate\.lte",
+        r"operate\.wifi",
+        r"operate\.usb",
+        r"operate\.dhcp",
+        r"customer_support",
+        r"maintenance_status",
     ],
     # Observability & Monitoring
     "observability": [
@@ -173,13 +212,19 @@ DOMAIN_PATTERNS = {
         r"flow_anomaly",
         r"flow\.",
         r"topology",
-        r"graph\.",
+        r"graph\.connectivity",  # Connectivity graphs
+        r"graph\.l3l4",  # L3/L4 graphs
+        r"graph\.service",  # Service graphs
         r"status_at_site",
+        r"lma_region",  # Log/monitoring regions
     ],
     # Security - WAF, policies, protection
     "security": [
         r"app_firewall",
+        r"app_security",  # App security events, incidents, metrics
         r"waf",
+        r"waf_exclusion",  # WAF exclusion policies
+        r"waf_signatures",  # WAF signature changelog
         r"service_policy",
         r"rate_limiter",
         r"malicious",
@@ -199,6 +244,7 @@ DOMAIN_PATTERNS = {
         r"geo_location",
         r"data_type",
         r"voltshare",
+        r"voltshare_admin",  # Voltshare admin policies
     ],
     # Service Mesh
     "service_mesh": [

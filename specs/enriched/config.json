@@ -1119,6 +1119,159 @@
       "x-displayname": "Known Label Key.",
       "x-ves-proto-service": "ves.io.schema.known_label_key.CustomAPI",
       "x-ves-proto-service-type": "CUSTOM_PUBLIC"
+    },
+    "/api/config/namespaces/{namespace}/view_internal/{view_kind}/{view_name}": {
+      "get": {
+        "summary": "GET Internal object for view.",
+        "description": "Returned internal object for a given view.",
+        "operationId": "ves.io.schema.views.view_internal.CustomAPI.Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/view_internalGetResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\nNamespace for the object to be retrieved.",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            },
+            "x-ves-example": "Value"
+          },
+          {
+            "name": "view_kind",
+            "description": "Kind of View\nKind of view of which internal objec is requested e.g. Aws_vpc_site, azure_vnet_site.",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Kind of View.",
+            "schema": {
+              "type": "string"
+            },
+            "x-ves-example": "Value"
+          },
+          {
+            "name": "view_name",
+            "description": "Name of view\nName of the view for which internal object is requested.",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Name of view.",
+            "schema": {
+              "type": "string"
+            },
+            "x-ves-example": "Value"
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation.",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-view_internal-customapi-get"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.views.view_internal.CustomAPI.Get",
+        "tags": [
+          "Other"
+        ]
+      },
+      "x-displayname": "View Internal.",
+      "x-ves-proto-service": "ves.io.schema.views.view_internal.CustomAPI",
+      "x-ves-proto-service-type": "CUSTOM_PUBLIC"
     }
   },
   "components": {
@@ -1491,6 +1644,94 @@
           "QUERY_PREFIX_LABEL_KEYS"
         ],
         "default": "QUERY_ALL_LABEL_KEYS"
+      },
+      "schemaViewRefType": {
+        "type": "object",
+        "description": "ViewRefType represents a reference to a view.",
+        "title": "ViewRefType.",
+        "x-displayname": "View Reference.",
+        "x-ves-proto-message": "ves.io.schema.ViewRefType",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "description": "Kind of the view object.",
+            "title": "Kind",
+            "x-displayname": "Kind",
+            "x-ves-example": "Http_proxy."
+          },
+          "name": {
+            "type": "string",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen name will hold the referred object's(e.g. Route's) name.",
+            "title": "Name",
+            "x-displayname": "Name",
+            "x-ves-example": "Contactus-route."
+          },
+          "namespace": {
+            "type": "string",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen namespace will hold the referred object's(e.g. Route's) namespace.",
+            "title": "Namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "Ns1"
+          },
+          "uid": {
+            "type": "string",
+            "description": "UID of the view object.",
+            "title": "Uid",
+            "x-displayname": "UID",
+            "x-ves-example": "F3744323-1adf-4aaa-a5dc-0707c1d1bd82."
+          }
+        }
+      },
+      "view_internalAllocatedNumbers": {
+        "type": "object",
+        "description": "X-displayName: \"Allocated Numbers\"\nAllocated Numbers.",
+        "title": "AlloatedNumbers.",
+        "properties": {
+          "allocatedNumbers": {
+            "type": "object",
+            "description": "X-displayName: \"Allocated Numbers\"\nAllocated Numbers.",
+            "title": "AllocatedNumbers."
+          }
+        }
+      },
+      "view_internalGetResponse": {
+        "type": "object",
+        "description": "Response for GET API.",
+        "title": "GetResponse.",
+        "x-displayname": "GET Response.",
+        "x-ves-proto-message": "ves.io.schema.views.view_internal.GetResponse",
+        "properties": {
+          "view_internal": {
+            "$ref": "#/components/schemas/view_internalGlobalSpecType"
+          }
+        }
+      },
+      "view_internalGlobalSpecType": {
+        "type": "object",
+        "description": "Shape of the view internal specification.",
+        "title": "GlobalSpecType.",
+        "x-displayname": "View Specification.",
+        "x-ves-proto-message": "ves.io.schema.views.view_internal.GlobalSpecType",
+        "properties": {
+          "allocationMap": {
+            "type": "object",
+            "description": "Allocation Map keeps track of all allocations for this view. The key is the allocator name.",
+            "title": "Allocation Map.",
+            "x-displayname": "Allocation Map."
+          },
+          "child_objects": {
+            "type": "array",
+            "description": "Reference to child objects.",
+            "title": "Child_objects.",
+            "items": {
+              "$ref": "#/components/schemas/schemaViewRefType"
+            },
+            "x-displayname": "Child Objects."
+          },
+          "view": {
+            "$ref": "#/components/schemas/schemaViewRefType"
+          }
+        }
       }
     },
     "responses": {},

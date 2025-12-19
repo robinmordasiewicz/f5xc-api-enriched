@@ -3146,6 +3146,335 @@
       "x-ves-proto-service": "ves.io.schema.app_type.API",
       "x-ves-proto-service-type": "AUTO_CRUD_PUBLIC"
     },
+    "/api/web/namespaces/{namespace}/static_components": {
+      "get": {
+        "summary": "List UI Static Component.",
+        "description": "List the set of static_component in a namespace.",
+        "operationId": "ves.io.schema.ui.static_component.API.List",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/static_componentListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\nNamespace to scope the listing of static_component.",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            },
+            "x-ves-example": "Ns1"
+          },
+          {
+            "name": "label_filter",
+            "description": "A LabelSelectorType expression that every item in list response will satisfy.",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Label Filter.",
+            "schema": {
+              "type": "string"
+            },
+            "x-ves-example": "Env in (staging, testing), tier in (web, db)"
+          },
+          {
+            "name": "report_fields",
+            "description": "X-example: \"\"\nExtra fields to return along with summary fields.",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Report Fields.",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "report_status_fields",
+            "description": "X-example: \"\"\nExtra status fields to return along with summary fields.",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Report Status Fields.",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation.",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ui-static_component-api-list"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.ui.static_component.API.List",
+        "tags": [
+          "Other"
+        ]
+      },
+      "x-displayname": "UI Static Component.",
+      "x-ves-proto-service": "ves.io.schema.ui.static_component.API",
+      "x-ves-proto-service-type": "AUTO_CRUD_PUBLIC"
+    },
+    "/api/web/namespaces/{namespace}/static_components/{name}": {
+      "get": {
+        "summary": "GET UI static component.",
+        "description": "GET UI static component.",
+        "operationId": "ves.io.schema.ui.static_component.API.Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/static_componentGetResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when operation is not authorized.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Returned when there is no permission to access resource.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when resource is not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Returned when operation on resource is conflicting with current value.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Returned when operation has been rejected as it is happening too frequently.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when server encountered an error in processing API.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Returned when service is unavailable temporarily.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Returned when server timed out processing request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "Namespace\nThe namespace in which the configuration object is present.",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Namespace",
+            "schema": {
+              "type": "string"
+            },
+            "x-ves-example": "Ns1"
+          },
+          {
+            "name": "name",
+            "description": "Name\nThe name of the configuration object to be fetched.",
+            "in": "path",
+            "required": true,
+            "x-displayname": "Name",
+            "schema": {
+              "type": "string"
+            },
+            "x-ves-example": "Name"
+          },
+          {
+            "name": "response_format",
+            "description": "The format in which the configuration object is to be fetched. This could be for example\n - in GetSpec form for the contents of object\n - in CreateRequest form to create a new similar object\n - to ReplaceRequest form to replace changeable values\n\nDefault format of returned resource\nResponse should be in format of GetSpecType\nResponse should have other objects referring to this object\nResponse should have deleted and disabled objects referrred by this object.",
+            "in": "query",
+            "required": false,
+            "x-displayname": "Broken Referred Objects.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "GET_RSP_FORMAT_DEFAULT",
+                "GET_RSP_FORMAT_READ",
+                "GET_RSP_FORMAT_REFERRING_OBJECTS",
+                "GET_RSP_FORMAT_BROKEN_REFERENCES"
+              ],
+              "default": "GET_RSP_FORMAT_DEFAULT"
+            }
+          }
+        ],
+        "externalDocs": {
+          "description": "Examples of this operation.",
+          "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ui-static_component-api-get"
+        },
+        "x-ves-proto-rpc": "ves.io.schema.ui.static_component.API.Get",
+        "tags": [
+          "Other"
+        ]
+      },
+      "x-displayname": "UI Static Component.",
+      "x-ves-proto-service": "ves.io.schema.ui.static_component.API",
+      "x-ves-proto-service-type": "AUTO_CRUD_PUBLIC"
+    },
     "/api/config/namespaces/{metadata.namespace}/workloads": {
       "post": {
         "summary": "Create Workload.",
@@ -8188,6 +8517,193 @@
             "title": "Uid",
             "x-displayname": "UID",
             "x-ves-example": "D15f1fad-4d37-48c0-8706-df1824d76d31."
+          }
+        }
+      },
+      "protobufNullValue": {
+        "type": "string",
+        "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\nThe JSON representation for `NullValue` is JSON `null`.\n\n- NULL_VALUE: Null value.",
+        "enum": [
+          "NULL_VALUE"
+        ],
+        "default": "NULL_VALUE"
+      },
+      "static_componentGetResponse": {
+        "type": "object",
+        "description": "This is the output message of the 'GET' RPC.",
+        "title": "GetResponse is the shape of a read static_component.",
+        "x-displayname": "GET Response.",
+        "x-ves-proto-message": "ves.io.schema.ui.static_component.GetResponse",
+        "properties": {
+          "deleted_referred_objects": {
+            "type": "array",
+            "description": "The set of deleted objects that are referred by this object.",
+            "title": "Deleted_referred_objects.",
+            "items": {
+              "$ref": "#/components/schemas/schemaObjectRefType"
+            },
+            "x-displayname": "Deleted Referred Objects."
+          },
+          "disabled_referred_objects": {
+            "type": "array",
+            "description": "The set of deleted objects that are referred by this object.",
+            "title": "Disabled_referred_objects.",
+            "items": {
+              "$ref": "#/components/schemas/schemaObjectRefType"
+            },
+            "x-displayname": "Disabled Referred Objects."
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/schemaObjectGetMetaType"
+          },
+          "referring_objects": {
+            "type": "array",
+            "description": "The set of objects that are referring to this object in their spec.",
+            "title": "Referring_objects.",
+            "items": {
+              "$ref": "#/components/schemas/schemaObjectRefType"
+            },
+            "x-displayname": "Referring Objects."
+          },
+          "spec": {
+            "$ref": "#/components/schemas/static_componentGetSpecType"
+          },
+          "system_metadata": {
+            "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
+          }
+        }
+      },
+      "static_componentGetResponseFormatCode": {
+        "type": "string",
+        "description": "X-displayName: \"GET Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n- GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n- GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n- GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n- GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object.",
+        "title": "GetResponseFormatCode.",
+        "enum": [
+          "GET_RSP_FORMAT_DEFAULT",
+          "GET_RSP_FORMAT_READ",
+          "GET_RSP_FORMAT_REFERRING_OBJECTS",
+          "GET_RSP_FORMAT_BROKEN_REFERENCES"
+        ],
+        "default": "GET_RSP_FORMAT_DEFAULT"
+      },
+      "static_componentGetSpecType": {
+        "type": "object",
+        "description": "GET UI static component.",
+        "title": "GET UI static component.",
+        "x-displayname": "GET UI static component.",
+        "x-ves-proto-message": "ves.io.schema.ui.static_component.GetSpecType",
+        "properties": {
+          "value": {
+            "type": "object",
+            "description": "Information of the UI component\n\nRequired: YES.",
+            "x-displayname": "Value",
+            "x-ves-required": "true",
+            "x-ves-validation-rules": {
+              "ves.io.schema.rules.message.required": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true"
+            }
+          }
+        }
+      },
+      "static_componentListResponse": {
+        "type": "object",
+        "description": "This is the output message of 'List' RPC.",
+        "title": "ListResponse is the collection of static_component.",
+        "x-displayname": "List Response.",
+        "x-ves-proto-message": "ves.io.schema.ui.static_component.ListResponse",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "description": "Errors(if any) while listing items from collection.",
+            "title": "Errors",
+            "items": {
+              "$ref": "#/components/schemas/schemaErrorType"
+            },
+            "x-displayname": "Errors"
+          },
+          "items": {
+            "type": "array",
+            "description": "Items represents the collection in response.",
+            "title": "Items",
+            "items": {
+              "$ref": "#/components/schemas/static_componentListResponseItem"
+            },
+            "x-displayname": "Items"
+          }
+        }
+      },
+      "static_componentListResponseItem": {
+        "type": "object",
+        "description": "By default a summary of static_component is returned in 'List'. By setting\n'report_fields' in the ListRequest more details of each item can be got.",
+        "title": "ListResponseItem is an individual item in a collection of static_component.",
+        "x-displayname": "List Item",
+        "x-ves-proto-message": "ves.io.schema.ui.static_component.ListResponseItem",
+        "properties": {
+          "annotations": {
+            "type": "object",
+            "description": "The set of annotations present on this static_component.",
+            "title": "Annotations.",
+            "x-displayname": "Annotations."
+          },
+          "description": {
+            "type": "string",
+            "description": "The description set for this static_component.",
+            "title": "Description.",
+            "x-displayname": "Description."
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "A value of true indicates static_component is administratively disabled.",
+            "title": "Disabled",
+            "format": "boolean",
+            "x-displayname": "Disabled"
+          },
+          "get_spec": {
+            "$ref": "#/components/schemas/static_componentGetSpecType"
+          },
+          "labels": {
+            "type": "object",
+            "description": "The set of labels present on this static_component.",
+            "title": "Labels",
+            "x-displayname": "Labels"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/schemaObjectGetMetaType"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of this static_component.",
+            "title": "Name",
+            "x-displayname": "Name",
+            "x-ves-example": "Name"
+          },
+          "namespace": {
+            "type": "string",
+            "description": "The namespace this item belongs to.",
+            "title": "Namespace",
+            "x-displayname": "Namespace",
+            "x-ves-example": "Ns1"
+          },
+          "owner_view": {
+            "$ref": "#/components/schemas/schemaViewRefType"
+          },
+          "system_metadata": {
+            "$ref": "#/components/schemas/schemaSystemObjectGetMetaType"
+          },
+          "tenant": {
+            "type": "string",
+            "description": "The tenant this item belongs to.",
+            "title": "Tenant",
+            "x-displayname": "Tenant",
+            "x-ves-example": "Acmecorp"
+          },
+          "uid": {
+            "type": "string",
+            "description": "The unique uid of this static_component.",
+            "title": "Uid",
+            "x-displayname": "UID",
+            "x-ves-example": "D27938ba-967e-40a7-9709-57b8627f9f75."
           }
         }
       },
