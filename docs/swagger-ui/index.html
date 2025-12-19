@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F5 XC API - Swagger UI</title>
+    <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui.css">
+    <style>
+        html {
+            box-sizing: border-box;
+            overflow-y: scroll;
+        }
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+
+        body {
+            margin: 0;
+            background: #fafafa;
+        }
+
+        .topbar {
+            display: none;
+        }
+
+        .swagger-ui .info {
+            margin: 20px 0;
+        }
+
+        .swagger-ui .info .title {
+            color: #0076CE;
+        }
+
+        .swagger-ui .opblock.opblock-get {
+            border-color: #61affe;
+            background: rgba(97,175,254,.1);
+        }
+
+        .swagger-ui .opblock.opblock-post {
+            border-color: #49cc90;
+            background: rgba(73,204,144,.1);
+        }
+
+        .swagger-ui .opblock.opblock-put {
+            border-color: #fca130;
+            background: rgba(252,161,48,.1);
+        }
+
+        .swagger-ui .opblock.opblock-delete {
+            border-color: #f93e3e;
+            background: rgba(249,62,62,.1);
+        }
+
+        .header-bar {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 1rem 2rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .header-nav a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .header-nav a:hover {
+            color: white;
+        }
+
+        .spec-selector {
+            margin: 1rem 2rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .spec-selector label {
+            font-weight: 500;
+            margin-right: 1rem;
+        }
+
+        .spec-selector select {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            min-width: 250px;
+        }
+
+        #swagger-ui {
+            max-width: 1460px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-bar">
+        <span class="header-title">F5 Distributed Cloud API</span>
+        <nav class="header-nav">
+            <a href="../">Home</a>
+            <a href="../scalar/">Scalar</a>
+            <a href="https://docs.cloud.f5.com" target="_blank">F5 Docs</a>
+        </nav>
+    </div>
+
+    <div class="spec-selector">
+        <label for="spec-select">Select API:</label>
+        <select id="spec-select" onchange="loadSpec(this.value)">
+            <option value="../specs/merged/openapi.json">Complete API (All Domains)</option>
+        </select>
+    </div>
+
+    <div id="swagger-ui"></div>
+
+    <script src="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui-bundle.js"></script>
+    <script src="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui-standalone-preset.js"></script>
+    <script>
+        let ui = null;
+
+        function loadSpec(url) {
+            if (ui) {
+                ui = SwaggerUIBundle({
+                    url: url,
+                    dom_id: '#swagger-ui',
+                    presets: [
+                        SwaggerUIBundle.presets.apis,
+                        SwaggerUIStandalonePreset
+                    ],
+                    plugins: [
+                        SwaggerUIBundle.plugins.DownloadUrl
+                    ],
+                    layout: "StandaloneLayout",
+                    deepLinking: true,
+                    showExtensions: true,
+                    showCommonExtensions: true,
+                    tryItOutEnabled: true,
+                    requestInterceptor: function(req) {
+                        // Add auth header if token is set
+                        const token = localStorage.getItem('f5xc_api_token');
+                        if (token) {
+                            req.headers['Authorization'] = 'APIToken ' + token;
+                        }
+                        return req;
+                    }
+                });
+            }
+        }
+
+        // Initialize Swagger UI
+        window.onload = async function() {
+            // Load spec index to populate dropdown
+            try {
+                const response = await fetch('../specs/merged/index.json');
+                if (response.ok) {
+                    const index = await response.json();
+                    const select = document.getElementById('spec-select');
+
+                    index.specifications.forEach(spec => {
+                        const option = document.createElement('option');
+                        option.value = `../specs/merged/${spec.file}`;
+                        option.textContent = `${spec.title} (${spec.path_count} endpoints)`;
+                        select.appendChild(option);
+                    });
+                }
+            } catch (e) {
+                console.log('Could not load spec index');
+            }
+
+            // Initialize Swagger UI with default spec
+            ui = SwaggerUIBundle({
+                url: "../specs/merged/openapi.json",
+                dom_id: '#swagger-ui',
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIStandalonePreset
+                ],
+                plugins: [
+                    SwaggerUIBundle.plugins.DownloadUrl
+                ],
+                layout: "StandaloneLayout",
+                deepLinking: true,
+                showExtensions: true,
+                showCommonExtensions: true,
+                tryItOutEnabled: true,
+                persistAuthorization: true,
+                requestInterceptor: function(req) {
+                    const token = localStorage.getItem('f5xc_api_token');
+                    if (token) {
+                        req.headers['Authorization'] = 'APIToken ' + token;
+                    }
+                    return req;
+                }
+            });
+
+            window.ui = ui;
+        };
+    </script>
+</body>
+</html>

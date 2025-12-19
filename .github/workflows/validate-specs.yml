@@ -1,0 +1,93 @@
+name: Validate API Specifications
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run - list endpoints without making requests'
+        required: false
+        default: 'false'
+        type: boolean
+  schedule:
+    # Run weekly on Sundays at 2 AM UTC
+    - cron: '0 2 * * 0'
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  PYTHON_VERSION: '3.12'
+
+jobs:
+  validate:
+    name: Validate Against Live API
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run validation
+        id: validate
+        env:
+          F5XC_API_TOKEN: ${{ secrets.F5XC_API_TOKEN }}
+          F5XC_API_URL: ${{ secrets.F5XC_API_URL }}
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            python scripts/validate.py --dry-run
+          else
+            python scripts/validate.py || echo "validation_failed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload validation report
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-report
+          path: reports/validation-report.json
+          retention-days: 30
+
+      - name: Create issue on validation failure
+        if: steps.validate.outputs.validation_failed == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('reports/validation-report.json', 'utf8'));
+
+            const body = `## API Validation Report
+
+            **Date:** ${new Date().toISOString()}
+
+            ### Summary
+            - Specs Processed: ${report.summary.specs_processed}
+            - Total Endpoints: ${report.summary.total_endpoints}
+            - Endpoints Validated: ${report.summary.endpoints_validated}
+            - Availability: ${report.summary.availability_percentage}%
+            - Schema Match: ${report.summary.schema_match_percentage}%
+
+            ### Discrepancies Found
+            ${report.discrepancies.slice(0, 10).map(d =>
+              `- \`${d.method} ${d.path}\`: ${d.issues.join(', ')}`
+            ).join('\n')}
+
+            ${report.discrepancies.length > 10 ? `\n... and ${report.discrepancies.length - 10} more` : ''}
+
+            See the full report in the workflow artifacts.
+            `;
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `API Validation Issues - ${new Date().toISOString().split('T')[0]}`,
+              body: body,
+              labels: ['api-validation', 'automated']
+            });
