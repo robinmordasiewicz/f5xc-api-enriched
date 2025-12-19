@@ -85,6 +85,59 @@ description_structure:
   extract_validation_rules: true
   remove_extracted_validation: true
 
+  # Extract X-required markers to x-required extension field
+  extract_required: true
+  remove_extracted_required: true
+
+# Schema fixes for OpenAPI compliance
+schema_fixes:
+  # Fix schemas that have 'format' but no 'type' field
+  fix_format_without_type: true
+
+  # Mapping of format values to their corresponding type
+  # (defaults are built-in, this allows overrides)
+  # format_type_mapping:
+  #   string: string
+  #   binary: string
+  #   date-time: string
+  #   int32: integer
+  #   int64: integer
+  #   float: number
+  #   double: number
+
+# Tag generation settings
+tags:
+  # Generate top-level tags array with descriptions
+  generate_metadata: true
+
+  # Assign tags to operations based on path patterns
+  assign_to_operations: true
+
+# Description validation and auto-generation
+description_validation:
+  # Auto-generate descriptions for operations without them
+  auto_generate_operation_descriptions: true
+
+  # Auto-generate descriptions for schemas without them (off by default - more risky)
+  auto_generate_schema_descriptions: false
+
+  # Optional prefix for auto-generated descriptions
+  description_prefix: ""
+
+# Consistency validation settings
+consistency_validation:
+  # Validate parameter naming conventions
+  validate_parameters: true
+
+  # Validate schema naming patterns
+  validate_schemas: true
+
+  # Validate operationId patterns
+  validate_operation_ids: true
+
+  # Minimum severity to include in reports (info, warning, error)
+  severity_threshold: "warning"
+
 # Fields to preserve (never modify)
 preserve_fields:
   - operationId
