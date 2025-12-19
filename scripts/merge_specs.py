@@ -22,15 +22,162 @@ from rich.table import Table
 console = Console()
 
 
-# Domain categorization patterns
+# Domain categorization patterns - aligned with F5 XC Terraform provider categories
+# Order matters: more specific patterns should come before general ones
 DOMAIN_PATTERNS = {
+    # API Security - api_sec.*, api_group, sensitive_data
+    "api_security": [
+        r"api_sec\.",
+        r"api_crawler",
+        r"api_discovery",
+        r"api_testing",
+        r"api_group",
+        r"sensitive_data",
+        r"rule_suggestion",
+    ],
+    # Applications - app_*, workload
+    "applications": [
+        r"app_setting",
+        r"app_type",
+        r"app_api_group",
+        r"workload",
+    ],
+    # BIG-IP Integration
+    "bigip": [
+        r"bigip",
+        r"bigcne",
+    ],
+    # Billing & Usage
+    "billing": [
+        r"billing\.",
+        r"invoice",
+        r"payment",
+        r"quota",
+        r"usage\.",
+        r"usage\.plan",
+        r"usage\.subscription",
+    ],
+    # CDN / Content Delivery
+    "cdn": [
+        r"cdn_loadbalancer",
+        r"cdn_cache",
+    ],
+    # Configuration
+    "config": [
+        r"global_setting",
+        r"tenant_setting",
+        r"known_label_key",
+        r"known_label",
+        r"implicit_label",
+    ],
+    # Identity & Access Management
+    "identity": [
+        r"namespace",
+        r"user_group",
+        r"user\.",
+        r"user_identification",
+        r"role",
+        r"service_credential",
+        r"api_credential",
+        r"certificate",
+        r"token",
+        r"oidc_provider",
+        r"scim",
+        r"authentication",
+        r"signup",
+        r"contact",
+    ],
+    # Infrastructure - cloud sites
+    "infrastructure": [
+        r"cloud_credentials",
+        r"aws_vpc_site",
+        r"aws_tgw_site",
+        r"azure_vnet_site",
+        r"gcp_vpc_site",
+        r"voltstack_site",
+        r"securemesh_site",
+        r"k8s_cluster",
+        r"k8s_pod",
+        r"virtual_k8s",
+        r"ce_cluster",
+        r"certified_hardware",
+        r"registration",
+        r"upgrade_status",
+        r"module_management",
+    ],
+    # Infrastructure Protection (DDoS, etc.)
+    "infrastructure_protection": [
+        r"infraprotect",
+    ],
+    # Load Balancing
     "load_balancer": [
         r"http_loadbalancer",
         r"tcp_loadbalancer",
+        r"udp_loadbalancer",
         r"healthcheck",
         r"origin_pool",
-        r"route",
+        r"proxy",
     ],
+    # Networking
+    "networking": [
+        r"network_policy",
+        r"network_firewall",
+        r"network_interface",
+        r"network_connector",
+        r"virtual_network",
+        r"site_mesh",
+        r"dc_cluster",
+        r"fleet",
+        r"bgp",
+        r"dns_zone",
+        r"dns_domain",
+        r"dns_load_balancer",
+        r"dns_lb",
+        r"dns_compliance",
+        r"subnet",
+        r"segment",
+        r"cloud_connect",
+        r"cloud_link",
+        r"cloud_elastic",
+        r"cloud_region",
+        r"public_ip",
+        r"nat_policy",
+        r"address_allocator",
+        r"advertise_policy",
+        r"forwarding_class",
+        r"ip_prefix_set",
+        r"route\.",
+        r"srv6",
+        r"virtual_host",
+        r"virtual_site",
+        r"external_connector",
+        r"policy_based_routing",
+    ],
+    # NGINX One
+    "nginx": [
+        r"nginx",
+    ],
+    # Observability & Monitoring
+    "observability": [
+        r"log_receiver",
+        r"global_log_receiver",
+        r"log\.",
+        r"metric",
+        r"alert_policy",
+        r"alert_receiver",
+        r"alert\.",
+        r"synthetic_monitor",
+        r"monitor",
+        r"trace",
+        r"dashboard",
+        r"report",
+        r"flow_anomaly",
+        r"flow\.",
+        r"topology",
+        r"graph\.",
+        r"status_at_site",
+    ],
+    # Security - WAF, policies, protection
     "security": [
         r"app_firewall",
         r"waf",
@@ -39,48 +186,62 @@ DOMAIN_PATTERNS = {
         r"malicious",
         r"bot_defense",
         r"api_definition",
-        r"api_security",
+        r"enhanced_firewall",
+        r"fast_acl",
+        r"rbac_policy",
+        r"secret_policy",
+        r"secret_management",
+        r"policer",
+        r"protocol_policer",
+        r"protocol_inspection",
+        r"filter_set",
+        r"trusted_ca",
+        r"crl",
+        r"geo_location",
+        r"data_type",
+        r"voltshare",
     ],
-    "networking": [
-        r"network",
-        r"virtual_network",
-        r"site",
-        r"fleet",
-        r"tunnel",
-        r"bgp",
-        r"interface",
-        r"dns",
+    # Service Mesh
+    "service_mesh": [
+        r"discovery\.",
+        r"discovered_service",
+        r"endpoint",
+        r"cluster\.",
+        r"container_registry",
+        r"nfv_service",
     ],
-    "infrastructure": [
-        r"cloud_credentials",
-        r"aws_vpc_site",
-        r"azure_vnet_site",
-        r"gcp_vpc_site",
-        r"voltstack_site",
-        r"k8s",
-        r"ce_cluster",
+    # Shape Security (Client-Side Defense, Bot Defense advanced)
+    "shape_security": [
+        r"shape\.",
+        r"client_side_defense",
+        r"device_id",
     ],
-    "identity": [
-        r"namespace",
-        r"user",
-        r"role",
-        r"service_credential",
-        r"api_credential",
-        r"certificate",
+    # Subscriptions & Marketplace
+    "subscriptions": [
+        r"\.subscription",
+        r"addon_service",
+        r"addon_subscription",
+        r"marketplace",
+        r"pbac\.catalog",
+        r"pbac\.plan",
+        r"pbac\.navigation",
     ],
-    "observability": [
-        r"log",
-        r"metric",
-        r"alert",
-        r"monitor",
-        r"trace",
-        r"dashboard",
+    # Tenant Management
+    "tenant_management": [
+        r"tenant_management",
+        r"tenant_configuration",
+        r"tenant_profile",
+        r"tenant\.",
+        r"child_tenant",
+        r"allowed_tenant",
+        r"managed_tenant",
     ],
-    "config": [
-        r"global_setting",
-        r"tenant_setting",
-        r"label",
-        r"known_label",
+    # VPN / IPSec
+    "vpn": [
+        r"ike1",
+        r"ike2",
+        r"ike_phase",
+        r"tunnel\.",
     ],
 }
 
@@ -432,13 +593,13 @@ def main() -> int:
     parser.add_argument(
         "--input-dir",
         type=Path,
-        default=Path("specs/normalized"),
-        help="Directory containing normalized specifications",
+        default=Path("specs/enriched/individual"),
+        help="Directory containing processed specifications",
     )
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path("specs/merged"),
+        default=Path("specs/enriched"),
         help="Directory for merged specifications",
     )
     parser.add_argument(

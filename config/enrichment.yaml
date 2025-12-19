@@ -7,10 +7,12 @@ source:
   version_file: ".version"
 
 # Paths configuration
+# Simplified two-folder architecture:
+#   specs/original/   - READ-ONLY source from F5
+#   specs/enriched/   - Single output folder for all processed specs
 paths:
   original: "specs/original"
   enriched: "specs/enriched"
-  merged: "specs/merged"
   reports: "reports"
 
 # Branding transformations

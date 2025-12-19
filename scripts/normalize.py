@@ -31,8 +31,8 @@ console = Console()
 # Default configuration
 DEFAULT_CONFIG = {
     "paths": {
-        "enriched": "specs/enriched",
-        "normalized": "specs/normalized",
+        "enriched": "specs/enriched/individual",
+        "normalized": "specs/enriched/individual",
         "reports": "reports",
     },
     "normalization": {

@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+reports/
+
+# Legacy directories (from old pipeline structure)
+# Remove these after migration to simplified two-folder architecture
+specs/normalized/
+specs/merged/
+
+# Keep these:
+# specs/original/   - READ-ONLY source from F5
+# specs/enriched/   - Single output folder for all processed specs
