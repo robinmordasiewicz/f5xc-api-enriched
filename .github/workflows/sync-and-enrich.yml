@@ -48,7 +48,7 @@ jobs:
             echo "updated=true" >> $GITHUB_OUTPUT
             echo "Push event - forcing download"
           else
-            python scripts/download.py --check-only
+            python -m scripts.download --check-only
           fi
 
   sync-and-enrich:
@@ -74,20 +74,20 @@ jobs:
           sudo apt-get install -y default-jre
 
       - name: Download specifications
-        run: python scripts/download.py --force
+        run: python -m scripts.download --force
 
       - name: Enrich specifications
-        run: python scripts/enrich.py
+        run: python -m scripts.enrich
 
       - name: Merge specifications
-        run: python scripts/merge_specs.py
+        run: python -m scripts.merge_specs
 
       - name: Validate specifications
         continue-on-error: true
         env:
           F5XC_API_TOKEN: ${{ secrets.F5XC_API_TOKEN }}
           F5XC_API_URL: ${{ secrets.F5XC_API_URL }}
-        run: python scripts/validate.py --dry-run
+        run: python -m scripts.validate --dry-run
 
       - name: Copy specs to docs
         run: |

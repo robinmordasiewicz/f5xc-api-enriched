@@ -35,7 +35,7 @@ jobs:
           F5XC_API_TOKEN: ${{ secrets.F5XC_API_TOKEN }}
           F5XC_API_URL: ${{ secrets.F5XC_API_URL }}
         run: |
-          python scripts/validate.py || echo "validation_failed=true" >> $GITHUB_OUTPUT
+          python -m scripts.validate || echo "validation_failed=true" >> $GITHUB_OUTPUT
 
       - name: Upload validation report
         uses: actions/upload-artifact@v4
