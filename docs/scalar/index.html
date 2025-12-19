@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>F5 XC API - Scalar</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
-
+        body { margin: 0; padding: 0; }
         .header-bar {
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             padding: 1rem 2rem;
@@ -21,55 +17,22 @@
             top: 0;
             z-index: 1000;
         }
-
         .header-title {
             font-size: 1.25rem;
             font-weight: 600;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
-
         .header-nav {
             display: flex;
             gap: 1.5rem;
         }
-
         .header-nav a {
             color: rgba(255,255,255,0.8);
             text-decoration: none;
             font-size: 0.9rem;
-            transition: color 0.2s;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
-
-        .header-nav a:hover {
-            color: white;
-        }
-
-        .spec-selector {
-            margin: 0 2rem;
-            padding: 1rem;
-            background: #f5f5f5;
-            border-bottom: 1px solid #e0e0e0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        .spec-selector label {
-            font-weight: 500;
-            margin-right: 1rem;
-        }
-
-        .spec-selector select {
-            padding: 0.5rem 1rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-            min-width: 250px;
-            background: white;
-        }
-
-        #api-reference {
-            height: calc(100vh - 120px);
-        }
+        .header-nav a:hover { color: white; }
     </style>
 </head>
 <body>
@@ -82,92 +45,10 @@
         </nav>
     </div>
 
-    <div class="spec-selector">
-        <label for="spec-select">Select API:</label>
-        <select id="spec-select" onchange="loadSpec(this.value)">
-            <option value="../specs/merged/openapi.json">Complete API (All Domains)</option>
-        </select>
-    </div>
-
-    <div id="api-reference"></div>
-
-    <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference@1.25.0"></script>
-    <script>
-        let currentSpec = '../specs/merged/openapi.json';
-
-        function initScalar(specUrl) {
-            const container = document.getElementById('api-reference');
-            container.innerHTML = '';
-
-            const script = document.createElement('script');
-            script.id = 'api-reference-script';
-            script.type = 'application/json';
-            script.textContent = JSON.stringify({
-                url: specUrl,
-                theme: 'default',
-                layout: 'modern',
-                showSidebar: true,
-                hideModels: false,
-                hideDownloadButton: false,
-                darkMode: false,
-                searchHotKey: 'k',
-                metaData: {
-                    title: 'F5 Distributed Cloud API',
-                },
-                authentication: {
-                    preferredSecurityScheme: 'ApiToken',
-                    apiKey: {
-                        token: localStorage.getItem('f5xc_api_token') || '',
-                    },
-                },
-            });
-            container.appendChild(script);
-
-            // Re-initialize Scalar
-            if (window.Scalar) {
-                window.Scalar.createApiReference('#api-reference', {
-                    spec: {
-                        url: specUrl,
-                    },
-                    theme: 'default',
-                    layout: 'modern',
-                    showSidebar: true,
-                    hideModels: false,
-                    hideDownloadButton: false,
-                    darkMode: false,
-                    searchHotKey: 'k',
-                });
-            }
-        }
-
-        function loadSpec(url) {
-            currentSpec = url;
-            initScalar(url);
-        }
-
-        // Initialize on load
-        window.onload = async function() {
-            // Load spec index to populate dropdown
-            try {
-                const response = await fetch('../specs/merged/index.json');
-                if (response.ok) {
-                    const index = await response.json();
-                    const select = document.getElementById('spec-select');
-
-                    index.specifications.forEach(spec => {
-                        const option = document.createElement('option');
-                        option.value = `../specs/merged/${spec.file}`;
-                        option.textContent = `${spec.title} (${spec.path_count} endpoints)`;
-                        select.appendChild(option);
-                    });
-                }
-            } catch (e) {
-                console.log('Could not load spec index');
-            }
-
-            // Initialize Scalar
-            initScalar(currentSpec);
-        };
+    <script
+        id="api-reference"
+        data-url="../specs/merged/openapi.json">
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
 </body>
 </html>
