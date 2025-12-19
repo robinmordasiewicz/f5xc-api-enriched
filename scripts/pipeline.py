@@ -57,7 +57,13 @@ from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn, TimeEl
 from rich.table import Table
 
 # Import processing modules
-from scripts.utils import AcronymNormalizer, BrandingTransformer, BrandingValidator, GrammarImprover
+from scripts.utils import (
+    AcronymNormalizer,
+    BrandingTransformer,
+    BrandingValidator,
+    DescriptionStructureTransformer,
+    GrammarImprover,
+)
 
 console = Console()
 
@@ -160,6 +166,7 @@ def enrich_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], int
     # Initialize enrichment utilities
     acronym_normalizer = AcronymNormalizer()
     branding_transformer = BrandingTransformer()
+    description_structure_transformer = DescriptionStructureTransformer()
     grammar_improver = GrammarImprover(
         capitalize_sentences=grammar_config.get("capitalize_sentences", True),
         ensure_punctuation=grammar_config.get("ensure_punctuation", True),
@@ -176,10 +183,13 @@ def enrich_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], int
     # 1. Branding transformations first (most specific)
     spec = branding_transformer.transform_spec(spec, target_fields)
 
-    # 2. Acronym normalization
+    # 2. Description structure normalization (extract examples, validation rules)
+    spec = description_structure_transformer.transform_spec(spec, target_fields)
+
+    # 3. Acronym normalization
     spec = acronym_normalizer.normalize_spec(spec, target_fields)
 
-    # 3. Grammar improvements last (most general)
+    # 4. Grammar improvements last (most general)
     spec = grammar_improver.improve_spec(spec, target_fields)
 
     # Close grammar improver resources

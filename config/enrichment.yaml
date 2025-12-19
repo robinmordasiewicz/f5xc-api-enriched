@@ -69,6 +69,22 @@ target_fields:
   - x-displayname
   - x-ves-example
 
+# Description structure normalization
+description_structure:
+  # Strip leading spaces from description lines
+  normalize_leading_spaces: true
+
+  # Preserve bullet point indentation
+  preserve_bullet_indentation: true
+
+  # Extract Example: sections to x-ves-example field
+  extract_examples: true
+  remove_extracted_examples: true
+
+  # Extract Validation Rules: to x-validation-rules extension
+  extract_validation_rules: true
+  remove_extracted_validation: true
+
 # Fields to preserve (never modify)
 preserve_fields:
   - operationId
@@ -78,6 +94,7 @@ preserve_fields:
   - x-ves-proto-message
   - x-ves-proto-enum
   - externalDocs
+  - x-validation-rules
 
 # OpenAPI validation settings
 validation:
