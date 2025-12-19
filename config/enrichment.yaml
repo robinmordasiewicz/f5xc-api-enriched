@@ -1,0 +1,116 @@
+# Enrichment configuration for F5 XC API specifications
+
+# Source configuration
+source:
+  url: "https://docs.cloud.f5.com/docs-v2/downloads/f5-distributed-cloud-open-api.zip"
+  etag_file: ".etag"
+  version_file: ".version"
+
+# Paths configuration
+paths:
+  original: "specs/original"
+  enriched: "specs/enriched"
+  merged: "specs/merged"
+  reports: "reports"
+
+# Branding transformations
+branding:
+  replacements:
+    # Company/Product naming
+    - pattern: "\\bVolterra\\b"
+      replacement: "F5 Distributed Cloud"
+      case_sensitive: true
+
+    - pattern: "\\bvolterra\\b"
+      replacement: "F5 Distributed Cloud"
+      case_sensitive: false
+
+    # Domain references (be careful not to break URLs in external docs)
+    - pattern: "volterra\\.us"
+      replacement: "f5xc.io"
+      case_sensitive: false
+      context: "description"  # Only apply in description fields, not URLs
+
+    # Legacy internal references
+    - pattern: "\\bves\\.io\\b"
+      replacement: "F5 XC"
+      case_sensitive: false
+      context: "description"
+
+# Grammar improvements
+grammar:
+  # Capitalize first letter of sentences
+  capitalize_sentences: true
+
+  # Ensure descriptions end with proper punctuation
+  ensure_punctuation: true
+
+  # Fix common spacing issues
+  normalize_whitespace: true
+
+  # Remove trailing whitespace
+  trim_whitespace: true
+
+  # Fix double spaces
+  fix_double_spaces: true
+
+# Fields to process for enrichment
+target_fields:
+  - description
+  - summary
+  - title
+  - x-displayname
+
+# Fields to preserve (never modify)
+preserve_fields:
+  - operationId
+  - $ref
+  - x-ves-proto-rpc
+  - x-ves-proto-service
+  - x-ves-proto-message
+  - x-ves-proto-enum
+  - externalDocs
+
+# OpenAPI validation settings
+validation:
+  # Validate enriched specs are valid OpenAPI
+  validate_after_enrichment: true
+
+  # Fail on validation errors
+  fail_on_error: true
+
+  # OpenAPI version to validate against
+  openapi_version: "3.0"
+
+# Diff/changelog settings
+changelog:
+  # Generate diff report
+  generate_diff: true
+
+  # Output format for diff
+  diff_format: "json"  # json, markdown, or html
+
+  # Include detailed field-level changes
+  detailed_changes: true
+
+# Processing settings
+processing:
+  # Number of specs to process in parallel
+  parallel_workers: 4
+
+  # Continue on individual spec errors
+  continue_on_error: true
+
+  # Log level (DEBUG, INFO, WARNING, ERROR)
+  log_level: "INFO"
+
+# Output settings
+output:
+  # Indent JSON output
+  json_indent: 2
+
+  # Sort keys in output
+  sort_keys: false
+
+  # Preserve original file names
+  preserve_filenames: true

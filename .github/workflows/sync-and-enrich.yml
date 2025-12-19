@@ -1,0 +1,203 @@
+name: Sync and Enrich API Specs
+
+on:
+  schedule:
+    # Run daily at 6 AM UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      force_download:
+        description: 'Force download even if no updates detected'
+        required: false
+        default: 'false'
+        type: boolean
+      skip_validation:
+        description: 'Skip API validation step'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+env:
+  PYTHON_VERSION: '3.12'
+
+jobs:
+  check-updates:
+    name: Check for Updates
+    runs-on: ubuntu-latest
+    outputs:
+      has_updates: ${{ steps.check.outputs.updated }}
+      etag: ${{ steps.check.outputs.etag }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Check for updates
+        id: check
+        run: |
+          if [ "${{ inputs.force_download }}" = "true" ]; then
+            echo "updated=true" >> $GITHUB_OUTPUT
+            echo "Force download requested"
+          else
+            python scripts/download.py --check-only
+          fi
+
+  sync-and-enrich:
+    name: Sync and Enrich Specifications
+    needs: check-updates
+    if: needs.check-updates.outputs.has_updates == 'true' || github.event.inputs.force_download == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          # Install Java for LanguageTool (grammar checking)
+          sudo apt-get update
+          sudo apt-get install -y default-jre
+
+      - name: Download specifications
+        run: python scripts/download.py --force
+
+      - name: Enrich specifications
+        run: python scripts/enrich.py
+
+      - name: Merge specifications
+        run: python scripts/merge_specs.py
+
+      - name: Validate specifications (optional)
+        if: github.event.inputs.skip_validation != 'true'
+        continue-on-error: true
+        env:
+          F5XC_API_TOKEN: ${{ secrets.F5XC_API_TOKEN }}
+          F5XC_API_URL: ${{ secrets.F5XC_API_URL }}
+        run: python scripts/validate.py --dry-run
+
+      - name: Copy specs to docs
+        run: |
+          mkdir -p docs/specs
+          cp -r specs/merged docs/specs/
+
+      - name: Generate changelog
+        run: |
+          VERSION=$(cat .version)
+          DATE=$(date -u +"%Y-%m-%d")
+
+          cat > CHANGELOG.md << EOF
+          # Changelog
+
+          ## Version $VERSION ($DATE)
+
+          ### Changes
+          - Updated API specifications from F5 Distributed Cloud
+          - Applied enrichment transformations:
+            - Acronym normalization
+            - Grammar improvements
+            - Branding updates (Volterra → F5 Distributed Cloud)
+
+          ### Statistics
+          - Specifications: $(ls specs/enriched/*.json 2>/dev/null | wc -l | xargs)
+          - Domains: $(ls specs/merged/*.json 2>/dev/null | grep -v openapi.json | grep -v index.json | wc -l | xargs)
+
+          ### Source
+          - Source: F5 Distributed Cloud OpenAPI specifications
+          - ETag: ${{ needs.check-updates.outputs.etag || 'N/A' }}
+          EOF
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add -A
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          VERSION=$(cat .version)
+          git commit -m "chore: update API specifications to v$VERSION
+
+          - Downloaded latest specifications from F5 Distributed Cloud
+          - Applied enrichment pipeline (acronyms, grammar, branding)
+          - Merged specifications by domain
+          - Updated documentation portal"
+
+      - name: Push changes
+        run: git push
+
+      - name: Create release
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=$(cat .version)
+
+          # Check if release already exists
+          if gh release view "v$VERSION" >/dev/null 2>&1; then
+            echo "Release v$VERSION already exists, skipping"
+            exit 0
+          fi
+
+          # Create release with enriched specs
+          gh release create "v$VERSION" \
+            --title "API Specs v$VERSION" \
+            --notes-file CHANGELOG.md \
+            specs/merged/openapi.json \
+            specs/merged/index.json
+
+  deploy-docs:
+    name: Deploy Documentation
+    needs: sync-and-enrich
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main  # Get the latest changes
+
+      - name: Pull latest changes
+        run: git pull origin main
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Prepare docs directory
+        run: |
+          # Ensure specs are in docs folder
+          mkdir -p docs/specs
+          cp -r specs/merged docs/specs/
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

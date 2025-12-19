@@ -1,0 +1,143 @@
+# Acronym normalization rules for F5 Distributed Cloud API specifications
+# Format: lowercase_term: NORMALIZED_FORM
+
+acronyms:
+  # F5 and Product Specific
+  f5: F5
+  xc: XC
+  volterra: Volterra
+  ves: VES
+
+  # Protocols and Standards
+  api: API
+  apis: APIs
+  url: URL
+  urls: URLs
+  uri: URI
+  uris: URIs
+  http: HTTP
+  https: HTTPS
+  tcp: TCP
+  udp: UDP
+  ip: IP
+  ipv4: IPv4
+  ipv6: IPv6
+  tls: TLS
+  ssl: SSL
+  mtls: mTLS
+  dns: DNS
+  fqdn: FQDN
+  grpc: gRPC
+  ssh: SSH
+  smtp: SMTP
+  ldap: LDAP
+  saml: SAML
+  oidc: OIDC
+  oauth: OAuth
+  jwt: JWT
+
+  # Security
+  waf: WAF
+  ddos: DDoS
+  xss: XSS
+  csrf: CSRF
+  sql: SQL
+  rbac: RBAC
+  acl: ACL
+  mfa: MFA
+  pki: PKI
+  ca: CA
+  crl: CRL
+
+  # Cloud and Infrastructure
+  cdn: CDN
+  vpc: VPC
+  vnet: VNet
+  aws: AWS
+  gcp: GCP
+  azure: Azure
+  k8s: K8s
+  kubernetes: Kubernetes
+  vm: VM
+  vms: VMs
+  ce: CE
+  re: RE
+
+  # Networking
+  lb: LB
+  nlb: NLB
+  alb: ALB
+  elb: ELB
+  bgp: BGP
+  asn: ASN
+  cidr: CIDR
+  nat: NAT
+  snat: SNAT
+  dnat: DNAT
+  vip: VIP
+  nic: NIC
+  mtu: MTU
+  qos: QoS
+  vlan: VLAN
+
+  # Data and Formats
+  json: JSON
+  yaml: YAML
+  xml: XML
+  csv: CSV
+  uuid: UUID
+  id: ID
+  ids: IDs
+
+  # Technical Terms
+  cpu: CPU
+  ram: RAM
+  io: I/O
+  ssd: SSD
+  hdd: HDD
+  os: OS
+  cli: CLI
+  gui: GUI
+  ui: UI
+  ux: UX
+
+  # Time and Metrics
+  ttl: TTL
+  rtt: RTT
+  sla: SLA
+  kpi: KPI
+
+  # HTTP Methods (preserve case in context)
+  get: GET
+  post: POST
+  put: PUT
+  patch: PATCH
+  delete: DELETE
+  head: HEAD
+  options: OPTIONS
+
+# Words that should NOT be treated as acronyms even if they match patterns
+exceptions:
+  - is
+  - as
+  - at
+  - in
+  - on
+  - to
+  - or
+  - an
+  - be
+  - by
+  - do
+  - go
+  - if
+  - it
+  - me
+  - my
+  - no
+  - of
+  - ok
+  - so
+  - up
+  - us
+  - we

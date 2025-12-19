@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F5 Distributed Cloud API Documentation</title>
+    <style>
+        :root {
+            --f5-blue: #0076CE;
+            --f5-dark: #1a1a2e;
+            --f5-light: #f4f4f8;
+            --f5-accent: #00A3E0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, var(--f5-dark) 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--f5-blue), var(--f5-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #a0a0b0;
+            max-width: 600px;
+            margin: 0 auto 1rem;
+        }
+
+        .version-info {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: #b0b0c0;
+        }
+
+        .viewers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .viewer-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .viewer-card:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--f5-blue);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,118,206,0.2);
+        }
+
+        .viewer-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--f5-blue), var(--f5-accent));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .viewer-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .viewer-description {
+            color: #a0a0b0;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .viewer-features {
+            list-style: none;
+        }
+
+        .viewer-features li {
+            padding: 0.25rem 0;
+            color: #b0b0c0;
+            font-size: 0.9rem;
+        }
+
+        .viewer-features li::before {
+            content: "✓ ";
+            color: var(--f5-accent);
+        }
+
+        .domains-section {
+            margin: 4rem 0;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        .domains-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .domain-badge {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .domain-badge:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--f5-accent);
+        }
+
+        .domain-name {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .domain-count {
+            font-size: 0.8rem;
+            color: #808090;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 4rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--f5-accent);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .footer-text {
+            color: #606070;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .viewers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+
+            header {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="logo">F5 Distributed Cloud API</h1>
+            <p class="subtitle">
+                Comprehensive API documentation for F5 XC services including load balancing,
+                security, networking, and infrastructure management.
+            </p>
+            <span class="version-info" id="version-info">Loading version...</span>
+        </header>
+
+        <section class="viewers-grid">
+            <a href="./swagger-ui/" class="viewer-card">
+                <div class="viewer-icon">📚</div>
+                <h2 class="viewer-title">Swagger UI</h2>
+                <p class="viewer-description">
+                    Classic interactive API documentation with the industry-standard Swagger interface.
+                </p>
+                <ul class="viewer-features">
+                    <li>Interactive "Try It Out" functionality</li>
+                    <li>Request/Response examples</li>
+                    <li>Schema exploration</li>
+                    <li>Authentication support</li>
+                </ul>
+            </a>
+
+            <a href="./scalar/" class="viewer-card">
+                <div class="viewer-icon">🚀</div>
+                <h2 class="viewer-title">Scalar</h2>
+                <p class="viewer-description">
+                    Modern API reference with a clean interface and advanced API client features.
+                </p>
+                <ul class="viewer-features">
+                    <li>Beautiful modern design</li>
+                    <li>Built-in API client</li>
+                    <li>Code generation</li>
+                    <li>Dark/Light themes</li>
+                </ul>
+            </a>
+        </section>
+
+        <section class="domains-section">
+            <h2 class="section-title">API Domains</h2>
+            <div class="domains-grid" id="domains-grid">
+                <!-- Populated dynamically -->
+            </div>
+        </section>
+
+        <footer>
+            <div class="footer-links">
+                <a href="https://docs.cloud.f5.com" target="_blank">Official Documentation</a>
+                <a href="https://github.com/robinmordasiewicz/f5xc-api-enriched" target="_blank">GitHub Repository</a>
+                <a href="./specs/merged/openapi.json" target="_blank">Download OpenAPI Spec</a>
+            </div>
+            <p class="footer-text">
+                Enriched API specifications for F5 Distributed Cloud Services
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Load spec index to populate domains and version
+        async function loadSpecIndex() {
+            try {
+                const response = await fetch('./specs/merged/index.json');
+                if (!response.ok) return;
+
+                const index = await response.json();
+
+                // Update version
+                const versionEl = document.getElementById('version-info');
+                versionEl.textContent = `Version: ${index.version} | Updated: ${new Date(index.timestamp).toLocaleDateString()}`;
+
+                // Populate domains
+                const domainsGrid = document.getElementById('domains-grid');
+                domainsGrid.innerHTML = index.specifications
+                    .sort((a, b) => b.path_count - a.path_count)
+                    .map(spec => `
+                        <div class="domain-badge">
+                            <div class="domain-name">${spec.domain.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</div>
+                            <div class="domain-count">${spec.path_count} endpoints</div>
+                        </div>
+                    `).join('');
+            } catch (e) {
+                console.log('Could not load spec index:', e);
+                document.getElementById('version-info').textContent = 'API Documentation Portal';
+            }
+        }
+
+        loadSpecIndex();
+    </script>
+</body>
+</html>
