@@ -15147,14 +15147,15 @@
           },
           {
             "name": "virtual_host",
-            "description": "X-required\nName of Virtual Host to scope traffic overview query.",
+            "description": "Name of Virtual Host to scope traffic overview query.",
             "in": "query",
             "required": false,
             "x-displayname": "Virtual Host Name.",
             "schema": {
               "type": "string"
             },
-            "x-ves-example": "Myapp-vh-1."
+            "x-ves-example": "Myapp-vh-1.",
+            "x-required": true
           }
         ],
         "externalDocs": {
@@ -28068,14 +28069,15 @@
           },
           {
             "name": "site",
-            "description": "X-required\nSite name.",
+            "description": "Site name",
             "in": "query",
             "required": false,
             "x-displayname": "Site",
             "schema": {
               "type": "string"
             },
-            "x-ves-example": "Ce01"
+            "x-ves-example": "Ce01",
+            "x-required": true
           },
           {
             "name": "site_type",

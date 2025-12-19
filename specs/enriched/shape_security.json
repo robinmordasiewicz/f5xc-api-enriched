@@ -4054,14 +4054,15 @@
           },
           {
             "name": "name",
-            "description": "X-required\nName of the domain to GET the details.",
+            "description": "Name of the domain to GET the details.",
             "in": "query",
             "required": false,
             "x-displayname": "Domain Name.",
             "schema": {
               "type": "string"
             },
-            "x-ves-example": "Domain.com."
+            "x-ves-example": "Domain.com.",
+            "x-required": true
           }
         ],
         "externalDocs": {

@@ -11097,11 +11097,12 @@
         "properties": {
           "applications": {
             "type": "array",
-            "description": "X-required\nx-displayName: \"Application Source Name\"\nDefines names to identify and distingish log source system or platforms.",
+            "description": "X-displayName: \"Application Source Name\"\nDefines names to identify and distingish log source system or platforms.",
             "title": "Third Party Application.",
             "items": {
               "type": "string"
-            }
+            },
+            "x-required": true
           },
           "expiration_timestamp": {
             "type": "string",
@@ -11111,12 +11112,13 @@
           },
           "source_cidr": {
             "type": "array",
-            "description": "X-required\nx-displayName: \"Source Subnet IP\"\nSource IP of the packet to match.",
+            "description": "X-displayName: \"Source Subnet IP\"\nSource IP of the packet to match.",
             "title": "Source IP",
             "items": {
               "type": "string"
             },
-            "x-ves-example": "1.1.1.0/24 or 2001:10/64."
+            "x-ves-example": "1.1.1.0/24 or 2001:10/64.",
+            "x-required": true
           }
         }
       },

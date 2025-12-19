@@ -16232,14 +16232,15 @@
         "parameters": [
           {
             "name": "provider",
-            "description": "X-required\nprovider for that cloud-init config.",
+            "description": "Provider for that cloud-init config.",
             "in": "query",
             "required": false,
             "x-displayname": "Provider",
             "schema": {
               "type": "string"
             },
-            "x-ves-example": "Kvm"
+            "x-ves-example": "Kvm",
+            "x-required": true
           },
           {
             "name": "site_name",
@@ -35730,7 +35731,7 @@
       },
       "schemaSignupOrigin": {
         "type": "string",
-        "description": "X-required\nSignupOrigin indicates, from which platform signup is originated, example f5xc, AWS..etc\n\n- ORIGIN_UNKNOWN: ORIGIN_UNKNOWN\n\nIndicates, the origin of the signup is unknown\n- ORIGIN_F5XC: ORIGIN_F5XC\n\nORIGIN_F5XC as an origin indicates, signup is initiated from console or by internal scaling/testing/support teams using private API\n- ORIGIN_AWS: ORIGIN_AWS\n\nORIGIN_AWS as an origin indicates, signup is initiated from AWS marketplace & it comes to eywaprime via tsahik\n- ORIGIN_ASB: ORIGIN_ASB\n\nORIGIN_ASB as an origin indicates signup originated from Azure service bus provisioning messages & it comes to eywaprime via tsahik.",
+        "description": "SignupOrigin indicates, from which platform signup is originated, example f5xc, AWS..etc\n\n- ORIGIN_UNKNOWN: ORIGIN_UNKNOWN\n\nIndicates, the origin of the signup is unknown\n- ORIGIN_F5XC: ORIGIN_F5XC\n\nORIGIN_F5XC as an origin indicates, signup is initiated from console or by internal scaling/testing/support teams using private API\n- ORIGIN_AWS: ORIGIN_AWS\n\nORIGIN_AWS as an origin indicates, signup is initiated from AWS marketplace & it comes to eywaprime via tsahik\n- ORIGIN_ASB: ORIGIN_ASB\n\nORIGIN_ASB as an origin indicates signup originated from Azure service bus provisioning messages & it comes to eywaprime via tsahik.",
         "title": "SignupOrigin.",
         "enum": [
           "ORIGIN_UNKNOWN",
@@ -35740,7 +35741,8 @@
         ],
         "default": "ORIGIN_UNKNOWN",
         "x-displayname": "Signup Origin.",
-        "x-ves-proto-enum": "ves.io.schema.SignupOrigin"
+        "x-ves-proto-enum": "ves.io.schema.SignupOrigin",
+        "x-required": true
       },
       "schemaTileAccessState": {
         "type": "string",

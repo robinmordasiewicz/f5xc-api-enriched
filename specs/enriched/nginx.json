@@ -3505,7 +3505,7 @@
       },
       "nginx_service_discoveryConfigSyncGroup": {
         "type": "object",
-        "description": "X-required\nSelect new ConfigSyncGroup.",
+        "description": "Select new ConfigSyncGroup.",
         "title": "NGINX Config Sync Group.",
         "x-displayname": "ConfigSyncGroup Reference.",
         "x-ves-proto-message": "ves.io.schema.nginx.one.nginx_service_discovery.ConfigSyncGroup",
@@ -3529,7 +3529,8 @@
               "F5 XC.schema.rules.repeated.max_items": "1"
             }
           }
-        }
+        },
+        "x-required": true
       },
       "nginx_service_discoveryCreateRequest": {
         "type": "object",
@@ -3860,7 +3861,7 @@
       },
       "nginx_service_discoveryNGINXInstance": {
         "type": "object",
-        "description": "X-required\nSelect new NGINX Instance.",
+        "description": "Select new NGINX Instance.",
         "title": "NGINX Instance.",
         "x-displayname": "NGINXInstance Reference.",
         "x-ves-proto-message": "ves.io.schema.nginx.one.nginx_service_discovery.NGINXInstance",
@@ -3884,7 +3885,8 @@
               "F5 XC.schema.rules.repeated.max_items": "1"
             }
           }
-        }
+        },
+        "x-required": true
       },
       "nginx_service_discoveryReplaceRequest": {
         "type": "object",

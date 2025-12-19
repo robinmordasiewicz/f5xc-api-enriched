@@ -19007,7 +19007,7 @@
       },
       "viewsL3PerformanceEnhancementType": {
         "type": "object",
-        "description": "X-required\nL3 enhanced performance mode OPTIONS.",
+        "description": "L3 enhanced performance mode OPTIONS.",
         "title": "L3 Mode Enhanced Performance OPTIONS.",
         "x-displayname": "L3 Mode Enhanced Performance.",
         "x-ves-displayorder": "1",
@@ -19020,7 +19020,8 @@
           "no_jumbo": {
             "$ref": "#/components/schemas/ioschemaEmpty"
           }
-        }
+        },
+        "x-required": true
       },
       "viewsOfflineSurvivabilityModeType": {
         "type": "object",
@@ -19068,7 +19069,7 @@
       },
       "viewsPerformanceEnhancementModeType": {
         "type": "object",
-        "description": "X-required\nOptimize the site for L3 or L7 traffic processing. L7 optimized is the default.",
+        "description": "Optimize the site for L3 or L7 traffic processing. L7 optimized is the default.",
         "title": "Performance Enhancement Choice.",
         "x-displayname": "Performance Enhancement Mode.",
         "x-ves-displayorder": "1",
@@ -19081,7 +19082,8 @@
           "perf_mode_l7_enhanced": {
             "$ref": "#/components/schemas/ioschemaEmpty"
           }
-        }
+        },
+        "x-required": true
       },
       "viewsPrivateConnectConfigType": {
         "type": "object",
@@ -28881,7 +28883,7 @@
       },
       "viewsAcceleratedNetworkingType": {
         "type": "object",
-        "description": "X-required\nAccelerated Networking to reduce Latency, When Mode is toggled, traffic\ndisruption will be seen.",
+        "description": "Accelerated Networking to reduce Latency, When Mode is toggled, traffic\ndisruption will be seen.",
         "title": "Accelerated Networking Type.",
         "x-displayname": "Accelerated Networking Type.",
         "x-ves-oneof-field-accelerated_networking": "[\"disable\",\"enable\"]",
@@ -28893,7 +28895,8 @@
           "enable": {
             "$ref": "#/components/schemas/ioschemaEmpty"
           }
-        }
+        },
+        "x-required": true
       },
       "viewsAzureSpecialSubnetType": {
         "type": "object",
@@ -34342,7 +34345,7 @@
       },
       "viewsNetworkSelectType": {
         "type": "object",
-        "description": "X-required\nSelect virtual network (VRF) for this interface.\nThere are 2 kinds of VRFs, local VRFs which are local to the site and global VRFs which extend into multiple sites.\nA site can have 2 Local VRFs, Site Local Outside (SLO), which is required for every site and Site Local Inside (SLI) which is optional.\nGlobal VRFs are configured via Networking > Segments. A site can have multple Network Segments (global VRFs).",
+        "description": "Select virtual network (VRF) for this interface.\nThere are 2 kinds of VRFs, local VRFs which are local to the site and global VRFs which extend into multiple sites.\nA site can have 2 Local VRFs, Site Local Outside (SLO), which is required for every site and Site Local Inside (SLI) which is optional.\nGlobal VRFs are configured via Networking > Segments. A site can have multple Network Segments (global VRFs).",
         "title": "NetworkSelectType.",
         "x-displayname": "Network Select.",
         "x-ves-oneof-field-network_choice": "[\"segment_network\",\"site_local_inside_network\",\"site_local_network\"]",
@@ -34354,7 +34357,8 @@
           "site_local_network": {
             "$ref": "#/components/schemas/ioschemaEmpty"
           }
-        }
+        },
+        "x-required": true
       },
       "viewsRegionalEdgeSelection": {
         "type": "object",

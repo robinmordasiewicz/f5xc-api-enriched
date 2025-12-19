@@ -14090,7 +14090,7 @@
       },
       "infraprotect_firewall_ruleICMP6Protocol": {
         "type": "object",
-        "description": "X-required\nICMP6 Protocol.",
+        "description": "ICMP6 Protocol.",
         "title": "ICMP6 Protocol.",
         "x-displayname": "ICMP6 Protocol.",
         "x-ves-proto-message": "ves.io.schema.infraprotect_firewall_rule.ICMP6Protocol",
@@ -14172,11 +14172,12 @@
             "format": "boolean",
             "x-displayname": "Time-Exceeded."
           }
-        }
+        },
+        "x-required": true
       },
       "infraprotect_firewall_ruleICMPProtocol": {
         "type": "object",
-        "description": "X-required\nICMP Protocol.",
+        "description": "ICMP Protocol.",
         "title": "ICMP Protocol.",
         "x-displayname": "ICMP Protocol.",
         "x-ves-proto-message": "ves.io.schema.infraprotect_firewall_rule.ICMPProtocol",
@@ -14230,7 +14231,8 @@
             "format": "boolean",
             "x-displayname": "Unreachable."
           }
-        }
+        },
+        "x-required": true
       },
       "infraprotect_firewall_ruleListResponse": {
         "type": "object",
@@ -14487,7 +14489,7 @@
       },
       "infraprotect_firewall_ruleTCPProtocol": {
         "type": "object",
-        "description": "X-required\nTCP Protocol.",
+        "description": "TCP Protocol.",
         "title": "TCP Protocol.",
         "x-displayname": "TCP Protocol.",
         "x-ves-oneof-field-destination_port": "[\"destination_port_all\",\"destination_port_range\"]",
@@ -14530,11 +14532,12 @@
               "F5 XC.schema.rules.string.port_range": "true"
             }
           }
-        }
+        },
+        "x-required": true
       },
       "infraprotect_firewall_ruleUDPProtocol": {
         "type": "object",
-        "description": "X-required\nUDP Protocol.",
+        "description": "UDP Protocol.",
         "title": "UDP Protocol.",
         "x-displayname": "UDP Protocol.",
         "x-ves-oneof-field-destination_port": "[\"destination_port_all\",\"destination_port_range\"]",
@@ -14577,7 +14580,8 @@
               "F5 XC.schema.rules.string.port_range": "true"
             }
           }
-        }
+        },
+        "x-required": true
       },
       "infraprotect_firewall_rule_groupCreateRequest": {
         "type": "object",

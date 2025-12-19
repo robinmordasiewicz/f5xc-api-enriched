@@ -35,7 +35,7 @@
     "/api/config/namespaces/{metadata.namespace}/api_definitions": {
       "post": {
         "summary": "Create API Definition.",
-        "description": "X-required\nCreate API Definition.",
+        "description": "Create API Definition.",
         "operationId": "ves.io.schema.views.api_definition.API.Create",
         "responses": {
           "200": {
@@ -156,7 +156,8 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-api_definition-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.api_definition.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.views.api_definition.API.Create",
+        "x-required": true
       },
       "x-displayname": "API Definition.",
       "x-ves-proto-service": "ves.io.schema.views.api_definition.API",
@@ -165,7 +166,7 @@
     "/api/config/namespaces/{metadata.namespace}/api_definitions/{metadata.name}": {
       "put": {
         "summary": "Replace API Definition.",
-        "description": "X-required\nReplace API Definition.",
+        "description": "Replace API Definition.",
         "operationId": "ves.io.schema.views.api_definition.API.Replace",
         "responses": {
           "200": {
@@ -297,7 +298,8 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-api_definition-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.api_definition.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.views.api_definition.API.Replace",
+        "x-required": true
       },
       "x-displayname": "API Definition.",
       "x-ves-proto-service": "ves.io.schema.views.api_definition.API",
@@ -30875,7 +30877,7 @@
       },
       "viewsapi_definitionCreateSpecType": {
         "type": "object",
-        "description": "X-required\nCreate API Definition.",
+        "description": "Create API Definition.",
         "title": "CreateSpecType.",
         "x-displayname": "Create API Definition.",
         "x-ves-oneof-field-schema_updates_strategy": "[\"mixed_schema_origin\",\"strict_schema_origin\"]",
@@ -30961,7 +30963,8 @@
               "F5 XC.schema.rules.repeated.unique": "true"
             }
           }
-        }
+        },
+        "x-required": true
       },
       "viewsapi_definitionGetSpecType": {
         "type": "object",
@@ -31063,7 +31066,7 @@
       },
       "viewsapi_definitionReplaceSpecType": {
         "type": "object",
-        "description": "X-required\nReplace API Definition.",
+        "description": "Replace API Definition.",
         "title": "ReplaceSpecType.",
         "x-displayname": "Replace API Definition.",
         "x-ves-oneof-field-schema_updates_strategy": "[\"mixed_schema_origin\",\"strict_schema_origin\"]",
@@ -31149,7 +31152,8 @@
               "F5 XC.schema.rules.repeated.unique": "true"
             }
           }
-        }
+        },
+        "x-required": true
       },
       "app_firewallAiRiskBasedBlocking": {
         "type": "object",
@@ -39157,7 +39161,7 @@
       },
       "protocol_inspectionEnableDisableComplianceChecks": {
         "type": "object",
-        "description": "X-required\nEnable Disable Compliance Checks Choice.",
+        "description": "Enable Disable Compliance Checks Choice.",
         "title": "Enable Disable Compliance Checks.",
         "x-displayname": "Enable/Disable Compliance Checks.",
         "x-ves-oneof-field-compliance_check_choice": "[\"disable_compliance_checks\",\"enable_compliance_checks\"]",
@@ -39169,11 +39173,12 @@
           "enable_compliance_checks": {
             "$ref": "#/components/schemas/schemaviewsObjectRefType"
           }
-        }
+        },
+        "x-required": true
       },
       "protocol_inspectionEnableDisableSignatures": {
         "type": "object",
-        "description": "X-required\nEnable Disable Signature Choice.",
+        "description": "Enable Disable Signature Choice.",
         "title": "Enable Disable Signatures.",
         "x-displayname": "Enable/Disable Signatures Choice.",
         "x-ves-oneof-field-signature_choice": "[\"disable_signature\",\"enable_signature\"]",
@@ -39185,7 +39190,8 @@
           "enable_signature": {
             "$ref": "#/components/schemas/ioschemaEmpty"
           }
-        }
+        },
+        "x-required": true
       },
       "protocol_inspectionGetResponse": {
         "type": "object",

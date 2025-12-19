@@ -6404,14 +6404,15 @@
       },
       "app_typeAPIEndpoint": {
         "type": "object",
-        "description": "X-required\nx-displayName: \"API Endpoint\"\nThe rule is applied only for the specified API endpoints.",
+        "description": "X-displayName: \"API Endpoint\"\nThe rule is applied only for the specified API endpoints.",
         "title": "API endpoint.",
         "properties": {
           "api_endpoint_path": {
             "type": "string",
-            "description": "X-required\nx-displayName: \"API Endpoint\"\nThe rule is applied only for the specified API endpoints.",
+            "description": "X-displayName: \"API Endpoint\"\nThe rule is applied only for the specified API endpoints.",
             "title": "API endpoint path.",
-            "x-ves-example": "/endpoint1."
+            "x-ves-example": "/endpoint1.",
+            "x-required": true
           },
           "methods": {
             "type": "array",
@@ -6422,7 +6423,8 @@
             },
             "x-ves-example": "['GET', 'POST', 'DELETE']"
           }
-        }
+        },
+        "x-required": true
       },
       "app_typeAPIEndpointLearntSchemaReq": {
         "type": "object",
@@ -6821,9 +6823,10 @@
         "properties": {
           "type": {
             "type": "string",
-            "description": "X-required\nx-displayName: \"Type\"\nThe request is labeled as specified sensitive data type.",
+            "description": "X-displayName: \"Type\"\nThe request is labeled as specified sensitive data type.",
             "title": "Sensitive data type.",
-            "x-ves-example": "EMAIL"
+            "x-ves-example": "EMAIL",
+            "x-required": true
           }
         }
       },

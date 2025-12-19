@@ -60082,7 +60082,7 @@
       },
       "viewsL3PerformanceEnhancementType": {
         "type": "object",
-        "description": "X-required\nL3 enhanced performance mode OPTIONS.",
+        "description": "L3 enhanced performance mode OPTIONS.",
         "title": "L3 Mode Enhanced Performance OPTIONS.",
         "x-displayname": "L3 Mode Enhanced Performance.",
         "x-ves-displayorder": "1",
@@ -60095,11 +60095,12 @@
           "no_jumbo": {
             "$ref": "#/components/schemas/ioschemaEmpty"
           }
-        }
+        },
+        "x-required": true
       },
       "viewsPerformanceEnhancementModeType": {
         "type": "object",
-        "description": "X-required\nOptimize the site for L3 or L7 traffic processing. L7 optimized is the default.",
+        "description": "Optimize the site for L3 or L7 traffic processing. L7 optimized is the default.",
         "title": "Performance Enhancement Choice.",
         "x-displayname": "Performance Enhancement Mode.",
         "x-ves-displayorder": "1",
@@ -60112,7 +60113,8 @@
           "perf_mode_l7_enhanced": {
             "$ref": "#/components/schemas/ioschemaEmpty"
           }
-        }
+        },
+        "x-required": true
       },
       "forwarding_classCreateRequest": {
         "type": "object",
@@ -62439,7 +62441,7 @@
       },
       "schemaTlsInterceptionRule": {
         "type": "object",
-        "description": "X-required\nRule to enable or disable TLS interception based on domain match.",
+        "description": "Rule to enable or disable TLS interception based on domain match.",
         "title": "TlsInterceptionRule.",
         "x-displayname": "TLS Interception Rule.",
         "x-ves-oneof-field-enable_disable_choice": "[\"disable_interception\",\"enable_interception\"]",
@@ -62454,7 +62456,8 @@
           "enable_interception": {
             "$ref": "#/components/schemas/ioschemaEmpty"
           }
-        }
+        },
+        "x-required": true
       },
       "schemaTlsInterceptionType": {
         "type": "object",

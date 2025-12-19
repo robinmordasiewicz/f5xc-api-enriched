@@ -3020,14 +3020,15 @@
       },
       "app_typeAPIEndpoint": {
         "type": "object",
-        "description": "X-required\nx-displayName: \"API Endpoint\"\nThe rule is applied only for the specified API endpoints.",
+        "description": "X-displayName: \"API Endpoint\"\nThe rule is applied only for the specified API endpoints.",
         "title": "API endpoint.",
         "properties": {
           "api_endpoint_path": {
             "type": "string",
-            "description": "X-required\nx-displayName: \"API Endpoint\"\nThe rule is applied only for the specified API endpoints.",
+            "description": "X-displayName: \"API Endpoint\"\nThe rule is applied only for the specified API endpoints.",
             "title": "API endpoint path.",
-            "x-ves-example": "/endpoint1."
+            "x-ves-example": "/endpoint1.",
+            "x-required": true
           },
           "methods": {
             "type": "array",
@@ -3038,7 +3039,8 @@
             },
             "x-ves-example": "['GET', 'POST', 'DELETE']"
           }
-        }
+        },
+        "x-required": true
       },
       "app_typeBuiltInSensitiveDataType": {
         "type": "object",
@@ -3147,9 +3149,10 @@
         "properties": {
           "type": {
             "type": "string",
-            "description": "X-required\nx-displayName: \"Type\"\nThe request is labeled as specified sensitive data type.",
+            "description": "X-displayName: \"Type\"\nThe request is labeled as specified sensitive data type.",
             "title": "Sensitive data type.",
-            "x-ves-example": "EMAIL"
+            "x-ves-example": "EMAIL",
+            "x-required": true
           }
         }
       },
@@ -6278,9 +6281,10 @@
           },
           "api_endpoint_path": {
             "type": "string",
-            "description": "X-required\nx-displayName: \"API Endpoint\"\nThe endpoint (path) of the request.",
+            "description": "X-displayName: \"API Endpoint\"\nThe endpoint (path) of the request.",
             "title": "API endpoint path.",
-            "x-ves-example": "/endpoint1."
+            "x-ves-example": "/endpoint1.",
+            "x-required": true
           },
           "client_matcher": {
             "$ref": "#/components/schemas/policyClientMatcher"
@@ -6318,9 +6322,10 @@
           },
           "base_path": {
             "type": "string",
-            "description": "X-required\nx-displayName: \"Base Path\"\nPrefix of the request path.\nFor example: /v1.",
+            "description": "X-displayName: \"Base Path\"\nPrefix of the request path.\nFor example: /v1.",
             "title": "Base path",
-            "x-ves-example": "/v1"
+            "x-ves-example": "/v1",
+            "x-required": true
           },
           "client_matcher": {
             "$ref": "#/components/schemas/policyClientMatcher"
@@ -6566,7 +6571,7 @@
       },
       "common_wafApiDiscoveryFromCodeScan": {
         "type": "object",
-        "description": "X-required.",
+        "description": "",
         "title": "API Discovery Code Scan.",
         "x-displayname": "Select Code Base and Repositories.",
         "x-ves-proto-message": "ves.io.schema.views.common_waf.ApiDiscoveryFromCodeScan",
@@ -6592,7 +6597,8 @@
               "F5 XC.schema.rules.repeated.unique": "true"
             }
           }
-        }
+        },
+        "x-required": true
       },
       "common_wafApiDiscoverySetting": {
         "type": "object",
@@ -7253,7 +7259,7 @@
       },
       "common_wafOpenApiFallThroughMode": {
         "type": "object",
-        "description": "X-required\nDetermine what to do with unprotected endpoints (not in the OpenAPI specification file (a.k.a. Swagger) or doesn't have a specific rule in custom rules)",
+        "description": "Determine what to do with unprotected endpoints (not in the OpenAPI specification file (a.k.a. Swagger) or doesn't have a specific rule in custom rules)",
         "title": "Fall Through Mode.",
         "x-displayname": "Fall Through Mode.",
         "x-ves-oneof-field-fall_through_mode_choice": "[\"fall_through_mode_allow\",\"fall_through_mode_custom\"]",
@@ -7265,7 +7271,8 @@
           "fall_through_mode_custom": {
             "$ref": "#/components/schemas/common_wafCustomFallThroughMode"
           }
-        }
+        },
+        "x-required": true
       },
       "common_wafOpenApiValidationAllSpecEndpointsSettings": {
         "type": "object",
@@ -7312,7 +7319,7 @@
       },
       "common_wafOpenApiValidationMode": {
         "type": "object",
-        "description": "X-required\nValidation mode of OpenAPI specification.\nWhen a validation mismatch occurs on a request to one of the endpoints listed on the OpenAPI specification file (a.k.a. Swagger)",
+        "description": "Validation mode of OpenAPI specification.\nWhen a validation mismatch occurs on a request to one of the endpoints listed on the OpenAPI specification file (a.k.a. Swagger)",
         "title": "Validation Mode.",
         "x-displayname": "Validation Mode.",
         "x-ves-oneof-field-response_validation_mode_choice": "[\"response_validation_mode_active\",\"skip_response_validation\"]",
@@ -7331,7 +7338,8 @@
           "validation_mode_active": {
             "$ref": "#/components/schemas/common_wafOpenApiValidationModeActive"
           }
-        }
+        },
+        "x-required": true
       },
       "common_wafOpenApiValidationModeActive": {
         "type": "object",
