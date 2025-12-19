@@ -1,0 +1,26 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "F5 Distributed Cloud API",
+    "description": "API specifications are being synchronized. Please check back shortly.\n\nThe sync workflow runs daily at 6 AM UTC to download and enrich the latest F5 XC API specifications.",
+    "version": "0.0.0-placeholder",
+    "contact": {
+      "name": "F5 Distributed Cloud",
+      "url": "https://docs.cloud.f5.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}.console.ves.volterra.io/api",
+      "description": "F5 Distributed Cloud Console API",
+      "variables": {
+        "tenant": {
+          "default": "your-tenant",
+          "description": "Your F5 XC tenant name"
+        }
+      }
+    }
+  ],
+  "paths": {},
+  "components": {}
+}

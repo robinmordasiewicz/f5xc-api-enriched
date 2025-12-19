@@ -1,13 +1,6 @@
 name: Validate API Specifications
 
 on:
-  workflow_dispatch:
-    inputs:
-      dry_run:
-        description: 'Dry run - list endpoints without making requests'
-        required: false
-        default: 'false'
-        type: boolean
   schedule:
     # Run weekly on Sundays at 2 AM UTC
     - cron: '0 2 * * 0'
@@ -42,11 +35,7 @@ jobs:
           F5XC_API_TOKEN: ${{ secrets.F5XC_API_TOKEN }}
           F5XC_API_URL: ${{ secrets.F5XC_API_URL }}
         run: |
-          if [ "${{ inputs.dry_run }}" = "true" ]; then
-            python scripts/validate.py --dry-run
-          else
-            python scripts/validate.py || echo "validation_failed=true" >> $GITHUB_OUTPUT
-          fi
+          python scripts/validate.py || echo "validation_failed=true" >> $GITHUB_OUTPUT
 
       - name: Upload validation report
         uses: actions/upload-artifact@v4

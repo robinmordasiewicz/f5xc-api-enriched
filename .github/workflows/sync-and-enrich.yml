@@ -4,18 +4,13 @@ on:
   schedule:
     # Run daily at 6 AM UTC
     - cron: '0 6 * * *'
-  workflow_dispatch:
-    inputs:
-      force_download:
-        description: 'Force download even if no updates detected'
-        required: false
-        default: 'false'
-        type: boolean
-      skip_validation:
-        description: 'Skip API validation step'
-        required: false
-        default: 'false'
-        type: boolean
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/**'
+      - 'config/**'
+      - 'requirements.txt'
 
 permissions:
   contents: write
@@ -48,9 +43,10 @@ jobs:
       - name: Check for updates
         id: check
         run: |
-          if [ "${{ inputs.force_download }}" = "true" ]; then
+          # Force download on push events, check-only on schedule
+          if [ "${{ github.event_name }}" = "push" ]; then
             echo "updated=true" >> $GITHUB_OUTPUT
-            echo "Force download requested"
+            echo "Push event - forcing download"
           else
             python scripts/download.py --check-only
           fi
@@ -58,7 +54,7 @@ jobs:
   sync-and-enrich:
     name: Sync and Enrich Specifications
     needs: check-updates
-    if: needs.check-updates.outputs.has_updates == 'true' || github.event.inputs.force_download == 'true'
+    if: needs.check-updates.outputs.has_updates == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -86,8 +82,7 @@ jobs:
       - name: Merge specifications
         run: python scripts/merge_specs.py
 
-      - name: Validate specifications (optional)
-        if: github.event.inputs.skip_validation != 'true'
+      - name: Validate specifications
         continue-on-error: true
         env:
           F5XC_API_TOKEN: ${{ secrets.F5XC_API_TOKEN }}
