@@ -10,7 +10,7 @@ import json
 import sys
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -101,7 +101,7 @@ class EnrichmentResult:
 def load_config(config_path: Path | None = None) -> dict:
     """Load configuration from YAML file or use defaults."""
     if config_path and config_path.exists():
-        with open(config_path) as f:
+        with config_path.open() as f:
             config = yaml.safe_load(f) or {}
             # Deep merge with defaults
             return _deep_merge(DEFAULT_CONFIG, config)
@@ -121,15 +121,21 @@ def _deep_merge(base: dict, override: dict) -> dict:
 
 def load_spec(spec_path: Path) -> dict[str, Any]:
     """Load an OpenAPI specification from JSON file."""
-    with open(spec_path) as f:
+    with spec_path.open() as f:
         return json.load(f)
 
 
-def save_spec(spec: dict[str, Any], output_path: Path, indent: int = 2, sort_keys: bool = False) -> None:
+def save_spec(
+    spec: dict[str, Any],
+    output_path: Path,
+    indent: int = 2,
+    sort_keys: bool = False,
+) -> None:
     """Save an OpenAPI specification to JSON file."""
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_path, "w") as f:
+    with output_path.open("w") as f:
         json.dump(spec, f, indent=indent, sort_keys=sort_keys, ensure_ascii=False)
+        f.write("\n")
 
 
 def validate_spec(spec: dict[str, Any]) -> tuple[bool, str | None]:
@@ -204,7 +210,10 @@ def enrich_spec_file(
             use_language_tool=True,
         )
 
-        target_fields = config.get("target_fields", ["description", "summary", "title", "x-displayname"])
+        target_fields = config.get(
+            "target_fields",
+            ["description", "summary", "title", "x-displayname"],
+        )
 
         # Apply enrichments in order
         # 1. Branding transformations first (most specific)
@@ -232,7 +241,7 @@ def enrich_spec_file(
         grammar_improver.close()
 
         # Run consistency validation (read-only, generates report)
-        consistency_issues = consistency_validator.validate(spec)
+        consistency_validator.validate(spec)
 
         # Validate branding was applied correctly
         branding_validator = BrandingValidator()
@@ -327,10 +336,7 @@ def enrich_all_specs(
     continue_on_error = processing_config.get("continue_on_error", True)
 
     # Prepare arguments for processing
-    process_args = [
-        (spec_file, output_dir / spec_file.name, config)
-        for spec_file in spec_files
-    ]
+    process_args = [(spec_file, output_dir / spec_file.name, config) for spec_file in spec_files]
 
     with Progress(
         SpinnerColumn(),
@@ -400,7 +406,7 @@ def _update_stats(stats: EnrichmentStats, result: EnrichmentResult) -> None:
 def generate_report(stats: EnrichmentStats, output_path: Path) -> None:
     """Generate enrichment report."""
     report = {
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": datetime.now(tz=timezone.utc).isoformat(),
         "summary": {
             "files_processed": stats.files_processed,
             "files_succeeded": stats.files_succeeded,
@@ -412,8 +418,9 @@ def generate_report(stats: EnrichmentStats, output_path: Path) -> None:
     }
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_path, "w") as f:
+    with output_path.open("w") as f:
         json.dump(report, f, indent=2)
+        f.write("\n")
 
     console.print(f"[green]Report saved to {output_path}[/green]")
 
@@ -438,6 +445,18 @@ def print_summary(stats: EnrichmentStats) -> None:
             console.print(f"  - {error['file']}: {error['error'][:100]}...")
         if len(stats.errors) > 10:
             console.print(f"  ... and {len(stats.errors) - 10} more errors")
+
+
+def _validate_single_spec_file(spec_file: Path) -> tuple[bool, str]:
+    """Validate a single spec file and return result with error message if any."""
+    try:
+        spec = load_spec(spec_file)
+        valid, error = validate_spec(spec)
+        if valid:
+            return True, ""
+        return False, f"Invalid: {spec_file.name}: {error}"
+    except Exception as e:
+        return False, f"Error: {spec_file.name}: {e}"
 
 
 def main() -> int:
@@ -497,13 +516,15 @@ def main() -> int:
     if args.workers:
         config["processing"]["parallel_workers"] = args.workers
 
-    console.print(f"[bold blue]F5 XC API Specification Enrichment[/bold blue]")
+    console.print("[bold blue]F5 XC API Specification Enrichment[/bold blue]")
     console.print(f"  Input:  {input_dir}")
     console.print(f"  Output: {output_dir}")
 
     if not input_dir.exists():
         console.print(f"[red]Input directory not found: {input_dir}[/red]")
-        console.print("[yellow]Run 'python scripts/download.py' first to download specifications[/yellow]")
+        console.print(
+            "[yellow]Run 'python scripts/download.py' first to download specifications[/yellow]",
+        )
         return 1
 
     if args.validate_only:
@@ -513,17 +534,12 @@ def main() -> int:
         passed = 0
         failed = 0
         for spec_file in spec_files:
-            try:
-                spec = load_spec(spec_file)
-                valid, error = validate_spec(spec)
-                if valid:
-                    passed += 1
-                else:
-                    failed += 1
-                    console.print(f"[red]Invalid: {spec_file.name}: {error}[/red]")
-            except Exception as e:
+            is_valid, error_msg = _validate_single_spec_file(spec_file)
+            if is_valid:
+                passed += 1
+            else:
                 failed += 1
-                console.print(f"[red]Error: {spec_file.name}: {e}[/red]")
+                console.print(f"[red]{error_msg}[/red]")
         console.print(f"\n[green]Passed: {passed}[/green], [red]Failed: {failed}[/red]")
         return 0 if failed == 0 else 1
 
@@ -547,7 +563,9 @@ def main() -> int:
         console.print(f"\n[yellow]Completed with {stats.files_failed} failures[/yellow]")
         return 1 if not config.get("processing", {}).get("continue_on_error", True) else 0
 
-    console.print(f"\n[bold green]Successfully enriched {stats.files_succeeded} specifications![/bold green]")
+    console.print(
+        f"\n[bold green]Successfully enriched {stats.files_succeeded} specifications![/bold green]",
+    )
     return 0
 
 

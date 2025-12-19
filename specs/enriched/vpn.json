@@ -30,7 +30,16 @@
       "ApiToken": []
     }
   ],
-  "tags": [],
+  "tags": [
+    {
+      "name": "Other",
+      "description": "Miscellaneous operations"
+    },
+    {
+      "name": "VPN",
+      "description": "IPSec VPN, IKE configuration, and tunnel management"
+    }
+  ],
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/ike1s": {
       "post": {
@@ -53,6 +62,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -63,6 +73,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -73,6 +84,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -83,6 +95,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -93,6 +106,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -103,6 +117,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -113,6 +128,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -123,6 +139,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -156,7 +173,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ike1-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.ike1.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.ike1.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "IKE Phase 1 Profile.",
       "x-ves-proto-service": "ves.io.schema.ike1.API",
@@ -183,6 +203,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -193,6 +214,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -203,6 +225,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -213,6 +236,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -223,6 +247,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -233,6 +258,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -243,6 +269,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -253,6 +280,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -297,7 +325,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ike1-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.ike1.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.ike1.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "IKE Phase 1 Profile.",
       "x-ves-proto-service": "ves.io.schema.ike1.API",
@@ -324,6 +355,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -334,6 +366,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -344,6 +377,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -354,6 +388,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -364,6 +399,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -374,6 +410,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -384,6 +421,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -394,6 +432,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -456,7 +495,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ike1-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.ike1.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.ike1.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "IKE Phase 1 Profile.",
       "x-ves-proto-service": "ves.io.schema.ike1.API",
@@ -483,6 +525,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -493,6 +536,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -503,6 +547,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -513,6 +558,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -523,6 +569,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -533,6 +580,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -543,6 +591,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -553,6 +602,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -607,7 +657,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ike1-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.ike1.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.ike1.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE IKE Phase 1 Profile.",
@@ -627,6 +680,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -637,6 +691,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -647,6 +702,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -657,6 +713,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -667,6 +724,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -677,6 +735,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -687,6 +746,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -697,6 +757,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -741,7 +802,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ike1-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.ike1.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.ike1.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "IKE Phase 1 Profile.",
       "x-ves-proto-service": "ves.io.schema.ike1.API",
@@ -768,6 +832,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -778,6 +843,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -788,6 +854,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -798,6 +865,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -808,6 +876,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -818,6 +887,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -828,6 +898,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -838,6 +909,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -871,7 +943,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-ike_phase1_profile-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.ike_phase1_profile.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.views.ike_phase1_profile.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "IKE Phase 1 Profile.",
       "x-ves-proto-service": "ves.io.schema.views.ike_phase1_profile.API",
@@ -898,6 +973,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -908,6 +984,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -918,6 +995,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -928,6 +1006,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -938,6 +1017,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -948,6 +1028,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -958,6 +1039,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -968,6 +1050,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1012,7 +1095,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-ike_phase1_profile-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.ike_phase1_profile.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.views.ike_phase1_profile.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "IKE Phase 1 Profile.",
       "x-ves-proto-service": "ves.io.schema.views.ike_phase1_profile.API",
@@ -1039,6 +1125,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1049,6 +1136,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1059,6 +1147,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1069,6 +1158,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1079,6 +1169,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1089,6 +1180,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1099,6 +1191,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1109,6 +1202,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1171,7 +1265,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-ike_phase1_profile-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.ike_phase1_profile.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.views.ike_phase1_profile.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "IKE Phase 1 Profile.",
       "x-ves-proto-service": "ves.io.schema.views.ike_phase1_profile.API",
@@ -1198,6 +1295,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1208,6 +1306,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1218,6 +1317,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1228,6 +1328,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1238,6 +1339,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1248,6 +1350,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1258,6 +1361,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1268,6 +1372,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1322,7 +1427,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-ike_phase1_profile-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.ike_phase1_profile.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.ike_phase1_profile.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE IKE Phase 1 Profile.",
@@ -1342,6 +1450,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1352,6 +1461,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1362,6 +1472,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1372,6 +1483,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1382,6 +1494,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1392,6 +1505,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1402,6 +1516,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1412,6 +1527,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1456,7 +1572,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-ike_phase1_profile-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.ike_phase1_profile.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.views.ike_phase1_profile.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "IKE Phase 1 Profile.",
       "x-ves-proto-service": "ves.io.schema.views.ike_phase1_profile.API",
@@ -1483,6 +1602,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1493,6 +1613,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1503,6 +1624,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1513,6 +1635,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1523,6 +1646,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1533,6 +1657,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1543,6 +1668,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1553,6 +1679,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1586,7 +1713,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ike2-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.ike2.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.ike2.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "IKE Phase 2 Profile.",
       "x-ves-proto-service": "ves.io.schema.ike2.API",
@@ -1613,6 +1743,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1623,6 +1754,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1633,6 +1765,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1643,6 +1776,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1653,6 +1787,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1663,6 +1798,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1673,6 +1809,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1683,6 +1820,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1727,7 +1865,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ike2-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.ike2.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.ike2.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "IKE Phase 2 Profile.",
       "x-ves-proto-service": "ves.io.schema.ike2.API",
@@ -1754,6 +1895,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1764,6 +1906,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1774,6 +1917,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1784,6 +1928,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1794,6 +1939,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1804,6 +1950,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1814,6 +1961,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1824,6 +1972,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1886,7 +2035,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ike2-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.ike2.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.ike2.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "IKE Phase 2 Profile.",
       "x-ves-proto-service": "ves.io.schema.ike2.API",
@@ -1913,6 +2065,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1923,6 +2076,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1933,6 +2087,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1943,6 +2098,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1953,6 +2109,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1963,6 +2120,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1973,6 +2131,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1983,6 +2142,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2037,7 +2197,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ike2-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.ike2.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.ike2.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE IKE Phase 2 Profile.",
@@ -2057,6 +2220,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2067,6 +2231,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2077,6 +2242,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2087,6 +2253,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2097,6 +2264,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2107,6 +2275,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2117,6 +2286,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2127,6 +2297,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2171,7 +2342,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-ike2-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.ike2.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.ike2.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "IKE Phase 2 Profile.",
       "x-ves-proto-service": "ves.io.schema.ike2.API",
@@ -2198,6 +2372,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2208,6 +2383,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2218,6 +2394,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2228,6 +2405,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2238,6 +2416,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2248,6 +2427,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2258,6 +2438,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2268,6 +2449,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2301,7 +2483,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-ike_phase2_profile-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.ike_phase2_profile.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.views.ike_phase2_profile.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "IKE Phase 2 Profile.",
       "x-ves-proto-service": "ves.io.schema.views.ike_phase2_profile.API",
@@ -2328,6 +2513,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2338,6 +2524,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2348,6 +2535,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2358,6 +2546,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2368,6 +2557,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2378,6 +2568,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2388,6 +2579,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2398,6 +2590,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2442,7 +2635,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-ike_phase2_profile-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.ike_phase2_profile.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.views.ike_phase2_profile.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "IKE Phase 2 Profile.",
       "x-ves-proto-service": "ves.io.schema.views.ike_phase2_profile.API",
@@ -2469,6 +2665,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2479,6 +2676,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2489,6 +2687,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2499,6 +2698,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2509,6 +2709,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2519,6 +2720,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2529,6 +2731,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2539,6 +2742,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2601,7 +2805,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-ike_phase2_profile-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.ike_phase2_profile.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.views.ike_phase2_profile.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "IKE Phase 2 Profile.",
       "x-ves-proto-service": "ves.io.schema.views.ike_phase2_profile.API",
@@ -2628,6 +2835,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2638,6 +2846,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2648,6 +2857,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2658,6 +2868,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2668,6 +2879,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2678,6 +2890,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2688,6 +2901,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2698,6 +2912,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2752,7 +2967,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-ike_phase2_profile-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.ike_phase2_profile.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.ike_phase2_profile.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE IKE Phase 2 Profile.",
@@ -2772,6 +2990,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2782,6 +3001,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2792,6 +3012,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2802,6 +3023,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2812,6 +3034,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2822,6 +3045,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2832,6 +3056,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2842,6 +3067,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2886,7 +3112,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-ike_phase2_profile-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.ike_phase2_profile.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.views.ike_phase2_profile.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "IKE Phase 2 Profile.",
       "x-ves-proto-service": "ves.io.schema.views.ike_phase2_profile.API",
@@ -2913,6 +3142,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2923,6 +3153,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2933,6 +3164,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2943,6 +3175,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2953,6 +3186,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2963,6 +3197,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2973,6 +3208,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2983,6 +3219,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3016,7 +3253,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tunnel-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tunnel.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.tunnel.API.Create",
+        "tags": [
+          "VPN"
+        ]
       },
       "x-displayname": "Tunnel",
       "x-ves-proto-service": "ves.io.schema.tunnel.API",
@@ -3043,6 +3283,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3053,6 +3294,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3063,6 +3305,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3073,6 +3316,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3083,6 +3327,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3093,6 +3338,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3103,6 +3349,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3113,6 +3360,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3157,7 +3405,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tunnel-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tunnel.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.tunnel.API.Replace",
+        "tags": [
+          "VPN"
+        ]
       },
       "x-displayname": "Tunnel",
       "x-ves-proto-service": "ves.io.schema.tunnel.API",
@@ -3184,6 +3435,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3194,6 +3446,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3204,6 +3457,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3214,6 +3468,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3224,6 +3479,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3234,6 +3490,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3244,6 +3501,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3254,6 +3512,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3316,7 +3575,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tunnel-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tunnel.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.tunnel.API.List",
+        "tags": [
+          "VPN"
+        ]
       },
       "x-displayname": "Tunnel",
       "x-ves-proto-service": "ves.io.schema.tunnel.API",
@@ -3343,6 +3605,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3353,6 +3616,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3363,6 +3627,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3373,6 +3638,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3383,6 +3649,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3393,6 +3660,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3403,6 +3671,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3413,6 +3682,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3467,7 +3737,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tunnel-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tunnel.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.tunnel.API.Get",
+        "tags": [
+          "VPN"
+        ]
       },
       "delete": {
         "summary": "DELETE Tunnel.",
@@ -3487,6 +3760,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3497,6 +3771,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3507,6 +3782,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3517,6 +3793,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3527,6 +3804,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3537,6 +3815,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3547,6 +3826,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3557,6 +3837,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3601,7 +3882,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-tunnel-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.tunnel.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.tunnel.API.Delete",
+        "tags": [
+          "VPN"
+        ]
       },
       "x-displayname": "Tunnel",
       "x-ves-proto-service": "ves.io.schema.tunnel.API",

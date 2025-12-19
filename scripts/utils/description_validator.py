@@ -19,7 +19,7 @@ class DescriptionValidator:
     generates placeholder descriptions from operationId or schema name.
     """
 
-    def __init__(self, config_path: Path | None = None):
+    def __init__(self, config_path: Path | None = None) -> None:
         """Initialize with configuration from file.
 
         Args:
@@ -46,15 +46,17 @@ class DescriptionValidator:
         if not config_path.exists():
             return
 
-        with open(config_path) as f:
+        with config_path.open() as f:
             config = yaml.safe_load(f) or {}
 
         desc_config = config.get("description_validation", {})
         self._auto_generate_operation_descriptions = desc_config.get(
-            "auto_generate_operation_descriptions", True
+            "auto_generate_operation_descriptions",
+            True,
         )
         self._auto_generate_schema_descriptions = desc_config.get(
-            "auto_generate_schema_descriptions", False
+            "auto_generate_schema_descriptions",
+            False,
         )
         self._description_prefix = desc_config.get("description_prefix", "")
 
@@ -94,7 +96,16 @@ class DescriptionValidator:
 
             for method, operation in path_item.items():
                 # Skip non-operation keys
-                if method.lower() not in ("get", "post", "put", "patch", "delete", "head", "options", "trace"):
+                if method.lower() not in (
+                    "get",
+                    "post",
+                    "put",
+                    "patch",
+                    "delete",
+                    "head",
+                    "options",
+                    "trace",
+                ):
                     continue
 
                 if not isinstance(operation, dict):
@@ -109,7 +120,9 @@ class DescriptionValidator:
                         # Try to generate from operationId
                         operation_id = operation.get("operationId", "")
                         generated = self._generate_description_from_operation_id(
-                            operation_id, method, path
+                            operation_id,
+                            method,
+                            path,
                         )
                         if generated:
                             operation["description"] = self._description_prefix + generated
@@ -181,8 +194,8 @@ class DescriptionValidator:
 
         # Handle camelCase: getUserById -> Get user by ID
         # Split on uppercase letters
-        words = re.sub(r'([a-z])([A-Z])', r'\1 \2', operation_id)
-        words = re.sub(r'([A-Z]+)([A-Z][a-z])', r'\1 \2', words)
+        words = re.sub(r"([a-z])([A-Z])", r"\1 \2", operation_id)
+        words = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1 \2", words)
 
         # Split and clean
         word_list = words.split()
@@ -260,12 +273,12 @@ class DescriptionValidator:
         ]
         for prefix in prefixes_to_remove:
             if name.lower().startswith(prefix):
-                name = name[len(prefix):]
+                name = name[len(prefix) :]
                 break
 
         # Split camelCase
-        words = re.sub(r'([a-z])([A-Z])', r'\1 \2', name)
-        words = re.sub(r'([A-Z]+)([A-Z][a-z])', r'\1 \2', words)
+        words = re.sub(r"([a-z])([A-Z])", r"\1 \2", name)
+        words = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1 \2", words)
 
         word_list = words.split()
         if not word_list:
@@ -403,7 +416,7 @@ class DescriptionValidator:
         Returns:
             Dictionary with lists of missing descriptions.
         """
-        missing = {
+        missing: dict[str, list[dict[str, str]]] = {
             "operations": [],
             "schemas": [],
         }
@@ -414,7 +427,16 @@ class DescriptionValidator:
                 continue
 
             for method, operation in path_item.items():
-                if method.lower() not in ("get", "post", "put", "patch", "delete", "head", "options", "trace"):
+                if method.lower() not in (
+                    "get",
+                    "post",
+                    "put",
+                    "patch",
+                    "delete",
+                    "head",
+                    "options",
+                    "trace",
+                ):
                     continue
 
                 if not isinstance(operation, dict):
@@ -422,11 +444,13 @@ class DescriptionValidator:
 
                 description = operation.get("description")
                 if not description or not description.strip():
-                    missing["operations"].append({
-                        "path": path,
-                        "method": method.upper(),
-                        "operationId": operation.get("operationId", ""),
-                    })
+                    missing["operations"].append(
+                        {
+                            "path": path,
+                            "method": method.upper(),
+                            "operationId": operation.get("operationId", ""),
+                        },
+                    )
 
         # Check schemas
         for schema_name, schema_def in spec.get("components", {}).get("schemas", {}).items():
@@ -437,9 +461,11 @@ class DescriptionValidator:
 
             description = schema_def.get("description")
             if not description or not description.strip():
-                missing["schemas"].append({
-                    "name": schema_name,
-                    "type": schema_def.get("type", "unknown"),
-                })
+                missing["schemas"].append(
+                    {
+                        "name": schema_name,
+                        "type": schema_def.get("type", "unknown"),
+                    },
+                )
 
         return missing

@@ -7,7 +7,7 @@ Fully automated - no manual intervention required.
 
 import re
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 import yaml
 
@@ -19,7 +19,7 @@ class BrandingTransformer:
     Loads rules from config/enrichment.yaml.
     """
 
-    def __init__(self, config_path: Path | None = None):
+    def __init__(self, config_path: Path | None = None) -> None:
         """Initialize with branding rules from config file.
 
         Args:
@@ -40,14 +40,32 @@ class BrandingTransformer:
         if not config_path.exists():
             # Use default rules if config doesn't exist
             self.replacements = [
-                {"pattern": r"\bVolterra\b", "replacement": "F5 Distributed Cloud", "case_sensitive": True},
-                {"pattern": r"\bvolterra\b", "replacement": "F5 Distributed Cloud", "case_sensitive": False},
-                {"pattern": r"\bves\.io\b", "replacement": "F5 XC", "case_sensitive": False, "context": "description"},
+                {
+                    "pattern": r"\bVolterra\b",
+                    "replacement": "F5 Distributed Cloud",
+                    "case_sensitive": True,
+                },
+                {
+                    "pattern": r"\bvolterra\b",
+                    "replacement": "F5 Distributed Cloud",
+                    "case_sensitive": False,
+                },
+                {
+                    "pattern": r"\bves\.io\b",
+                    "replacement": "F5 XC",
+                    "case_sensitive": False,
+                    "context": "description",
+                },
             ]
-            self._preserve_fields = {"operationId", "$ref", "x-ves-proto-rpc", "x-ves-proto-service"}
+            self._preserve_fields = {
+                "operationId",
+                "$ref",
+                "x-ves-proto-rpc",
+                "x-ves-proto-service",
+            }
             return
 
-        with open(config_path) as f:
+        with config_path.open() as f:
             config = yaml.safe_load(f) or {}
 
         branding = config.get("branding", {})
@@ -88,9 +106,8 @@ class BrandingTransformer:
 
         for pattern, replacement, context in self._compiled_patterns:
             # Skip if context is specified and doesn't match field name
-            if context is not None and field_name is not None:
-                if field_name != context:
-                    continue
+            if context is not None and field_name is not None and field_name != context:
+                continue
 
             result = pattern.sub(replacement, result)
 
@@ -137,13 +154,9 @@ class BrandingTransformer:
                 else:
                     result[key] = self._transform_recursive(value, target_fields, new_path)
             return result
-        elif isinstance(obj, list):
-            return [
-                self._transform_recursive(item, target_fields, current_path)
-                for item in obj
-            ]
-        else:
-            return obj
+        if isinstance(obj, list):
+            return [self._transform_recursive(item, target_fields, current_path) for item in obj]
+        return obj
 
     def get_stats(self) -> dict[str, int]:
         """Return statistics about loaded branding rules."""
@@ -161,18 +174,17 @@ class BrandingValidator:
     """
 
     # Terms that should not appear after branding transformation
-    LEGACY_TERMS = [
+    LEGACY_TERMS: ClassVar[list[str]] = [
         r"\bVolterra\b",
         r"\bvolterra\b",
         r"\bves\.io\b",
         r"\bVES\b",
     ]
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize validator with legacy term patterns."""
         self._legacy_patterns = [
-            re.compile(pattern, re.IGNORECASE)
-            for pattern in self.LEGACY_TERMS
+            re.compile(pattern, re.IGNORECASE) for pattern in self.LEGACY_TERMS
         ]
 
     def validate_text(self, text: str) -> list[dict[str, Any]]:
@@ -187,14 +199,16 @@ class BrandingValidator:
         if not text or not isinstance(text, str):
             return []
 
-        findings = []
+        findings: list[dict[str, Any]] = []
         for pattern in self._legacy_patterns:
-            for match in pattern.finditer(text):
-                findings.append({
+            findings.extend(
+                {
                     "term": match.group(0),
                     "position": match.start(),
-                    "context": text[max(0, match.start() - 20):match.end() + 20],
-                })
+                    "context": text[max(0, match.start() - 20) : match.end() + 20],
+                }
+                for match in pattern.finditer(text)
+            )
 
         return findings
 
@@ -215,7 +229,7 @@ class BrandingValidator:
         if target_fields is None:
             target_fields = ["description", "summary", "title", "x-displayname"]
 
-        findings = []
+        findings: list[dict[str, Any]] = []
         self._validate_recursive(spec, target_fields, "", findings)
         return findings
 

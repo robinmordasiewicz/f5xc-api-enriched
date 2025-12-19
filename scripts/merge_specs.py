@@ -10,11 +10,10 @@ import json
 import re
 import sys
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-import yaml
 from rich.console import Console
 from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
 from rich.table import Table
@@ -248,15 +247,16 @@ DOMAIN_PATTERNS = {
 
 def load_spec(spec_path: Path) -> dict[str, Any]:
     """Load an OpenAPI specification from JSON file."""
-    with open(spec_path) as f:
+    with spec_path.open() as f:
         return json.load(f)
 
 
 def save_spec(spec: dict[str, Any], output_path: Path, indent: int = 2) -> None:
     """Save an OpenAPI specification to JSON file."""
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_path, "w") as f:
+    with output_path.open("w") as f:
         json.dump(spec, f, indent=indent, ensure_ascii=False)
+        f.write("\n")
 
 
 def categorize_spec(filename: str) -> str:
@@ -322,7 +322,11 @@ def create_base_spec(title: str, description: str, version: str) -> dict[str, An
     }
 
 
-def merge_components(target: dict[str, Any], source: dict[str, Any], prefix: str = "") -> dict[str, int]:
+def merge_components(
+    target: dict[str, Any],
+    source: dict[str, Any],
+    prefix: str = "",
+) -> dict[str, int]:
     """Merge components from source into target with conflict resolution."""
     stats = {"schemas": 0, "responses": 0, "parameters": 0, "requestBodies": 0}
 
@@ -368,7 +372,7 @@ def merge_components(target: dict[str, Any], source: dict[str, Any], prefix: str
     return stats
 
 
-def merge_paths(target: dict[str, Any], source: dict[str, Any], source_name: str) -> int:
+def merge_paths(target: dict[str, Any], source: dict[str, Any]) -> int:
     """Merge paths from source into target."""
     source_paths = source.get("paths", {})
     target_paths = target.setdefault("paths", {})
@@ -400,8 +404,8 @@ def extract_tags(spec: dict[str, Any]) -> list[dict[str, str]]:
             seen_names.add(tag["name"])
 
     # Extract tags from paths
-    for path, path_item in spec.get("paths", {}).items():
-        for method, operation in path_item.items():
+    for path_item in spec.get("paths", {}).values():
+        for operation in path_item.values():
             if isinstance(operation, dict):
                 for tag_name in operation.get("tags", []):
                     if tag_name not in seen_names:
@@ -409,6 +413,25 @@ def extract_tags(spec: dict[str, Any]) -> list[dict[str, str]]:
                         seen_names.add(tag_name)
 
     return tags
+
+
+def _process_single_spec_file(
+    spec_file: Path,
+    merged: dict[str, Any],
+) -> tuple[bool, int, dict[str, int], list[dict[str, str]], str]:
+    """Process a single spec file for merging.
+
+    Returns:
+        Tuple of (success, paths_added, comp_stats, tags, error_message).
+    """
+    try:
+        spec = load_spec(spec_file)
+        paths_added = merge_paths(merged, spec)
+        comp_stats = merge_components(merged, spec)
+        tags = extract_tags(spec)
+        return True, paths_added, comp_stats, tags, ""
+    except Exception as e:
+        return False, 0, {"schemas": 0, "requestBodies": 0}, [], str(e)
 
 
 def merge_specs_by_domain(
@@ -453,25 +476,20 @@ def merge_specs_by_domain(
 
             all_tags = []
             for spec_file in domain_files:
-                try:
-                    spec = load_spec(spec_file)
-
-                    # Merge paths
-                    paths_added = merge_paths(merged, spec, spec_file.stem)
+                success, paths_added, comp_stats, tags, error = _process_single_spec_file(
+                    spec_file,
+                    merged,
+                )
+                if success:
                     stats["paths"] += paths_added
-
-                    # Merge components
-                    comp_stats = merge_components(merged, spec)
                     stats["schemas"] += comp_stats["schemas"]
                     stats["requestBodies"] += comp_stats["requestBodies"]
-
-                    # Collect tags
-                    all_tags.extend(extract_tags(spec))
-
+                    all_tags.extend(tags)
                     stats["specs"] += 1
-
-                except Exception as e:
-                    console.print(f"[yellow]Warning: Failed to merge {spec_file.name}: {e}[/yellow]")
+                else:
+                    console.print(
+                        f"[yellow]Warning: Failed to merge {spec_file.name}: {error}[/yellow]",
+                    )
 
             # Deduplicate and sort tags
             seen_tag_names = set()
@@ -517,7 +535,7 @@ def create_master_spec(
     )
 
     all_tags = []
-    for domain, spec in merged_specs.items():
+    for spec in merged_specs.values():
         # Merge paths with domain prefix in tags
         for path, path_item in spec.get("paths", {}).items():
             if path not in master["paths"]:
@@ -551,9 +569,9 @@ def create_spec_index(
     version: str,
 ) -> None:
     """Create an index file listing all available specifications."""
-    index = {
+    index: dict[str, Any] = {
         "version": version,
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": datetime.now(tz=timezone.utc).isoformat(),
         "specifications": [],
     }
 
@@ -561,17 +579,20 @@ def create_spec_index(
         info = spec.get("info", {})
         paths = spec.get("paths", {})
 
-        index["specifications"].append({
-            "domain": domain,
-            "title": info.get("title", ""),
-            "description": info.get("description", ""),
-            "file": f"{domain}.json",
-            "path_count": len(paths),
-            "schema_count": len(spec.get("components", {}).get("schemas", {})),
-        })
+        index["specifications"].append(
+            {
+                "domain": domain,
+                "title": info.get("title", ""),
+                "description": info.get("description", ""),
+                "file": f"{domain}.json",
+                "path_count": len(paths),
+                "schema_count": len(spec.get("components", {}).get("schemas", {})),
+            },
+        )
 
-    with open(output_path, "w") as f:
+    with output_path.open("w") as f:
         json.dump(index, f, indent=2)
+        f.write("\n")
 
     console.print(f"[green]Created spec index at {output_path}[/green]")
 
@@ -581,7 +602,7 @@ def get_version() -> str:
     version_file = Path(".version")
     if version_file.exists():
         return version_file.read_text().strip()
-    return datetime.now().strftime("%Y.%m.%d")
+    return datetime.now(tz=timezone.utc).strftime("%Y.%m.%d")
 
 
 def main() -> int:
@@ -647,7 +668,7 @@ def main() -> int:
     index_path = args.output_dir / "index.json"
     create_spec_index(merged_specs, index_path, version)
 
-    console.print(f"\n[bold green]Successfully merged specifications![/bold green]")
+    console.print("\n[bold green]Successfully merged specifications![/bold green]")
     console.print(f"  Domains: {len(merged_specs)}")
     console.print(f"  Output:  {args.output_dir}")
 

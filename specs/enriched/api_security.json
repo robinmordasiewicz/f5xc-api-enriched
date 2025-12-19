@@ -30,7 +30,16 @@
       "ApiToken": []
     }
   ],
-  "tags": [],
+  "tags": [
+    {
+      "name": "API Security",
+      "description": "API security, discovery, testing, and protection operations"
+    },
+    {
+      "name": "Other",
+      "description": "Miscellaneous operations"
+    }
+  ],
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/api_crawlers": {
       "post": {
@@ -52,6 +61,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -62,6 +72,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -72,6 +83,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -82,6 +94,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -92,6 +105,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -102,6 +116,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -112,6 +127,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -122,6 +138,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -155,7 +172,11 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-api_crawler-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_crawler.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_crawler.API.Create",
+        "tags": [
+          "Other"
+        ],
+        "description": "Create API crawler."
       },
       "x-displayname": "API Crawler.",
       "x-ves-proto-service": "ves.io.schema.api_sec.api_crawler.API",
@@ -181,6 +202,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -191,6 +213,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -201,6 +224,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -211,6 +235,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -221,6 +246,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -231,6 +257,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -241,6 +268,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -251,6 +279,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -295,7 +324,11 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-api_crawler-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_crawler.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_crawler.API.Replace",
+        "tags": [
+          "Other"
+        ],
+        "description": "Replace API crawler."
       },
       "x-displayname": "API Crawler.",
       "x-ves-proto-service": "ves.io.schema.api_sec.api_crawler.API",
@@ -322,6 +355,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -332,6 +366,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -342,6 +377,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -352,6 +388,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -362,6 +399,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -372,6 +410,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -382,6 +421,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -392,6 +432,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -454,7 +495,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-api_crawler-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_crawler.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_crawler.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "API Crawler.",
       "x-ves-proto-service": "ves.io.schema.api_sec.api_crawler.API",
@@ -480,6 +524,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -490,6 +535,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -500,6 +546,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -510,6 +557,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -520,6 +568,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -530,6 +579,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -540,6 +590,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -550,6 +601,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -604,7 +656,11 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-api_crawler-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_crawler.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_crawler.API.Get",
+        "tags": [
+          "Other"
+        ],
+        "description": "Get API crawler."
       },
       "delete": {
         "summary": "DELETE API Crawler.",
@@ -624,6 +680,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -634,6 +691,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -644,6 +702,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -654,6 +713,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -664,6 +724,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -674,6 +735,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -684,6 +746,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -694,6 +757,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -738,7 +802,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-api_crawler-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_crawler.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_crawler.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "API Crawler.",
       "x-ves-proto-service": "ves.io.schema.api_sec.api_crawler.API",
@@ -765,6 +832,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -775,6 +843,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -785,6 +854,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -795,6 +865,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -805,6 +876,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -815,6 +887,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -825,6 +898,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -835,6 +909,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -868,7 +943,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-api_discovery-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_discovery.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_discovery.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "API Discovery.",
       "x-ves-proto-service": "ves.io.schema.api_sec.api_discovery.API",
@@ -895,6 +973,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -905,6 +984,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -915,6 +995,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -925,6 +1006,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -935,6 +1017,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -945,6 +1028,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -955,6 +1039,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -965,6 +1050,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1009,7 +1095,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-api_discovery-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_discovery.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_discovery.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "API Discovery.",
       "x-ves-proto-service": "ves.io.schema.api_sec.api_discovery.API",
@@ -1036,6 +1125,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1046,6 +1136,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1056,6 +1147,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1066,6 +1158,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1076,6 +1169,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1086,6 +1180,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1096,6 +1191,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1106,6 +1202,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1168,7 +1265,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-api_discovery-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_discovery.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_discovery.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "API Discovery.",
       "x-ves-proto-service": "ves.io.schema.api_sec.api_discovery.API",
@@ -1195,6 +1295,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1205,6 +1306,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1215,6 +1317,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1225,6 +1328,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1235,6 +1339,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1245,6 +1350,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1255,6 +1361,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1265,6 +1372,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1319,7 +1427,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-api_discovery-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_discovery.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_discovery.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE API Discovery.",
@@ -1339,6 +1450,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1349,6 +1461,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1359,6 +1472,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1369,6 +1483,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1379,6 +1494,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1389,6 +1505,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1399,6 +1516,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1409,6 +1527,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1453,7 +1572,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-api_discovery-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_discovery.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_discovery.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "API Discovery.",
       "x-ves-proto-service": "ves.io.schema.api_sec.api_discovery.API",
@@ -1480,6 +1602,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1490,6 +1613,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1500,6 +1624,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1510,6 +1635,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1520,6 +1646,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1530,6 +1657,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1540,6 +1668,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1550,6 +1679,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1612,7 +1742,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_group-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_group.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.api_group.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "API Group",
       "x-ves-proto-service": "ves.io.schema.api_group.API",
@@ -1639,6 +1772,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1649,6 +1783,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1659,6 +1794,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1669,6 +1805,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1679,6 +1816,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1689,6 +1827,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1699,6 +1838,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1709,6 +1849,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1761,7 +1902,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_group-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_group.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.api_group.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "API Group",
       "x-ves-proto-service": "ves.io.schema.api_group.API",
@@ -1788,6 +1932,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1798,6 +1943,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1808,6 +1954,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1818,6 +1965,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1828,6 +1976,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1838,6 +1987,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1848,6 +1998,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1858,6 +2009,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1920,7 +2072,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_group_element-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_group_element.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.api_group_element.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "API Group Element.",
       "x-ves-proto-service": "ves.io.schema.api_group_element.API",
@@ -1947,6 +2102,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1957,6 +2113,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1967,6 +2124,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1977,6 +2135,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1987,6 +2146,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1997,6 +2157,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2007,6 +2168,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2017,6 +2179,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2069,7 +2232,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_group_element-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_group_element.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.api_group_element.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "API Group Element.",
       "x-ves-proto-service": "ves.io.schema.api_group_element.API",
@@ -2095,6 +2261,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2105,6 +2272,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2115,6 +2283,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2125,6 +2294,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2135,6 +2305,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2145,6 +2316,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2155,6 +2327,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2165,6 +2338,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2198,7 +2372,11 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-api_testing-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_testing.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_testing.API.Create",
+        "tags": [
+          "Other"
+        ],
+        "description": "Create API testing."
       },
       "x-displayname": "API Testing.",
       "x-ves-proto-service": "ves.io.schema.api_sec.api_testing.API",
@@ -2224,6 +2402,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2234,6 +2413,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2244,6 +2424,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2254,6 +2435,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2264,6 +2446,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2274,6 +2457,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2284,6 +2468,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2294,6 +2479,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2338,7 +2524,11 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-api_testing-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_testing.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_testing.API.Replace",
+        "tags": [
+          "Other"
+        ],
+        "description": "Replace API testing."
       },
       "x-displayname": "API Testing.",
       "x-ves-proto-service": "ves.io.schema.api_sec.api_testing.API",
@@ -2365,6 +2555,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2375,6 +2566,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2385,6 +2577,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2395,6 +2588,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2405,6 +2599,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2415,6 +2610,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2425,6 +2621,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2435,6 +2632,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2497,7 +2695,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-api_testing-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_testing.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_testing.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "API Testing.",
       "x-ves-proto-service": "ves.io.schema.api_sec.api_testing.API",
@@ -2523,6 +2724,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2533,6 +2735,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2543,6 +2746,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2553,6 +2757,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2563,6 +2768,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2573,6 +2779,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2583,6 +2790,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2593,6 +2801,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2647,7 +2856,11 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-api_testing-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_testing.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_testing.API.Get",
+        "tags": [
+          "Other"
+        ],
+        "description": "Get API testing."
       },
       "delete": {
         "summary": "DELETE API Testing.",
@@ -2667,6 +2880,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2677,6 +2891,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2687,6 +2902,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2697,6 +2913,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2707,6 +2924,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2717,6 +2935,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2727,6 +2946,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2737,6 +2957,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2781,7 +3002,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-api_testing-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_testing.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.api_testing.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "API Testing.",
       "x-ves-proto-service": "ves.io.schema.api_sec.api_testing.API",
@@ -2808,6 +3032,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2818,6 +3043,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2828,6 +3054,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2838,6 +3065,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2848,6 +3076,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2858,6 +3087,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2868,6 +3098,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2878,6 +3109,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2911,7 +3143,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-app_api_group-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "App API Group.",
       "x-ves-proto-service": "ves.io.schema.views.app_api_group.API",
@@ -2938,6 +3173,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2948,6 +3184,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2958,6 +3195,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2968,6 +3206,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2978,6 +3217,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2988,6 +3228,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2998,6 +3239,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3008,6 +3250,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3052,7 +3295,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-app_api_group-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "App API Group.",
       "x-ves-proto-service": "ves.io.schema.views.app_api_group.API",
@@ -3079,6 +3325,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3089,6 +3336,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3099,6 +3347,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3109,6 +3358,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3119,6 +3369,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3129,6 +3380,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3139,6 +3391,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3149,6 +3402,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3211,7 +3465,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-app_api_group-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "App API Group.",
       "x-ves-proto-service": "ves.io.schema.views.app_api_group.API",
@@ -3238,6 +3495,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3248,6 +3506,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3258,6 +3517,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3268,6 +3528,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3278,6 +3539,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3288,6 +3550,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3298,6 +3561,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3308,6 +3572,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3341,7 +3606,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-app_api_group-customapi-evaluateapigroup"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.CustomAPI.EvaluateApiGroup"
+        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.CustomAPI.EvaluateApiGroup",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "App API Group.",
       "x-ves-proto-service": "ves.io.schema.views.app_api_group.CustomAPI",
@@ -3368,6 +3636,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3378,6 +3647,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3388,6 +3658,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3398,6 +3669,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3408,6 +3680,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3418,6 +3691,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3428,6 +3702,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3438,6 +3713,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3471,7 +3747,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-app_api_group-customapi-getapigroupsstats"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.CustomAPI.GetApiGroupsStats"
+        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.CustomAPI.GetApiGroupsStats",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "App API Group.",
       "x-ves-proto-service": "ves.io.schema.views.app_api_group.CustomAPI",
@@ -3498,6 +3777,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3508,6 +3788,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3518,6 +3799,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3528,6 +3810,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3538,6 +3821,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3548,6 +3832,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3558,6 +3843,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3568,6 +3854,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3622,7 +3909,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-app_api_group-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE App API Group.",
@@ -3642,6 +3932,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3652,6 +3943,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3662,6 +3954,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3672,6 +3965,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3682,6 +3976,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3692,6 +3987,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3702,6 +3998,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3712,6 +4009,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3756,7 +4054,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-app_api_group-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.views.app_api_group.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "App API Group.",
       "x-ves-proto-service": "ves.io.schema.views.app_api_group.API",
@@ -3783,6 +4084,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3793,6 +4095,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3803,6 +4106,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3813,6 +4117,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3823,6 +4128,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3833,6 +4139,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3843,6 +4150,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3853,6 +4161,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3886,7 +4195,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-rule_suggestion-rulesuggestionapi-getsuggestedapiendpointprotectionrule"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI.GetSuggestedAPIEndpointProtectionRule"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI.GetSuggestedAPIEndpointProtectionRule",
+        "tags": [
+          "API Security"
+        ]
       },
       "x-displayname": "Application Security Monitoring APIs.",
       "x-ves-proto-service": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI",
@@ -3913,6 +4225,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3923,6 +4236,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3933,6 +4247,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3943,6 +4258,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3953,6 +4269,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3963,6 +4280,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3973,6 +4291,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3983,6 +4302,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4016,7 +4336,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-rule_suggestion-rulesuggestionapi-getsuggestedsensitivedatarule"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI.GetSuggestedSensitiveDataRule"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI.GetSuggestedSensitiveDataRule",
+        "tags": [
+          "API Security"
+        ]
       },
       "x-displayname": "Application Security Monitoring APIs.",
       "x-ves-proto-service": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI",
@@ -4043,6 +4366,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4053,6 +4377,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4063,6 +4388,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4073,6 +4399,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4083,6 +4410,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4093,6 +4421,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4103,6 +4432,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4113,6 +4443,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4146,7 +4477,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-rule_suggestion-rulesuggestionapi-getsuggestedoasvalidationrule"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI.GetSuggestedOasValidationRule"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI.GetSuggestedOasValidationRule",
+        "tags": [
+          "API Security"
+        ]
       },
       "x-displayname": "Application Security Monitoring APIs.",
       "x-ves-proto-service": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI",
@@ -4173,6 +4507,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4183,6 +4518,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4193,6 +4529,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4203,6 +4540,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4213,6 +4551,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4223,6 +4562,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4233,6 +4573,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4243,6 +4584,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4276,7 +4618,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-rule_suggestion-rulesuggestionapi-getsuggestedratelimitrule"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI.GetSuggestedRateLimitRule"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI.GetSuggestedRateLimitRule",
+        "tags": [
+          "API Security"
+        ]
       },
       "x-displayname": "Application Security Monitoring APIs.",
       "x-ves-proto-service": "ves.io.schema.api_sec.rule_suggestion.RuleSuggestionAPI",
@@ -4303,6 +4648,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4313,6 +4659,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4323,6 +4670,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4333,6 +4681,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4343,6 +4692,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4353,6 +4703,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4363,6 +4714,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4373,6 +4725,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4406,7 +4759,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-code_base_integration-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.code_base_integration.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.code_base_integration.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Code Base Integration.",
       "x-ves-proto-service": "ves.io.schema.api_sec.code_base_integration.API",
@@ -4433,6 +4789,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4443,6 +4800,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4453,6 +4811,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4463,6 +4822,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4473,6 +4833,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4483,6 +4844,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4493,6 +4855,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4503,6 +4866,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4547,7 +4911,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-code_base_integration-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.code_base_integration.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.code_base_integration.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Code Base Integration.",
       "x-ves-proto-service": "ves.io.schema.api_sec.code_base_integration.API",
@@ -4574,6 +4941,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4584,6 +4952,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4594,6 +4963,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4604,6 +4974,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4614,6 +4985,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4624,6 +4996,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4634,6 +5007,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4644,6 +5018,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4706,7 +5081,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-code_base_integration-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.code_base_integration.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.code_base_integration.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Code Base Integration.",
       "x-ves-proto-service": "ves.io.schema.api_sec.code_base_integration.API",
@@ -4733,6 +5111,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4743,6 +5122,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4753,6 +5133,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4763,6 +5144,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4773,6 +5155,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4783,6 +5166,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4793,6 +5177,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4803,6 +5188,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4857,7 +5243,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-code_base_integration-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.code_base_integration.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.code_base_integration.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE Code Base Integration.",
@@ -4877,6 +5266,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4887,6 +5277,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4897,6 +5288,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4907,6 +5299,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4917,6 +5310,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4927,6 +5321,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4937,6 +5332,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4947,6 +5343,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4991,7 +5388,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-api_sec-code_base_integration-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.api_sec.code_base_integration.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.api_sec.code_base_integration.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Code Base Integration.",
       "x-ves-proto-service": "ves.io.schema.api_sec.code_base_integration.API",
@@ -5018,6 +5418,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5028,6 +5429,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5038,6 +5440,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5048,6 +5451,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5058,6 +5462,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5068,6 +5473,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5078,6 +5484,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5088,6 +5495,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5121,7 +5529,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-sensitive_data_policy-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.sensitive_data_policy.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.sensitive_data_policy.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Sensitive Data Discovery.",
       "x-ves-proto-service": "ves.io.schema.sensitive_data_policy.API",
@@ -5148,6 +5559,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5158,6 +5570,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5168,6 +5581,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5178,6 +5592,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5188,6 +5603,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5198,6 +5614,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5208,6 +5625,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5218,6 +5636,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5262,7 +5681,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-sensitive_data_policy-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.sensitive_data_policy.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.sensitive_data_policy.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Sensitive Data Discovery.",
       "x-ves-proto-service": "ves.io.schema.sensitive_data_policy.API",
@@ -5289,6 +5711,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5299,6 +5722,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5309,6 +5733,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5319,6 +5744,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5329,6 +5755,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5339,6 +5766,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5349,6 +5777,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5359,6 +5788,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5421,7 +5851,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-sensitive_data_policy-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.sensitive_data_policy.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.sensitive_data_policy.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Sensitive Data Discovery.",
       "x-ves-proto-service": "ves.io.schema.sensitive_data_policy.API",
@@ -5448,6 +5881,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5458,6 +5892,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5468,6 +5903,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5478,6 +5914,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5488,6 +5925,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5498,6 +5936,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5508,6 +5947,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5518,6 +5958,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5572,7 +6013,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-sensitive_data_policy-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.sensitive_data_policy.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.sensitive_data_policy.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE Sensitive Data Discovery.",
@@ -5592,6 +6036,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5602,6 +6047,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5612,6 +6058,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5622,6 +6069,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5632,6 +6080,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5642,6 +6091,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5652,6 +6102,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5662,6 +6113,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5706,7 +6158,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-sensitive_data_policy-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.sensitive_data_policy.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.sensitive_data_policy.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Sensitive Data Discovery.",
       "x-ves-proto-service": "ves.io.schema.sensitive_data_policy.API",
@@ -9860,7 +10315,7 @@
       },
       "common_wafOpenApiFallThroughMode": {
         "type": "object",
-        "description": "X-required\nDetermine what to do with unprotected endpoints (not in the OpenAPI specification file (a.k.a. Swagger) or doesn't have a specific rule in custom rules)",
+        "description": "Determine what to do with unprotected endpoints (not in the OpenAPI specification file (a.k.a. Swagger) or doesn't have a specific rule in custom rules)",
         "title": "Fall Through Mode.",
         "x-displayname": "Fall Through Mode.",
         "x-ves-oneof-field-fall_through_mode_choice": "[\"fall_through_mode_allow\",\"fall_through_mode_custom\"]",
@@ -9872,7 +10327,8 @@
           "fall_through_mode_custom": {
             "$ref": "#/components/schemas/common_wafCustomFallThroughMode"
           }
-        }
+        },
+        "x-required": true
       },
       "common_wafOpenApiValidationAllSpecEndpointsSettings": {
         "type": "object",
@@ -9919,7 +10375,7 @@
       },
       "common_wafOpenApiValidationMode": {
         "type": "object",
-        "description": "X-required\nValidation mode of OpenAPI specification.\nWhen a validation mismatch occurs on a request to one of the endpoints listed on the OpenAPI specification file (a.k.a. Swagger)",
+        "description": "Validation mode of OpenAPI specification.\nWhen a validation mismatch occurs on a request to one of the endpoints listed on the OpenAPI specification file (a.k.a. Swagger)",
         "title": "Validation Mode.",
         "x-displayname": "Validation Mode.",
         "x-ves-oneof-field-response_validation_mode_choice": "[\"response_validation_mode_active\",\"skip_response_validation\"]",
@@ -9938,7 +10394,8 @@
           "validation_mode_active": {
             "$ref": "#/components/schemas/common_wafOpenApiValidationModeActive"
           }
-        }
+        },
+        "x-required": true
       },
       "common_wafOpenApiValidationModeActive": {
         "type": "object",

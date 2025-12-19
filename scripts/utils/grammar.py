@@ -5,11 +5,16 @@ Uses language-tool-python for automated grammar checking and correction.
 No manual intervention required.
 """
 
+import contextlib
 import re
-from typing import Any
+from types import TracebackType
+from typing import Any, Literal
+
+from typing_extensions import Self
 
 try:
     import language_tool_python
+
     LANGUAGE_TOOL_AVAILABLE = True
 except ImportError:
     LANGUAGE_TOOL_AVAILABLE = False
@@ -30,7 +35,7 @@ class GrammarImprover:
         fix_double_spaces: bool = True,
         trim_whitespace: bool = True,
         use_language_tool: bool = True,
-    ):
+    ) -> None:
         """Initialize grammar improver with configuration.
 
         Args:
@@ -61,7 +66,7 @@ class GrammarImprover:
                 config={
                     "cacheSize": 1000,
                     "pipelineCaching": True,
-                }
+                },
             )
             # Disable rules that don't apply well to API documentation
             disabled_rules = [
@@ -71,8 +76,9 @@ class GrammarImprover:
                 "EN_QUOTES",  # Technical docs use various quote styles
                 "DASH_RULE",  # Technical docs use various dash styles
             ]
-            for rule in disabled_rules:
-                self._tool.disable_rules(rule)
+            if self._tool is not None:
+                for rule in disabled_rules:
+                    self._tool.disable_rules(rule)
         except Exception:
             # Fall back to basic improvements if LanguageTool fails
             self._tool = None
@@ -118,8 +124,7 @@ class GrammarImprover:
         # Replace various whitespace characters with regular space
         result = re.sub(r"[\t\r\f\v]+", " ", text)
         # Normalize newlines
-        result = re.sub(r"\n{3,}", "\n\n", result)
-        return result
+        return re.sub(r"\n{3,}", "\n\n", result)
 
     def _fix_double_spaces(self, text: str) -> str:
         """Remove double spaces."""
@@ -134,14 +139,16 @@ class GrammarImprover:
         sentences = re.split(r"([.!?]\s+)", text)
 
         result_parts = []
-        for i, part in enumerate(sentences):
-            if i == 0 and part:
+        for i, raw_part in enumerate(sentences):
+            if i == 0 and raw_part:
                 # First part - capitalize first letter
-                part = part[0].upper() + part[1:] if len(part) > 0 else part
-            elif i > 0 and i % 2 == 0 and part:
+                capitalized = raw_part[0].upper() + raw_part[1:] if len(raw_part) > 0 else raw_part
+            elif i > 0 and i % 2 == 0 and raw_part:
                 # Parts after sentence endings
-                part = part[0].upper() + part[1:] if len(part) > 0 else part
-            result_parts.append(part)
+                capitalized = raw_part[0].upper() + raw_part[1:] if len(raw_part) > 0 else raw_part
+            else:
+                capitalized = raw_part
+            result_parts.append(capitalized)
 
         return "".join(result_parts)
 
@@ -171,14 +178,15 @@ class GrammarImprover:
             matches = self._tool.check(text)
 
             # Apply corrections in reverse order to preserve offsets
-            corrections = []
-            for match in matches:
-                if match.replacements:
-                    corrections.append({
-                        "offset": match.offset,
-                        "length": match.errorLength,
-                        "replacement": match.replacements[0],
-                    })
+            corrections = [
+                {
+                    "offset": match.offset,
+                    "length": match.errorLength,
+                    "replacement": match.replacements[0],
+                }
+                for match in matches
+                if match.replacements
+            ]
 
             # Sort by offset descending
             corrections.sort(key=lambda x: x["offset"], reverse=True)
@@ -195,7 +203,11 @@ class GrammarImprover:
             # Return original text if correction fails
             return text
 
-    def improve_spec(self, spec: dict[str, Any], target_fields: list[str] | None = None) -> dict[str, Any]:
+    def improve_spec(
+        self,
+        spec: dict[str, Any],
+        target_fields: list[str] | None = None,
+    ) -> dict[str, Any]:
         """Recursively improve grammar in an OpenAPI specification.
 
         Args:
@@ -220,22 +232,26 @@ class GrammarImprover:
                 else:
                     result[key] = self._improve_recursive(value, target_fields)
             return result
-        elif isinstance(obj, list):
+        if isinstance(obj, list):
             return [self._improve_recursive(item, target_fields) for item in obj]
-        else:
-            return obj
+        return obj
 
     def close(self) -> None:
         """Close LanguageTool resources."""
         if self._tool is not None:
-            try:
+            with contextlib.suppress(Exception):
                 self._tool.close()
-            except Exception:
-                pass
 
-    def __enter__(self):
+    def __enter__(self) -> Self:
+        """Enter the runtime context for this object."""
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -> Literal[False]:
+        """Exit the runtime context and close resources."""
         self.close()
         return False

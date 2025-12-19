@@ -19,7 +19,7 @@ permissions:
   id-token: write
 
 env:
-  PYTHON_VERSION: '3.12'
+  PYTHON_VERSION: '3.13'
 
 jobs:
   check-updates:
@@ -30,10 +30,10 @@ jobs:
       etag: ${{ steps.check.outputs.etag }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
@@ -46,7 +46,7 @@ jobs:
         run: |
           # Force download on push events, check-only on schedule
           if [ "${{ github.event_name }}" = "push" ]; then
-            echo "updated=true" >> $GITHUB_OUTPUT
+            echo "updated=true" >> "$GITHUB_OUTPUT"
             echo "Push event - forcing download"
           else
             python -m scripts.download --check-only
@@ -59,10 +59,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
@@ -75,9 +75,9 @@ jobs:
           sudo apt-get install -y default-jre
 
       - name: Setup Node.js for Spectral
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install Spectral CLI
         run: npm install -g @stoplight/spectral-cli
@@ -87,6 +87,10 @@ jobs:
 
       - name: Run enrichment pipeline
         run: python -m scripts.pipeline
+
+      - name: Lint specifications with Spectral
+        continue-on-error: true
+        run: python scripts/lint.py --input-dir specs/enriched
 
       - name: Validate specifications
         continue-on-error: true
@@ -125,9 +129,10 @@ jobs:
           - Merged specifications by domain
 
           ### Statistics
-          - Original specs: $(ls specs/original/*.json 2>/dev/null | wc -l | xargs)
-          - Processed specs: $(ls specs/enriched/individual/*.json 2>/dev/null | wc -l | xargs)
-          - Domains: $(ls specs/enriched/*.json 2>/dev/null | grep -v openapi.json | grep -v index.json | wc -l | xargs)
+          - Original specs: $(find specs/original -name '*.json' 2>/dev/null | wc -l | xargs)
+          - Processed specs: $(find specs/enriched/individual -name '*.json' 2>/dev/null | wc -l | xargs)
+          - Domains: $(find specs/enriched -maxdepth 1 -name '*.json' \
+              ! -name 'openapi.json' ! -name 'index.json' 2>/dev/null | wc -l | xargs)
 
           ### Output Structure
           \`\`\`
@@ -204,7 +209,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: main  # Get the latest changes
 
@@ -212,7 +217,7 @@ jobs:
         run: git pull origin main
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
 
       - name: Prepare docs directory
         run: |
@@ -222,7 +227,7 @@ jobs:
           cp -r specs/enriched docs/specs/
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: docs
 

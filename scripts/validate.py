@@ -12,7 +12,7 @@ import os
 import re
 import sys
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 from urllib.parse import urljoin
@@ -119,7 +119,7 @@ class ValidationStats:
 def load_config(config_path: Path | None = None) -> dict:
     """Load configuration from YAML file or use defaults."""
     if config_path and config_path.exists():
-        with open(config_path) as f:
+        with config_path.open() as f:
             config = yaml.safe_load(f) or {}
             return _deep_merge(DEFAULT_CONFIG, config)
     return DEFAULT_CONFIG
@@ -179,14 +179,16 @@ def extract_endpoints(spec: dict[str, Any]) -> list[dict[str, Any]]:
         for method in ["get", "post", "put", "patch", "delete", "options", "head"]:
             if method in path_item:
                 operation = path_item[method]
-                endpoints.append({
-                    "path": path,
-                    "method": method.upper(),
-                    "operation_id": operation.get("operationId", ""),
-                    "summary": operation.get("summary", ""),
-                    "parameters": operation.get("parameters", []),
-                    "responses": operation.get("responses", {}),
-                })
+                endpoints.append(
+                    {
+                        "path": path,
+                        "method": method.upper(),
+                        "operation_id": operation.get("operationId", ""),
+                        "summary": operation.get("summary", ""),
+                        "parameters": operation.get("parameters", []),
+                        "responses": operation.get("responses", {}),
+                    },
+                )
 
     return endpoints
 
@@ -229,9 +231,8 @@ def should_skip_endpoint(endpoint: dict[str, Any], config: dict) -> tuple[bool, 
             return True, "Path doesn't match any include pattern"
 
     # Check if namespace is required and we should skip
-    if filters.get("skip_namespace_required", False):
-        if "{namespace}" in path:
-            return True, "Endpoint requires namespace parameter"
+    if filters.get("skip_namespace_required", False) and "{namespace}" in path:
+        return True, "Endpoint requires namespace parameter"
 
     return False, ""
 
@@ -255,9 +256,7 @@ def resolve_path_parameters(path: str, parameters: list[dict]) -> str:
             resolved = resolved.replace(f"{{{param_name}}}", sample_value)
 
     # Handle any remaining unresolved parameters
-    resolved = re.sub(r"\{[^}]+\}", "sample", resolved)
-
-    return resolved
+    return re.sub(r"\{[^}]+\}", "sample", resolved)
 
 
 async def validate_endpoint(
@@ -303,13 +302,19 @@ async def validate_endpoint(
 
             # Check status code
             success_codes = response_config.get("success_codes", [200, 201, 204])
-            is_available = response.status_code in success_codes or response.status_code in [401, 403]
+            is_available = response.status_code in success_codes or response.status_code in [
+                401,
+                403,
+            ]
 
             # Schema validation (simplified - just check if response is valid JSON)
             schema_match = True
             discrepancies = []
 
-            if response_config.get("validate_schema", True) and response.status_code in success_codes:
+            if (
+                response_config.get("validate_schema", True)
+                and response.status_code in success_codes
+            ):
                 try:
                     response_json = response.json()
                     # Basic schema validation - check for expected structure
@@ -369,7 +374,7 @@ async def validate_spec(
     result = SpecValidationResult(filename=spec_path.name)
 
     try:
-        with open(spec_path) as f:
+        with spec_path.open() as f:
             spec = json.load(f)
 
         endpoints = extract_endpoints(spec)
@@ -386,7 +391,7 @@ async def validate_spec(
             get_endpoints = [e for e in endpoints if e["method"] == "GET"]
             other_endpoints = [e for e in endpoints if e["method"] != "GET"]
 
-            sampled = get_endpoints[:sample_size] + other_endpoints[:max_endpoints - sample_size]
+            sampled = get_endpoints[:sample_size] + other_endpoints[: max_endpoints - sample_size]
             endpoints = sampled[:max_endpoints]
 
         base_url = get_base_url(config)
@@ -440,7 +445,9 @@ async def validate_all_specs(
     # Get authentication headers
     headers = get_auth_headers(config)
     if not headers.get("Authorization"):
-        console.print("[yellow]Warning: No API token found. Validation may fail for authenticated endpoints.[/yellow]")
+        console.print(
+            "[yellow]Warning: No API token found. Validation may fail for authenticated endpoints.[/yellow]",
+        )
 
     concurrency = config.get("concurrency", {})
     workers = concurrency.get("workers", 10)
@@ -475,12 +482,14 @@ async def validate_all_specs(
                 # Collect discrepancies
                 for er in result.endpoint_results:
                     if er.discrepancies:
-                        stats.discrepancies.append({
-                            "spec": result.filename,
-                            "path": er.path,
-                            "method": er.method,
-                            "issues": er.discrepancies,
-                        })
+                        stats.discrepancies.append(
+                            {
+                                "spec": result.filename,
+                                "path": er.path,
+                                "method": er.method,
+                                "issues": er.discrepancies,
+                            },
+                        )
 
                 progress.update(task, advance=1)
 
@@ -490,7 +499,7 @@ async def validate_all_specs(
 def generate_report(stats: ValidationStats, output_path: Path) -> None:
     """Generate validation report."""
     report = {
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": datetime.now(tz=timezone.utc).isoformat(),
         "summary": {
             "specs_processed": stats.specs_processed,
             "total_endpoints": stats.total_endpoints,
@@ -499,12 +508,20 @@ def generate_report(stats: ValidationStats, output_path: Path) -> None:
             "endpoints_unavailable": stats.endpoints_unavailable,
             "schema_matches": stats.schema_matches,
             "availability_percentage": round(
-                (stats.endpoints_available / stats.endpoints_validated * 100)
-                if stats.endpoints_validated > 0 else 0, 2
+                (
+                    (stats.endpoints_available / stats.endpoints_validated * 100)
+                    if stats.endpoints_validated > 0
+                    else 0
+                ),
+                2,
             ),
             "schema_match_percentage": round(
-                (stats.schema_matches / stats.endpoints_available * 100)
-                if stats.endpoints_available > 0 else 0, 2
+                (
+                    (stats.schema_matches / stats.endpoints_available * 100)
+                    if stats.endpoints_available > 0
+                    else 0
+                ),
+                2,
             ),
         },
         "discrepancies": stats.discrepancies[:100],  # Limit to first 100
@@ -523,8 +540,9 @@ def generate_report(stats: ValidationStats, output_path: Path) -> None:
     }
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_path, "w") as f:
+    with output_path.open("w") as f:
         json.dump(report, f, indent=2)
+        f.write("\n")
 
     console.print(f"[green]Report saved to {output_path}[/green]")
 
@@ -561,15 +579,21 @@ def print_summary(stats: ValidationStats, config: dict) -> None:
     if stats.endpoints_validated > 0:
         availability = stats.endpoints_available / stats.endpoints_validated * 100
         if availability < min_availability:
-            console.print(f"\n[yellow]Warning: Availability {availability:.1f}% is below threshold {min_availability}%[/yellow]")
+            console.print(
+                f"\n[yellow]Warning: Availability {availability:.1f}% is below threshold {min_availability}%[/yellow]",
+            )
 
     if stats.endpoints_available > 0:
         schema_match = stats.schema_matches / stats.endpoints_available * 100
         if schema_match < min_schema_match:
-            console.print(f"[yellow]Warning: Schema match {schema_match:.1f}% is below threshold {min_schema_match}%[/yellow]")
+            console.print(
+                f"[yellow]Warning: Schema match {schema_match:.1f}% is below threshold {min_schema_match}%[/yellow]",
+            )
 
     if len(stats.discrepancies) > max_discrepancies:
-        console.print(f"[yellow]Warning: {len(stats.discrepancies)} discrepancies exceeds threshold {max_discrepancies}[/yellow]")
+        console.print(
+            f"[yellow]Warning: {len(stats.discrepancies)} discrepancies exceeds threshold {max_discrepancies}[/yellow]",
+        )
 
 
 def main() -> int:
@@ -622,12 +646,14 @@ def main() -> int:
         spec_files = sorted(args.specs_dir.glob("*.json"))
         total_endpoints = 0
         for spec_file in spec_files:
-            with open(spec_file) as f:
+            with spec_file.open() as f:
                 spec = json.load(f)
             endpoints = extract_endpoints(spec)
             console.print(f"  {spec_file.name}: {len(endpoints)} endpoints")
             total_endpoints += len(endpoints)
-        console.print(f"\n[green]Total: {total_endpoints} endpoints across {len(spec_files)} specs[/green]")
+        console.print(
+            f"\n[green]Total: {total_endpoints} endpoints across {len(spec_files)} specs[/green]",
+        )
         return 0
 
     # Run validation
@@ -646,10 +672,10 @@ def main() -> int:
     if stats.endpoints_validated > 0:
         availability = stats.endpoints_available / stats.endpoints_validated * 100
         if availability < min_availability:
-            console.print(f"\n[red]Validation failed: availability below threshold[/red]")
+            console.print("\n[red]Validation failed: availability below threshold[/red]")
             return 1
 
-    console.print(f"\n[bold green]Validation complete![/bold green]")
+    console.print("\n[bold green]Validation complete![/bold green]")
     return 0
 
 

@@ -9,6 +9,8 @@ IMPORTANT: This script reads from specs/enriched/ and writes to specs/normalized
 The original specs (specs/original/) are NEVER modified.
 """
 
+from __future__ import annotations
+
 import argparse
 import json
 import re
@@ -16,9 +18,12 @@ import sys
 from collections import defaultdict
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 import yaml
 from rich.console import Console
@@ -83,7 +88,7 @@ class NormalizationResult:
 def load_config(config_path: Path | None = None) -> dict:
     """Load configuration from YAML file or use defaults."""
     if config_path and config_path.exists():
-        with open(config_path) as f:
+        with config_path.open() as f:
             config = yaml.safe_load(f) or {}
             return _deep_merge(DEFAULT_CONFIG, config)
     return DEFAULT_CONFIG
@@ -102,15 +107,21 @@ def _deep_merge(base: dict, override: dict) -> dict:
 
 def load_spec(spec_path: Path) -> dict[str, Any]:
     """Load an OpenAPI specification from JSON file."""
-    with open(spec_path) as f:
+    with spec_path.open() as f:
         return json.load(f)
 
 
-def save_spec(spec: dict[str, Any], output_path: Path, indent: int = 2, sort_keys: bool = False) -> None:
+def save_spec(
+    spec: dict[str, Any],
+    output_path: Path,
+    indent: int = 2,
+    sort_keys: bool = False,
+) -> None:
     """Save an OpenAPI specification to JSON file."""
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_path, "w") as f:
+    with output_path.open("w") as f:
         json.dump(spec, f, indent=indent, sort_keys=sort_keys, ensure_ascii=False)
+        f.write("\n")
 
 
 def collect_all_refs(obj: Any, refs: set[str] | None = None, path: str = "") -> set[str]:
@@ -147,9 +158,17 @@ def get_existing_components(spec: dict[str, Any]) -> dict[str, set[str]]:
     components = defaultdict(set)
     spec_components = spec.get("components", {})
 
-    for component_type in ["schemas", "responses", "parameters", "examples",
-                          "requestBodies", "headers", "securitySchemes",
-                          "links", "callbacks"]:
+    for component_type in [
+        "schemas",
+        "responses",
+        "parameters",
+        "examples",
+        "requestBodies",
+        "headers",
+        "securitySchemes",
+        "links",
+        "callbacks",
+    ]:
         if component_type in spec_components:
             components[component_type] = set(spec_components[component_type].keys())
 
@@ -177,43 +196,56 @@ def find_orphan_refs(spec: dict[str, Any]) -> list[tuple[str, str, str]]:
 
 def create_stub_component(component_type: str, component_name: str) -> dict[str, Any]:
     """Create a stub component definition."""
-    if component_type == "schemas":
+
+    def _schema_stub(name: str) -> dict[str, Any]:
         return {
             "type": "object",
-            "description": f"Auto-generated stub for {component_name}",
+            "description": f"Auto-generated stub for {name}",
             "x-generated": True,
         }
-    elif component_type == "requestBodies":
+
+    def _request_body_stub(name: str) -> dict[str, Any]:
         return {
-            "description": f"Auto-generated stub for {component_name}",
+            "description": f"Auto-generated stub for {name}",
             "content": {
                 "application/json": {
                     "schema": {
                         "type": "object",
-                        "description": f"Request body for {component_name}",
-                    }
-                }
+                        "description": f"Request body for {name}",
+                    },
+                },
             },
             "x-generated": True,
         }
-    elif component_type == "responses":
+
+    def _response_stub(name: str) -> dict[str, Any]:
         return {
-            "description": f"Auto-generated stub response for {component_name}",
+            "description": f"Auto-generated stub response for {name}",
             "x-generated": True,
         }
-    elif component_type == "parameters":
+
+    def _parameter_stub(name: str) -> dict[str, Any]:
         return {
-            "name": component_name,
+            "name": name,
             "in": "query",
-            "description": f"Auto-generated stub parameter for {component_name}",
+            "description": f"Auto-generated stub parameter for {name}",
             "schema": {"type": "string"},
             "x-generated": True,
         }
-    else:
+
+    def _default_stub(name: str) -> dict[str, Any]:
         return {
-            "description": f"Auto-generated stub for {component_name}",
+            "description": f"Auto-generated stub for {name}",
             "x-generated": True,
         }
+
+    stub_factories: dict[str, Callable[[str], dict[str, Any]]] = {
+        "schemas": _schema_stub,
+        "requestBodies": _request_body_stub,
+        "responses": _response_stub,
+        "parameters": _parameter_stub,
+    }
+    return stub_factories.get(component_type, _default_stub)(component_name)
 
 
 def fix_orphan_refs(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], int]:
@@ -234,7 +266,7 @@ def fix_orphan_refs(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any],
     if "components" not in spec:
         spec["components"] = {}
 
-    for ref, component_type, component_name in orphans:
+    for _ref, component_type, component_name in orphans:
         if create_missing:
             # Create the missing component
             if component_type not in spec["components"]:
@@ -242,7 +274,8 @@ def fix_orphan_refs(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any],
 
             if component_name not in spec["components"][component_type]:
                 spec["components"][component_type][component_name] = create_stub_component(
-                    component_type, component_name
+                    component_type,
+                    component_name,
                 )
                 fixed_count += 1
 
@@ -268,11 +301,11 @@ def remove_empty_operations(spec: dict[str, Any]) -> tuple[dict[str, Any], int]:
                 operation = path_item[method]
                 # Check if operation is empty or has empty critical fields
                 if operation == {} or (
-                    isinstance(operation, dict) and
-                    not operation.get("operationId") and
-                    not operation.get("responses") and
-                    not operation.get("summary") and
-                    not operation.get("description")
+                    isinstance(operation, dict)
+                    and not operation.get("operationId")
+                    and not operation.get("responses")
+                    and not operation.get("summary")
+                    and not operation.get("description")
                 ):
                     methods_to_remove.append(method)
 
@@ -281,8 +314,11 @@ def remove_empty_operations(spec: dict[str, Any]) -> tuple[dict[str, Any], int]:
             removed_count += 1
 
         # Mark path for removal if no methods left
-        remaining_methods = [m for m in ["get", "post", "put", "delete", "patch", "options", "head", "trace"]
-                           if m in path_item]
+        remaining_methods = [
+            m
+            for m in ["get", "post", "put", "delete", "patch", "options", "head", "trace"]
+            if m in path_item
+        ]
         if not remaining_methods:
             paths_to_remove.append(path)
 
@@ -302,7 +338,7 @@ def inline_orphan_request_bodies(spec: dict[str, Any]) -> tuple[dict[str, Any], 
     paths = spec.get("paths", {})
     existing_request_bodies = spec.get("components", {}).get("requestBodies", {})
 
-    for path, path_item in paths.items():
+    for path_item in paths.values():
         if not isinstance(path_item, dict):
             continue
 
@@ -329,9 +365,9 @@ def inline_orphan_request_bodies(spec: dict[str, Any]) -> tuple[dict[str, Any], 
                                 "application/json": {
                                     "schema": {
                                         "type": "object",
-                                    }
-                                }
-                            }
+                                    },
+                                },
+                            },
                         }
                         inlined_count += 1
 
@@ -362,10 +398,9 @@ def normalize_types(spec: dict[str, Any]) -> tuple[dict[str, Any], int]:
                 else:
                     result[key] = normalize_recursive(value)
             return result
-        elif isinstance(obj, list):
+        if isinstance(obj, list):
             return [normalize_recursive(item) for item in obj]
-        else:
-            return obj
+        return obj
 
     return normalize_recursive(spec), normalized_count
 
@@ -497,10 +532,7 @@ def normalize_all_specs(
     continue_on_error = processing_config.get("continue_on_error", True)
 
     # Prepare arguments for processing
-    process_args = [
-        (spec_file, output_dir / spec_file.name, config)
-        for spec_file in spec_files
-    ]
+    process_args = [(spec_file, output_dir / spec_file.name, config) for spec_file in spec_files]
 
     with Progress(
         SpinnerColumn(),
@@ -569,7 +601,7 @@ def _update_stats(stats: NormalizationStats, result: NormalizationResult) -> Non
 def generate_report(stats: NormalizationStats, output_path: Path) -> None:
     """Generate normalization report."""
     report = {
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": datetime.now(tz=timezone.utc).isoformat(),
         "summary": {
             "files_processed": stats.files_processed,
             "files_succeeded": stats.files_succeeded,
@@ -584,8 +616,9 @@ def generate_report(stats: NormalizationStats, output_path: Path) -> None:
     }
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_path, "w") as f:
+    with output_path.open("w") as f:
         json.dump(report, f, indent=2)
+        f.write("\n")
 
     console.print(f"[green]Report saved to {output_path}[/green]")
 
@@ -677,7 +710,9 @@ def main() -> int:
 
     if not input_dir.exists():
         console.print(f"[red]Input directory not found: {input_dir}[/red]")
-        console.print("[yellow]Run 'python -m scripts.enrich' first to enrich specifications[/yellow]")
+        console.print(
+            "[yellow]Run 'python -m scripts.enrich' first to enrich specifications[/yellow]",
+        )
         return 1
 
     if args.dry_run:
@@ -715,7 +750,9 @@ def main() -> int:
         console.print(f"\n[yellow]Completed with {stats.files_failed} failures[/yellow]")
         return 1 if not config.get("processing", {}).get("continue_on_error", True) else 0
 
-    console.print(f"\n[bold green]Successfully normalized {stats.files_succeeded} specifications![/bold green]")
+    console.print(
+        f"\n[bold green]Successfully normalized {stats.files_succeeded} specifications![/bold green]",
+    )
     return 0
 
 

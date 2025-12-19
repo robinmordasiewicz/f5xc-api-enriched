@@ -2,12 +2,12 @@
 """Download and extract F5 XC API specifications from the official source."""
 
 import argparse
-import hashlib
 import json
 import os
 import sys
+import tempfile
 import zipfile
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
@@ -33,7 +33,7 @@ DEFAULT_CONFIG = {
 def load_config(config_path: Path | None = None) -> dict:
     """Load configuration from YAML file or use defaults."""
     if config_path and config_path.exists():
-        with open(config_path) as f:
+        with config_path.open() as f:
             config = yaml.safe_load(f)
             # Merge with defaults
             for key, value in DEFAULT_CONFIG.items():
@@ -73,7 +73,7 @@ def save_etag(etag: str, etag_file: Path) -> None:
 
 def get_version() -> str:
     """Generate version string based on current date."""
-    return datetime.now().strftime("%Y.%m.%d")
+    return datetime.now(tz=timezone.utc).strftime("%Y.%m.%d")
 
 
 def save_version(version: str, version_file: Path) -> None:
@@ -100,7 +100,7 @@ def download_zip(url: str, output_path: Path, timeout: int = 300) -> bool:
             total_size = int(response.headers.get("content-length", 0))
             downloaded = 0
 
-            with open(output_path, "wb") as f:
+            with output_path.open("wb") as f:
                 for chunk in response.iter_content(chunk_size=8192):
                     f.write(chunk)
                     downloaded += len(chunk)
@@ -141,16 +141,17 @@ def extract_zip(zip_path: Path, output_dir: Path) -> list[str]:
             for member in zf.namelist():
                 if member.endswith(".json"):
                     # Extract directly to output dir (flatten structure)
-                    filename = os.path.basename(member)
+                    filename = Path(member).name
                     target_path = output_dir / filename
 
-                    with zf.open(member) as source, open(target_path, "wb") as target:
+                    with zf.open(member) as source, target_path.open("wb") as target:
                         target.write(source.read())
 
                     extracted_files.append(filename)
 
             progress.update(
-                task, description=f"Extracted {len(extracted_files)} specification files"
+                task,
+                description=f"Extracted {len(extracted_files)} specification files",
             )
 
     console.print(f"[green]Extracted {len(extracted_files)} files to {output_dir}[/green]")
@@ -162,14 +163,15 @@ def generate_manifest(output_dir: Path, files: list[str], version: str, etag: st
     manifest = {
         "version": version,
         "etag": etag,
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": datetime.now(tz=timezone.utc).isoformat(),
         "file_count": len(files),
         "files": sorted(files),
     }
 
     manifest_path = output_dir / "manifest.json"
-    with open(manifest_path, "w") as f:
+    with manifest_path.open("w") as f:
         json.dump(manifest, f, indent=2)
+        f.write("\n")
 
     console.print(f"[green]Generated manifest: {manifest_path}[/green]")
 
@@ -191,7 +193,7 @@ def check_for_updates(config: dict) -> tuple[bool, str | None]:
         return False, remote_etag
 
     if local_etag:
-        console.print(f"[green]Update available![/green]")
+        console.print("[green]Update available![/green]")
         console.print(f"  Local ETag:  {local_etag[:30]}...")
         console.print(f"  Remote ETag: {remote_etag[:30]}...")
     else:
@@ -240,8 +242,9 @@ def main() -> int:
     has_updates, remote_etag = check_for_updates(config)
 
     # Set GitHub Actions output if running in CI
-    if os.environ.get("GITHUB_OUTPUT"):
-        with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+    github_output = os.environ.get("GITHUB_OUTPUT")
+    if github_output:
+        with Path(github_output).open("a") as f:
             f.write(f"updated={'true' if has_updates or args.force else 'false'}\n")
             if remote_etag:
                 f.write(f"etag={remote_etag}\n")
@@ -255,7 +258,7 @@ def main() -> int:
 
     # Download
     url = config["source"]["url"]
-    temp_zip = Path("/tmp/f5xc-api-specs.zip")
+    temp_zip = Path(tempfile.gettempdir()) / "f5xc-api-specs.zip"
 
     if not download_zip(url, temp_zip):
         return 1
@@ -283,7 +286,9 @@ def main() -> int:
     # Cleanup
     temp_zip.unlink(missing_ok=True)
 
-    console.print(f"\n[bold green]Successfully downloaded {len(extracted_files)} specs![/bold green]")
+    console.print(
+        f"\n[bold green]Successfully downloaded {len(extracted_files)} specs![/bold green]",
+    )
     console.print(f"  Version: {version}")
     console.print(f"  Output:  {output_dir}")
 

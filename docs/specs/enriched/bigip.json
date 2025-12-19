@@ -30,7 +30,16 @@
       "ApiToken": []
     }
   ],
-  "tags": [],
+  "tags": [
+    {
+      "name": "BIG-IP",
+      "description": "BIG-IP integration and management operations"
+    },
+    {
+      "name": "Other",
+      "description": "Miscellaneous operations"
+    }
+  ],
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/apms": {
       "post": {
@@ -53,6 +62,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -63,6 +73,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -73,6 +84,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -83,6 +95,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -93,6 +106,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -103,6 +117,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -113,6 +128,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -123,6 +139,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -156,7 +173,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigip-apm-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigip.apm.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.bigip.apm.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "BIG-IP APM as a Service.",
       "x-ves-proto-service": "ves.io.schema.bigip.apm.API",
@@ -183,6 +203,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -193,6 +214,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -203,6 +225,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -213,6 +236,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -223,6 +247,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -233,6 +258,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -243,6 +269,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -253,6 +280,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -297,7 +325,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigip-apm-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigip.apm.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.bigip.apm.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "BIG-IP APM as a Service.",
       "x-ves-proto-service": "ves.io.schema.bigip.apm.API",
@@ -324,6 +355,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -334,6 +366,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -344,6 +377,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -354,6 +388,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -364,6 +399,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -374,6 +410,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -384,6 +421,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -394,6 +432,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -456,7 +495,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigip-apm-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigip.apm.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.bigip.apm.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "BIG-IP APM as a Service.",
       "x-ves-proto-service": "ves.io.schema.bigip.apm.API",
@@ -483,6 +525,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -493,6 +536,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -503,6 +547,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -513,6 +558,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -523,6 +569,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -533,6 +580,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -543,6 +591,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -553,6 +602,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -607,7 +657,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigip-apm-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigip.apm.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.bigip.apm.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE BIG-IP APM as a Service.",
@@ -627,6 +680,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -637,6 +691,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -647,6 +702,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -657,6 +713,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -667,6 +724,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -677,6 +735,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -687,6 +746,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -697,6 +757,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -741,7 +802,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigip-apm-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigip.apm.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.bigip.apm.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "BIG-IP APM as a Service.",
       "x-ves-proto-service": "ves.io.schema.bigip.apm.API",
@@ -768,6 +832,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -778,6 +843,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -788,6 +854,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -798,6 +865,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -808,6 +876,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -818,6 +887,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -828,6 +898,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -838,6 +909,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -871,7 +943,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigip-apm-customdataapi-metrics"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigip.apm.CustomDataAPI.Metrics"
+        "x-ves-proto-rpc": "ves.io.schema.bigip.apm.CustomDataAPI.Metrics",
+        "tags": [
+          "BIG-IP"
+        ]
       },
       "x-displayname": "BIG-IP APM as a Service.",
       "x-ves-proto-service": "ves.io.schema.bigip.apm.CustomDataAPI",
@@ -898,6 +973,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -908,6 +984,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -918,6 +995,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -928,6 +1006,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -938,6 +1017,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -948,6 +1028,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -958,6 +1039,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -968,6 +1050,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1001,7 +1084,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigip_irule-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigip_irule.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.bigip_irule.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "BIG-IP iRule as a Service.",
       "x-ves-proto-service": "ves.io.schema.bigip_irule.API",
@@ -1028,6 +1114,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1038,6 +1125,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1048,6 +1136,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1058,6 +1147,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1068,6 +1158,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1078,6 +1169,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1088,6 +1180,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1098,6 +1191,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1142,7 +1236,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigip_irule-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigip_irule.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.bigip_irule.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "BIG-IP iRule as a Service.",
       "x-ves-proto-service": "ves.io.schema.bigip_irule.API",
@@ -1169,6 +1266,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1179,6 +1277,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1189,6 +1288,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1199,6 +1299,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1209,6 +1310,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1219,6 +1321,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1229,6 +1332,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1239,6 +1343,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1301,7 +1406,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigip_irule-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigip_irule.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.bigip_irule.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "BIG-IP iRule as a Service.",
       "x-ves-proto-service": "ves.io.schema.bigip_irule.API",
@@ -1328,6 +1436,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1338,6 +1447,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1348,6 +1458,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1358,6 +1469,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1368,6 +1480,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1378,6 +1491,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1388,6 +1502,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1398,6 +1513,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1452,7 +1568,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigip_irule-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigip_irule.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.bigip_irule.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE BIG-IP iRule as a Service.",
@@ -1472,6 +1591,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1482,6 +1602,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1492,6 +1613,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1502,6 +1624,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1512,6 +1635,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1522,6 +1646,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1532,6 +1657,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1542,6 +1668,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1586,7 +1713,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigip_irule-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigip_irule.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.bigip_irule.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "BIG-IP iRule as a Service.",
       "x-ves-proto-service": "ves.io.schema.bigip_irule.API",
@@ -1613,6 +1743,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1623,6 +1754,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1633,6 +1765,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1643,6 +1776,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1653,6 +1787,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1663,6 +1798,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1673,6 +1809,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1683,6 +1820,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1727,7 +1865,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-bigip_virtual_server-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.bigip_virtual_server.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.views.bigip_virtual_server.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "BIG-IP virtual server.",
       "x-ves-proto-service": "ves.io.schema.views.bigip_virtual_server.API",
@@ -1754,6 +1895,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1764,6 +1906,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1774,6 +1917,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1784,6 +1928,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1794,6 +1939,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1804,6 +1950,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1814,6 +1961,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1824,6 +1972,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1886,7 +2035,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-bigip_virtual_server-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.bigip_virtual_server.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.views.bigip_virtual_server.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "BIG-IP virtual server.",
       "x-ves-proto-service": "ves.io.schema.views.bigip_virtual_server.API",
@@ -1913,6 +2065,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1923,6 +2076,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1933,6 +2087,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1943,6 +2098,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1953,6 +2109,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1963,6 +2120,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1973,6 +2131,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1983,6 +2142,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2016,7 +2176,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-bigip_virtual_server-customapi-getsecurityconfig"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.bigip_virtual_server.CustomAPI.GetSecurityConfig"
+        "x-ves-proto-rpc": "ves.io.schema.views.bigip_virtual_server.CustomAPI.GetSecurityConfig",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "BIG-IP virtual server.",
       "x-ves-proto-service": "ves.io.schema.views.bigip_virtual_server.CustomAPI",
@@ -2043,6 +2206,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2053,6 +2217,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2063,6 +2228,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2073,6 +2239,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2083,6 +2250,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2093,6 +2261,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2103,6 +2272,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2113,6 +2283,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2166,7 +2337,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-bigip_virtual_server-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.bigip_virtual_server.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.bigip_virtual_server.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "BIG-IP virtual server.",
       "x-ves-proto-service": "ves.io.schema.views.bigip_virtual_server.API",
@@ -2193,6 +2367,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2203,6 +2378,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2213,6 +2389,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2223,6 +2400,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2233,6 +2411,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2243,6 +2422,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2253,6 +2433,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2263,6 +2444,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2296,7 +2478,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigcne-irule-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigcne.irule.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.bigcne.irule.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure iRule.",
       "x-ves-proto-service": "ves.io.schema.bigcne.irule.API",
@@ -2323,6 +2508,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2333,6 +2519,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2343,6 +2530,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2353,6 +2541,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2363,6 +2552,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2373,6 +2563,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2383,6 +2574,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2393,6 +2585,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2437,7 +2630,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigcne-irule-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigcne.irule.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.bigcne.irule.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure iRule.",
       "x-ves-proto-service": "ves.io.schema.bigcne.irule.API",
@@ -2464,6 +2660,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2474,6 +2671,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2484,6 +2682,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2494,6 +2693,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2504,6 +2704,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2514,6 +2715,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2524,6 +2726,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2534,6 +2737,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2596,7 +2800,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigcne-irule-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigcne.irule.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.bigcne.irule.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure iRule.",
       "x-ves-proto-service": "ves.io.schema.bigcne.irule.API",
@@ -2623,6 +2830,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2633,6 +2841,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2643,6 +2852,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2653,6 +2863,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2663,6 +2874,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2673,6 +2885,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2683,6 +2896,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2693,6 +2907,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2746,7 +2961,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigcne-irule-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigcne.irule.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.bigcne.irule.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE Configure iRule.",
@@ -2766,6 +2984,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2776,6 +2995,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2786,6 +3006,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2796,6 +3017,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2806,6 +3028,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2816,6 +3039,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2826,6 +3050,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2836,6 +3061,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2880,7 +3106,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigcne-irule-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigcne.irule.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.bigcne.irule.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure iRule.",
       "x-ves-proto-service": "ves.io.schema.bigcne.irule.API",
@@ -2907,6 +3136,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2917,6 +3147,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2927,6 +3158,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2937,6 +3169,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2947,6 +3180,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2957,6 +3191,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2967,6 +3202,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2977,6 +3213,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3010,7 +3247,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigcne-data_group-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigcne.data_group.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.bigcne.data_group.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Data Group.",
       "x-ves-proto-service": "ves.io.schema.bigcne.data_group.API",
@@ -3037,6 +3277,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3047,6 +3288,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3057,6 +3299,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3067,6 +3310,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3077,6 +3321,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3087,6 +3332,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3097,6 +3343,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3107,6 +3354,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3151,7 +3399,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigcne-data_group-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigcne.data_group.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.bigcne.data_group.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Data Group.",
       "x-ves-proto-service": "ves.io.schema.bigcne.data_group.API",
@@ -3178,6 +3429,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3188,6 +3440,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3198,6 +3451,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3208,6 +3462,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3218,6 +3473,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3228,6 +3484,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3238,6 +3495,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3248,6 +3506,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3310,7 +3569,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigcne-data_group-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigcne.data_group.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.bigcne.data_group.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Data Group.",
       "x-ves-proto-service": "ves.io.schema.bigcne.data_group.API",
@@ -3337,6 +3599,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3347,6 +3610,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3357,6 +3621,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3367,6 +3632,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3377,6 +3643,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3387,6 +3654,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3397,6 +3665,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3407,6 +3676,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3460,7 +3730,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigcne-data_group-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigcne.data_group.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.bigcne.data_group.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE Data Group.",
@@ -3480,6 +3753,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3490,6 +3764,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3500,6 +3775,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3510,6 +3786,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3520,6 +3797,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3530,6 +3808,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3540,6 +3819,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3550,6 +3830,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3594,7 +3875,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-bigcne-data_group-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.bigcne.data_group.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.bigcne.data_group.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Data Group.",
       "x-ves-proto-service": "ves.io.schema.bigcne.data_group.API",
@@ -4737,7 +5021,7 @@
       },
       "nfv_serviceInterfaceDetails": {
         "type": "object",
-        "description": "X-required\nBIG-IP interface details.",
+        "description": "BIG-IP interface details.",
         "title": "BIG-IP interface details.",
         "x-displayname": "Interface",
         "x-ves-proto-message": "ves.io.schema.nfv_service.InterfaceDetails",
@@ -4774,7 +5058,8 @@
               "F5 XC.schema.rules.string.ipv4_prefix": "true"
             }
           }
-        }
+        },
+        "x-required": true
       },
       "nfv_serviceServiceHttpsManagementType": {
         "type": "object",
@@ -6896,14 +7181,15 @@
       },
       "app_typeAPIEndpoint": {
         "type": "object",
-        "description": "X-required\nx-displayName: \"API Endpoint\"\nThe rule is applied only for the specified API endpoints.",
+        "description": "X-displayName: \"API Endpoint\"\nThe rule is applied only for the specified API endpoints.",
         "title": "API endpoint.",
         "properties": {
           "api_endpoint_path": {
             "type": "string",
-            "description": "X-required\nx-displayName: \"API Endpoint\"\nThe rule is applied only for the specified API endpoints.",
+            "description": "X-displayName: \"API Endpoint\"\nThe rule is applied only for the specified API endpoints.",
             "title": "API endpoint path.",
-            "x-ves-example": "/endpoint1."
+            "x-ves-example": "/endpoint1.",
+            "x-required": true
           },
           "methods": {
             "type": "array",
@@ -6914,7 +7200,8 @@
             },
             "x-ves-example": "['GET', 'POST', 'DELETE']"
           }
-        }
+        },
+        "x-required": true
       },
       "app_typeBuiltInSensitiveDataType": {
         "type": "object",
@@ -7023,9 +7310,10 @@
         "properties": {
           "type": {
             "type": "string",
-            "description": "X-required\nx-displayName: \"Type\"\nThe request is labeled as specified sensitive data type.",
+            "description": "X-displayName: \"Type\"\nThe request is labeled as specified sensitive data type.",
             "title": "Sensitive data type.",
-            "x-ves-example": "EMAIL"
+            "x-ves-example": "EMAIL",
+            "x-required": true
           }
         }
       },
@@ -7623,7 +7911,7 @@
       },
       "common_wafApiDiscoveryFromCodeScan": {
         "type": "object",
-        "description": "X-required.",
+        "description": "",
         "title": "API Discovery Code Scan.",
         "x-displayname": "Select Code Base and Repositories.",
         "x-ves-proto-message": "ves.io.schema.views.common_waf.ApiDiscoveryFromCodeScan",
@@ -7649,7 +7937,8 @@
               "F5 XC.schema.rules.repeated.unique": "true"
             }
           }
-        }
+        },
+        "x-required": true
       },
       "common_wafApiDiscoverySetting": {
         "type": "object",
@@ -7869,7 +8158,7 @@
       },
       "common_wafOpenApiFallThroughMode": {
         "type": "object",
-        "description": "X-required\nDetermine what to do with unprotected endpoints (not in the OpenAPI specification file (a.k.a. Swagger) or doesn't have a specific rule in custom rules)",
+        "description": "Determine what to do with unprotected endpoints (not in the OpenAPI specification file (a.k.a. Swagger) or doesn't have a specific rule in custom rules)",
         "title": "Fall Through Mode.",
         "x-displayname": "Fall Through Mode.",
         "x-ves-oneof-field-fall_through_mode_choice": "[\"fall_through_mode_allow\",\"fall_through_mode_custom\"]",
@@ -7881,7 +8170,8 @@
           "fall_through_mode_custom": {
             "$ref": "#/components/schemas/common_wafCustomFallThroughMode"
           }
-        }
+        },
+        "x-required": true
       },
       "common_wafOpenApiValidationAllSpecEndpointsSettings": {
         "type": "object",
@@ -7928,7 +8218,7 @@
       },
       "common_wafOpenApiValidationMode": {
         "type": "object",
-        "description": "X-required\nValidation mode of OpenAPI specification.\nWhen a validation mismatch occurs on a request to one of the endpoints listed on the OpenAPI specification file (a.k.a. Swagger)",
+        "description": "Validation mode of OpenAPI specification.\nWhen a validation mismatch occurs on a request to one of the endpoints listed on the OpenAPI specification file (a.k.a. Swagger)",
         "title": "Validation Mode.",
         "x-displayname": "Validation Mode.",
         "x-ves-oneof-field-response_validation_mode_choice": "[\"response_validation_mode_active\",\"skip_response_validation\"]",
@@ -7947,7 +8237,8 @@
           "validation_mode_active": {
             "$ref": "#/components/schemas/common_wafOpenApiValidationModeActive"
           }
-        }
+        },
+        "x-required": true
       },
       "common_wafOpenApiValidationModeActive": {
         "type": "object",
