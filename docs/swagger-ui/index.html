@@ -125,7 +125,7 @@
     <div class="spec-selector">
         <label for="spec-select">Select API:</label>
         <select id="spec-select" onchange="loadSpec(this.value)">
-            <option value="../specs/merged/openapi.json">Complete API (All Domains)</option>
+            <option value="../specs/enriched/openapi.json">Complete API (All Domains)</option>
         </select>
     </div>
 
@@ -169,14 +169,14 @@
         window.onload = async function() {
             // Load spec index to populate dropdown
             try {
-                const response = await fetch('../specs/merged/index.json');
+                const response = await fetch('../specs/enriched/index.json');
                 if (response.ok) {
                     const index = await response.json();
                     const select = document.getElementById('spec-select');
 
                     index.specifications.forEach(spec => {
                         const option = document.createElement('option');
-                        option.value = `../specs/merged/${spec.file}`;
+                        option.value = `../specs/enriched/${spec.file}`;
                         option.textContent = `${spec.title} (${spec.path_count} endpoints)`;
                         select.appendChild(option);
                     });
@@ -187,7 +187,7 @@
 
             // Initialize Swagger UI with default spec
             ui = SwaggerUIBundle({
-                url: "../specs/merged/openapi.json",
+                url: "../specs/enriched/openapi.json",
                 dom_id: '#swagger-ui',
                 presets: [
                     SwaggerUIBundle.presets.apis,

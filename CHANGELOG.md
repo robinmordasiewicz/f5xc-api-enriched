@@ -3,9 +3,11 @@
 ## Version 1.0.1 (2025-12-19)
 
 ### Release Type
+
 - **patch** release
 
 ### Changes
+
 - Updated API specifications from F5 Distributed Cloud
 - Applied enrichment pipeline:
   - Acronym normalization (100+ terms)
@@ -19,12 +21,14 @@
 - Merged specifications by domain
 
 ### Statistics
+
 - Original specs: 270
 - Domains: 20
 - Total paths: 1553
 - Total schemas: 8027
 
 ### Output Structure
+
 ```text
 specs/enriched/
 ├── [domain].json        # Domain-specific specs
@@ -33,5 +37,6 @@ specs/enriched/
 ```
 
 ### Source
+
 - Source: F5 Distributed Cloud OpenAPI specifications
 - ETag: N/A
