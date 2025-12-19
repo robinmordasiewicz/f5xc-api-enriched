@@ -39,6 +39,11 @@ branding:
       case_sensitive: false
       context: "description"
 
+    # Naming convention: my- prefix → example- prefix
+    - pattern: "\\bmy-"
+      replacement: "example-"
+      case_sensitive: true
+
 # Grammar improvements
 grammar:
   # Capitalize first letter of sentences
@@ -62,6 +67,7 @@ target_fields:
   - summary
   - title
   - x-displayname
+  - x-ves-example
 
 # Fields to preserve (never modify)
 preserve_fields:

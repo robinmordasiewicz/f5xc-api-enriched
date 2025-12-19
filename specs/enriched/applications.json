@@ -4562,14 +4562,14 @@
             "description": "Name of the configuration object\n\nExample: ` \"name\"`",
             "title": "Name",
             "x-displayname": "Name",
-            "x-ves-example": "name"
+            "x-ves-example": "Name"
           },
           "namespace": {
             "type": "string",
             "description": "Namespace in which the configuration object is present\n\nExample: ` \"ns1\"`",
             "title": "Namespace",
             "x-displayname": "Namespace",
-            "x-ves-example": "ns1"
+            "x-ves-example": "Ns1"
           }
         }
       },
@@ -4762,14 +4762,14 @@
             "description": "The name of this app_setting\n\nExample: ` \"name\"`",
             "title": "Name",
             "x-displayname": "Name",
-            "x-ves-example": "name"
+            "x-ves-example": "Name"
           },
           "namespace": {
             "type": "string",
             "description": "The namespace this item belongs to\n\nExample: ` \"ns1\"`",
             "title": "Namespace",
             "x-displayname": "Namespace",
-            "x-ves-example": "ns1"
+            "x-ves-example": "Ns1"
           },
           "owner_view": {
             "$ref": "#/components/schemas/schemaViewRefType"
@@ -4791,14 +4791,14 @@
             "description": "The tenant this item belongs to\n\nExample: ` \"acmecorp\"`",
             "title": "Tenant",
             "x-displayname": "Tenant",
-            "x-ves-example": "acmecorp"
+            "x-ves-example": "Acmecorp"
           },
           "uid": {
             "type": "string",
             "description": "The unique uid of this app_setting\n\nExample: ` \"d27938ba-967e-40a7-9709-57b8627f9f75\"`",
             "title": "Uid",
             "x-displayname": "UID",
-            "x-ves-example": "d27938ba-967e-40a7-9709-57b8627f9f75"
+            "x-ves-example": "D27938ba-967e-40a7-9709-57b8627f9f75."
           }
         }
       },
@@ -5040,7 +5040,7 @@
               "type": "string"
             },
             "x-displayname": "Logs",
-            "x-ves-example": "value"
+            "x-ves-example": "Value"
           },
           "suspicion_score": {
             "type": "number",
@@ -5055,7 +5055,7 @@
             "description": "String representing the user (ex: Source IP)\n\nExample: ` \"value\"`",
             "title": "User ID",
             "x-displayname": "UserID",
-            "x-ves-example": "value"
+            "x-ves-example": "Value"
           }
         }
       },
@@ -5140,35 +5140,35 @@
             "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then kind will hold the referred object's kind (e.g. \"route\")\n\nExample: ` \"virtual_site\"`",
             "title": "Kind",
             "x-displayname": "Kind",
-            "x-ves-example": "virtual_site"
+            "x-ves-example": "Virtual_site."
           },
           "name": {
             "type": "string",
             "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then name will hold the referred object's(e.g. Route's) name.\n\nExample: ` \"contactus-route\"`",
             "title": "Name",
             "x-displayname": "Name",
-            "x-ves-example": "contactus-route"
+            "x-ves-example": "Contactus-route."
           },
           "namespace": {
             "type": "string",
             "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then namespace will hold the referred object's(e.g. Route's) namespace.\n\nExample: ` \"ns1\"`",
             "title": "Namespace",
             "x-displayname": "Namespace",
-            "x-ves-example": "ns1"
+            "x-ves-example": "Ns1"
           },
           "tenant": {
             "type": "string",
             "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then tenant will hold the referred object's(e.g. Route's) tenant.\n\nExample: ` \"acmecorp\"`",
             "title": "Tenant",
             "x-displayname": "Tenant",
-            "x-ves-example": "acmecorp"
+            "x-ves-example": "Acmecorp"
           },
           "uid": {
             "type": "string",
             "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then uid will hold the referred object's(e.g. Route's) uid.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
             "title": "Uid",
             "x-displayname": "UID",
-            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+            "x-ves-example": "D15f1fad-4d37-48c0-8706-df1824d76d31."
           }
         }
       },
@@ -5212,7 +5212,7 @@
             "description": "X-reason: \"Insufficient memory in data plane\"\n A human readable string explaining the reason for reaching this condition\n\nExample: ` \"value\"`",
             "title": "Reason",
             "x-displayname": "Reason",
-            "x-ves-example": "value"
+            "x-ves-example": "Value"
           },
           "service_name": {
             "type": "string",
@@ -5235,7 +5235,7 @@
             "description": "Type of the condition\n \"Validation\" represents validation user given configuration object\n \"Operational\" represents operational status of a given configuration object\n\nExample: ` \"Operational\"`\n\nValidation Rules:\n F5 XC.schema.rules.string.in: [\\\"Validation\\\",\\\"Operational\\\"]",
             "title": "Type",
             "x-displayname": "Type",
-            "x-ves-example": "Operational",
+            "x-ves-example": "Operational.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.in": "[\\\"Validation\\\",\\\"Operational\\\"]"
             }
@@ -5279,7 +5279,7 @@
             "description": "A human readable string of the error\n\nExample: ` \"value\"`",
             "title": "Message",
             "x-displayname": "Message",
-            "x-ves-example": "value"
+            "x-ves-example": "Value"
           }
         }
       },
@@ -5344,7 +5344,7 @@
             "title": "Description.",
             "maxLength": 1200,
             "x-displayname": "Description.",
-            "x-ves-example": "Virtual Host for acmecorp website",
+            "x-ves-example": "Virtual Host for acmecorp website.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_bytes": "1200"
             }
@@ -5367,7 +5367,7 @@
             "description": "This is the name of configuration object. It has to be unique within the namespace.\n It can only be specified during create API and cannot be changed during replace API.\n The value of name has to follow DNS-1035 format.\n\nExample: ` \"acmecorp-web\"`\n\nRequired: YES\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true.",
             "title": "Name",
             "x-displayname": "Name",
-            "x-ves-example": "acmecorp-web",
+            "x-ves-example": "Acmecorp-web.",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
@@ -5378,7 +5378,7 @@
             "description": "This defines the workspace within which each the configuration object is to be created.\n Must be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"\n\nExample: ` \"staging\"`",
             "title": "Namespace",
             "x-displayname": "Namespace",
-            "x-ves-example": "staging"
+            "x-ves-example": "Staging"
           }
         }
       },
@@ -5394,7 +5394,7 @@
             "description": "Annotations is an unstructured key value map stored with a resource that may be\n set by external tools to store and retrieve arbitrary metadata. They are not\n queryable and should be preserved when modifying objects.\n\nExample: ` \"value\"`\n\nValidation Rules:\n F5 XC.schema.rules.map.keys.string.max_len: 64\n F5 XC.schema.rules.map.keys.string.min_len: 1\n F5 XC.schema.rules.map.values.string.max_len: 1024\n F5 XC.schema.rules.map.values.string.min_len: 1.",
             "title": "Annotations.",
             "x-displayname": "Annotation.",
-            "x-ves-example": "value",
+            "x-ves-example": "Value",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.map.keys.string.max_len": "64",
               "ves.io.schema.rules.map.keys.string.min_len": "1",
@@ -5408,7 +5408,7 @@
             "title": "Description.",
             "maxLength": 1200,
             "x-displayname": "Description.",
-            "x-ves-example": "Virtual Host for acmecorp website",
+            "x-ves-example": "Virtual Host for acmecorp website.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_bytes": "1200"
             }
@@ -5419,21 +5419,21 @@
             "title": "Disable",
             "format": "boolean",
             "x-displayname": "Disable",
-            "x-ves-example": "true"
+            "x-ves-example": "True"
           },
           "labels": {
             "type": "object",
             "description": "Map of string keys and values that can be used to organize and categorize\n (scope and select) objects as chosen by the user. Values specified here will be used\n by selector expression\n\nExample: ` \"value\"`",
             "title": "Labels",
             "x-displayname": "Labels",
-            "x-ves-example": "value"
+            "x-ves-example": "Value"
           },
           "name": {
             "type": "string",
             "description": "This is the name of configuration object. It has to be unique within the namespace.\n It can only be specified during create API and cannot be changed during replace API.\n The value of name has to follow DNS-1035 format.\n\nExample: ` \"acmecorp-web\"`\n\nRequired: YES\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true.",
             "title": "Name",
             "x-displayname": "Name",
-            "x-ves-example": "acmecorp-web",
+            "x-ves-example": "Acmecorp-web.",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
@@ -5444,7 +5444,7 @@
             "description": "This defines the workspace within which each the configuration object is to be created.\n Must be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"\n\nExample: ` \"staging\"`",
             "title": "Namespace",
             "x-displayname": "Namespace",
-            "x-ves-example": "staging"
+            "x-ves-example": "Staging"
           }
         }
       },
@@ -5460,7 +5460,7 @@
             "description": "Annotations is an unstructured key value map stored with a resource that may be\n set by external tools to store and retrieve arbitrary metadata. They are not\n queryable and should be preserved when modifying objects.\n\nExample: ` \"value\"`\n\nValidation Rules:\n F5 XC.schema.rules.map.keys.string.max_len: 64\n F5 XC.schema.rules.map.keys.string.min_len: 1\n F5 XC.schema.rules.map.values.string.max_len: 1024\n F5 XC.schema.rules.map.values.string.min_len: 1.",
             "title": "Annotations.",
             "x-displayname": "Annotations.",
-            "x-ves-example": "value",
+            "x-ves-example": "Value",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.map.keys.string.max_len": "64",
               "ves.io.schema.rules.map.keys.string.min_len": "1",
@@ -5474,7 +5474,7 @@
             "title": "Description.",
             "maxLength": 1200,
             "x-displayname": "Description.",
-            "x-ves-example": "Virtual Host for acmecorp website",
+            "x-ves-example": "Virtual Host for acmecorp website.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_bytes": "1200"
             }
@@ -5491,14 +5491,14 @@
             "description": "Map of string keys and values that can be used to organize and categorize\n (scope and select) objects as chosen by the user. Values specified here will be used\n by selector expression\n\nExample: ` \"value\"`",
             "title": "Labels",
             "x-displayname": "Labels",
-            "x-ves-example": "value"
+            "x-ves-example": "Value"
           },
           "name": {
             "type": "string",
             "description": "This is the name of configuration object. It has to be unique within the namespace.\n It can only be specified during create API and cannot be changed during replace API.\n The value of name has to follow DNS-1035 format.\n\nExample: ` \"acmecorp-web\"`\n\nRequired: YES\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true.",
             "title": "Name",
             "x-displayname": "Name",
-            "x-ves-example": "acmecorp-web",
+            "x-ves-example": "Acmecorp-web.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
             }
@@ -5508,7 +5508,7 @@
             "description": "This defines the workspace within which each the configuration object is to be created.\n Must be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"\n\nExample: ` \"staging\"`",
             "title": "Namespace",
             "x-displayname": "Namespace",
-            "x-ves-example": "staging"
+            "x-ves-example": "Staging"
           }
         }
       },
@@ -5531,14 +5531,14 @@
             "description": "Class of creator which created this StatusObject. This will be service's DNS FQDN.\n This will be set by the system based on client certificate information.\n\nExample: ` \"ver.re1.int.F5 XC\"`",
             "title": "Creator_class.",
             "x-displayname": "Creator Class.",
-            "x-ves-example": "ver.re1.int.ves.io"
+            "x-ves-example": "Ver.re1.int.VES.I/O."
           },
           "creator_id": {
             "type": "string",
             "description": "ID of creator which created this StatusObject. This will be a concrete identifier for service (e.g.\n Identifying the environment also). This will be set by the system based on client certificate\n information\n\nExample: ` \"ver-instance-1\"`",
             "title": "Creator_id.",
             "x-displayname": "Creator ID.",
-            "x-ves-example": "ver-instance-1"
+            "x-ves-example": "Ver-instance-1."
           },
           "publish": {
             "$ref": "#/components/schemas/schemaStatusPublishType"
@@ -5554,7 +5554,7 @@
             "description": "Uid is the unique in time and space value for a StatusObject.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
             "title": "Uid",
             "x-displayname": "UID",
-            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+            "x-ves-example": "D15f1fad-4d37-48c0-8706-df1824d76d31."
           },
           "vtrp_id": {
             "type": "string",
@@ -5603,14 +5603,14 @@
             "description": "A human-readable description of why this operation is in the\n \"Failure\" status. If this value is empty there\n is no information available.\n\nExample: ` \"value\"`",
             "title": "Reason",
             "x-displayname": "Reason",
-            "x-ves-example": "value"
+            "x-ves-example": "Value"
           },
           "status": {
             "type": "string",
             "description": "Status of the operation.\n One of: \"Success\" or \"Failure\".\n\nExample: ` \"value\"`",
             "title": "Status",
             "x-displayname": "Status",
-            "x-ves-example": "value"
+            "x-ves-example": "Value"
           }
         }
       },
@@ -5633,14 +5633,14 @@
             "description": "A value identifying the class of the user or service which created this configuration object.\n\nExample: ` \"value\"`",
             "title": "Creator_class.",
             "x-displayname": "Creator Class.",
-            "x-ves-example": "prism"
+            "x-ves-example": "Prism"
           },
           "creator_id": {
             "type": "string",
             "description": "A value identifying the exact user or service that created this configuration object\n\nExample: ` \"value\"`",
             "title": "Creator_id.",
             "x-displayname": "Creator ID.",
-            "x-ves-example": "admin@acmecorp.com"
+            "x-ves-example": "Admin@acmecorp.com."
           },
           "deletion_timestamp": {
             "type": "string",
@@ -5657,7 +5657,7 @@
               "type": "string"
             },
             "x-displayname": "Finalizers.",
-            "x-ves-example": "value"
+            "x-ves-example": "Value"
           },
           "initializers": {
             "$ref": "#/components/schemas/schemaInitializersType"
@@ -5667,7 +5667,7 @@
             "description": "Map of string keys and values that can be used to organize and categorize\n (scope and select) objects as chosen by the operator or software. Values here can be interpreted\n by software(backend or frontend) to enable certain behavior e.g. Things marked as soft-deleted(restorable).\n\nExample: ` \"'F5 XC/soft-deleted''true'\"`",
             "title": "Labels",
             "x-displayname": "Labels",
-            "x-ves-example": "'ves.io/soft-deleted': 'true'"
+            "x-ves-example": "'VES.I/O/soft-deleted': 'true'"
           },
           "modification_timestamp": {
             "type": "string",
@@ -5692,14 +5692,14 @@
             "description": "Tenant to which this configuration object belongs to. The value for this is found from\n presented credentials.\n\nExample: ` \"acmecorp\"`",
             "title": "Tenant",
             "x-displayname": "Tenant",
-            "x-ves-example": "acmecorp"
+            "x-ves-example": "Acmecorp"
           },
           "uid": {
             "type": "string",
             "description": "Uid is the unique in time and space value for this object. It is generated by\n the server on successful creation of an object and is not allowed to change on Replace\n API. The value of is taken from uid field of ObjectMetaType, if provided.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
             "title": "Uid",
             "x-displayname": "UID",
-            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+            "x-ves-example": "D15f1fad-4d37-48c0-8706-df1824d76d31."
           }
         }
       },
@@ -5715,28 +5715,28 @@
             "description": "Kind of the view object\n\nExample: ` \"http_proxy\"`",
             "title": "Kind",
             "x-displayname": "Kind",
-            "x-ves-example": "http_proxy"
+            "x-ves-example": "Http_proxy."
           },
           "name": {
             "type": "string",
             "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then name will hold the referred object's(e.g. Route's) name.\n\nExample: ` \"contactus-route\"`",
             "title": "Name",
             "x-displayname": "Name",
-            "x-ves-example": "contactus-route"
+            "x-ves-example": "Contactus-route."
           },
           "namespace": {
             "type": "string",
             "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then namespace will hold the referred object's(e.g. Route's) namespace.\n\nExample: ` \"ns1\"`",
             "title": "Namespace",
             "x-displayname": "Namespace",
-            "x-ves-example": "ns1"
+            "x-ves-example": "Ns1"
           },
           "uid": {
             "type": "string",
             "description": "UID of the view object\n\nExample: ` \"f3744323-1adf-4aaa-a5dc-0707c1d1bd82\"`",
             "title": "Uid",
             "x-displayname": "UID",
-            "x-ves-example": "f3744323-1adf-4aaa-a5dc-0707c1d1bd82"
+            "x-ves-example": "F3744323-1adf-4aaa-a5dc-0707c1d1bd82."
           }
         }
       },
@@ -5875,7 +5875,7 @@
             "description": "Dynamic component used to collapse sample URLs given in Expanded URLs\n\nExample: ` \"/API/v1/user_id/DYN\"`",
             "title": "Dynamic component.",
             "x-displayname": "Dynamic Component.",
-            "x-ves-example": "/api/v1/user_id/DYN"
+            "x-ves-example": "/API/v1/user_id/DYN."
           }
         }
       },
@@ -5954,7 +5954,7 @@
             "description": "URL for automatically identified API\n\nExample: ` \"/API/v1/user_id/DYN/vehicle_id/DYN\"`",
             "title": "Identified API.",
             "x-displayname": "API endpoint URL.",
-            "x-ves-example": "/api/v1/user_id/DYN/vehicle_id/DYN"
+            "x-ves-example": "/API/v1/user_id/DYN/vehicle_id/DYN."
           },
           "compliances": {
             "type": "array",
@@ -5983,7 +5983,7 @@
               "$ref": "#/components/schemas/app_typeAPIEPDynExample"
             },
             "x-displayname": "Expanded URL(s)",
-            "x-ves-example": "{component_identifier: api/v1/user_id/DYN,component_examples: [cmenomo007]}"
+            "x-ves-example": "{component_identifier: API/v1/user_id/DYN,component_examples: [cmenomo007]}"
           },
           "engines": {
             "type": "array",
@@ -6066,7 +6066,7 @@
             "description": "Schema status indicates the API Endpoint's schema origin and if it's outdated.\n\nExample: ` \"Discovered Not-Updated\"`",
             "title": "Schema_status.",
             "x-displayname": "Schema Status.",
-            "x-ves-example": "Discovered Not-Updated"
+            "x-ves-example": "Discovered Not-Updated."
           },
           "sec_events_count": {
             "type": "integer",
@@ -6282,28 +6282,28 @@
             "description": "App Type for current request\n\nExample: ` \"blogging-app\"`",
             "title": "App Type",
             "x-displayname": "App Type",
-            "x-ves-example": "blogging-app"
+            "x-ves-example": "Blogging-app."
           },
           "collapsed_url": {
             "type": "string",
             "description": "API endpoint for which PDFs are requested.\n\nExample: ` \"value\"`",
             "title": "Discovered API URL.",
             "x-displayname": "API URL",
-            "x-ves-example": "value"
+            "x-ves-example": "Value"
           },
           "method": {
             "type": "string",
             "description": "Method of API endpoint for which PDFs are requested.\n\nExample: ` \"value\"`",
             "title": "Method of current API URL.",
             "x-displayname": "Method",
-            "x-ves-example": "value"
+            "x-ves-example": "Value"
           },
           "namespace": {
             "type": "string",
             "description": "Namespace of the App type for current request\n\nExample: ` \"shared\"`",
             "title": "Namespace",
             "x-displayname": "Namespace",
-            "x-ves-example": "shared"
+            "x-ves-example": "Shared"
           }
         }
       },
@@ -6328,7 +6328,7 @@
             "description": "Inventory OpenAPI spec for request API endpoint.\n\nExample: ` \"{\\\"info\\\":{\\\"description\\\":\\\"\\\",\\\"title\\\":\\\"\\\",\\\"version\\\":\\\"\\\"},\\\"paths\\\":{\\\"\\/API\\/Addresss\\\":{\\\"GET\\\":{\\\"consumes\\\":[\\\"application\\/JSON\\\"],\\\"description\\\":\\\"Swagger auto-generated from learnt schema\\\",\\\"parameters\\\":[{\\\"description\\\":\\\"\\\",\\\"in\\\":\\\"query\\\",\\\"name\\\":\\\"test\\\",\\\"type\\\":\\\"string\\\"},{\\\"description\\\":\\\"\\\",\\\"in\\\":\\\"query\\\",\\\"name\\\":\\\"test1\\\",\\\"type\\\":\\\"string\\\"}],\\\"responses\\\":{\\\"200\\\":{\\\"description\\\":\\\"\\\"}}}}},\\\"schemes\\\":[\\\"HTTPS\\\",\\\"HTTP\\\"],\\\"swagger\\\":\\\"2.0\\\"}\"`",
             "title": "Inventory OpenAPI Spec.",
             "x-displayname": "Inventory OpenAPI Spec.",
-            "x-ves-example": "{\\\"info\\\":{\\\"description\\\":\\\"\\\",\\\"title\\\":\\\"\\\",\\\"version\\\":\\\"\\\"},\\\"paths\\\":{\\\"\\/api\\/Addresss\\\":{\\\"get\\\":{\\\"consumes\\\":[\\\"application\\/json\\\"],\\\"description\\\":\\\"Swagger auto-generated from learnt schema\\\",\\\"parameters\\\":[{\\\"description\\\":\\\"\\\",\\\"in\\\":\\\"query\\\",\\\"name\\\":\\\"test\\\",\\\"type\\\":\\\"string\\\"},{\\\"description\\\":\\\"\\\",\\\"in\\\":\\\"query\\\",\\\"name\\\":\\\"test1\\\",\\\"type\\\":\\\"string\\\"}],\\\"responses\\\":{\\\"200\\\":{\\\"description\\\":\\\"\\\"}}}}},\\\"schemes\\\":[\\\"https\\\",\\\"http\\\"],\\\"swagger\\\":\\\"2.0\\\"}"
+            "x-ves-example": "{\\\"info\\\":{\\\"description\\\":\\\"\\\",\\\"title\\\":\\\"\\\",\\\"version\\\":\\\"\\\"},\\\"paths\\\":{\\\"\\/API\\/Addresss\\\":{\\\"GET\\\":{\\\"consumes\\\":[\\\"application\\/JSON\\\"],\\\"description\\\":\\\"Swagger auto-generated from learnt schema\\\",\\\"parameters\\\":[{\\\"description\\\":\\\"\\\",\\\"in\\\":\\\"query\\\",\\\"name\\\":\\\"test\\\",\\\"type\\\":\\\"string\\\"},{\\\"description\\\":\\\"\\\",\\\"in\\\":\\\"query\\\",\\\"name\\\":\\\"test1\\\",\\\"type\\\":\\\"string\\\"}],\\\"responses\\\":{\\\"200\\\":{\\\"description\\\":\\\"\\\"}}}}},\\\"schemes\\\":[\\\"HTTPS\\\",\\\"HTTP\\\"],\\\"swagger\\\":\\\"2.0\\\"}"
           },
           "pdf_info": {
             "$ref": "#/components/schemas/app_typeAPIEPPDFInfo"
@@ -6668,14 +6668,14 @@
             "description": "Name of the configuration object\n\nExample: ` \"name\"`",
             "title": "Name",
             "x-displayname": "Name",
-            "x-ves-example": "name"
+            "x-ves-example": "Name"
           },
           "namespace": {
             "type": "string",
             "description": "Namespace in which the configuration object is present\n\nExample: ` \"ns1\"`",
             "title": "Namespace",
             "x-displayname": "Namespace",
-            "x-ves-example": "ns1"
+            "x-ves-example": "Ns1"
           }
         }
       },
@@ -6713,7 +6713,7 @@
             "title": "Last Updated Time.",
             "format": "date-time",
             "x-displayname": "Last Updated Time.",
-            "x-ves-example": "2021-01-22 15:46:23.767649"
+            "x-ves-example": "2021-01-22 15:46:23.767649."
           },
           "request_schema": {
             "$ref": "#/components/schemas/app_typeRequestSchema"
@@ -6950,14 +6950,14 @@
             "description": "The name of this app_type\n\nExample: ` \"name\"`",
             "title": "Name",
             "x-displayname": "Name",
-            "x-ves-example": "name"
+            "x-ves-example": "Name"
           },
           "namespace": {
             "type": "string",
             "description": "The namespace this item belongs to\n\nExample: ` \"ns1\"`",
             "title": "Namespace",
             "x-displayname": "Namespace",
-            "x-ves-example": "ns1"
+            "x-ves-example": "Ns1"
           },
           "owner_view": {
             "$ref": "#/components/schemas/schemaViewRefType"
@@ -6979,14 +6979,14 @@
             "description": "The tenant this item belongs to\n\nExample: ` \"acmecorp\"`",
             "title": "Tenant",
             "x-displayname": "Tenant",
-            "x-ves-example": "acmecorp"
+            "x-ves-example": "Acmecorp"
           },
           "uid": {
             "type": "string",
             "description": "The unique uid of this app_type\n\nExample: ` \"d27938ba-967e-40a7-9709-57b8627f9f75\"`",
             "title": "Uid",
             "x-displayname": "UID",
-            "x-ves-example": "d27938ba-967e-40a7-9709-57b8627f9f75"
+            "x-ves-example": "D27938ba-967e-40a7-9709-57b8627f9f75."
           }
         }
       },
@@ -7002,7 +7002,7 @@
             "description": "Example: ` \"/API/v1/user_id/DYN\"`",
             "title": "Override component identifier.",
             "x-displayname": "Identifier.",
-            "x-ves-example": "/api/v1/user_id/DYN"
+            "x-ves-example": "/API/v1/user_id/DYN."
           },
           "set_dynamic": {
             "type": "boolean",
@@ -7026,14 +7026,14 @@
             "description": "App Type for current request\n\nExample: ` \"blogging-app\"`",
             "title": "App Type",
             "x-displayname": "App Type",
-            "x-ves-example": "blogging-app"
+            "x-ves-example": "Blogging-app."
           },
           "namespace": {
             "type": "string",
             "description": "Namespace of the App type for current request\n\nExample: ` \"shared\"`",
             "title": "Namespace",
             "x-displayname": "Namespace",
-            "x-ves-example": "shared"
+            "x-ves-example": "Shared"
           }
         }
       },
@@ -7050,14 +7050,14 @@
             "title": "Status",
             "format": "boolean",
             "x-displayname": "Status",
-            "x-ves-example": "true"
+            "x-ves-example": "True"
           },
           "status_msg": {
             "type": "string",
             "description": "Message string for the status of add operation\n\nExample: ` \"Override Pop Successful\"`",
             "title": "Message",
             "x-displayname": "Message",
-            "x-ves-example": "Override Pop Successful"
+            "x-ves-example": "Override Pop Successful."
           }
         }
       },
@@ -7073,14 +7073,14 @@
             "description": "App Type for current request\n\nExample: ` \"blogging-app\"`",
             "title": "App Type",
             "x-displayname": "App Type",
-            "x-ves-example": "blogging-app"
+            "x-ves-example": "Blogging-app."
           },
           "namespace": {
             "type": "string",
             "description": "Namespace of the App type for current request\n\nExample: ` \"shared\"`",
             "title": "Namespace",
             "x-displayname": "Namespace",
-            "x-ves-example": "shared"
+            "x-ves-example": "Shared"
           },
           "override_info": {
             "$ref": "#/components/schemas/app_typeOverrideInfo"
@@ -7100,14 +7100,14 @@
             "title": "Status",
             "format": "boolean",
             "x-displayname": "Status",
-            "x-ves-example": "true"
+            "x-ves-example": "True"
           },
           "status_msg": {
             "type": "string",
             "description": "Message string for the status of add operation\n\nExample: ` \"Override Push Successful\"`",
             "title": "Message",
             "x-displayname": "Message",
-            "x-ves-example": "Override Push Successful"
+            "x-ves-example": "Override Push Successful."
           }
         }
       },
@@ -7419,35 +7419,35 @@
             "description": "App Type for current request\n\nExample: ` \"blogging-app\"`",
             "title": "App Type",
             "x-displayname": "App Type",
-            "x-ves-example": "blogging-app"
+            "x-ves-example": "Blogging-app."
           },
           "collapsed_url": {
             "type": "string",
             "description": "API endpoint for which PDFs are requested.\n\nExample: ` \"value\"`",
             "title": "Discovered API URL.",
             "x-displayname": "API URL",
-            "x-ves-example": "value"
+            "x-ves-example": "Value"
           },
           "method": {
             "type": "string",
             "description": "Method of API endpoint for which PDFs are requested.\n\nExample: ` \"value\"`",
             "title": "Method of current API URL.",
             "x-displayname": "Method",
-            "x-ves-example": "value"
+            "x-ves-example": "Value"
           },
           "namespace": {
             "type": "string",
             "description": "Namespace of the App type for current request\n\nExample: ` \"shared\"`",
             "title": "Namespace",
             "x-displayname": "Namespace",
-            "x-ves-example": "shared"
+            "x-ves-example": "Shared"
           },
           "service_name": {
             "type": "string",
             "description": "Identifies the destination service\n\nExample: ` \"N:public or S:productpage\"`",
             "title": "Service",
             "x-displayname": "Service Name.",
-            "x-ves-example": "N:public or S:productpage"
+            "x-ves-example": "N:public or S:productpage."
           }
         }
       },
@@ -7475,21 +7475,21 @@
             "description": "App Type for current request\n\nExample: ` \"blogging-app\"`",
             "title": "App Type",
             "x-displayname": "App Type",
-            "x-ves-example": "blogging-app"
+            "x-ves-example": "Blogging-app."
           },
           "namespace": {
             "type": "string",
             "description": "Namespace of the App type for current request\n\nExample: ` \"shared\"`",
             "title": "Namespace",
             "x-displayname": "Namespace",
-            "x-ves-example": "shared"
+            "x-ves-example": "Shared"
           },
           "service_name": {
             "type": "string",
             "description": "Identifies the destination service\n\nExample: ` \"N:public or S:productpage\"`",
             "title": "Service",
             "x-displayname": "Service Name.",
-            "x-ves-example": "N:public or S:productpage"
+            "x-ves-example": "N:public or S:productpage."
           }
         }
       },
@@ -7608,35 +7608,35 @@
             "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then kind will hold the referred object's kind (e.g. \"route\")\n\nExample: ` \"virtual_site\"`",
             "title": "Kind",
             "x-displayname": "Kind",
-            "x-ves-example": "virtual_site"
+            "x-ves-example": "Virtual_site."
           },
           "name": {
             "type": "string",
             "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then name will hold the referred object's(e.g. Route's) name.\n\nExample: ` \"contactus-route\"`",
             "title": "Name",
             "x-displayname": "Name",
-            "x-ves-example": "contactus-route"
+            "x-ves-example": "Contactus-route."
           },
           "namespace": {
             "type": "string",
             "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then namespace will hold the referred object's(e.g. Route's) namespace.\n\nExample: ` \"ns1\"`",
             "title": "Namespace",
             "x-displayname": "Namespace",
-            "x-ves-example": "ns1"
+            "x-ves-example": "Ns1"
           },
           "tenant": {
             "type": "string",
             "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then tenant will hold the referred object's(e.g. Route's) tenant.\n\nExample: ` \"acmecorp\"`",
             "title": "Tenant",
             "x-displayname": "Tenant",
-            "x-ves-example": "acmecorp"
+            "x-ves-example": "Acmecorp"
           },
           "uid": {
             "type": "string",
             "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then uid will hold the referred object's(e.g. Route's) uid.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
             "title": "Uid",
             "x-displayname": "UID",
-            "x-ves-example": "d15f1fad-4d37-48c0-8706-df1824d76d31"
+            "x-ves-example": "D15f1fad-4d37-48c0-8706-df1824d76d31."
           }
         }
       },
@@ -7674,7 +7674,7 @@
             "minLength": 1,
             "maxLength": 512,
             "x-displayname": "Port Ranges.",
-            "x-ves-example": "80,443,8080-8191,9080",
+            "x-ves-example": "80,443,8080-8191,9080.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_len": "512",
               "ves.io.schema.rules.string.max_ports": "64",
@@ -7774,7 +7774,7 @@
             "minLength": 1,
             "maxLength": 512,
             "x-displayname": "Port Ranges.",
-            "x-ves-example": "80,443,8080-8191,9080",
+            "x-ves-example": "80,443,8080-8191,9080.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_len": "512",
               "ves.io.schema.rules.string.max_ports": "64",
@@ -7892,7 +7892,7 @@
             "minLength": 1,
             "maxLength": 512,
             "x-displayname": "Port Ranges.",
-            "x-ves-example": "80,443,8080-8191,9080",
+            "x-ves-example": "80,443,8080-8191,9080.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_len": "512",
               "ves.io.schema.rules.string.max_ports": "64",
@@ -8022,7 +8022,7 @@
             "description": "Exclusive with [auto_host_rewrite disable_host_rewrite]\n Host header will be swapped with this value\n\nExample: ` \"one.F5 Distributed Cloud.com\"`\n\nValidation Rules:\n F5 XC.schema.rules.string.hostname: true.",
             "title": "HostRewrite.",
             "x-displayname": "Host Rewrite Value.",
-            "x-ves-example": "one.volterra.com",
+            "x-ves-example": "One.F5 Distributed Cloud.com.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.hostname": "true"
             }
@@ -8049,7 +8049,7 @@
             "title": "Exact",
             "maxLength": 256,
             "x-displayname": "Exact",
-            "x-ves-example": "application/json",
+            "x-ves-example": "Application/JSON.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_bytes": "256",
               "ves.io.schema.rules.string.not_empty": "true"
@@ -8069,7 +8069,7 @@
             "minLength": 1,
             "maxLength": 256,
             "x-displayname": "Name",
-            "x-ves-example": "Content-Type",
+            "x-ves-example": "Content-Type.",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -8126,7 +8126,7 @@
             "title": "Prefix",
             "maxLength": 256,
             "x-displayname": "Prefix",
-            "x-ves-example": "/register/",
+            "x-ves-example": "/register/.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.http_path": "true",
               "ves.io.schema.rules.string.max_len": "256"
@@ -8249,7 +8249,7 @@
             "description": "Swap host part of incoming URL in redirect URL\n\nExample: ` \"one.F5 XC\"`",
             "title": "Host_redirect.",
             "x-displayname": "Host",
-            "x-ves-example": "one.ves.io"
+            "x-ves-example": "One.VES.I/O."
           },
           "path_redirect": {
             "type": "string",
@@ -8257,7 +8257,7 @@
             "title": "Path_redirect.",
             "maxLength": 256,
             "x-displayname": "Path",
-            "x-ves-example": "/api/register",
+            "x-ves-example": "/API/register.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.http_path": "true",
               "ves.io.schema.rules.string.max_len": "256"
@@ -8269,7 +8269,7 @@
             "title": "Prefix_rewrite.",
             "maxLength": 256,
             "x-displayname": "Prefix Rewrite.",
-            "x-ves-example": "/api/register/",
+            "x-ves-example": "/API/register/.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.http_path": "true",
               "ves.io.schema.rules.string.max_len": "256"
@@ -8280,7 +8280,7 @@
             "description": "Swap protocol part of incoming URL in redirect URL\n The protocol can be swapped with either HTTP or HTTPS\n When incoming-proto option is specified, swapping of protocol is not done.\n\nExample: ` \"HTTPS\"`\n\nValidation Rules:\n F5 XC.schema.rules.string.in: [\\\"incoming-proto\\\",\\\"HTTP\\\",\\\"HTTPS\\\"]",
             "title": "Proto_redirect.",
             "x-displayname": "Protocol",
-            "x-ves-example": "https",
+            "x-ves-example": "HTTPS",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.in": "[\\\"incoming-proto\\\",\\\"http\\\",\\\"https\\\"]"
             }
@@ -8329,14 +8329,14 @@
             "description": "Name of the Secret Management Access object that contains information about the backend Secret Management service.\n\nExample: ` \"value\"`",
             "title": "Decryption Provider.",
             "x-displayname": "Decryption Provider.",
-            "x-ves-example": "value"
+            "x-ves-example": "Value"
           },
           "location": {
             "type": "string",
             "description": "Location is the uri_ref. It could be in URL format for string:///\n Or it could be a path if the store provider is an HTTP/HTTPS location\n\nExample: ` \"string:///U2VjcmV0SW5mb3JtYXRpb24=\"`\n\nRequired: YES\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true\n F5 XC.schema.rules.string.uri_ref: true.",
             "title": "Location",
             "x-displayname": "Location",
-            "x-ves-example": "string:///U2VjcmV0SW5mb3JtYXRpb24=",
+            "x-ves-example": "String:///U2VjcmV0SW5mb3JtYXRpb24=.",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -8348,7 +8348,7 @@
             "description": "Name of the Secret Management Access object that contains information about the store to GET encrypted bytes\n This field needs to be provided only if the URL scheme is not string:///\n\nExample: ` \"value\"`",
             "title": "Store Provider.",
             "x-displayname": "Store Provider.",
-            "x-ves-example": "value"
+            "x-ves-example": "Value"
           }
         }
       },
@@ -8365,7 +8365,7 @@
             "description": "Name of the Secret Management Access object that contains information about the store to GET encrypted bytes\n This field needs to be provided only if the URL scheme is not string:///\n\nExample: ` \"box-provider\"`",
             "title": "Provider",
             "x-displayname": "Provider",
-            "x-ves-example": "box-provider"
+            "x-ves-example": "Box-provider."
           },
           "url": {
             "type": "string",
@@ -8373,7 +8373,7 @@
             "title": "URL",
             "maxLength": 131072,
             "x-displayname": "URL",
-            "x-ves-example": "string:///U2VjcmV0SW5mb3JtYXRpb24=",
+            "x-ves-example": "String:///U2VjcmV0SW5mb3JtYXRpb24=.",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -8458,21 +8458,21 @@
             "description": "Kind of the Kubernetes object\n\nExample: ` \"Deployment\"`",
             "title": "Kind",
             "x-displayname": "Kind",
-            "x-ves-example": "Deployment"
+            "x-ves-example": "Deployment."
           },
           "name": {
             "type": "string",
             "description": "Name of the Kubernetes object\n\nExample: ` \"adservice\"`",
             "title": "Name",
             "x-displayname": "Name",
-            "x-ves-example": "adservice"
+            "x-ves-example": "Adservice"
           },
           "namespace": {
             "type": "string",
             "description": "Namespace of the Kubernetes object\n\nExample: ` \"ns1\"`",
             "title": "Namespace",
             "x-displayname": "Namespace",
-            "x-ves-example": "ns1"
+            "x-ves-example": "Ns1"
           }
         }
       },
@@ -8489,7 +8489,7 @@
             "title": "Timestamp",
             "format": "double",
             "x-displayname": "Timestamp",
-            "x-ves-example": "1570007981"
+            "x-ves-example": "1570007981."
           },
           "trend_value": {
             "$ref": "#/components/schemas/schemaTrendValue"
@@ -8560,7 +8560,7 @@
             "minLength": 1,
             "maxLength": 131072,
             "x-displayname": "Certificate.",
-            "x-ves-example": "value",
+            "x-ves-example": "Value",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -8577,7 +8577,7 @@
             "description": "Description for the certificate\n\nExample: ` \"Certificate used in production environment\"`",
             "title": "Description.",
             "x-displayname": "Description.",
-            "x-ves-example": "Certificate used in production environment"
+            "x-ves-example": "Certificate used in production environment."
           },
           "disable_ocsp_stapling": {
             "$ref": "#/components/schemas/ioschemaEmpty"
@@ -8630,7 +8630,7 @@
             "description": "Description of the method used to calculate trend.\n\nExample: ` \"Trend was calculated by comparing the avg of window size intervals of end-start Time and last window time interval\"`",
             "title": "Description.",
             "x-displayname": "Description.",
-            "x-ves-example": "Trend was calculated by comparing the avg of window size intervals of end-start Time and last window time interval"
+            "x-ves-example": "Trend was calculated by comparing the avg of window size intervals of end-start Time and last window time interval."
           },
           "previous_value": {
             "type": "string",
@@ -8797,7 +8797,7 @@
             "minLength": 1,
             "maxLength": 128,
             "x-displayname": "Name",
-            "x-ves-example": "contacts-route",
+            "x-ves-example": "Contacts-route.",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -8811,7 +8811,7 @@
             "title": "Namespace",
             "maxLength": 64,
             "x-displayname": "Namespace",
-            "x-ves-example": "ns1",
+            "x-ves-example": "Ns1",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_bytes": "64"
             }
@@ -8822,7 +8822,7 @@
             "title": "Tenant",
             "maxLength": 64,
             "x-displayname": "Tenant",
-            "x-ves-example": "acmecorp",
+            "x-ves-example": "Acmecorp",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_bytes": "64"
             }
@@ -8857,7 +8857,7 @@
               "type": "string"
             },
             "x-displayname": "Cipher Suites.",
-            "x-ves-example": "TLS_AES_128_GCM_SHA256",
+            "x-ves-example": "TLS_AES_128_GCM_SHA256.",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -9421,7 +9421,7 @@
               "maxLength": 256
             },
             "x-displayname": "Domains",
-            "x-ves-example": "www.foo.com",
+            "x-ves-example": "Www.foo.com.",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -9500,7 +9500,7 @@
             "title": "Data",
             "maxLength": 16384,
             "x-displayname": "Data",
-            "x-ves-example": "value",
+            "x-ves-example": "Value",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_len": "16384",
               "ves.io.schema.rules.string.uri_ref": "true"
@@ -9515,7 +9515,7 @@
             "title": "Name",
             "maxLength": 256,
             "x-displayname": "Name",
-            "x-ves-example": "value",
+            "x-ves-example": "Value",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -9528,7 +9528,7 @@
             "title": "VolumeName.",
             "maxLength": 256,
             "x-displayname": "Volume Name.",
-            "x-ves-example": "value",
+            "x-ves-example": "Value",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -9606,7 +9606,7 @@
               "type": "string"
             },
             "x-displayname": "Arguments",
-            "x-ves-example": "value",
+            "x-ves-example": "Value",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.repeated.max_items": "128"
             }
@@ -9620,7 +9620,7 @@
               "type": "string"
             },
             "x-displayname": "Command",
-            "x-ves-example": "value",
+            "x-ves-example": "Value",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.repeated.max_items": "128"
             }
@@ -9653,7 +9653,7 @@
             "title": "Name",
             "maxLength": 256,
             "x-displayname": "Name",
-            "x-ves-example": "value",
+            "x-ves-example": "Value",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -9714,14 +9714,14 @@
             "description": "Name of the configuration object\n\nExample: ` \"name\"`",
             "title": "Name",
             "x-displayname": "Name",
-            "x-ves-example": "name"
+            "x-ves-example": "Name"
           },
           "namespace": {
             "type": "string",
             "description": "Namespace in which the configuration object is present\n\nExample: ` \"ns1\"`",
             "title": "Namespace",
             "x-displayname": "Namespace",
-            "x-ves-example": "ns1"
+            "x-ves-example": "Ns1"
           }
         }
       },
@@ -9936,7 +9936,7 @@
             "description": "Name of the volume\n\nExample: ` \"volume-0\"`\n\nValidation Rules:\n F5 XC.schema.rules.string.dns_1123_label: true.",
             "title": "Name",
             "x-displayname": "Name",
-            "x-ves-example": "volume-0",
+            "x-ves-example": "Volume-0",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.dns_1123_label": "true"
             }
@@ -9961,7 +9961,7 @@
               "maxLength": 64
             },
             "x-displayname": "Command",
-            "x-ves-example": "value",
+            "x-ves-example": "Value",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -10060,7 +10060,7 @@
             "description": "Specifies a list of HTTP headers that should be added to each request that is sent to the\n health checked container. This is a list of key-value pairs.\n\nExample: ` \"value\"`\n\nValidation Rules:\n F5 XC.schema.rules.map.keys.string.max_len: 256\n F5 XC.schema.rules.map.keys.string.min_len: 1\n F5 XC.schema.rules.map.max_pairs: 16\n F5 XC.schema.rules.map.values.string.max_len: 2048\n F5 XC.schema.rules.map.values.string.min_len: 1.",
             "title": "Headers to add in health check request.",
             "x-displayname": "Request Headers to Add.",
-            "x-ves-example": "value",
+            "x-ves-example": "Value",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.map.keys.string.max_len": "256",
               "ves.io.schema.rules.map.keys.string.min_len": "1",
@@ -10075,7 +10075,7 @@
             "title": "Host Header.",
             "maxLength": 262,
             "x-displayname": "Host Header.",
-            "x-ves-example": "one.volterra.com",
+            "x-ves-example": "One.F5 Distributed Cloud.com.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.hostport": "true",
               "ves.io.schema.rules.string.max_len": "262"
@@ -10124,7 +10124,7 @@
               "maxLength": 256
             },
             "x-displayname": "Domains",
-            "x-ves-example": "www.foo.com",
+            "x-ves-example": "Www.foo.com.",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -10252,7 +10252,7 @@
             "title": "Path",
             "maxLength": 256,
             "x-displayname": "Path",
-            "x-ves-example": "value",
+            "x-ves-example": "Value",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -10312,7 +10312,7 @@
             "title": "Name",
             "maxLength": 256,
             "x-displayname": "Image Name.",
-            "x-ves-example": "quay.io/etcd:0.13",
+            "x-ves-example": "Quay.I/O/etcd:0.13.",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -10451,14 +10451,14 @@
             "description": "The name of this workload\n\nExample: ` \"name\"`",
             "title": "Name",
             "x-displayname": "Name",
-            "x-ves-example": "name"
+            "x-ves-example": "Name"
           },
           "namespace": {
             "type": "string",
             "description": "The namespace this item belongs to\n\nExample: ` \"ns1\"`",
             "title": "Namespace",
             "x-displayname": "Namespace",
-            "x-ves-example": "ns1"
+            "x-ves-example": "Ns1"
           },
           "owner_view": {
             "$ref": "#/components/schemas/schemaViewRefType"
@@ -10480,14 +10480,14 @@
             "description": "The tenant this item belongs to\n\nExample: ` \"acmecorp\"`",
             "title": "Tenant",
             "x-displayname": "Tenant",
-            "x-ves-example": "acmecorp"
+            "x-ves-example": "Acmecorp"
           },
           "uid": {
             "type": "string",
             "description": "The unique uid of this workload\n\nExample: ` \"d27938ba-967e-40a7-9709-57b8627f9f75\"`",
             "title": "Uid",
             "x-displayname": "UID",
-            "x-ves-example": "d27938ba-967e-40a7-9709-57b8627f9f75"
+            "x-ves-example": "D27938ba-967e-40a7-9709-57b8627f9f75."
           }
         }
       },
@@ -10510,7 +10510,7 @@
             "description": "Exclusive with [auto_host_rewrite disable_host_rewrite]\n Host header will be swapped with this value\n\nExample: ` \"one.F5 Distributed Cloud.com\"`\n\nValidation Rules:\n F5 XC.schema.rules.string.hostname: true.",
             "title": "HostRewrite.",
             "x-displayname": "Host Rewrite Value.",
-            "x-ves-example": "one.volterra.com",
+            "x-ves-example": "One.F5 Distributed Cloud.com.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.hostname": "true"
             }
@@ -10622,7 +10622,7 @@
             "description": "Name of the volume\n\nExample: ` \"value\"`\n\nRequired: YES\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true\n F5 XC.schema.rules.string.dns_1123_label: true.",
             "title": "Name",
             "x-displayname": "Name",
-            "x-ves-example": "value",
+            "x-ves-example": "Value",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -10722,7 +10722,7 @@
             "description": "Name of the Port\n\nExample: ` \"HTTPS\"`\n\nRequired: YES\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true\n F5 XC.schema.rules.string.iana_svc_name: true.",
             "title": "Name",
             "x-displayname": "Name",
-            "x-ves-example": "https",
+            "x-ves-example": "HTTPS",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -10955,7 +10955,7 @@
             "description": "Name of the volume\n\nExample: ` \"volume-0\"`\n\nValidation Rules:\n F5 XC.schema.rules.string.dns_1123_label: true.",
             "title": "Name",
             "x-displayname": "Name",
-            "x-ves-example": "volume-0",
+            "x-ves-example": "Volume-0",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.dns_1123_label": "true"
             }
@@ -10993,7 +10993,7 @@
               "type": "string"
             },
             "x-displayname": "Domains",
-            "x-ves-example": "www.foo.com",
+            "x-ves-example": "Www.foo.com.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.repeated.items.string.hostname": "true",
               "ves.io.schema.rules.repeated.max_items": "32",
@@ -11006,7 +11006,7 @@
             "title": "With SNI",
             "format": "boolean",
             "x-displayname": "With SNI",
-            "x-ves-example": "true"
+            "x-ves-example": "True"
           }
         }
       },
@@ -11061,7 +11061,7 @@
             "description": "End time of metric collection from which data will be considered to build graph.\n Format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the end_time will be evaluated to start_time+10m\n If start_time is not specified, then the end_time will be evaluated to <current time>\n\nExample: ` \"1570197600\"`\n\nValidation Rules:\n F5 XC.schema.rules.string.query_time: true.",
             "title": "End time",
             "x-displayname": "End Time",
-            "x-ves-example": "1570197600",
+            "x-ves-example": "1570197600.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.query_time": "true"
             }
@@ -11112,7 +11112,7 @@
             "description": "Namespace is used to scope the workload usage to a given namespace.\n\nExample: ` \"ns1\"`",
             "title": "Namespace",
             "x-displayname": "Namespace",
-            "x-ves-example": "ns1"
+            "x-ves-example": "Ns1"
           },
           "range": {
             "type": "string",
@@ -11129,7 +11129,7 @@
             "description": "Start time of metric collection from which data will be considered to build graph.\n Format: unix_timestamp|rfc 3339\n\n Optional: If not specified, then the start_time will be evaluated to end_time-10m\n If end_time is not specified, then the start_time will be evaluated to <current time>-10m\n\nExample: ` \"1570194000\"`\n\nValidation Rules:\n F5 XC.schema.rules.string.query_time: true.",
             "title": "Start time.",
             "x-displayname": "Start Time.",
-            "x-ves-example": "1570194000",
+            "x-ves-example": "1570194000.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.query_time": "true"
             }
@@ -11240,7 +11240,7 @@
             "title": "MountPath",
             "maxLength": 256,
             "x-displayname": "Mount Path.",
-            "x-ves-example": "value",
+            "x-ves-example": "Value",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
@@ -11254,7 +11254,7 @@
             "title": "SubPath",
             "maxLength": 256,
             "x-displayname": "Sub Path",
-            "x-ves-example": "value",
+            "x-ves-example": "Value",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_len": "256"
             }
@@ -11350,14 +11350,14 @@
             "description": "Name of the configuration object\n\nExample: ` \"name\"`",
             "title": "Name",
             "x-displayname": "Name",
-            "x-ves-example": "name"
+            "x-ves-example": "Name"
           },
           "namespace": {
             "type": "string",
             "description": "Namespace in which the configuration object is present\n\nExample: ` \"ns1\"`",
             "title": "Namespace",
             "x-displayname": "Namespace",
-            "x-ves-example": "ns1"
+            "x-ves-example": "Ns1"
           }
         }
       },
@@ -11546,14 +11546,14 @@
             "description": "The name of this workload_flavor\n\nExample: ` \"name\"`",
             "title": "Name",
             "x-displayname": "Name",
-            "x-ves-example": "name"
+            "x-ves-example": "Name"
           },
           "namespace": {
             "type": "string",
             "description": "The namespace this item belongs to\n\nExample: ` \"ns1\"`",
             "title": "Namespace",
             "x-displayname": "Namespace",
-            "x-ves-example": "ns1"
+            "x-ves-example": "Ns1"
           },
           "owner_view": {
             "$ref": "#/components/schemas/schemaViewRefType"
@@ -11575,14 +11575,14 @@
             "description": "The tenant this item belongs to\n\nExample: ` \"acmecorp\"`",
             "title": "Tenant",
             "x-displayname": "Tenant",
-            "x-ves-example": "acmecorp"
+            "x-ves-example": "Acmecorp"
           },
           "uid": {
             "type": "string",
             "description": "The unique uid of this workload_flavor\n\nExample: ` \"d27938ba-967e-40a7-9709-57b8627f9f75\"`",
             "title": "Uid",
             "x-displayname": "UID",
-            "x-ves-example": "d27938ba-967e-40a7-9709-57b8627f9f75"
+            "x-ves-example": "D27938ba-967e-40a7-9709-57b8627f9f75."
           }
         }
       },
