@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-12-19T06:45:29.930944",
+  "timestamp": "2025-12-19T08:01:18.858450",
   "summary": {
     "files_processed": 270,
     "files_succeeded": 270,
@@ -13,12 +13,12 @@
       "error": "Operation ID 'ves.io.schema.alert.CustomAPI.AlertsHistoryScroll' for 'post' in '/api/data/namespaces/{namespace}/alerts/history/scroll' is not unique"
     },
     {
-      "file": "docs-cloud-f5-com.0020.public.ves.io.schema.app_security.ves-swagger.json",
-      "error": "Operation ID 'ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsScrollQuery' for 'post' in '/api/data/namespaces/{namespace}/app_security/events/scroll' is not unique"
-    },
-    {
       "file": "docs-cloud-f5-com.0021.public.ves.io.schema.api_sec.rule_suggestion.ves-swagger.json",
       "error": "'TRANSFORMER_NONE' is not one of ['LOWER_CASE', 'UPPER_CASE', 'BASE64_DECODE', 'NORMALIZE_PATH', 'REMOVE_WHITESPACE', 'URL_DECODE', 'TRIM_LEFT', 'TRIM_RIGHT', 'TRIM']\n\nFailed validating 'enum' in schema:\n    {'type': 'string',\n     'description': 'Transformers to be applied on the part of the request '\n                    'before matching.\\n'\n                    '\\n'\n                    ' - TRANSFORMER_NONE: transformer none\\n'\n                    '\\n'\n                    'No transformers enabled\\n'\n                    ' - LOWER_CASE: lower case\\n'\n                    '\\n'\n                    'Convert string to lower case\\n'\n                    ' - UPPER_CASE: upper case\\n'\n                    '\\n'\n                    'Convert string to upper case\\n'\n                    ' - BASE64_DECODE: base64 decode\\n'\n                    '\\n'\n                    'Decode string assuming base64 encoding\\n'\n                    ' - NORMALIZE_PATH: normalize path\\n'\n                    '\\n'\n                    'Normalize URL path so that /a/b/../c will be '\n                    'transformed to /a/c\\n'\n                    ' - REMOVE_WHITESPACE: remove whitespace\\n'\n                    '\\n'\n                    'Remove whitespaces\\n'\n                    ' - URL_DECODE: URL decode\\n'\n                    '\\n'\n                    'Decode string assuming URL encoding as per rfc1738\\n'\n                    ' - TRIM_LEFT: trim left\\n'\n                    '\\n'\n                    'Remove whitespace from the left side of the input '\n                    'string\\n'\n                    ' - TRIM_RIGHT: trim right\\n'\n                    '\\n'\n                    'Remove whitespace from the right side of the input '\n                    'string\\n'\n                    ' - TRIM: trim\\n'\n                    '\\n'\n                    'Remove whitespace from the both sides of the input '\n                    'string.',\n     'title': 'Transformer.',\n     'enum': ['LOWER_CASE',\n              'UPPER_CASE',\n              'BASE64_DECODE',\n              'NORMALIZE_PATH',\n              'REMOVE_WHITESPACE',\n              'URL_DECODE',\n              'TRIM_LEFT',\n              'TRIM_RIGHT',\n              'TRIM'],\n     'default': 'TRANSFORMER_NONE',\n     'x-displayname': 'Transformer.',\n     'x-ves-proto-enum': 'ves.io.schema.policy.Transformer'}\n\nOn instance:\n    'TRANSFORMER_NONE'"
+    },
+    {
+      "file": "docs-cloud-f5-com.0020.public.ves.io.schema.app_security.ves-swagger.json",
+      "error": "Operation ID 'ves.io.schema.app_security.AppSecurityMonitoringAPI.SecurityEventsScrollQuery' for 'post' in '/api/data/namespaces/{namespace}/app_security/events/scroll' is not unique"
     },
     {
       "file": "docs-cloud-f5-com.0042.public.ves.io.schema.views.cdn_loadbalancer.ves-swagger.json",
