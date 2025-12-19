@@ -1,15 +1,16 @@
 # F5 XC API Specification Normalization Configuration
 # This configuration controls how specs are normalized for UI compatibility
 #
-# Pipeline flow:
-#   specs/original/ (READ-ONLY) -> specs/enriched/ -> specs/normalized/ -> specs/merged/
+# Simplified two-folder architecture:
+#   specs/original/            - READ-ONLY source from F5
+#   specs/enriched/individual/ - Processed individual specs (in-place normalization)
+#   specs/enriched/            - Domain-merged specs at root level
 
 # Directory paths
 paths:
-  # Input directory: enriched specifications from the enrich step
-  enriched: "specs/enriched"
-  # Output directory: normalized specifications ready for merge
-  normalized: "specs/normalized"
+  # Input/Output directory: same location for in-place processing
+  enriched: "specs/enriched/individual"
+  normalized: "specs/enriched/individual"
   # Reports directory
   reports: "reports"
 

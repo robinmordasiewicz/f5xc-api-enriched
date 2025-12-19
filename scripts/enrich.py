@@ -30,7 +30,7 @@ console = Console()
 DEFAULT_CONFIG = {
     "paths": {
         "original": "specs/original",
-        "enriched": "specs/enriched",
+        "enriched": "specs/enriched/individual",
         "reports": "reports",
     },
     "target_fields": ["description", "summary", "title", "x-displayname"],
