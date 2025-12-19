@@ -132,23 +132,25 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"ns1\"\nNamespace to scope the listing of nginx_csg.",
+            "description": "Namespace\nNamespace to scope the listing of nginx_csg.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Ns1"
           },
           {
             "name": "label_filter",
-            "description": "X-example: \"env in (staging, testing), tier in (web, db)\"\nA LabelSelectorType expression that every item in list response will satisfy.",
+            "description": "A LabelSelectorType expression that every item in list response will satisfy.",
             "in": "query",
             "required": false,
             "x-displayname": "Label Filter.",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Env in (staging, testing), tier in (web, db)"
           },
           {
             "name": "report_fields",
@@ -289,23 +291,25 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"ns1\"\nThe namespace in which the configuration object is present.",
+            "description": "Namespace\nThe namespace in which the configuration object is present.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Ns1"
           },
           {
             "name": "name",
-            "description": "Name\n\nx-example: \"name\"\nThe name of the configuration object to be fetched.",
+            "description": "Name\nThe name of the configuration object to be fetched.",
             "in": "path",
             "required": true,
             "x-displayname": "Name",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Name"
           },
           {
             "name": "response_format",
@@ -435,23 +439,25 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"ns1\"\nNamespace to scope the listing of nginx_instance.",
+            "description": "Namespace\nNamespace to scope the listing of nginx_instance.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Ns1"
           },
           {
             "name": "label_filter",
-            "description": "X-example: \"env in (staging, testing), tier in (web, db)\"\nA LabelSelectorType expression that every item in list response will satisfy.",
+            "description": "A LabelSelectorType expression that every item in list response will satisfy.",
             "in": "query",
             "required": false,
             "x-displayname": "Label Filter.",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Env in (staging, testing), tier in (web, db)"
           },
           {
             "name": "report_fields",
@@ -592,23 +598,25 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"ns1\"\nThe namespace in which the configuration object is present.",
+            "description": "Namespace\nThe namespace in which the configuration object is present.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Ns1"
           },
           {
             "name": "name",
-            "description": "Name\n\nx-example: \"name\"\nThe name of the configuration object to be fetched.",
+            "description": "Name\nThe name of the configuration object to be fetched.",
             "in": "path",
             "required": true,
             "x-displayname": "Name",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Name"
           },
           {
             "name": "response_format",
@@ -738,13 +746,14 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"system\"\nNamespace of the NGINX One Instance.",
+            "description": "Namespace\nNamespace of the NGINX One Instance.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "System"
           }
         ],
         "requestBody": {
@@ -867,23 +876,25 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"ns1\"\nNamespace to scope the listing of nginx_server.",
+            "description": "Namespace\nNamespace to scope the listing of nginx_server.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Ns1"
           },
           {
             "name": "label_filter",
-            "description": "X-example: \"env in (staging, testing), tier in (web, db)\"\nA LabelSelectorType expression that every item in list response will satisfy.",
+            "description": "A LabelSelectorType expression that every item in list response will satisfy.",
             "in": "query",
             "required": false,
             "x-displayname": "Label Filter.",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Env in (staging, testing), tier in (web, db)"
           },
           {
             "name": "report_fields",
@@ -1024,23 +1035,25 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"ns1\"\nThe namespace in which the configuration object is present.",
+            "description": "Namespace\nThe namespace in which the configuration object is present.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Ns1"
           },
           {
             "name": "name",
-            "description": "Name\n\nx-example: \"name\"\nThe name of the configuration object to be fetched.",
+            "description": "Name\nThe name of the configuration object to be fetched.",
             "in": "path",
             "required": true,
             "x-displayname": "Name",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Name"
           },
           {
             "name": "response_format",
@@ -1405,13 +1418,14 @@
         "parameters": [
           {
             "name": "metadata.namespace",
-            "description": "Namespace\n\nx-example: \"staging\"\nThis defines the workspace within which each the configuration object is to be created.\nMust be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"",
+            "description": "Namespace\nThis defines the workspace within which each the configuration object is to be created.\nMust be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Staging"
           }
         ],
         "requestBody": {
@@ -1534,23 +1548,25 @@
         "parameters": [
           {
             "name": "metadata.namespace",
-            "description": "Namespace\n\nx-example: \"staging\"\nThis defines the workspace within which each the configuration object is to be created.\nMust be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"",
+            "description": "Namespace\nThis defines the workspace within which each the configuration object is to be created.\nMust be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Staging"
           },
           {
             "name": "metadata.name",
-            "description": "Name\n\nx-example: \"acmecorp-web\"\nThe configuration object to be replaced will be looked up by name.",
+            "description": "Name\nThe configuration object to be replaced will be looked up by name.",
             "in": "path",
             "required": true,
             "x-displayname": "Name",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Acmecorp-web."
           }
         ],
         "requestBody": {
@@ -1673,23 +1689,25 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"ns1\"\nNamespace to scope the listing of nginx_service_discovery.",
+            "description": "Namespace\nNamespace to scope the listing of nginx_service_discovery.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Ns1"
           },
           {
             "name": "label_filter",
-            "description": "X-example: \"env in (staging, testing), tier in (web, db)\"\nA LabelSelectorType expression that every item in list response will satisfy.",
+            "description": "A LabelSelectorType expression that every item in list response will satisfy.",
             "in": "query",
             "required": false,
             "x-displayname": "Label Filter.",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Env in (staging, testing), tier in (web, db)"
           },
           {
             "name": "report_fields",
@@ -1830,23 +1848,25 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"ns1\"\nThe namespace in which the configuration object is present.",
+            "description": "Namespace\nThe namespace in which the configuration object is present.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Ns1"
           },
           {
             "name": "name",
-            "description": "Name\n\nx-example: \"name\"\nThe name of the configuration object to be fetched.",
+            "description": "Name\nThe name of the configuration object to be fetched.",
             "in": "path",
             "required": true,
             "x-displayname": "Name",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Name"
           },
           {
             "name": "response_format",
@@ -1972,23 +1992,25 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"ns1\"\nNamespace in which the configuration object is present.",
+            "description": "Namespace\nNamespace in which the configuration object is present.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Ns1"
           },
           {
             "name": "name",
-            "description": "Name\n\nx-example: \"name\"\nName of the configuration object.",
+            "description": "Name\nName of the configuration object.",
             "in": "path",
             "required": true,
             "x-displayname": "Name",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Name"
           }
         ],
         "requestBody": {
@@ -2038,35 +2060,35 @@
         "properties": {
           "kind": {
             "type": "string",
-            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then kind will hold the referred object's kind (e.g. \"route\")\n\nExample: ` \"virtual_site\"`",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen kind will hold the referred object's kind (e.g. \"route\")",
             "title": "Kind",
             "x-displayname": "Kind",
             "x-ves-example": "Virtual_site."
           },
           "name": {
             "type": "string",
-            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then name will hold the referred object's(e.g. Route's) name.\n\nExample: ` \"contactus-route\"`",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen name will hold the referred object's(e.g. Route's) name.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Contactus-route."
           },
           "namespace": {
             "type": "string",
-            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then namespace will hold the referred object's(e.g. Route's) namespace.\n\nExample: ` \"ns1\"`",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen namespace will hold the referred object's(e.g. Route's) namespace.",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "Ns1"
           },
           "tenant": {
             "type": "string",
-            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then tenant will hold the referred object's(e.g. Route's) tenant.\n\nExample: ` \"acmecorp\"`",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen tenant will hold the referred object's(e.g. Route's) tenant.",
             "title": "Tenant",
             "x-displayname": "Tenant",
             "x-ves-example": "Acmecorp"
           },
           "uid": {
             "type": "string",
-            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then uid will hold the referred object's(e.g. Route's) uid.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen uid will hold the referred object's(e.g. Route's) uid.",
             "title": "Uid",
             "x-displayname": "UID",
             "x-ves-example": "D15f1fad-4d37-48c0-8706-df1824d76d31."
@@ -2120,7 +2142,7 @@
       },
       "nginx_csgGetResponseFormatCode": {
         "type": "string",
-        "description": "X-displayName: \"GET Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object.",
+        "description": "X-displayName: \"GET Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n- GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n- GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n- GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n- GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object.",
         "title": "GetResponseFormatCode.",
         "enum": [
           "GET_RSP_FORMAT_DEFAULT",
@@ -2197,14 +2219,14 @@
           },
           "name": {
             "type": "string",
-            "description": "The name of this nginx_csg\n\nExample: ` \"name\"`",
+            "description": "The name of this nginx_csg.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Name"
           },
           "namespace": {
             "type": "string",
-            "description": "The namespace this item belongs to\n\nExample: ` \"ns1\"`",
+            "description": "The namespace this item belongs to.",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "Ns1"
@@ -2217,14 +2239,14 @@
           },
           "tenant": {
             "type": "string",
-            "description": "The tenant this item belongs to\n\nExample: ` \"acmecorp\"`",
+            "description": "The tenant this item belongs to.",
             "title": "Tenant",
             "x-displayname": "Tenant",
             "x-ves-example": "Acmecorp"
           },
           "uid": {
             "type": "string",
-            "description": "The unique uid of this nginx_csg\n\nExample: ` \"d27938ba-967e-40a7-9709-57b8627f9f75\"`",
+            "description": "The unique uid of this nginx_csg.",
             "title": "Uid",
             "x-displayname": "UID",
             "x-ves-example": "D27938ba-967e-40a7-9709-57b8627f9f75."
@@ -2267,22 +2289,28 @@
           },
           "policy_file_name": {
             "type": "string",
-            "description": "Policy file name for WAF\n\nRequired: YES\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true.",
+            "description": "Policy file name for WAF\n\nRequired: YES.",
             "title": "Policy_file_name.",
             "x-displayname": "WAF Policy File Name.",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true"
             }
           },
           "policy_name": {
             "type": "string",
-            "description": "Policy name configured for WAF\n\nRequired: YES\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true.",
+            "description": "Policy name configured for WAF\n\nRequired: YES.",
             "title": "Policy_name.",
             "x-displayname": "WAF Policy Name.",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true"
             }
           },
           "security_log_enabled": {
@@ -2330,11 +2358,11 @@
       },
       "protobufAny": {
         "type": "object",
-        "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n Foo foo = ...;\n Any any;\n any.PackFrom(foo);\n ...\n If (any.UnpackTo(&foo)) {\n ...\n }\n\nExample 2: Pack and unpack a message in Java.\n\n Foo foo = ...;\n Any any = Any.pack(foo);\n ...\n If (any.is(Foo.class)) {\n foo = any.unpack(Foo.class);\n }\n\n Example 3: Pack and unpack a message in Python.\n\n Foo = Foo(...)\n any = Any()\n any.Pack(foo)\n ...\n If any.Is(Foo.DESCRIPTOR):\n any.Unpack(foo)\n ...\n\n Example 4: Pack and unpack a message in Go\n\n foo := &pb.Foo{...}\n any, err := ptypes.MarshalAny(foo)\n ...\n Foo := &pb.Foo{}\n if err := ptypes.UnmarshalAny(any, foo); err != nil {\n ...\n }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n package google.profile;\n message Person {\n string first_name = 1;\n string last_name = 2;\n }\n\n {\n \"@type\": \"type.googleapis.com/google.profile.Person\",\n \"firstName\": <string>,\n \"lastName\": <string>\n }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n {\n \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n \"value\": \"1.212s\"\n }",
+        "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\nFoo foo = ...;\nAny any;\nany.PackFrom(foo);\n...\nIf (any.UnpackTo(&foo)) {\n...\n}\n\nExample 2: Pack and unpack a message in Java.\n\nFoo foo = ...;\nAny any = Any.pack(foo);\n...\nIf (any.is(Foo.class)) {\nfoo = any.unpack(Foo.class);\n}\n\nExample 3: Pack and unpack a message in Python.\n\nFoo = Foo(...)\nany = Any()\nany.Pack(foo)\n...\nIf any.Is(Foo.DESCRIPTOR):\nany.Unpack(foo)\n...\n\nExample 4: Pack and unpack a message in Go\n\nfoo := &pb.Foo{...}\nany, err := ptypes.MarshalAny(foo)\n...\nFoo := &pb.Foo{}\nif err := ptypes.UnmarshalAny(any, foo); err != nil {\n...\n}\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\npackage google.profile;\nmessage Person {\nstring first_name = 1;\nstring last_name = 2;\n}\n\n{\n\"@type\": \"type.googleapis.com/google.profile.Person\",\n\"firstName\": <string>,\n\"lastName\": <string>\n}\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n{\n\"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n\"value\": \"1.212s\"\n}",
         "properties": {
           "type_url": {
             "type": "string",
-            "description": "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `HTTP`, `HTTPS`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `HTTPS` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n URL, or have them precompiled into a binary to avoid any\n lookup. Therefore, binary compatibility needs to be preserved\n on changes to types. (Use versioned type names to manage\n breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com.\n\nSchemes other than `HTTP`, `HTTPS` (or the empty scheme) might be\nused with implementation specific semantics."
+            "description": "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `HTTP`, `HTTPS`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `HTTPS` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\nvalue in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\nURL, or have them precompiled into a binary to avoid any\nlookup. Therefore, binary compatibility needs to be preserved\non changes to types. (Use versioned type names to manage\nbreaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com.\n\nSchemes other than `HTTP`, `HTTPS` (or the empty scheme) might be\nused with implementation specific semantics."
           },
           "value": {
             "type": "string",
@@ -2345,7 +2373,7 @@
       },
       "schemaErrorCode": {
         "type": "string",
-        "description": "Union of all possible error-codes from system\n\n - EOK: No error\n - EPERMS: Permissions error\n - EBADINPUT: Input is not correct\n - ENOTFOUND: Not found\n - EEXISTS: Already exists\n - EUNKNOWN: Unknown/catchall error\n - ESERIALIZE: Error in serializing/de-serializing\n - EINTERNAL: Server error\n - EPARTIAL: Partial error.",
+        "description": "Union of all possible error-codes from system\n\n- EOK: No error\n- EPERMS: Permissions error\n- EBADINPUT: Input is not correct\n- ENOTFOUND: Not found\n- EEXISTS: Already exists\n- EUNKNOWN: Unknown/catchall error\n- ESERIALIZE: Error in serializing/de-serializing\n- EINTERNAL: Server error\n- EPARTIAL: Partial error.",
         "title": "ErrorCode",
         "enum": [
           "EOK",
@@ -2377,7 +2405,7 @@
           },
           "message": {
             "type": "string",
-            "description": "A human readable string of the error\n\nExample: ` \"value\"`",
+            "description": "A human readable string of the error.",
             "title": "Message",
             "x-displayname": "Message",
             "x-ves-example": "Value"
@@ -2408,7 +2436,7 @@
         "properties": {
           "pending": {
             "type": "array",
-            "description": "Pending is a list of initializers that must execute in order before this object is initialized.\n When the last pending initializer is removed, and no failing result is set, the initializers\n struct will be set to nil and the object is considered as initialized and visible to all\n clients.",
+            "description": "Pending is a list of initializers that must execute in order before this object is initialized.\nWhen the last pending initializer is removed, and no failing result is set, the initializers\nstruct will be set to nil and the object is considered as initialized and visible to all\nclients.",
             "title": "Pending",
             "items": {
               "$ref": "#/components/schemas/schemaInitializerType"
@@ -2429,7 +2457,7 @@
         "properties": {
           "annotations": {
             "type": "object",
-            "description": "Annotations is an unstructured key value map stored with a resource that may be\n set by external tools to store and retrieve arbitrary metadata. They are not\n queryable and should be preserved when modifying objects.\n\nExample: ` \"value\"`\n\nValidation Rules:\n F5 XC.schema.rules.map.keys.string.max_len: 64\n F5 XC.schema.rules.map.keys.string.min_len: 1\n F5 XC.schema.rules.map.values.string.max_len: 1024\n F5 XC.schema.rules.map.values.string.min_len: 1.",
+            "description": "Annotations is an unstructured key value map stored with a resource that may be\nset by external tools to store and retrieve arbitrary metadata. They are not\nqueryable and should be preserved when modifying objects.",
             "title": "Annotations.",
             "x-displayname": "Annotation.",
             "x-ves-example": "Value",
@@ -2438,22 +2466,31 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.map.keys.string.max_len": "64",
+              "F5 XC.schema.rules.map.keys.string.min_len": "1",
+              "F5 XC.schema.rules.map.values.string.max_len": "1024",
+              "F5 XC.schema.rules.map.values.string.min_len": "1"
             }
           },
           "description": {
             "type": "string",
-            "description": "Human readable description for the object\n\nExample: ` \"Virtual Host for acmecorp website\"`\n\nValidation Rules:\n F5 XC.schema.rules.string.max_bytes: 1200.",
+            "description": "Human readable description for the object.",
             "title": "Description.",
             "maxLength": 1200,
             "x-displayname": "Description.",
             "x-ves-example": "Virtual Host for acmecorp website.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_bytes": "1200"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.string.max_bytes": "1200"
             }
           },
           "disable": {
             "type": "boolean",
-            "description": "A value of true will administratively disable the object\n\nExample: ` \"true\"`",
+            "description": "A value of true will administratively disable the object.",
             "title": "Disable",
             "format": "boolean",
             "x-displayname": "Disable",
@@ -2461,25 +2498,28 @@
           },
           "labels": {
             "type": "object",
-            "description": "Map of string keys and values that can be used to organize and categorize\n (scope and select) objects as chosen by the user. Values specified here will be used\n by selector expression\n\nExample: ` \"value\"`",
+            "description": "Map of string keys and values that can be used to organize and categorize\n(scope and select) objects as chosen by the user. Values specified here will be used\nby selector expression.",
             "title": "Labels",
             "x-displayname": "Labels",
             "x-ves-example": "Value"
           },
           "name": {
             "type": "string",
-            "description": "This is the name of configuration object. It has to be unique within the namespace.\n It can only be specified during create API and cannot be changed during replace API.\n The value of name has to follow DNS-1035 format.\n\nExample: ` \"acmecorp-web\"`\n\nRequired: YES\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true.",
+            "description": "This is the name of configuration object. It has to be unique within the namespace.\nIt can only be specified during create API and cannot be changed during replace API.\nThe value of name has to follow DNS-1035 format.\nRequired: YES.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Acmecorp-web.",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true"
             }
           },
           "namespace": {
             "type": "string",
-            "description": "This defines the workspace within which each the configuration object is to be created.\n Must be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"\n\nExample: ` \"staging\"`",
+            "description": "This defines the workspace within which each the configuration object is to be created.\nMust be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "Staging"
@@ -2495,7 +2535,7 @@
         "properties": {
           "code": {
             "type": "integer",
-            "description": "Suggested HTTP return code for this status, 0 if not set.\n\nExample: ` \"0\"`",
+            "description": "Suggested HTTP return code for this status, 0 if not set.",
             "title": "Code",
             "format": "int32",
             "x-displayname": "Code",
@@ -2503,14 +2543,14 @@
           },
           "reason": {
             "type": "string",
-            "description": "A human-readable description of why this operation is in the\n \"Failure\" status. If this value is empty there\n is no information available.\n\nExample: ` \"value\"`",
+            "description": "A human-readable description of why this operation is in the\n\"Failure\" status. If this value is empty there\nis no information available.",
             "title": "Reason",
             "x-displayname": "Reason",
             "x-ves-example": "Value"
           },
           "status": {
             "type": "string",
-            "description": "Status of the operation.\n One of: \"Success\" or \"Failure\".\n\nExample: ` \"value\"`",
+            "description": "Status of the operation.\nOne of: \"Success\" or \"Failure\".",
             "title": "Status",
             "x-displayname": "Status",
             "x-ves-example": "Value"
@@ -2526,35 +2566,35 @@
         "properties": {
           "creation_timestamp": {
             "type": "string",
-            "description": "CreationTimestamp is a timestamp representing the server time when this object was\n created. It is not guaranteed to be set in happens-before order across separate operations.\n Clients may not set this value. It is represented in RFC3339 form and is in UTC.",
+            "description": "CreationTimestamp is a timestamp representing the server time when this object was\ncreated. It is not guaranteed to be set in happens-before order across separate operations.\nClients may not set this value. It is represented in RFC3339 form and is in UTC.",
             "title": "Creation_timestamp.",
             "format": "date-time",
             "x-displayname": "Creation Timestamp."
           },
           "creator_class": {
             "type": "string",
-            "description": "A value identifying the class of the user or service which created this configuration object.\n\nExample: ` \"value\"`",
+            "description": "A value identifying the class of the user or service which created this configuration object.",
             "title": "Creator_class.",
             "x-displayname": "Creator Class.",
             "x-ves-example": "Prism"
           },
           "creator_id": {
             "type": "string",
-            "description": "A value identifying the exact user or service that created this configuration object\n\nExample: ` \"value\"`",
+            "description": "A value identifying the exact user or service that created this configuration object.",
             "title": "Creator_id.",
             "x-displayname": "Creator ID.",
             "x-ves-example": "Admin@acmecorp.com."
           },
           "deletion_timestamp": {
             "type": "string",
-            "description": "DeletionTimestamp is RFC 3339 date and time at which this resource will be deleted. This\n field is set by the server when a graceful deletion is requested by the user, and is not\n directly settable by a client. The resource is expected to be deleted (no longer visible\n from resource lists, and not reachable by name) after the time in this field, once the\n finalizers list is empty. As long as the finalizers list contains items, deletion is blocked.\n Once the deletionTimestamp is set, this value may not be unset or be set further into the\n future, although it may be shortened or the resource may be deleted prior to this time.\n For example, a user may request that a pod is deleted in 30 seconds. The Kubelet will react\n by sending a graceful termination signal to the containers in the pod. After that 30 seconds,\n the Kubelet will send a hard termination signal (SIGKILL) to the container and after cleanup,\n remove the pod from the API. In the presence of network partitions, this object may still\n exist after this timestamp, until an administrator or automated process can determine the\n resource is fully terminated.\n If not set, graceful deletion of the object has not been requested.\n\n Populated by the system when a graceful deletion is requested.\n Read-only.",
+            "description": "DeletionTimestamp is RFC 3339 date and time at which this resource will be deleted. This\nfield is set by the server when a graceful deletion is requested by the user, and is not\ndirectly settable by a client. The resource is expected to be deleted (no longer visible\nfrom resource lists, and not reachable by name) after the time in this field, once the\nfinalizers list is empty. As long as the finalizers list contains items, deletion is blocked.\nOnce the deletionTimestamp is set, this value may not be unset or be set further into the\nfuture, although it may be shortened or the resource may be deleted prior to this time.\nFor example, a user may request that a pod is deleted in 30 seconds. The Kubelet will react\nby sending a graceful termination signal to the containers in the pod. After that 30 seconds,\nthe Kubelet will send a hard termination signal (SIGKILL) to the container and after cleanup,\nremove the pod from the API. In the presence of network partitions, this object may still\nexist after this timestamp, until an administrator or automated process can determine the\nresource is fully terminated.\nIf not set, graceful deletion of the object has not been requested.\n\nPopulated by the system when a graceful deletion is requested.\nRead-only.",
             "title": "Deletion_timestamp.",
             "format": "date-time",
             "x-displayname": "Deletion Timestamp."
           },
           "finalizers": {
             "type": "array",
-            "description": "Must be empty before the object is deleted from the registry. Each entry\n is an identifier for the responsible component that will remove the entry\n from the list. If the deletionTimestamp of the object is non-nil, entries\n in this list can only be removed.\n\nExample: ` \"value\"`",
+            "description": "Must be empty before the object is deleted from the registry. Each entry\nis an identifier for the responsible component that will remove the entry\nfrom the list. If the deletionTimestamp of the object is non-nil, entries\nin this list can only be removed.",
             "title": "Finalizers.",
             "items": {
               "type": "string"
@@ -2567,21 +2607,21 @@
           },
           "labels": {
             "type": "object",
-            "description": "Map of string keys and values that can be used to organize and categorize\n (scope and select) objects as chosen by the operator or software. Values here can be interpreted\n by software(backend or frontend) to enable certain behavior e.g. Things marked as soft-deleted(restorable).\n\nExample: ` \"'F5 XC/soft-deleted''true'\"`",
+            "description": "Map of string keys and values that can be used to organize and categorize\n(scope and select) objects as chosen by the operator or software. Values here can be interpreted\nby software(backend or frontend) to enable certain behavior e.g. Things marked as soft-deleted(restorable).",
             "title": "Labels",
             "x-displayname": "Labels",
             "x-ves-example": "'VES.I/O/soft-deleted': 'true'"
           },
           "modification_timestamp": {
             "type": "string",
-            "description": "ModificationTimestamp is a timestamp representing the server time when this object was\n last modified.",
+            "description": "ModificationTimestamp is a timestamp representing the server time when this object was\nlast modified.",
             "title": "Modification_timestamp.",
             "format": "date-time",
             "x-displayname": "Modification Timestamp."
           },
           "object_index": {
             "type": "integer",
-            "description": "Unique index for the object. Some objects need a unique integer index to be allocated\n for each object type. This field will be populated for all objects that need it and will\n be zero otherwise.\n\nExample: ` \"0\"`",
+            "description": "Unique index for the object. Some objects need a unique integer index to be allocated\nfor each object type. This field will be populated for all objects that need it and will\nbe zero otherwise.",
             "title": "Object_index.",
             "format": "int64",
             "x-displayname": "Object Index.",
@@ -2592,14 +2632,14 @@
           },
           "tenant": {
             "type": "string",
-            "description": "Tenant to which this configuration object belongs to. The value for this is found from\n presented credentials.\n\nExample: ` \"acmecorp\"`",
+            "description": "Tenant to which this configuration object belongs to. The value for this is found from\npresented credentials.",
             "title": "Tenant",
             "x-displayname": "Tenant",
             "x-ves-example": "Acmecorp"
           },
           "uid": {
             "type": "string",
-            "description": "Uid is the unique in time and space value for this object. It is generated by\n the server on successful creation of an object and is not allowed to change on Replace\n API. The value of is taken from uid field of ObjectMetaType, if provided.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "description": "Uid is the unique in time and space value for this object. It is generated by\nthe server on successful creation of an object and is not allowed to change on Replace\nAPI. The value of is taken from uid field of ObjectMetaType, if provided.",
             "title": "Uid",
             "x-displayname": "UID",
             "x-ves-example": "D15f1fad-4d37-48c0-8706-df1824d76d31."
@@ -2615,28 +2655,28 @@
         "properties": {
           "kind": {
             "type": "string",
-            "description": "Kind of the view object\n\nExample: ` \"http_proxy\"`",
+            "description": "Kind of the view object.",
             "title": "Kind",
             "x-displayname": "Kind",
             "x-ves-example": "Http_proxy."
           },
           "name": {
             "type": "string",
-            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then name will hold the referred object's(e.g. Route's) name.\n\nExample: ` \"contactus-route\"`",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen name will hold the referred object's(e.g. Route's) name.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Contactus-route."
           },
           "namespace": {
             "type": "string",
-            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then namespace will hold the referred object's(e.g. Route's) namespace.\n\nExample: ` \"ns1\"`",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen namespace will hold the referred object's(e.g. Route's) namespace.",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "Ns1"
           },
           "uid": {
             "type": "string",
-            "description": "UID of the view object\n\nExample: ` \"f3744323-1adf-4aaa-a5dc-0707c1d1bd82\"`",
+            "description": "UID of the view object.",
             "title": "Uid",
             "x-displayname": "UID",
             "x-ves-example": "F3744323-1adf-4aaa-a5dc-0707c1d1bd82."
@@ -2690,7 +2730,7 @@
       },
       "nginx_instanceGetResponseFormatCode": {
         "type": "string",
-        "description": "X-displayName: \"GET Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object.",
+        "description": "X-displayName: \"GET Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n- GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n- GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n- GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n- GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object.",
         "title": "GetResponseFormatCode.",
         "enum": [
           "GET_RSP_FORMAT_DEFAULT",
@@ -2792,14 +2832,14 @@
           },
           "name": {
             "type": "string",
-            "description": "The name of this nginx_instance\n\nExample: ` \"name\"`",
+            "description": "The name of this nginx_instance.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Name"
           },
           "namespace": {
             "type": "string",
-            "description": "The namespace this item belongs to\n\nExample: ` \"ns1\"`",
+            "description": "The namespace this item belongs to.",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "Ns1"
@@ -2812,14 +2852,14 @@
           },
           "tenant": {
             "type": "string",
-            "description": "The tenant this item belongs to\n\nExample: ` \"acmecorp\"`",
+            "description": "The tenant this item belongs to.",
             "title": "Tenant",
             "x-displayname": "Tenant",
             "x-ves-example": "Acmecorp"
           },
           "uid": {
             "type": "string",
-            "description": "The unique uid of this nginx_instance\n\nExample: ` \"d27938ba-967e-40a7-9709-57b8627f9f75\"`",
+            "description": "The unique uid of this nginx_instance.",
             "title": "Uid",
             "x-displayname": "UID",
             "x-ves-example": "D27938ba-967e-40a7-9709-57b8627f9f75."
@@ -2868,7 +2908,7 @@
           },
           "namespace": {
             "type": "string",
-            "description": "Namespace of the NGINX One Instance\n\nExample: ` \"system\"`",
+            "description": "Namespace of the NGINX One Instance.",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "System"
@@ -2884,7 +2924,7 @@
         "properties": {
           "items": {
             "type": "array",
-            "description": "The NGINX One Servers associated to the dataplane\n\nRequired: YES\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true.",
+            "description": "The NGINX One Servers associated to the dataplane\n\nRequired: YES.",
             "title": "The NGINX One Servers associated to the dataplane.",
             "items": {
               "$ref": "#/components/schemas/nginx_serverGetDataplaneServerResponse"
@@ -2893,6 +2933,9 @@
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true"
             }
           }
         }
@@ -2953,7 +2996,7 @@
       },
       "nginx_serverGetResponseFormatCode": {
         "type": "string",
-        "description": "X-displayName: \"GET Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object.",
+        "description": "X-displayName: \"GET Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n- GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n- GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n- GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n- GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n- GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object.",
         "title": "GetResponseFormatCode.",
         "enum": [
           "GET_RSP_FORMAT_DEFAULT",
@@ -3031,14 +3074,14 @@
           },
           "name": {
             "type": "string",
-            "description": "The name of this nginx_server\n\nExample: ` \"name\"`",
+            "description": "The name of this nginx_server.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Name"
           },
           "namespace": {
             "type": "string",
-            "description": "The namespace this item belongs to\n\nExample: ` \"ns1\"`",
+            "description": "The namespace this item belongs to.",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "Ns1"
@@ -3060,14 +3103,14 @@
           },
           "tenant": {
             "type": "string",
-            "description": "The tenant this item belongs to\n\nExample: ` \"acmecorp\"`",
+            "description": "The tenant this item belongs to.",
             "title": "Tenant",
             "x-displayname": "Tenant",
             "x-ves-example": "Acmecorp"
           },
           "uid": {
             "type": "string",
-            "description": "The unique uid of this nginx_server\n\nExample: ` \"d27938ba-967e-40a7-9709-57b8627f9f75\"`",
+            "description": "The unique uid of this nginx_server.",
             "title": "Uid",
             "x-displayname": "UID",
             "x-ves-example": "D27938ba-967e-40a7-9709-57b8627f9f75."
@@ -3083,7 +3126,7 @@
           },
           "domains": {
             "type": "array",
-            "description": "Server name list specified as ${server_name} in nginx config. If no value is\n specified corresponding to this variable, \"default\" is used\n Reference: HTTPS://nginx.org/en/docs/HTTP/ngx_http_core_module.html#server\n Note: This is an extension of what is stored in metadata.name \n\nRequired: YES\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true.",
+            "description": "Server name list specified as ${server_name} in nginx config. If no value is\nspecified corresponding to this variable, \"default\" is used\nReference: HTTPS://nginx.org/en/docs/HTTP/ngx_http_core_module.html#server\nNote: This is an extension of what is stored in metadata.name\n\nRequired: YES.",
             "title": "Domains",
             "items": {
               "type": "string"
@@ -3092,11 +3135,14 @@
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true"
             }
           },
           "locations": {
             "type": "array",
-            "description": "Configuration of the set of locations corresponding to this server\n\nValidation Rules:\n F5 XC.schema.rules.repeated.max_items: 1000.",
+            "description": "Configuration of the set of locations corresponding to this server.",
             "title": "Locations",
             "maxItems": 1000,
             "items": {
@@ -3105,34 +3151,41 @@
             "x-displayname": "Locations",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.repeated.max_items": "1000"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.repeated.max_items": "1000"
             }
           },
           "nginx_one_object_id": {
             "type": "string",
-            "description": "Signifies the uniqueness identifier for NGINX One representation of\n this NGINX server.",
+            "description": "Signifies the uniqueness identifier for NGINX One representation of\nthis NGINX server.",
             "title": "Nginx_one_object_id.",
             "x-displayname": "Instance or Config Sync Group Object ID."
           },
           "nginx_one_object_name": {
             "type": "string",
-            "description": "Hostname value set for Instance or Name for a Config Sync Group\n in NGINX One.",
+            "description": "Hostname value set for Instance or Name for a Config Sync Group\nin NGINX One.",
             "title": "Nginx_one_object_name.",
             "x-displayname": "Instance or Config Sync Group Name."
           },
           "port": {
             "type": "integer",
-            "description": "Signifies the port configured for the NGINX server\n\nValidation Rules:\n F5 XC.schema.rules.uint32.gte: 0\n F5 XC.schema.rules.uint32.lte: 65535.",
+            "description": "Signifies the port configured for the NGINX server.",
             "title": "Port",
             "format": "int64",
             "x-displayname": "Port",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.uint32.gte": "0",
               "ves.io.schema.rules.uint32.lte": "65535"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.uint32.gte": "0",
+              "F5 XC.schema.rules.uint32.lte": "65535"
             }
           },
           "server_name": {
             "type": "string",
-            "description": "Signifies the combination of first element in domains array and the port\n configured for the NGINX server.",
+            "description": "Signifies the combination of first element in domains array and the port\nconfigured for the NGINX server.",
             "title": "Server_name.",
             "x-displayname": "ServerName."
           },
@@ -3202,24 +3255,30 @@
           },
           "definition": {
             "type": "string",
-            "description": "Location definition specified as the attributes of ${location} block in nginx config.\n This includes both the optional_modifier and the location_match combined.\n A location can either be defined by a prefix string, or by a regular expression.\n Reference: HTTPS://nginx.org/en/docs/HTTP/ngx_http_core_module.html#location\n\nExample: ` \"~* \\.(jpg|png|gif)$\"`\n\nRequired: YES\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true.",
+            "description": "Location definition specified as the attributes of ${location} block in nginx config.\nThis includes both the optional_modifier and the location_match combined.\nA location can either be defined by a prefix string, or by a regular expression.\nReference: HTTPS://nginx.org/en/docs/HTTP/ngx_http_core_module.html#location\nRequired: YES.",
             "title": "Definition.",
             "x-displayname": "Definition.",
             "x-ves-example": "~* \\.(jpg|png|gif)$.",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true"
             }
           },
           "name": {
             "type": "string",
-            "description": "Uniqueness identifier for a location definition\n\nExample: ` \"d15ddfad-4d37-48c0-8706-df1824d76d31\"`\n\nRequired: YES\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true.",
+            "description": "Uniqueness identifier for a location definition\nRequired: YES.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "D15ddfad-4d37-48c0-8706-df1824d76d31.",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true"
             }
           },
           "waf_spec": {
@@ -3249,7 +3308,7 @@
           },
           "reason": {
             "type": "string",
-            "description": "X-reason: \"Insufficient memory in data plane\"\n A human readable string explaining the reason for reaching this condition\n\nExample: ` \"value\"`",
+            "description": "X-reason: \"Insufficient memory in data plane\"\nA human readable string explaining the reason for reaching this condition.",
             "title": "Reason",
             "x-displayname": "Reason",
             "x-ves-example": "Value"
@@ -3262,22 +3321,28 @@
           },
           "status": {
             "type": "string",
-            "description": "Status of the condition\n \"Success\" Validtion has succeded. Requested operation was successful.\n \"Failed\" Validation has failed.\n \"Incomplete\" Validation of configuration has failed due to missing configuration.\n \"Installed\" Validation has passed and configuration has been installed in data path or K8s\n \"Down\" Configuration is operationally down. E.g. Down interface\n \"Disabled\" Configuration is administratively disabled i.e. ObjectMetaType.Disable = true.\n \"NotApplicable\" Configuration is not applicable e.g. Tenant service_policy_set(s) in system namespace are not applicable on REs\n\nExample: ` \"Failed\"`\n\nValidation Rules:\n F5 XC.schema.rules.string.in: [\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]",
+            "description": "Status of the condition\n\"Success\" Validtion has succeded. Requested operation was successful.\n\"Failed\" Validation has failed.\n\"Incomplete\" Validation of configuration has failed due to missing configuration.\n\"Installed\" Validation has passed and configuration has been installed in data path or K8s\n\"Down\" Configuration is operationally down. E.g. Down interface\n\"Disabled\" Configuration is administratively disabled i.e. ObjectMetaType.Disable = true.\n\"NotApplicable\" Configuration is not applicable e.g. Tenant service_policy_set(s) in system namespace are not applicable on REs.",
             "title": "Status",
             "x-displayname": "Status",
             "x-ves-example": "Failed",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.in": "[\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.string.in": "[\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]"
             }
           },
           "type": {
             "type": "string",
-            "description": "Type of the condition\n \"Validation\" represents validation user given configuration object\n \"Operational\" represents operational status of a given configuration object\n\nExample: ` \"Operational\"`\n\nValidation Rules:\n F5 XC.schema.rules.string.in: [\\\"Validation\\\",\\\"Operational\\\"]",
+            "description": "Type of the condition\n\"Validation\" represents validation user given configuration object\n\"Operational\" represents operational status of a given configuration object.",
             "title": "Type",
             "x-displayname": "Type",
             "x-ves-example": "Operational.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.in": "[\\\"Validation\\\",\\\"Operational\\\"]"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.string.in": "[\\\"Validation\\\",\\\"Operational\\\"]"
             }
           }
         }
@@ -3291,21 +3356,21 @@
         "properties": {
           "creation_timestamp": {
             "type": "string",
-            "description": "Creation_timestamp is when the status object was created. It is used to find/tie-break\n for latest status object from same origin.",
+            "description": "Creation_timestamp is when the status object was created. It is used to find/tie-break\nfor latest status object from same origin.",
             "title": "Creation_timestamp.",
             "format": "date-time",
             "x-displayname": "Creation Timestamp."
           },
           "creator_class": {
             "type": "string",
-            "description": "Class of creator which created this StatusObject. This will be service's DNS FQDN.\n This will be set by the system based on client certificate information.\n\nExample: ` \"ver.re1.int.F5 XC\"`",
+            "description": "Class of creator which created this StatusObject. This will be service's DNS FQDN.\nThis will be set by the system based on client certificate information.",
             "title": "Creator_class.",
             "x-displayname": "Creator Class.",
             "x-ves-example": "Ver.re1.int.VES.I/O."
           },
           "creator_id": {
             "type": "string",
-            "description": "ID of creator which created this StatusObject. This will be a concrete identifier for service (e.g.\n Identifying the environment also). This will be set by the system based on client certificate\n information\n\nExample: ` \"ver-instance-1\"`",
+            "description": "ID of creator which created this StatusObject. This will be a concrete identifier for service (e.g.\nIdentifying the environment also). This will be set by the system based on client certificate\ninformation.",
             "title": "Creator_id.",
             "x-displayname": "Creator ID.",
             "x-ves-example": "Ver-instance-1."
@@ -3315,13 +3380,13 @@
           },
           "status_id": {
             "type": "string",
-            "description": "Status_id is a field used by the generator to distinguish (if necessary) between two status\n objects for the same config object from the same site and same service and potentially same\n daemon(creator-ID)",
+            "description": "Status_id is a field used by the generator to distinguish (if necessary) between two status\nobjects for the same config object from the same site and same service and potentially same\ndaemon(creator-ID)",
             "title": "Status_id",
             "x-displayname": "Status ID"
           },
           "uid": {
             "type": "string",
-            "description": "Uid is the unique in time and space value for a StatusObject.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "description": "Uid is the unique in time and space value for a StatusObject.",
             "title": "Uid",
             "x-displayname": "UID",
             "x-ves-example": "D15f1fad-4d37-48c0-8706-df1824d76d31."
@@ -3343,7 +3408,7 @@
       },
       "schemaStatusPublishType": {
         "type": "string",
-        "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable.",
+        "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n- STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n- STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable.",
         "title": "StatusPublishType.",
         "enum": [
           "STATUS_DO_NOT_PUBLISH",
@@ -3362,7 +3427,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then name will hold the referred object's(e.g. Route's) name.\n\nExample: ` \"contacts-route\"`\n\nRequired: YES\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true\n F5 XC.schema.rules.string.max_bytes: 128\n F5 XC.schema.rules.string.min_bytes: 1.",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen name will hold the referred object's(e.g. Route's) name.\nRequired: YES.",
             "title": "Name",
             "minLength": 1,
             "maxLength": 128,
@@ -3373,28 +3438,39 @@
               "ves.io.schema.rules.message.required": "true",
               "ves.io.schema.rules.string.max_bytes": "128",
               "ves.io.schema.rules.string.min_bytes": "1"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true",
+              "F5 XC.schema.rules.string.max_bytes": "128",
+              "F5 XC.schema.rules.string.min_bytes": "1"
             }
           },
           "namespace": {
             "type": "string",
-            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then namespace will hold the referred object's(e.g. Route's) namespace.\n\nExample: ` \"ns1\"`\n\nValidation Rules:\n F5 XC.schema.rules.string.max_bytes: 64.",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen namespace will hold the referred object's(e.g. Route's) namespace.",
             "title": "Namespace",
             "maxLength": 64,
             "x-displayname": "Namespace",
             "x-ves-example": "Ns1",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_bytes": "64"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.string.max_bytes": "64"
             }
           },
           "tenant": {
             "type": "string",
-            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then tenant will hold the referred object's(e.g. Route's) tenant.\n\nExample: ` \"acmecorp\"`\n\nValidation Rules:\n F5 XC.schema.rules.string.max_bytes: 64.",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen tenant will hold the referred object's(e.g. Route's) tenant.",
             "title": "Tenant",
             "maxLength": 64,
             "x-displayname": "Tenant",
             "x-ves-example": "Acmecorp",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_bytes": "64"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.string.max_bytes": "64"
             }
           }
         }
@@ -3436,7 +3512,7 @@
         "properties": {
           "config_sync_group": {
             "type": "array",
-            "description": "Select new ConfigSyncGroup\n\nRequired: YES\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true\n F5 XC.schema.rules.repeated.max_items: 1.",
+            "description": "Select new ConfigSyncGroup\n\nRequired: YES.",
             "title": "Config Sync Group.",
             "maxItems": 1,
             "items": {
@@ -3447,6 +3523,10 @@
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
               "ves.io.schema.rules.repeated.max_items": "1"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true",
+              "F5 XC.schema.rules.repeated.max_items": "1"
             }
           }
         }
@@ -3493,7 +3573,7 @@
           },
           "server_block_filters": {
             "type": "array",
-            "description": "Filters discovered server blocks based on server name, domain and ports.\n Atleast, one field should be populated for each filter.\n\n X-textBlockContent:\n If no filters are specified, all server blocks will be discovered by default.\n\nValidation Rules:\n F5 XC.schema.rules.repeated.max_items: 10\n F5 XC.schema.rules.repeated.unique: true.",
+            "description": "Filters discovered server blocks based on server name, domain and ports.\nAtleast, one field should be populated for each filter.\n\nX-textBlockContent:\nIf no filters are specified, all server blocks will be discovered by default.",
             "maxItems": 10,
             "items": {
               "$ref": "#/components/schemas/nginx_service_discoveryServerBlockFilter"
@@ -3502,6 +3582,10 @@
             "x-ves-validation-rules": {
               "ves.io.schema.rules.repeated.max_items": "10",
               "ves.io.schema.rules.repeated.unique": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.repeated.max_items": "10",
+              "F5 XC.schema.rules.repeated.unique": "true"
             }
           }
         }
@@ -3522,14 +3606,14 @@
           },
           "name": {
             "type": "string",
-            "description": "Name of the configuration object\n\nExample: ` \"name\"`",
+            "description": "Name of the configuration object.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Name"
           },
           "namespace": {
             "type": "string",
-            "description": "Namespace in which the configuration object is present\n\nExample: ` \"ns1\"`",
+            "description": "Namespace in which the configuration object is present.",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "Ns1"
@@ -3613,7 +3697,7 @@
       },
       "nginx_service_discoveryGetResponseFormatCode": {
         "type": "string",
-        "description": "X-displayName: \"GET Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object.",
+        "description": "X-displayName: \"GET Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n- GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n- GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n- GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n- GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n- GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n- GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n- GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object.",
         "title": "GetResponseFormatCode.",
         "enum": [
           "GET_RSP_FORMAT_DEFAULT",
@@ -3642,12 +3726,12 @@
           },
           "nginx_one_object_name": {
             "type": "string",
-            "description": "Hostname value set for Instance or Name for a Config Sync Group\n in NGINX One.",
+            "description": "Hostname value set for Instance or Name for a Config Sync Group\nin NGINX One.",
             "x-displayname": "Instance or Config Sync Group Name."
           },
           "server_block_filters": {
             "type": "array",
-            "description": "Filters discovered server blocks based on server name, domain and ports.\n Atleast, one field should be populated for each filter.\n\n X-textBlockContent:\n If no filters are specified, all server blocks will be discovered by default.\n\nValidation Rules:\n F5 XC.schema.rules.repeated.max_items: 10\n F5 XC.schema.rules.repeated.unique: true.",
+            "description": "Filters discovered server blocks based on server name, domain and ports.\nAtleast, one field should be populated for each filter.\n\nX-textBlockContent:\nIf no filters are specified, all server blocks will be discovered by default.",
             "maxItems": 10,
             "items": {
               "$ref": "#/components/schemas/nginx_service_discoveryServerBlockFilter"
@@ -3656,6 +3740,10 @@
             "x-ves-validation-rules": {
               "ves.io.schema.rules.repeated.max_items": "10",
               "ves.io.schema.rules.repeated.unique": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.repeated.max_items": "10",
+              "F5 XC.schema.rules.repeated.unique": "true"
             }
           }
         }
@@ -3727,14 +3815,14 @@
           },
           "name": {
             "type": "string",
-            "description": "The name of this nginx_service_discovery\n\nExample: ` \"name\"`",
+            "description": "The name of this nginx_service_discovery.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Name"
           },
           "namespace": {
             "type": "string",
-            "description": "The namespace this item belongs to\n\nExample: ` \"ns1\"`",
+            "description": "The namespace this item belongs to.",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "Ns1"
@@ -3756,14 +3844,14 @@
           },
           "tenant": {
             "type": "string",
-            "description": "The tenant this item belongs to\n\nExample: ` \"acmecorp\"`",
+            "description": "The tenant this item belongs to.",
             "title": "Tenant",
             "x-displayname": "Tenant",
             "x-ves-example": "Acmecorp"
           },
           "uid": {
             "type": "string",
-            "description": "The unique uid of this nginx_service_discovery\n\nExample: ` \"d27938ba-967e-40a7-9709-57b8627f9f75\"`",
+            "description": "The unique uid of this nginx_service_discovery.",
             "title": "Uid",
             "x-displayname": "UID",
             "x-ves-example": "D27938ba-967e-40a7-9709-57b8627f9f75."
@@ -3779,7 +3867,7 @@
         "properties": {
           "nginx_instance": {
             "type": "array",
-            "description": "Select new NGINX Instance\n\nRequired: YES\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true\n F5 XC.schema.rules.repeated.max_items: 1.",
+            "description": "Select new NGINX Instance\n\nRequired: YES.",
             "title": "NGINX Instance.",
             "maxItems": 1,
             "items": {
@@ -3790,6 +3878,10 @@
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true",
               "ves.io.schema.rules.repeated.max_items": "1"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true",
+              "F5 XC.schema.rules.repeated.max_items": "1"
             }
           }
         }
@@ -3825,7 +3917,7 @@
           },
           "server_block_filters": {
             "type": "array",
-            "description": "Filters discovered server blocks based on server name, domain and ports.\n Atleast, one field should be populated for each filter.\n\n X-textBlockContent:\n If no filters are specified, all server blocks will be discovered by default.\n\nValidation Rules:\n F5 XC.schema.rules.repeated.max_items: 10\n F5 XC.schema.rules.repeated.unique: true.",
+            "description": "Filters discovered server blocks based on server name, domain and ports.\nAtleast, one field should be populated for each filter.\n\nX-textBlockContent:\nIf no filters are specified, all server blocks will be discovered by default.",
             "maxItems": 10,
             "items": {
               "$ref": "#/components/schemas/nginx_service_discoveryServerBlockFilter"
@@ -3834,6 +3926,10 @@
             "x-ves-validation-rules": {
               "ves.io.schema.rules.repeated.max_items": "10",
               "ves.io.schema.rules.repeated.unique": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.repeated.max_items": "10",
+              "F5 XC.schema.rules.repeated.unique": "true"
             }
           }
         }
@@ -3846,18 +3942,22 @@
         "properties": {
           "name_regex": {
             "type": "string",
-            "description": "Regular expression to match the server name or domain that must be discovered\n\nValidation Rules:\n F5 XC.schema.rules.string.max_len: 256\n F5 XC.schema.rules.string.regex: true.",
+            "description": "Regular expression to match the server name or domain that must be discovered.",
             "title": "Regex To Match Server name or Domain.",
             "maxLength": 256,
             "x-displayname": "Regex To Match Server name or Domain.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_len": "256",
               "ves.io.schema.rules.string.regex": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.string.max_len": "256",
+              "F5 XC.schema.rules.string.regex": "true"
             }
           },
           "port_ranges": {
             "type": "string",
-            "description": "A string containing a comma separated list of individual service ports or port ranges.\n Each port range consists of a single port or two ports separated by \"-\". For example, 8000-8191.\n Maximum number of ports allowed is 1024.\n\nExample: ` \"80,443,8080-8191,9080\"`\n\nValidation Rules:\n F5 XC.schema.rules.string.max_len: 512\n F5 XC.schema.rules.string.max_ports: 1024\n F5 XC.schema.rules.string.port_range_list: true\n F5 XC.schema.rules.string.unique_port_range_list: true.",
+            "description": "A string containing a comma separated list of individual service ports or port ranges.\nEach port range consists of a single port or two ports separated by \"-\". For example, 8000-8191.\nMaximum number of ports allowed is 1024.",
             "title": "Port Ranges.",
             "maxLength": 512,
             "x-displayname": "Port Ranges.",
@@ -3867,6 +3967,12 @@
               "ves.io.schema.rules.string.max_ports": "1024",
               "ves.io.schema.rules.string.port_range_list": "true",
               "ves.io.schema.rules.string.unique_port_range_list": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.string.max_len": "512",
+              "F5 XC.schema.rules.string.max_ports": "1024",
+              "F5 XC.schema.rules.string.port_range_list": "true",
+              "F5 XC.schema.rules.string.unique_port_range_list": "true"
             }
           }
         }
@@ -3910,7 +4016,7 @@
         "properties": {
           "annotations": {
             "type": "object",
-            "description": "Annotations is an unstructured key value map stored with a resource that may be\n set by external tools to store and retrieve arbitrary metadata. They are not\n queryable and should be preserved when modifying objects.\n\nExample: ` \"value\"`\n\nValidation Rules:\n F5 XC.schema.rules.map.keys.string.max_len: 64\n F5 XC.schema.rules.map.keys.string.min_len: 1\n F5 XC.schema.rules.map.values.string.max_len: 1024\n F5 XC.schema.rules.map.values.string.min_len: 1.",
+            "description": "Annotations is an unstructured key value map stored with a resource that may be\nset by external tools to store and retrieve arbitrary metadata. They are not\nqueryable and should be preserved when modifying objects.",
             "title": "Annotations.",
             "x-displayname": "Annotation.",
             "x-ves-validation-rules": {
@@ -3918,46 +4024,61 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "x-ves-example": "Value",
+            "x-validation-rules": {
+              "F5 XC.schema.rules.map.keys.string.max_len": "64",
+              "F5 XC.schema.rules.map.keys.string.min_len": "1",
+              "F5 XC.schema.rules.map.values.string.max_len": "1024",
+              "F5 XC.schema.rules.map.values.string.min_len": "1"
             }
           },
           "description": {
             "type": "string",
-            "description": "Human readable description for the object\n\nExample: ` \"Virtual Host for acmecorp website\"`\n\nValidation Rules:\n F5 XC.schema.rules.string.max_bytes: 1200.",
+            "description": "Human readable description for the object.",
             "title": "Description.",
             "maxLength": 1200,
             "x-displayname": "Description.",
             "x-ves-example": "Virtual Host for acmecorp website.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_bytes": "1200"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.string.max_bytes": "1200"
             }
           },
           "disable": {
             "type": "boolean",
-            "description": "A value of true will administratively disable the object\n\nExample: ` \"true\"`",
+            "description": "A value of true will administratively disable the object.",
             "title": "Disable",
             "format": "boolean",
-            "x-displayname": "Disable"
+            "x-displayname": "Disable",
+            "x-ves-example": "True"
           },
           "labels": {
             "type": "object",
-            "description": "Map of string keys and values that can be used to organize and categorize\n (scope and select) objects as chosen by the user. Values specified here will be used\n by selector expression\n\nExample: ` \"value\"`",
+            "description": "Map of string keys and values that can be used to organize and categorize\n(scope and select) objects as chosen by the user. Values specified here will be used\nby selector expression.",
             "title": "Labels",
-            "x-displayname": "Labels"
+            "x-displayname": "Labels",
+            "x-ves-example": "Value"
           },
           "name": {
             "type": "string",
-            "description": "This is the name of configuration object. It has to be unique within the namespace.\n It can only be specified during create API and cannot be changed during replace API.\n The value of name has to follow DNS-1035 format.\n\nExample: ` \"acmecorp-web\"`\n\nRequired: YES\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true.",
+            "description": "This is the name of configuration object. It has to be unique within the namespace.\nIt can only be specified during create API and cannot be changed during replace API.\nThe value of name has to follow DNS-1035 format.\nRequired: YES.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Acmecorp-web.",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true"
             }
           },
           "namespace": {
             "type": "string",
-            "description": "This defines the workspace within which each the configuration object is to be created.\n Must be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"\n\nExample: ` \"staging\"`",
+            "description": "This defines the workspace within which each the configuration object is to be created.\nMust be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "Staging"
@@ -3973,35 +4094,35 @@
         "properties": {
           "kind": {
             "type": "string",
-            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then kind will hold the referred object's kind (e.g. \"route\")\n\nExample: ` \"virtual_site\"`",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen kind will hold the referred object's kind (e.g. \"route\")",
             "title": "Kind",
             "x-displayname": "Kind",
             "x-ves-example": "Virtual_site."
           },
           "name": {
             "type": "string",
-            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then name will hold the referred object's(e.g. Route's) name.\n\nExample: ` \"contactus-route\"`",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen name will hold the referred object's(e.g. Route's) name.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Contactus-route."
           },
           "namespace": {
             "type": "string",
-            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then namespace will hold the referred object's(e.g. Route's) namespace.\n\nExample: ` \"ns1\"`",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen namespace will hold the referred object's(e.g. Route's) namespace.",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "Ns1"
           },
           "tenant": {
             "type": "string",
-            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then tenant will hold the referred object's(e.g. Route's) tenant.\n\nExample: ` \"acmecorp\"`",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen tenant will hold the referred object's(e.g. Route's) tenant.",
             "title": "Tenant",
             "x-displayname": "Tenant",
             "x-ves-example": "Acmecorp"
           },
           "uid": {
             "type": "string",
-            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then uid will hold the referred object's(e.g. Route's) uid.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen uid will hold the referred object's(e.g. Route's) uid.",
             "title": "Uid",
             "x-displayname": "UID",
             "x-ves-example": "D15f1fad-4d37-48c0-8706-df1824d76d31."
@@ -4017,7 +4138,7 @@
         "properties": {
           "annotations": {
             "type": "object",
-            "description": "Annotations is an unstructured key value map stored with a resource that may be\n set by external tools to store and retrieve arbitrary metadata. They are not\n queryable and should be preserved when modifying objects.\n\nExample: ` \"value\"`\n\nValidation Rules:\n F5 XC.schema.rules.map.keys.string.max_len: 64\n F5 XC.schema.rules.map.keys.string.min_len: 1\n F5 XC.schema.rules.map.values.string.max_len: 1024\n F5 XC.schema.rules.map.values.string.min_len: 1.",
+            "description": "Annotations is an unstructured key value map stored with a resource that may be\nset by external tools to store and retrieve arbitrary metadata. They are not\nqueryable and should be preserved when modifying objects.",
             "title": "Annotations.",
             "x-displayname": "Annotations.",
             "x-ves-example": "Value",
@@ -4026,46 +4147,59 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.map.keys.string.max_len": "64",
+              "F5 XC.schema.rules.map.keys.string.min_len": "1",
+              "F5 XC.schema.rules.map.values.string.max_len": "1024",
+              "F5 XC.schema.rules.map.values.string.min_len": "1"
             }
           },
           "description": {
             "type": "string",
-            "description": "Human readable description for the object\n\nExample: ` \"Virtual Host for acmecorp website\"`\n\nValidation Rules:\n F5 XC.schema.rules.string.max_bytes: 1200.",
+            "description": "Human readable description for the object.",
             "title": "Description.",
             "maxLength": 1200,
             "x-displayname": "Description.",
             "x-ves-example": "Virtual Host for acmecorp website.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_bytes": "1200"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.string.max_bytes": "1200"
             }
           },
           "disable": {
             "type": "boolean",
-            "description": "A value of true will administratively disable the object\n\nExample: ` \"true\"`",
+            "description": "A value of true will administratively disable the object.",
             "title": "Disable",
             "format": "boolean",
-            "x-displayname": "Disable"
+            "x-displayname": "Disable",
+            "x-ves-example": "True"
           },
           "labels": {
             "type": "object",
-            "description": "Map of string keys and values that can be used to organize and categorize\n (scope and select) objects as chosen by the user. Values specified here will be used\n by selector expression\n\nExample: ` \"value\"`",
+            "description": "Map of string keys and values that can be used to organize and categorize\n(scope and select) objects as chosen by the user. Values specified here will be used\nby selector expression.",
             "title": "Labels",
             "x-displayname": "Labels",
             "x-ves-example": "Value"
           },
           "name": {
             "type": "string",
-            "description": "This is the name of configuration object. It has to be unique within the namespace.\n It can only be specified during create API and cannot be changed during replace API.\n The value of name has to follow DNS-1035 format.\n\nExample: ` \"acmecorp-web\"`\n\nRequired: YES\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true.",
+            "description": "This is the name of configuration object. It has to be unique within the namespace.\nIt can only be specified during create API and cannot be changed during replace API.\nThe value of name has to follow DNS-1035 format.\nRequired: YES.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Acmecorp-web.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true"
             }
           },
           "namespace": {
             "type": "string",
-            "description": "This defines the workspace within which each the configuration object is to be created.\n Must be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"\n\nExample: ` \"staging\"`",
+            "description": "This defines the workspace within which each the configuration object is to be created.\nMust be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "Staging"

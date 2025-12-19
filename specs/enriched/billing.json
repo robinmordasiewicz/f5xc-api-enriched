@@ -132,23 +132,25 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"system\"\nNamespace filter.",
+            "description": "Namespace\nNamespace filter.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "System"
           },
           {
             "name": "name",
-            "description": "X-example: \"invoice-1\"\nName of the invoice to be downloaded.",
+            "description": "Name of the invoice to be downloaded.",
             "in": "query",
             "required": false,
             "x-displayname": "Name",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Invoice-1"
           }
         ],
         "externalDocs": {
@@ -261,24 +263,26 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"system\"\nNamespace filter.",
+            "description": "Namespace\nNamespace filter.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "System"
           },
           {
             "name": "limit",
-            "description": "X-example: \"100\"\nMaximum number of invoices to return. Invoices are sorted by their issue date.",
+            "description": "Maximum number of invoices to return. Invoices are sorted by their issue date.",
             "in": "query",
             "required": false,
             "x-displayname": "Limit",
             "schema": {
               "type": "integer",
               "format": "int32"
-            }
+            },
+            "x-ves-example": "100"
           }
         ],
         "externalDocs": {
@@ -389,23 +393,25 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"system\"\nThe namespace in which the payment method object is present.",
+            "description": "Namespace\nThe namespace in which the payment method object is present.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "System"
           },
           {
             "name": "name",
-            "description": "Name\n\nx-example: \"payment-method-1\"\nThe name of the payment method object to be made primary.",
+            "description": "Name\nThe name of the payment method object to be made primary.",
             "in": "path",
             "required": true,
             "x-displayname": "Name",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Payment-method-1."
           }
         ],
         "requestBody": {
@@ -526,23 +532,25 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"system\"\nThe namespace in which the payment method object is present.",
+            "description": "Namespace\nThe namespace in which the payment method object is present.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "System"
           },
           {
             "name": "name",
-            "description": "Name\n\nx-example: \"payment-method-1\"\nThe name of the payment method object to be made secondary.",
+            "description": "Name\nThe name of the payment method object to be made secondary.",
             "in": "path",
             "required": true,
             "x-displayname": "Name",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Payment-method-1."
           }
         ],
         "requestBody": {
@@ -663,23 +671,25 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"system\"\nThe namespace in which the payment method object is present.",
+            "description": "Namespace\nThe namespace in which the payment method object is present.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "System"
           },
           {
             "name": "name",
-            "description": "Name\n\nx-example: \"payment-method-1\"\nThe name of the payment method object to be updated.",
+            "description": "Name\nThe name of the payment method object to be updated.",
             "in": "path",
             "required": true,
             "x-displayname": "Name",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Payment-method-1."
           }
         ],
         "requestBody": {
@@ -802,13 +812,14 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"system\"\nThis namespace specifies the namespace in which the payment method will be created.\nIf not provided, the default 'system' namespace will be used.",
+            "description": "Namespace\nThis namespace specifies the namespace in which the payment method will be created.\nIf not provided, the default 'system' namespace will be used.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "System"
           }
         ],
         "requestBody": {
@@ -929,23 +940,25 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"system\"\nNamespace in which the configuration object is present.",
+            "description": "Namespace\nNamespace in which the configuration object is present.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "System"
           },
           {
             "name": "name",
-            "description": "Name\n\nx-example: \"payment-method-1\"\nName of the payment method.",
+            "description": "Name\nName of the payment method.",
             "in": "path",
             "required": true,
             "x-displayname": "Name",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Payment-method-1."
           }
         ],
         "externalDocs": {
@@ -1058,13 +1071,14 @@
         "parameters": [
           {
             "name": "id",
-            "description": "X-example: \"dec2417d-adb1-4fcc-8dcd-529b1d31a652\"\nID of the plan transition request.",
+            "description": "ID of the plan transition request.",
             "in": "query",
             "required": false,
             "x-displayname": "ID",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Dec2417d-adb1-4fcc-8dcd-529b1d31a652."
           }
         ],
         "externalDocs": {
@@ -1177,13 +1191,14 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"system\"\nThis namespace is not used, all requests are stored under system namespace.",
+            "description": "Namespace\nThis namespace is not used, all requests are stored under system namespace.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "System"
           }
         ],
         "requestBody": {
@@ -1306,13 +1321,14 @@
         "parameters": [
           {
             "name": "metadata.namespace",
-            "description": "Namespace\n\nx-example: \"staging\"\nThis defines the workspace within which each the configuration object is to be created.\nMust be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"",
+            "description": "Namespace\nThis defines the workspace within which each the configuration object is to be created.\nMust be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Staging"
           }
         ],
         "requestBody": {
@@ -1435,23 +1451,25 @@
         "parameters": [
           {
             "name": "metadata.namespace",
-            "description": "Namespace\n\nx-example: \"staging\"\nThis defines the workspace within which each the configuration object is to be created.\nMust be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"",
+            "description": "Namespace\nThis defines the workspace within which each the configuration object is to be created.\nMust be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Staging"
           },
           {
             "name": "metadata.name",
-            "description": "Name\n\nx-example: \"acmecorp-web\"\nThe configuration object to be replaced will be looked up by name.",
+            "description": "Name\nThe configuration object to be replaced will be looked up by name.",
             "in": "path",
             "required": true,
             "x-displayname": "Name",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Acmecorp-web."
           }
         ],
         "requestBody": {
@@ -1574,13 +1592,14 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"value\"\nThe namespace this item belongs to.",
+            "description": "Namespace\nThe namespace this item belongs to.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Value"
           }
         ],
         "externalDocs": {
@@ -1693,13 +1712,14 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"value\"\nThe tenant this item belongs to.",
+            "description": "Namespace\nThe tenant this item belongs to.",
             "in": "path",
             "required": true,
             "x-displayname": "Tenant",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Value"
           }
         ],
         "externalDocs": {
@@ -1812,23 +1832,25 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"ns1\"\nNamespace to scope the listing of quota.",
+            "description": "Namespace\nNamespace to scope the listing of quota.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Ns1"
           },
           {
             "name": "label_filter",
-            "description": "X-example: \"env in (staging, testing), tier in (web, db)\"\nA LabelSelectorType expression that every item in list response will satisfy.",
+            "description": "A LabelSelectorType expression that every item in list response will satisfy.",
             "in": "query",
             "required": false,
             "x-displayname": "Label Filter.",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Env in (staging, testing), tier in (web, db)"
           },
           {
             "name": "report_fields",
@@ -1969,23 +1991,25 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"ns1\"\nThe namespace in which the configuration object is present.",
+            "description": "Namespace\nThe namespace in which the configuration object is present.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Ns1"
           },
           {
             "name": "name",
-            "description": "Name\n\nx-example: \"name\"\nThe name of the configuration object to be fetched.",
+            "description": "Name\nThe name of the configuration object to be fetched.",
             "in": "path",
             "required": true,
             "x-displayname": "Name",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Name"
           },
           {
             "name": "response_format",
@@ -2111,23 +2135,25 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"ns1\"\nNamespace in which the configuration object is present.",
+            "description": "Namespace\nNamespace in which the configuration object is present.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Ns1"
           },
           {
             "name": "name",
-            "description": "Name\n\nx-example: \"name\"\nName of the configuration object.",
+            "description": "Name\nName of the configuration object.",
             "in": "path",
             "required": true,
             "x-displayname": "Name",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "Name"
           }
         ],
         "requestBody": {
@@ -2250,13 +2276,14 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"system\"\nNamespace filter.",
+            "description": "Namespace\nNamespace filter.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "System"
           },
           {
             "name": "current",
@@ -2380,13 +2407,14 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"system\"\nNamespace to be considered.",
+            "description": "Namespace\nNamespace to be considered.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "System"
           }
         ],
         "requestBody": {
@@ -2509,13 +2537,14 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"system\"\nNamespace.",
+            "description": "Namespace\nNamespace.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "System"
           }
         ],
         "requestBody": {
@@ -2638,13 +2667,14 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"system\"\nNamespace to be considered.",
+            "description": "Namespace\nNamespace to be considered.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "System"
           }
         ],
         "requestBody": {
@@ -2767,13 +2797,14 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "Namespace\n\nx-example: \"system\"\nNamespace to be considered.",
+            "description": "Namespace\nNamespace to be considered.",
             "in": "path",
             "required": true,
             "x-displayname": "Namespace",
             "schema": {
               "type": "string"
-            }
+            },
+            "x-ves-example": "System"
           }
         ],
         "requestBody": {
@@ -3070,7 +3101,7 @@
           },
           "amount": {
             "type": "string",
-            "description": "Invoice amount as cents\n\nExample: ` \"100\"`",
+            "description": "Invoice amount as cents.",
             "title": "Amount",
             "format": "int64",
             "x-displayname": "Amount",
@@ -3078,21 +3109,21 @@
           },
           "currency": {
             "type": "string",
-            "description": "Currency the amount is in\n\nExample: ` \"USD\"`",
+            "description": "Currency the amount is in.",
             "title": "Currency",
             "x-displayname": "Currency",
             "x-ves-example": "USD"
           },
           "name": {
             "type": "string",
-            "description": "Name of the invoice\n\nExample: ` \"invoice-abc-1\"`",
+            "description": "Name of the invoice.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Invoice-abc-1."
           },
           "period_end": {
             "type": "string",
-            "description": "Invoice period end\n\nExample: ` \"2020-05-20T12:32:51.341959216Z\"`",
+            "description": "Invoice period end.",
             "title": "Period end.",
             "format": "date-time",
             "x-displayname": "Period end.",
@@ -3100,7 +3131,7 @@
           },
           "period_start": {
             "type": "string",
-            "description": "Invoice period start\n\nExample: ` \"2020-04-20T12:32:51.341959216Z\"`",
+            "description": "Invoice period start.",
             "title": "Period start.",
             "format": "date-time",
             "x-displayname": "Period start.",
@@ -3151,21 +3182,21 @@
         "properties": {
           "address1": {
             "type": "string",
-            "description": "Example: ` \"1234 Main road\"`",
+            "description": "",
             "title": "Address1",
             "x-displayname": "Address Line 1.",
             "x-ves-example": "1234 Main road."
           },
           "address2": {
             "type": "string",
-            "description": "Example: ` \"P.O BOX 56\"`",
+            "description": "",
             "title": "Address2",
             "x-displayname": "Address Line 2.",
             "x-ves-example": "P.O BOX 56."
           },
           "city": {
             "type": "string",
-            "description": "Example: ` \"Sunnyvale\"`",
+            "description": "",
             "title": "City",
             "x-displayname": "City",
             "x-ves-example": "Sunnyvale"
@@ -3175,42 +3206,42 @@
           },
           "country": {
             "type": "string",
-            "description": "Example: ` \"US\"`",
+            "description": "",
             "title": "Country",
             "x-displayname": "Country",
             "x-ves-example": "US"
           },
           "county": {
             "type": "string",
-            "description": "Example: ` \"Santa Clara\"`",
+            "description": "",
             "title": "County",
             "x-displayname": "County",
             "x-ves-example": "Santa Clara."
           },
           "phone_number": {
             "type": "string",
-            "description": "Example: ` \"+11234567890\"`",
+            "description": "",
             "title": "Phone_number.",
             "x-displayname": "Phone Number.",
             "x-ves-example": "+11234567890."
           },
           "state": {
             "type": "string",
-            "description": "Example: ` \"California\"`",
+            "description": "",
             "title": "State",
             "x-displayname": "State",
             "x-ves-example": "California."
           },
           "state_code": {
             "type": "string",
-            "description": "Example: ` \"CA\"`",
+            "description": "",
             "title": "State code.",
             "x-displayname": "State Code.",
             "x-ves-example": "CA"
           },
           "zip_code": {
             "type": "string",
-            "description": "Example: ` \"95054\"`",
+            "description": "",
             "title": "Zip_code",
             "x-displayname": "ZIP code",
             "x-ves-example": "95054"
@@ -3229,7 +3260,7 @@
           },
           "namespace": {
             "type": "string",
-            "description": "This namespace specifies the namespace in which the payment method will be created.\n If not provided, the default 'system' namespace will be used.\n\nExample: ` \"system\"`",
+            "description": "This namespace specifies the namespace in which the payment method will be created.\nIf not provided, the default 'system' namespace will be used.",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "System"
@@ -3239,7 +3270,7 @@
           },
           "token": {
             "type": "string",
-            "description": "Token associated with this payment method. This token needs to be obtained from a designated payment method provider e.g. Stripe.\n\nExample: ` \"tok-123456\"`",
+            "description": "Token associated with this payment method. This token needs to be obtained from a designated payment method provider e.g. Stripe.",
             "title": "Token",
             "x-displayname": "Token",
             "x-ves-example": "Tok-123456."
@@ -3252,7 +3283,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Name of the newly created payment method object\n\nExample: ` \"payment-method-1\"`",
+            "description": "Name of the newly created payment method object.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Payment-method-1."
@@ -3268,14 +3299,14 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "The name of the payment method object to be made primary.\n\nExample: ` \"payment-method-1\"`",
+            "description": "The name of the payment method object to be made primary.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Payment-method-1."
           },
           "namespace": {
             "type": "string",
-            "description": "The namespace in which the payment method object is present.\n\nExample: ` \"system\"`",
+            "description": "The namespace in which the payment method object is present.",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "System"
@@ -3305,14 +3336,14 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "The name of the payment method object to be updated.\n\nExample: ` \"payment-method-1\"`",
+            "description": "The name of the payment method object to be updated.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Payment-method-1."
           },
           "namespace": {
             "type": "string",
-            "description": "The namespace in which the payment method object is present.\n\nExample: ` \"system\"`",
+            "description": "The namespace in which the payment method object is present.",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "System"
@@ -3328,14 +3359,14 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "The name of the payment method object to be made secondary.\n\nExample: ` \"payment-method-1\"`",
+            "description": "The name of the payment method object to be made secondary.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Payment-method-1."
           },
           "namespace": {
             "type": "string",
-            "description": "The namespace in which the payment method object is present.\n\nExample: ` \"system\"`",
+            "description": "The namespace in which the payment method object is present.",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "System"
@@ -3363,14 +3394,14 @@
         "properties": {
           "namespace": {
             "type": "string",
-            "description": "This namespace is not used, all requests are stored under system namespace.\n\nExample: ` \"system\"`",
+            "description": "This namespace is not used, all requests are stored under system namespace.",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "System"
           },
           "new_plan": {
             "type": "string",
-            "description": "New plan template name tenant want to move to\n\nExample: ` \"plan-1\"`",
+            "description": "New plan template name tenant want to move to.",
             "title": "New plan",
             "x-displayname": "New Plan",
             "x-ves-example": "Plan-1"
@@ -3389,7 +3420,7 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "ID of the newly created plan transition request\n\nExample: ` \"dec2417d-adb1-4fcc-8dcd-529b1d31a652\"`",
+            "description": "ID of the newly created plan transition request.",
             "title": "ID",
             "x-displayname": "ID",
             "x-ves-example": "Dec2417d-adb1-4fcc-8dcd-529b1d31a652."
@@ -3405,7 +3436,7 @@
       },
       "plan_transitionState": {
         "type": "string",
-        "description": "State of the plan transition FSM\n\n - STATE_UNSPECIFIED: Zero value for this state. Should be considered as an invalid state. User has to always explicitly\nspecify which other state should be.\n - STATE_CREATING: Initial state after plan transition object creation.\n - STATE_FAILED: Some step(-s) failed during plan transition execution.\n - STATE_FINISHED: All steps were successfully done during plan transition execution.\n - STATE_WAITING_FOR_APPROVAL: Request is awaiting for manual approval by SRE.",
+        "description": "State of the plan transition FSM\n\n- STATE_UNSPECIFIED: Zero value for this state. Should be considered as an invalid state. User has to always explicitly\nspecify which other state should be.\n- STATE_CREATING: Initial state after plan transition object creation.\n- STATE_FAILED: Some step(-s) failed during plan transition execution.\n- STATE_FINISHED: All steps were successfully done during plan transition execution.\n- STATE_WAITING_FOR_APPROVAL: Request is awaiting for manual approval by SRE.",
         "title": "State",
         "enum": [
           "STATE_UNSPECIFIED",
@@ -3430,7 +3461,7 @@
           },
           "billing_provider_account_id": {
             "type": "string",
-            "description": "ID of the billing provider account created to verify the billing info provided with this object.\n The ID is then used to ensure no more duplicate billing account is created.\n Note: this is set by the backend during the creation of plan_transition object. Anything passed from UI will be ignored\n\nExample: ` \"f68bb6f4-b279-403b-b5e8-59dd6fcf73f0\"`",
+            "description": "ID of the billing provider account created to verify the billing info provided with this object.\nThe ID is then used to ensure no more duplicate billing account is created.\nNote: this is set by the backend during the creation of plan_transition object. Anything passed from UI will be ignored.",
             "title": "Billing_provider_account_id.",
             "x-displayname": "Billing provider account ID.",
             "x-ves-example": "F68bb6f4-b279-403b-b5e8-59dd6fcf73f0."
@@ -3444,7 +3475,7 @@
           },
           "deletion_feedback": {
             "type": "string",
-            "description": "Feedback from the customer related to reason of account deletion.\n\nExample: ` \"customer given feedback\"`",
+            "description": "Feedback from the customer related to reason of account deletion.",
             "title": "Feedback",
             "x-displayname": "Feedback",
             "x-ves-example": "Customer given feedback."
@@ -3454,7 +3485,7 @@
           },
           "domain": {
             "type": "string",
-            "description": "Domain for enterprise tenants\n\nExample: ` \"domain1\"`",
+            "description": "Domain for enterprise tenants.",
             "title": "Payment_provider_token.",
             "x-displayname": "Payment Provider Token.",
             "x-ves-example": "Domain1"
@@ -3464,14 +3495,14 @@
           },
           "payment_provider_token": {
             "type": "string",
-            "description": "Payment provider token (for credit card details)\n\nExample: ` \"tok-123456\"`",
+            "description": "Payment provider token (for credit card details)",
             "title": "Payment_provider_token.",
             "x-displayname": "Payment Provider Token.",
             "x-ves-example": "Tok-123456."
           },
           "subscribe_addon_services": {
             "type": "array",
-            "description": "List of addon services that needs to be subscribed/enabled part of this plan transition\n\nExample: ` \"['service1','service2']\"`",
+            "description": "List of addon services that needs to be subscribed/enabled part of this plan transition.",
             "title": "Subscribe_addon_services.",
             "items": {
               "type": "string"
@@ -3481,21 +3512,21 @@
           },
           "support_ticket_info": {
             "type": "string",
-            "description": "Additional information user want to record part of the support ticket.\n\nExample: ` \"user comment\"`",
+            "description": "Additional information user want to record part of the support ticket.",
             "title": "Support_ticket_info.",
             "x-displayname": "Support Ticket Additional Info.",
             "x-ves-example": "User comment."
           },
           "tp_subscription_id": {
             "type": "string",
-            "description": "ID of the third party subscription ID created.\n Note: this is set by the backend as part of the notifiers run as the plan_transition object is created.\n\nExample: ` \"e265802e-9dfa-4632-8c0b-cc2596e5599e\"`",
+            "description": "ID of the third party subscription ID created.\nNote: this is set by the backend as part of the notifiers run as the plan_transition object is created.",
             "title": "Tp_subscription_id.",
             "x-displayname": "Third party subscription ID.",
             "x-ves-example": "E265802e-9dfa-4632-8c0b-cc2596e5599e."
           },
           "unsubscribe_addon_services": {
             "type": "array",
-            "description": "List of addon services that needs to be unsubscribed/removed part of this plan transition\n\nExample: ` \"['service3','service4']\"`",
+            "description": "List of addon services that needs to be unsubscribed/removed part of this plan transition.",
             "title": "Unsubscribe_addon_services.",
             "items": {
               "type": "string"
@@ -3514,21 +3545,21 @@
         "properties": {
           "address1": {
             "type": "string",
-            "description": "Example: ` \"1234 Main road\"`",
+            "description": "",
             "title": "Address1",
             "x-displayname": "Address Line 1.",
             "x-ves-example": "1234 Main road."
           },
           "address2": {
             "type": "string",
-            "description": "Example: ` \"P.O BOX 56\"`",
+            "description": "",
             "title": "Address2",
             "x-displayname": "Address Line 2.",
             "x-ves-example": "P.O BOX 56."
           },
           "city": {
             "type": "string",
-            "description": "Example: ` \"Sunnyvale\"`",
+            "description": "",
             "title": "City",
             "x-displayname": "City",
             "x-ves-example": "Sunnyvale"
@@ -3538,42 +3569,42 @@
           },
           "country": {
             "type": "string",
-            "description": "Example: ` \"US\"`",
+            "description": "",
             "title": "Country",
             "x-displayname": "Country",
             "x-ves-example": "US"
           },
           "county": {
             "type": "string",
-            "description": "Example: ` \"Santa Clara\"`",
+            "description": "",
             "title": "County",
             "x-displayname": "County",
             "x-ves-example": "Santa Clara."
           },
           "phone_number": {
             "type": "string",
-            "description": "Example: ` \"+11234567890\"`",
+            "description": "",
             "title": "Phone_number.",
             "x-displayname": "Phone Number.",
             "x-ves-example": "+11234567890."
           },
           "state": {
             "type": "string",
-            "description": "Example: ` \"California\"`",
+            "description": "",
             "title": "State",
             "x-displayname": "State",
             "x-ves-example": "California."
           },
           "state_code": {
             "type": "string",
-            "description": "Example: ` \"CA\"`",
+            "description": "",
             "title": "State code.",
             "x-displayname": "State Code.",
             "x-ves-example": "CA"
           },
           "zip_code": {
             "type": "string",
-            "description": "Example: ` \"95054\"`",
+            "description": "",
             "title": "Zip_code",
             "x-displayname": "ZIP code",
             "x-ves-example": "95054"
@@ -3582,7 +3613,7 @@
       },
       "tenantDeletionReason": {
         "type": "string",
-        "description": "List of available reason for account deletion.\n\n - REASON_UNKNOWN: Unknown reason\n\nUnknown reason\n - REASON_SWITCH_TO_FREE_PLAN: Switch to free plan\n\nSwitch to free plan\n - REASON_NO_LONGER_NEEDED: No longer needed\n\nNo longer needed\n - REASON_NOT_JUSTIFY_COSTS: Too expensive\n\nToo expensive\n - REASON_DIFFICULT_TO_USE: Difficult to use\n\nDifficult to use.",
+        "description": "List of available reason for account deletion.\n\n- REASON_UNKNOWN: Unknown reason\n\nUnknown reason\n- REASON_SWITCH_TO_FREE_PLAN: Switch to free plan\n\nSwitch to free plan\n- REASON_NO_LONGER_NEEDED: No longer needed\n\nNo longer needed\n- REASON_NOT_JUSTIFY_COSTS: Too expensive\n\nToo expensive\n- REASON_DIFFICULT_TO_USE: Difficult to use\n\nDifficult to use.",
         "title": "DeletionReason.",
         "enum": [
           "REASON_UNKNOWN",
@@ -3597,11 +3628,11 @@
       },
       "protobufAny": {
         "type": "object",
-        "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n Foo foo = ...;\n Any any;\n any.PackFrom(foo);\n ...\n If (any.UnpackTo(&foo)) {\n ...\n }\n\nExample 2: Pack and unpack a message in Java.\n\n Foo foo = ...;\n Any any = Any.pack(foo);\n ...\n If (any.is(Foo.class)) {\n foo = any.unpack(Foo.class);\n }\n\n Example 3: Pack and unpack a message in Python.\n\n Foo = Foo(...)\n any = Any()\n any.Pack(foo)\n ...\n If any.Is(Foo.DESCRIPTOR):\n any.Unpack(foo)\n ...\n\n Example 4: Pack and unpack a message in Go\n\n foo := &pb.Foo{...}\n any, err := ptypes.MarshalAny(foo)\n ...\n Foo := &pb.Foo{}\n if err := ptypes.UnmarshalAny(any, foo); err != nil {\n ...\n }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n package google.profile;\n message Person {\n string first_name = 1;\n string last_name = 2;\n }\n\n {\n \"@type\": \"type.googleapis.com/google.profile.Person\",\n \"firstName\": <string>,\n \"lastName\": <string>\n }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n {\n \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n \"value\": \"1.212s\"\n }",
+        "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\nFoo foo = ...;\nAny any;\nany.PackFrom(foo);\n...\nIf (any.UnpackTo(&foo)) {\n...\n}\n\nExample 2: Pack and unpack a message in Java.\n\nFoo foo = ...;\nAny any = Any.pack(foo);\n...\nIf (any.is(Foo.class)) {\nfoo = any.unpack(Foo.class);\n}\n\nExample 3: Pack and unpack a message in Python.\n\nFoo = Foo(...)\nany = Any()\nany.Pack(foo)\n...\nIf any.Is(Foo.DESCRIPTOR):\nany.Unpack(foo)\n...\n\nExample 4: Pack and unpack a message in Go\n\nfoo := &pb.Foo{...}\nany, err := ptypes.MarshalAny(foo)\n...\nFoo := &pb.Foo{}\nif err := ptypes.UnmarshalAny(any, foo); err != nil {\n...\n}\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\npackage google.profile;\nmessage Person {\nstring first_name = 1;\nstring last_name = 2;\n}\n\n{\n\"@type\": \"type.googleapis.com/google.profile.Person\",\n\"firstName\": <string>,\n\"lastName\": <string>\n}\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n{\n\"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n\"value\": \"1.212s\"\n}",
         "properties": {
           "type_url": {
             "type": "string",
-            "description": "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `HTTP`, `HTTPS`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `HTTPS` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n URL, or have them precompiled into a binary to avoid any\n lookup. Therefore, binary compatibility needs to be preserved\n on changes to types. (Use versioned type names to manage\n breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com.\n\nSchemes other than `HTTP`, `HTTPS` (or the empty scheme) might be\nused with implementation specific semantics."
+            "description": "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `HTTP`, `HTTPS`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `HTTPS` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\nvalue in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\nURL, or have them precompiled into a binary to avoid any\nlookup. Therefore, binary compatibility needs to be preserved\non changes to types. (Use versioned type names to manage\nbreaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com.\n\nSchemes other than `HTTP`, `HTTPS` (or the empty scheme) might be\nused with implementation specific semantics."
           },
           "value": {
             "type": "string",
@@ -3656,14 +3687,14 @@
           },
           "name": {
             "type": "string",
-            "description": "Name of the configuration object\n\nExample: ` \"name\"`",
+            "description": "Name of the configuration object.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Name"
           },
           "namespace": {
             "type": "string",
-            "description": "Namespace in which the configuration object is present\n\nExample: ` \"ns1\"`",
+            "description": "Namespace in which the configuration object is present.",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "Ns1"
@@ -3677,9 +3708,10 @@
         "properties": {
           "maximum": {
             "type": "number",
-            "description": "X-displayName: \"Maximum\"\nx-example: \"100\"\nThe maximum value.",
+            "description": "X-displayName: \"Maximum\"\nThe maximum value.",
             "title": "Maximum",
-            "format": "double"
+            "format": "double",
+            "x-ves-example": "100"
           }
         }
       },
@@ -3692,7 +3724,7 @@
         "properties": {
           "api_limits": {
             "type": "object",
-            "description": "APILimits object.\n Deprecated by 'APIs'",
+            "description": "APILimits object.\nDeprecated by 'APIs'",
             "title": "APILimits object.",
             "x-displayname": "API Limits."
           },
@@ -3704,7 +3736,7 @@
           },
           "float_quota_usage": {
             "type": "object",
-            "description": "FloatQuotaUsage object.\n Deprecated by 'resources'",
+            "description": "FloatQuotaUsage object.\nDeprecated by 'resources'",
             "title": "FloatQuotaUsage object.",
             "x-displayname": "Float Quota Usage."
           },
@@ -3716,7 +3748,7 @@
           },
           "quota_usage": {
             "type": "object",
-            "description": "QuotaUsage object.\n Deprecated by 'objects'",
+            "description": "QuotaUsage object.\nDeprecated by 'objects'",
             "title": "QuotaUsage object.",
             "x-displayname": "Qouta Usage."
           },
@@ -3790,7 +3822,7 @@
       },
       "quotaGetResponseFormatCode": {
         "type": "string",
-        "description": "X-displayName: \"GET Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n - GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n - GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n - GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n - GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n - GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n - GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n - GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object.",
+        "description": "X-displayName: \"GET Response Format\"\nThis is the various forms that can be requested to be sent in the GetResponse\n\n- GET_RSP_FORMAT_DEFAULT: x-displayName: \"Default Format\"\nDefault format of returned resource\n- GET_RSP_FORMAT_FOR_CREATE: x-displayName: \"Create request Format\"\nResponse should be in CreateRequest format\n- GET_RSP_FORMAT_FOR_REPLACE: x-displayName: \"Replace request format\"\nResponse should be in ReplaceRequest format\n- GET_RSP_FORMAT_STATUS: x-displayName: \"Status format\"\nResponse should be in StatusObject(s) format\n- GET_RSP_FORMAT_READ: x-displayName: \"GetSpecType format\"\nResponse should be in format of GetSpecType\n- GET_RSP_FORMAT_REFERRING_OBJECTS: x-displayName: \"Referring Objects\"\nResponse should have other objects referring to this object\n- GET_RSP_FORMAT_BROKEN_REFERENCES: x-displayName: \"Broken Referred Objects\"\nResponse should have deleted and disabled objects referrred by this object.",
         "title": "GetResponseFormatCode.",
         "enum": [
           "GET_RSP_FORMAT_DEFAULT",
@@ -3805,14 +3837,14 @@
       },
       "quotaGetResponseType": {
         "type": "object",
-        "description": "X-example: \"{\"user\": {limit: {maximum: 10}, usage: {number: 8}}, \"virtual_host\":{limit: {maximum: 12}, usage: {number: 6}}, \"domain\": {limit: {maximum: 7}, usage: {number: 5}}}\"\nMap of quotas that are assigned for the current tenant and namespace.",
+        "description": "User\": {limit: {maximum: 10}, usage: {number: 8}}, \"virtual_host\":{limit: {maximum: 12}, usage: {number: 6}}, \"domain\": {limit: {maximum: 7}, usage: {number: 5}}}\"\nMap of quotas that are assigned for the current tenant and namespace.",
         "title": "GET response.",
         "x-displayname": "Quotas GET Response.",
         "x-ves-proto-message": "ves.io.schema.quota.GetResponseType",
         "properties": {
           "api_limits": {
             "type": "object",
-            "description": "APILimits object.\n Deprecated by 'APIs'",
+            "description": "APILimits object.\nDeprecated by 'APIs'",
             "title": "APILimits object.",
             "x-displayname": "API Limits."
           },
@@ -3824,7 +3856,7 @@
           },
           "float_quota_usage": {
             "type": "object",
-            "description": "UsageDataInFloat object.\n Deprecated by 'resources'",
+            "description": "UsageDataInFloat object.\nDeprecated by 'resources'",
             "title": "UsageDataInFloat object.",
             "x-displayname": "Usage Data in float."
           },
@@ -3836,7 +3868,7 @@
           },
           "quota_usage": {
             "type": "object",
-            "description": "UsageData object.\n Deprecated by 'objects'",
+            "description": "UsageData object.\nDeprecated by 'objects'",
             "title": "UsageData object.",
             "x-displayname": "Usage Data."
           },
@@ -3846,7 +3878,8 @@
             "title": "Resources",
             "x-displayname": "Resource limits and usage."
           }
-        }
+        },
+        "x-ves-example": "{"
       },
       "quotaLimitType": {
         "type": "object",
@@ -3855,9 +3888,10 @@
         "properties": {
           "maximum": {
             "type": "integer",
-            "description": "X-displayName: \"Maximum\"\nx-example: \"100\"\nThe maximum value for the object kind.",
+            "description": "X-displayName: \"Maximum\"\nThe maximum value for the object kind.",
             "title": "Maximum",
-            "format": "int32"
+            "format": "int32",
+            "x-ves-example": "100"
           }
         }
       },
@@ -3928,14 +3962,14 @@
           },
           "name": {
             "type": "string",
-            "description": "The name of this quota\n\nExample: ` \"name\"`",
+            "description": "The name of this quota.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Name"
           },
           "namespace": {
             "type": "string",
-            "description": "The namespace this item belongs to\n\nExample: ` \"ns1\"`",
+            "description": "The namespace this item belongs to.",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "Ns1"
@@ -3957,14 +3991,14 @@
           },
           "tenant": {
             "type": "string",
-            "description": "The tenant this item belongs to\n\nExample: ` \"acmecorp\"`",
+            "description": "The tenant this item belongs to.",
             "title": "Tenant",
             "x-displayname": "Tenant",
             "x-ves-example": "Acmecorp"
           },
           "uid": {
             "type": "string",
-            "description": "The unique uid of this quota\n\nExample: ` \"d27938ba-967e-40a7-9709-57b8627f9f75\"`",
+            "description": "The unique uid of this quota.",
             "title": "Uid",
             "x-displayname": "UID",
             "x-ves-example": "D27938ba-967e-40a7-9709-57b8627f9f75."
@@ -4066,20 +4100,23 @@
         "properties": {
           "burst": {
             "type": "integer",
-            "description": "X-displayName: \"Burst\"\nx-example: \"100\"\nThe burst which is to be allowed per quanta.",
+            "description": "X-displayName: \"Burst\"\nThe burst which is to be allowed per quanta.",
             "title": "Burst",
-            "format": "int32"
+            "format": "int32",
+            "x-ves-example": "100"
           },
           "rate": {
             "type": "integer",
-            "description": "X-displayName: \"Rate\"\nx-example: \"100\"\nThe sustained rate which is to be allowed per quanta.",
+            "description": "X-displayName: \"Rate\"\nThe sustained rate which is to be allowed per quanta.",
             "title": "Rate",
-            "format": "int32"
+            "format": "int32",
+            "x-ves-example": "100"
           },
           "unit": {
             "type": "string",
-            "description": "X-displayName: \"Unit\"\nx-example: \"per-second\"\nThe unit for the quanta.",
-            "title": "Unit"
+            "description": "X-displayName: \"Unit\"\nThe unit for the quanta.",
+            "title": "Unit",
+            "x-ves-example": "Per-second."
           }
         }
       },
@@ -4153,7 +4190,7 @@
           },
           "reason": {
             "type": "string",
-            "description": "X-reason: \"Insufficient memory in data plane\"\n A human readable string explaining the reason for reaching this condition\n\nExample: ` \"value\"`",
+            "description": "X-reason: \"Insufficient memory in data plane\"\nA human readable string explaining the reason for reaching this condition.",
             "title": "Reason",
             "x-displayname": "Reason",
             "x-ves-example": "Value"
@@ -4166,29 +4203,35 @@
           },
           "status": {
             "type": "string",
-            "description": "Status of the condition\n \"Success\" Validtion has succeded. Requested operation was successful.\n \"Failed\" Validation has failed.\n \"Incomplete\" Validation of configuration has failed due to missing configuration.\n \"Installed\" Validation has passed and configuration has been installed in data path or K8s\n \"Down\" Configuration is operationally down. E.g. Down interface\n \"Disabled\" Configuration is administratively disabled i.e. ObjectMetaType.Disable = true.\n \"NotApplicable\" Configuration is not applicable e.g. Tenant service_policy_set(s) in system namespace are not applicable on REs\n\nExample: ` \"Failed\"`\n\nValidation Rules:\n F5 XC.schema.rules.string.in: [\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]",
+            "description": "Status of the condition\n\"Success\" Validtion has succeded. Requested operation was successful.\n\"Failed\" Validation has failed.\n\"Incomplete\" Validation of configuration has failed due to missing configuration.\n\"Installed\" Validation has passed and configuration has been installed in data path or K8s\n\"Down\" Configuration is operationally down. E.g. Down interface\n\"Disabled\" Configuration is administratively disabled i.e. ObjectMetaType.Disable = true.\n\"NotApplicable\" Configuration is not applicable e.g. Tenant service_policy_set(s) in system namespace are not applicable on REs.",
             "title": "Status",
             "x-displayname": "Status",
             "x-ves-example": "Failed",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.in": "[\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.string.in": "[\\\"Success\\\",\\\"Failed\\\",\\\"Incomplete\\\",\\\"Installed\\\",\\\"Down\\\",\\\"Disabled\\\",\\\"NotApplicable\\\"]"
             }
           },
           "type": {
             "type": "string",
-            "description": "Type of the condition\n \"Validation\" represents validation user given configuration object\n \"Operational\" represents operational status of a given configuration object\n\nExample: ` \"Operational\"`\n\nValidation Rules:\n F5 XC.schema.rules.string.in: [\\\"Validation\\\",\\\"Operational\\\"]",
+            "description": "Type of the condition\n\"Validation\" represents validation user given configuration object\n\"Operational\" represents operational status of a given configuration object.",
             "title": "Type",
             "x-displayname": "Type",
             "x-ves-example": "Operational.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.in": "[\\\"Validation\\\",\\\"Operational\\\"]"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.string.in": "[\\\"Validation\\\",\\\"Operational\\\"]"
             }
           }
         }
       },
       "schemaErrorCode": {
         "type": "string",
-        "description": "Union of all possible error-codes from system\n\n - EOK: No error\n - EPERMS: Permissions error\n - EBADINPUT: Input is not correct\n - ENOTFOUND: Not found\n - EEXISTS: Already exists\n - EUNKNOWN: Unknown/catchall error\n - ESERIALIZE: Error in serializing/de-serializing\n - EINTERNAL: Server error\n - EPARTIAL: Partial error.",
+        "description": "Union of all possible error-codes from system\n\n- EOK: No error\n- EPERMS: Permissions error\n- EBADINPUT: Input is not correct\n- ENOTFOUND: Not found\n- EEXISTS: Already exists\n- EUNKNOWN: Unknown/catchall error\n- ESERIALIZE: Error in serializing/de-serializing\n- EINTERNAL: Server error\n- EPARTIAL: Partial error.",
         "title": "ErrorCode",
         "enum": [
           "EOK",
@@ -4220,7 +4263,7 @@
           },
           "message": {
             "type": "string",
-            "description": "A human readable string of the error\n\nExample: ` \"value\"`",
+            "description": "A human readable string of the error.",
             "title": "Message",
             "x-displayname": "Message",
             "x-ves-example": "Value"
@@ -4251,7 +4294,7 @@
         "properties": {
           "pending": {
             "type": "array",
-            "description": "Pending is a list of initializers that must execute in order before this object is initialized.\n When the last pending initializer is removed, and no failing result is set, the initializers\n struct will be set to nil and the object is considered as initialized and visible to all\n clients.",
+            "description": "Pending is a list of initializers that must execute in order before this object is initialized.\nWhen the last pending initializer is removed, and no failing result is set, the initializers\nstruct will be set to nil and the object is considered as initialized and visible to all\nclients.",
             "title": "Pending",
             "items": {
               "$ref": "#/components/schemas/schemaInitializerType"
@@ -4272,7 +4315,7 @@
         "properties": {
           "annotations": {
             "type": "object",
-            "description": "Annotations is an unstructured key value map stored with a resource that may be\n set by external tools to store and retrieve arbitrary metadata. They are not\n queryable and should be preserved when modifying objects.\n\nExample: ` \"value\"`\n\nValidation Rules:\n F5 XC.schema.rules.map.keys.string.max_len: 64\n F5 XC.schema.rules.map.keys.string.min_len: 1\n F5 XC.schema.rules.map.values.string.max_len: 1024\n F5 XC.schema.rules.map.values.string.min_len: 1.",
+            "description": "Annotations is an unstructured key value map stored with a resource that may be\nset by external tools to store and retrieve arbitrary metadata. They are not\nqueryable and should be preserved when modifying objects.",
             "title": "Annotations.",
             "x-displayname": "Annotation.",
             "x-ves-validation-rules": {
@@ -4280,46 +4323,61 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "x-ves-example": "Value",
+            "x-validation-rules": {
+              "F5 XC.schema.rules.map.keys.string.max_len": "64",
+              "F5 XC.schema.rules.map.keys.string.min_len": "1",
+              "F5 XC.schema.rules.map.values.string.max_len": "1024",
+              "F5 XC.schema.rules.map.values.string.min_len": "1"
             }
           },
           "description": {
             "type": "string",
-            "description": "Human readable description for the object\n\nExample: ` \"Virtual Host for acmecorp website\"`\n\nValidation Rules:\n F5 XC.schema.rules.string.max_bytes: 1200.",
+            "description": "Human readable description for the object.",
             "title": "Description.",
             "maxLength": 1200,
             "x-displayname": "Description.",
             "x-ves-example": "Virtual Host for acmecorp website.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_bytes": "1200"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.string.max_bytes": "1200"
             }
           },
           "disable": {
             "type": "boolean",
-            "description": "A value of true will administratively disable the object\n\nExample: ` \"true\"`",
+            "description": "A value of true will administratively disable the object.",
             "title": "Disable",
             "format": "boolean",
-            "x-displayname": "Disable"
+            "x-displayname": "Disable",
+            "x-ves-example": "True"
           },
           "labels": {
             "type": "object",
-            "description": "Map of string keys and values that can be used to organize and categorize\n (scope and select) objects as chosen by the user. Values specified here will be used\n by selector expression\n\nExample: ` \"value\"`",
+            "description": "Map of string keys and values that can be used to organize and categorize\n(scope and select) objects as chosen by the user. Values specified here will be used\nby selector expression.",
             "title": "Labels",
-            "x-displayname": "Labels"
+            "x-displayname": "Labels",
+            "x-ves-example": "Value"
           },
           "name": {
             "type": "string",
-            "description": "This is the name of configuration object. It has to be unique within the namespace.\n It can only be specified during create API and cannot be changed during replace API.\n The value of name has to follow DNS-1035 format.\n\nExample: ` \"acmecorp-web\"`\n\nRequired: YES\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true.",
+            "description": "This is the name of configuration object. It has to be unique within the namespace.\nIt can only be specified during create API and cannot be changed during replace API.\nThe value of name has to follow DNS-1035 format.\nRequired: YES.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Acmecorp-web.",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true"
             }
           },
           "namespace": {
             "type": "string",
-            "description": "This defines the workspace within which each the configuration object is to be created.\n Must be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"\n\nExample: ` \"staging\"`",
+            "description": "This defines the workspace within which each the configuration object is to be created.\nMust be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "Staging"
@@ -4335,7 +4393,7 @@
         "properties": {
           "annotations": {
             "type": "object",
-            "description": "Annotations is an unstructured key value map stored with a resource that may be\n set by external tools to store and retrieve arbitrary metadata. They are not\n queryable and should be preserved when modifying objects.\n\nExample: ` \"value\"`\n\nValidation Rules:\n F5 XC.schema.rules.map.keys.string.max_len: 64\n F5 XC.schema.rules.map.keys.string.min_len: 1\n F5 XC.schema.rules.map.values.string.max_len: 1024\n F5 XC.schema.rules.map.values.string.min_len: 1.",
+            "description": "Annotations is an unstructured key value map stored with a resource that may be\nset by external tools to store and retrieve arbitrary metadata. They are not\nqueryable and should be preserved when modifying objects.",
             "title": "Annotations.",
             "x-displayname": "Annotation.",
             "x-ves-example": "Value",
@@ -4344,22 +4402,31 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.map.keys.string.max_len": "64",
+              "F5 XC.schema.rules.map.keys.string.min_len": "1",
+              "F5 XC.schema.rules.map.values.string.max_len": "1024",
+              "F5 XC.schema.rules.map.values.string.min_len": "1"
             }
           },
           "description": {
             "type": "string",
-            "description": "Human readable description for the object\n\nExample: ` \"Virtual Host for acmecorp website\"`\n\nValidation Rules:\n F5 XC.schema.rules.string.max_bytes: 1200.",
+            "description": "Human readable description for the object.",
             "title": "Description.",
             "maxLength": 1200,
             "x-displayname": "Description.",
             "x-ves-example": "Virtual Host for acmecorp website.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_bytes": "1200"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.string.max_bytes": "1200"
             }
           },
           "disable": {
             "type": "boolean",
-            "description": "A value of true will administratively disable the object\n\nExample: ` \"true\"`",
+            "description": "A value of true will administratively disable the object.",
             "title": "Disable",
             "format": "boolean",
             "x-displayname": "Disable",
@@ -4367,25 +4434,28 @@
           },
           "labels": {
             "type": "object",
-            "description": "Map of string keys and values that can be used to organize and categorize\n (scope and select) objects as chosen by the user. Values specified here will be used\n by selector expression\n\nExample: ` \"value\"`",
+            "description": "Map of string keys and values that can be used to organize and categorize\n(scope and select) objects as chosen by the user. Values specified here will be used\nby selector expression.",
             "title": "Labels",
             "x-displayname": "Labels",
             "x-ves-example": "Value"
           },
           "name": {
             "type": "string",
-            "description": "This is the name of configuration object. It has to be unique within the namespace.\n It can only be specified during create API and cannot be changed during replace API.\n The value of name has to follow DNS-1035 format.\n\nExample: ` \"acmecorp-web\"`\n\nRequired: YES\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true.",
+            "description": "This is the name of configuration object. It has to be unique within the namespace.\nIt can only be specified during create API and cannot be changed during replace API.\nThe value of name has to follow DNS-1035 format.\nRequired: YES.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Acmecorp-web.",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true"
             }
           },
           "namespace": {
             "type": "string",
-            "description": "This defines the workspace within which each the configuration object is to be created.\n Must be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"\n\nExample: ` \"staging\"`",
+            "description": "This defines the workspace within which each the configuration object is to be created.\nMust be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "Staging"
@@ -4401,35 +4471,35 @@
         "properties": {
           "kind": {
             "type": "string",
-            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then kind will hold the referred object's kind (e.g. \"route\")\n\nExample: ` \"virtual_site\"`",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen kind will hold the referred object's kind (e.g. \"route\")",
             "title": "Kind",
             "x-displayname": "Kind",
             "x-ves-example": "Virtual_site."
           },
           "name": {
             "type": "string",
-            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then name will hold the referred object's(e.g. Route's) name.\n\nExample: ` \"contactus-route\"`",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen name will hold the referred object's(e.g. Route's) name.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Contactus-route."
           },
           "namespace": {
             "type": "string",
-            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then namespace will hold the referred object's(e.g. Route's) namespace.\n\nExample: ` \"ns1\"`",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen namespace will hold the referred object's(e.g. Route's) namespace.",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "Ns1"
           },
           "tenant": {
             "type": "string",
-            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then tenant will hold the referred object's(e.g. Route's) tenant.\n\nExample: ` \"acmecorp\"`",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen tenant will hold the referred object's(e.g. Route's) tenant.",
             "title": "Tenant",
             "x-displayname": "Tenant",
             "x-ves-example": "Acmecorp"
           },
           "uid": {
             "type": "string",
-            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then uid will hold the referred object's(e.g. Route's) uid.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen uid will hold the referred object's(e.g. Route's) uid.",
             "title": "Uid",
             "x-displayname": "UID",
             "x-ves-example": "D15f1fad-4d37-48c0-8706-df1824d76d31."
@@ -4445,7 +4515,7 @@
         "properties": {
           "annotations": {
             "type": "object",
-            "description": "Annotations is an unstructured key value map stored with a resource that may be\n set by external tools to store and retrieve arbitrary metadata. They are not\n queryable and should be preserved when modifying objects.\n\nExample: ` \"value\"`\n\nValidation Rules:\n F5 XC.schema.rules.map.keys.string.max_len: 64\n F5 XC.schema.rules.map.keys.string.min_len: 1\n F5 XC.schema.rules.map.values.string.max_len: 1024\n F5 XC.schema.rules.map.values.string.min_len: 1.",
+            "description": "Annotations is an unstructured key value map stored with a resource that may be\nset by external tools to store and retrieve arbitrary metadata. They are not\nqueryable and should be preserved when modifying objects.",
             "title": "Annotations.",
             "x-displayname": "Annotations.",
             "x-ves-example": "Value",
@@ -4454,46 +4524,59 @@
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.values.string.max_len": "1024",
               "ves.io.schema.rules.map.values.string.min_len": "1"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.map.keys.string.max_len": "64",
+              "F5 XC.schema.rules.map.keys.string.min_len": "1",
+              "F5 XC.schema.rules.map.values.string.max_len": "1024",
+              "F5 XC.schema.rules.map.values.string.min_len": "1"
             }
           },
           "description": {
             "type": "string",
-            "description": "Human readable description for the object\n\nExample: ` \"Virtual Host for acmecorp website\"`\n\nValidation Rules:\n F5 XC.schema.rules.string.max_bytes: 1200.",
+            "description": "Human readable description for the object.",
             "title": "Description.",
             "maxLength": 1200,
             "x-displayname": "Description.",
             "x-ves-example": "Virtual Host for acmecorp website.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.string.max_bytes": "1200"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.string.max_bytes": "1200"
             }
           },
           "disable": {
             "type": "boolean",
-            "description": "A value of true will administratively disable the object\n\nExample: ` \"true\"`",
+            "description": "A value of true will administratively disable the object.",
             "title": "Disable",
             "format": "boolean",
-            "x-displayname": "Disable"
+            "x-displayname": "Disable",
+            "x-ves-example": "True"
           },
           "labels": {
             "type": "object",
-            "description": "Map of string keys and values that can be used to organize and categorize\n (scope and select) objects as chosen by the user. Values specified here will be used\n by selector expression\n\nExample: ` \"value\"`",
+            "description": "Map of string keys and values that can be used to organize and categorize\n(scope and select) objects as chosen by the user. Values specified here will be used\nby selector expression.",
             "title": "Labels",
             "x-displayname": "Labels",
             "x-ves-example": "Value"
           },
           "name": {
             "type": "string",
-            "description": "This is the name of configuration object. It has to be unique within the namespace.\n It can only be specified during create API and cannot be changed during replace API.\n The value of name has to follow DNS-1035 format.\n\nExample: ` \"acmecorp-web\"`\n\nRequired: YES\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true.",
+            "description": "This is the name of configuration object. It has to be unique within the namespace.\nIt can only be specified during create API and cannot be changed during replace API.\nThe value of name has to follow DNS-1035 format.\nRequired: YES.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Acmecorp-web.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true"
             }
           },
           "namespace": {
             "type": "string",
-            "description": "This defines the workspace within which each the configuration object is to be created.\n Must be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"\n\nExample: ` \"staging\"`",
+            "description": "This defines the workspace within which each the configuration object is to be created.\nMust be a DNS_LABEL format. For a namespace object itself, namespace value will be \"\"",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "Staging"
@@ -4509,21 +4592,21 @@
         "properties": {
           "creation_timestamp": {
             "type": "string",
-            "description": "Creation_timestamp is when the status object was created. It is used to find/tie-break\n for latest status object from same origin.",
+            "description": "Creation_timestamp is when the status object was created. It is used to find/tie-break\nfor latest status object from same origin.",
             "title": "Creation_timestamp.",
             "format": "date-time",
             "x-displayname": "Creation Timestamp."
           },
           "creator_class": {
             "type": "string",
-            "description": "Class of creator which created this StatusObject. This will be service's DNS FQDN.\n This will be set by the system based on client certificate information.\n\nExample: ` \"ver.re1.int.F5 XC\"`",
+            "description": "Class of creator which created this StatusObject. This will be service's DNS FQDN.\nThis will be set by the system based on client certificate information.",
             "title": "Creator_class.",
             "x-displayname": "Creator Class.",
             "x-ves-example": "Ver.re1.int.VES.I/O."
           },
           "creator_id": {
             "type": "string",
-            "description": "ID of creator which created this StatusObject. This will be a concrete identifier for service (e.g.\n Identifying the environment also). This will be set by the system based on client certificate\n information\n\nExample: ` \"ver-instance-1\"`",
+            "description": "ID of creator which created this StatusObject. This will be a concrete identifier for service (e.g.\nIdentifying the environment also). This will be set by the system based on client certificate\ninformation.",
             "title": "Creator_id.",
             "x-displayname": "Creator ID.",
             "x-ves-example": "Ver-instance-1."
@@ -4533,13 +4616,13 @@
           },
           "status_id": {
             "type": "string",
-            "description": "Status_id is a field used by the generator to distinguish (if necessary) between two status\n objects for the same config object from the same site and same service and potentially same\n daemon(creator-ID)",
+            "description": "Status_id is a field used by the generator to distinguish (if necessary) between two status\nobjects for the same config object from the same site and same service and potentially same\ndaemon(creator-ID)",
             "title": "Status_id",
             "x-displayname": "Status ID"
           },
           "uid": {
             "type": "string",
-            "description": "Uid is the unique in time and space value for a StatusObject.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "description": "Uid is the unique in time and space value for a StatusObject.",
             "title": "Uid",
             "x-displayname": "UID",
             "x-ves-example": "D15f1fad-4d37-48c0-8706-df1824d76d31."
@@ -4561,7 +4644,7 @@
       },
       "schemaStatusPublishType": {
         "type": "string",
-        "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n - STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n - STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable.",
+        "description": "StatusPublishType is all possible publish operations on a StatusObject\n\n- STATUS_DO_NOT_PUBLISH: Do Not Publish\n\nDo not propagate this status to user. This could be because status is only informational\n- STATUS_PUBLISH: Publish\n\nPropagate this status up to user as it might be actionable.",
         "title": "StatusPublishType.",
         "enum": [
           "STATUS_DO_NOT_PUBLISH",
@@ -4580,7 +4663,7 @@
         "properties": {
           "code": {
             "type": "integer",
-            "description": "Suggested HTTP return code for this status, 0 if not set.\n\nExample: ` \"0\"`",
+            "description": "Suggested HTTP return code for this status, 0 if not set.",
             "title": "Code",
             "format": "int32",
             "x-displayname": "Code",
@@ -4588,14 +4671,14 @@
           },
           "reason": {
             "type": "string",
-            "description": "A human-readable description of why this operation is in the\n \"Failure\" status. If this value is empty there\n is no information available.\n\nExample: ` \"value\"`",
+            "description": "A human-readable description of why this operation is in the\n\"Failure\" status. If this value is empty there\nis no information available.",
             "title": "Reason",
             "x-displayname": "Reason",
             "x-ves-example": "Value"
           },
           "status": {
             "type": "string",
-            "description": "Status of the operation.\n One of: \"Success\" or \"Failure\".\n\nExample: ` \"value\"`",
+            "description": "Status of the operation.\nOne of: \"Success\" or \"Failure\".",
             "title": "Status",
             "x-displayname": "Status",
             "x-ves-example": "Value"
@@ -4611,35 +4694,35 @@
         "properties": {
           "creation_timestamp": {
             "type": "string",
-            "description": "CreationTimestamp is a timestamp representing the server time when this object was\n created. It is not guaranteed to be set in happens-before order across separate operations.\n Clients may not set this value. It is represented in RFC3339 form and is in UTC.",
+            "description": "CreationTimestamp is a timestamp representing the server time when this object was\ncreated. It is not guaranteed to be set in happens-before order across separate operations.\nClients may not set this value. It is represented in RFC3339 form and is in UTC.",
             "title": "Creation_timestamp.",
             "format": "date-time",
             "x-displayname": "Creation Timestamp."
           },
           "creator_class": {
             "type": "string",
-            "description": "A value identifying the class of the user or service which created this configuration object.\n\nExample: ` \"value\"`",
+            "description": "A value identifying the class of the user or service which created this configuration object.",
             "title": "Creator_class.",
             "x-displayname": "Creator Class.",
             "x-ves-example": "Prism"
           },
           "creator_id": {
             "type": "string",
-            "description": "A value identifying the exact user or service that created this configuration object\n\nExample: ` \"value\"`",
+            "description": "A value identifying the exact user or service that created this configuration object.",
             "title": "Creator_id.",
             "x-displayname": "Creator ID.",
             "x-ves-example": "Admin@acmecorp.com."
           },
           "deletion_timestamp": {
             "type": "string",
-            "description": "DeletionTimestamp is RFC 3339 date and time at which this resource will be deleted. This\n field is set by the server when a graceful deletion is requested by the user, and is not\n directly settable by a client. The resource is expected to be deleted (no longer visible\n from resource lists, and not reachable by name) after the time in this field, once the\n finalizers list is empty. As long as the finalizers list contains items, deletion is blocked.\n Once the deletionTimestamp is set, this value may not be unset or be set further into the\n future, although it may be shortened or the resource may be deleted prior to this time.\n For example, a user may request that a pod is deleted in 30 seconds. The Kubelet will react\n by sending a graceful termination signal to the containers in the pod. After that 30 seconds,\n the Kubelet will send a hard termination signal (SIGKILL) to the container and after cleanup,\n remove the pod from the API. In the presence of network partitions, this object may still\n exist after this timestamp, until an administrator or automated process can determine the\n resource is fully terminated.\n If not set, graceful deletion of the object has not been requested.\n\n Populated by the system when a graceful deletion is requested.\n Read-only.",
+            "description": "DeletionTimestamp is RFC 3339 date and time at which this resource will be deleted. This\nfield is set by the server when a graceful deletion is requested by the user, and is not\ndirectly settable by a client. The resource is expected to be deleted (no longer visible\nfrom resource lists, and not reachable by name) after the time in this field, once the\nfinalizers list is empty. As long as the finalizers list contains items, deletion is blocked.\nOnce the deletionTimestamp is set, this value may not be unset or be set further into the\nfuture, although it may be shortened or the resource may be deleted prior to this time.\nFor example, a user may request that a pod is deleted in 30 seconds. The Kubelet will react\nby sending a graceful termination signal to the containers in the pod. After that 30 seconds,\nthe Kubelet will send a hard termination signal (SIGKILL) to the container and after cleanup,\nremove the pod from the API. In the presence of network partitions, this object may still\nexist after this timestamp, until an administrator or automated process can determine the\nresource is fully terminated.\nIf not set, graceful deletion of the object has not been requested.\n\nPopulated by the system when a graceful deletion is requested.\nRead-only.",
             "title": "Deletion_timestamp.",
             "format": "date-time",
             "x-displayname": "Deletion Timestamp."
           },
           "finalizers": {
             "type": "array",
-            "description": "Must be empty before the object is deleted from the registry. Each entry\n is an identifier for the responsible component that will remove the entry\n from the list. If the deletionTimestamp of the object is non-nil, entries\n in this list can only be removed.\n\nExample: ` \"value\"`",
+            "description": "Must be empty before the object is deleted from the registry. Each entry\nis an identifier for the responsible component that will remove the entry\nfrom the list. If the deletionTimestamp of the object is non-nil, entries\nin this list can only be removed.",
             "title": "Finalizers.",
             "items": {
               "type": "string"
@@ -4652,21 +4735,21 @@
           },
           "labels": {
             "type": "object",
-            "description": "Map of string keys and values that can be used to organize and categorize\n (scope and select) objects as chosen by the operator or software. Values here can be interpreted\n by software(backend or frontend) to enable certain behavior e.g. Things marked as soft-deleted(restorable).\n\nExample: ` \"'F5 XC/soft-deleted''true'\"`",
+            "description": "Map of string keys and values that can be used to organize and categorize\n(scope and select) objects as chosen by the operator or software. Values here can be interpreted\nby software(backend or frontend) to enable certain behavior e.g. Things marked as soft-deleted(restorable).",
             "title": "Labels",
             "x-displayname": "Labels",
             "x-ves-example": "'VES.I/O/soft-deleted': 'true'"
           },
           "modification_timestamp": {
             "type": "string",
-            "description": "ModificationTimestamp is a timestamp representing the server time when this object was\n last modified.",
+            "description": "ModificationTimestamp is a timestamp representing the server time when this object was\nlast modified.",
             "title": "Modification_timestamp.",
             "format": "date-time",
             "x-displayname": "Modification Timestamp."
           },
           "object_index": {
             "type": "integer",
-            "description": "Unique index for the object. Some objects need a unique integer index to be allocated\n for each object type. This field will be populated for all objects that need it and will\n be zero otherwise.\n\nExample: ` \"0\"`",
+            "description": "Unique index for the object. Some objects need a unique integer index to be allocated\nfor each object type. This field will be populated for all objects that need it and will\nbe zero otherwise.",
             "title": "Object_index.",
             "format": "int64",
             "x-displayname": "Object Index.",
@@ -4677,14 +4760,14 @@
           },
           "tenant": {
             "type": "string",
-            "description": "Tenant to which this configuration object belongs to. The value for this is found from\n presented credentials.\n\nExample: ` \"acmecorp\"`",
+            "description": "Tenant to which this configuration object belongs to. The value for this is found from\npresented credentials.",
             "title": "Tenant",
             "x-displayname": "Tenant",
             "x-ves-example": "Acmecorp"
           },
           "uid": {
             "type": "string",
-            "description": "Uid is the unique in time and space value for this object. It is generated by\n the server on successful creation of an object and is not allowed to change on Replace\n API. The value of is taken from uid field of ObjectMetaType, if provided.\n\nExample: ` \"d15f1fad-4d37-48c0-8706-df1824d76d31\"`",
+            "description": "Uid is the unique in time and space value for this object. It is generated by\nthe server on successful creation of an object and is not allowed to change on Replace\nAPI. The value of is taken from uid field of ObjectMetaType, if provided.",
             "title": "Uid",
             "x-displayname": "UID",
             "x-ves-example": "D15f1fad-4d37-48c0-8706-df1824d76d31."
@@ -4700,28 +4783,28 @@
         "properties": {
           "kind": {
             "type": "string",
-            "description": "Kind of the view object\n\nExample: ` \"http_proxy\"`",
+            "description": "Kind of the view object.",
             "title": "Kind",
             "x-displayname": "Kind",
             "x-ves-example": "Http_proxy."
           },
           "name": {
             "type": "string",
-            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then name will hold the referred object's(e.g. Route's) name.\n\nExample: ` \"contactus-route\"`",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen name will hold the referred object's(e.g. Route's) name.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Contactus-route."
           },
           "namespace": {
             "type": "string",
-            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\n then namespace will hold the referred object's(e.g. Route's) namespace.\n\nExample: ` \"ns1\"`",
+            "description": "When a configuration object(e.g. Virtual_host) refers to another(e.g route)\nthen namespace will hold the referred object's(e.g. Route's) namespace.",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "Ns1"
           },
           "uid": {
             "type": "string",
-            "description": "UID of the view object\n\nExample: ` \"f3744323-1adf-4aaa-a5dc-0707c1d1bd82\"`",
+            "description": "UID of the view object.",
             "title": "Uid",
             "x-displayname": "UID",
             "x-ves-example": "F3744323-1adf-4aaa-a5dc-0707c1d1bd82."
@@ -4737,32 +4820,47 @@
         "properties": {
           "api_limits": {
             "type": "object",
-            "description": "API Limits defines ratelimit parameters for an API at the stdlib service\n The key of the api_limits map is rpc FQN e.g. \"F5 XC.schema.advertise_policy.API.Create\"\n\nValidation Rules:\n F5 XC.schema.rules.map.keys.string.max_len: 512\n F5 XC.schema.rules.map.keys.string.min_len: 1\n F5 XC.schema.rules.map.keys.string.pattern: ^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$.",
+            "description": "API Limits defines ratelimit parameters for an API at the stdlib service\nThe key of the api_limits map is rpc FQN e.g. \"F5 XC.schema.advertise_policy.API.Create\"",
             "x-displayname": "API Limits.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.map.keys.string.max_len": "512",
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.map.keys.string.max_len": "512",
+              "F5 XC.schema.rules.map.keys.string.min_len": "1",
+              "F5 XC.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
             }
           },
           "object_limits": {
             "type": "object",
-            "description": "Object Limits define maximum number of instances that can be present per object kind for the tenant\n The key of the object_limits map is object kind e.g. \"virtual_host\"\n\nValidation Rules:\n F5 XC.schema.rules.map.keys.string.max_len: 512\n F5 XC.schema.rules.map.keys.string.min_len: 1\n F5 XC.schema.rules.map.keys.string.pattern: ^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$.",
+            "description": "Object Limits define maximum number of instances that can be present per object kind for the tenant\nThe key of the object_limits map is object kind e.g. \"virtual_host\"",
             "x-displayname": "Object Limits.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.map.keys.string.max_len": "512",
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.map.keys.string.max_len": "512",
+              "F5 XC.schema.rules.map.keys.string.min_len": "1",
+              "F5 XC.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
             }
           },
           "resource_limits": {
             "type": "object",
-            "description": "Resource Limits define maximum value of resources in the appropriate units that can be present. The key of\n the resource limits is the resource name\n\nValidation Rules:\n F5 XC.schema.rules.map.keys.string.max_len: 512\n F5 XC.schema.rules.map.keys.string.min_len: 1\n F5 XC.schema.rules.map.keys.string.pattern: ^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$.",
+            "description": "Resource Limits define maximum value of resources in the appropriate units that can be present. The key of\nthe resource limits is the resource name.",
             "x-displayname": "Resource Limits.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.map.keys.string.max_len": "512",
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.map.keys.string.max_len": "512",
+              "F5 XC.schema.rules.map.keys.string.min_len": "1",
+              "F5 XC.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
             }
           }
         }
@@ -4776,32 +4874,47 @@
         "properties": {
           "api_limits": {
             "type": "object",
-            "description": "API Limits defines ratelimit parameters for an API at the stdlib service\n The key of the api_limits map is rpc FQN e.g. \"F5 XC.schema.advertise_policy.API.Create\"\n\nValidation Rules:\n F5 XC.schema.rules.map.keys.string.max_len: 512\n F5 XC.schema.rules.map.keys.string.min_len: 1\n F5 XC.schema.rules.map.keys.string.pattern: ^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$.",
+            "description": "API Limits defines ratelimit parameters for an API at the stdlib service\nThe key of the api_limits map is rpc FQN e.g. \"F5 XC.schema.advertise_policy.API.Create\"",
             "x-displayname": "API Limits.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.map.keys.string.max_len": "512",
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.map.keys.string.max_len": "512",
+              "F5 XC.schema.rules.map.keys.string.min_len": "1",
+              "F5 XC.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
             }
           },
           "object_limits": {
             "type": "object",
-            "description": "Object Limits define maximum number of instances that can be present per object kind for the tenant\n The key of the object_limits map is object kind e.g. \"virtual_host\"\n\nValidation Rules:\n F5 XC.schema.rules.map.keys.string.max_len: 512\n F5 XC.schema.rules.map.keys.string.min_len: 1\n F5 XC.schema.rules.map.keys.string.pattern: ^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$.",
+            "description": "Object Limits define maximum number of instances that can be present per object kind for the tenant\nThe key of the object_limits map is object kind e.g. \"virtual_host\"",
             "x-displayname": "Object Limits.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.map.keys.string.max_len": "512",
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.map.keys.string.max_len": "512",
+              "F5 XC.schema.rules.map.keys.string.min_len": "1",
+              "F5 XC.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
             }
           },
           "resource_limits": {
             "type": "object",
-            "description": "Resource Limits define maximum value of resources in the appropriate units that can be present. The key of\n the resource limits is the resource name\n\nValidation Rules:\n F5 XC.schema.rules.map.keys.string.max_len: 512\n F5 XC.schema.rules.map.keys.string.min_len: 1\n F5 XC.schema.rules.map.keys.string.pattern: ^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$.",
+            "description": "Resource Limits define maximum value of resources in the appropriate units that can be present. The key of\nthe resource limits is the resource name.",
             "x-displayname": "Resource Limits.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.map.keys.string.max_len": "512",
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.map.keys.string.max_len": "512",
+              "F5 XC.schema.rules.map.keys.string.min_len": "1",
+              "F5 XC.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
             }
           }
         }
@@ -4815,32 +4928,47 @@
         "properties": {
           "api_limits": {
             "type": "object",
-            "description": "API Limits defines ratelimit parameters for an API at the stdlib service\n The key of the api_limits map is rpc FQN e.g. \"F5 XC.schema.advertise_policy.API.Create\"\n\nValidation Rules:\n F5 XC.schema.rules.map.keys.string.max_len: 512\n F5 XC.schema.rules.map.keys.string.min_len: 1\n F5 XC.schema.rules.map.keys.string.pattern: ^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$.",
+            "description": "API Limits defines ratelimit parameters for an API at the stdlib service\nThe key of the api_limits map is rpc FQN e.g. \"F5 XC.schema.advertise_policy.API.Create\"",
             "x-displayname": "API Limits.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.map.keys.string.max_len": "512",
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.map.keys.string.max_len": "512",
+              "F5 XC.schema.rules.map.keys.string.min_len": "1",
+              "F5 XC.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
             }
           },
           "object_limits": {
             "type": "object",
-            "description": "Object Limits define maximum number of instances that can be present per object kind for the tenant\n The key of the object_limits map is object kind e.g. \"virtual_host\"\n\nValidation Rules:\n F5 XC.schema.rules.map.keys.string.max_len: 512\n F5 XC.schema.rules.map.keys.string.min_len: 1\n F5 XC.schema.rules.map.keys.string.pattern: ^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$.",
+            "description": "Object Limits define maximum number of instances that can be present per object kind for the tenant\nThe key of the object_limits map is object kind e.g. \"virtual_host\"",
             "x-displayname": "Object Limits.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.map.keys.string.max_len": "512",
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.map.keys.string.max_len": "512",
+              "F5 XC.schema.rules.map.keys.string.min_len": "1",
+              "F5 XC.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
             }
           },
           "resource_limits": {
             "type": "object",
-            "description": "Resource Limits define maximum value of resources in the appropriate units that can be present. The key of\n the resource limits is the resource name\n\nValidation Rules:\n F5 XC.schema.rules.map.keys.string.max_len: 512\n F5 XC.schema.rules.map.keys.string.min_len: 1\n F5 XC.schema.rules.map.keys.string.pattern: ^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$.",
+            "description": "Resource Limits define maximum value of resources in the appropriate units that can be present. The key of\nthe resource limits is the resource name.",
             "x-displayname": "Resource Limits.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.map.keys.string.max_len": "512",
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.map.keys.string.max_len": "512",
+              "F5 XC.schema.rules.map.keys.string.min_len": "1",
+              "F5 XC.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
             }
           }
         }
@@ -4904,7 +5032,7 @@
           },
           "end_date": {
             "type": "string",
-            "description": "Kast day of the last billing_period in external provider\n\nExample: ` \"2020-05-20T12:32:51.341959216Z\"`",
+            "description": "Kast day of the last billing_period in external provider.",
             "title": "End date",
             "format": "date-time",
             "x-displayname": "End date",
@@ -4912,7 +5040,7 @@
           },
           "internal_end_date": {
             "type": "string",
-            "description": "Internal end date that serves as source of truth\n\nExample: ` \"2020-05-20T12:32:51.341959216Z\"`",
+            "description": "Internal end date that serves as source of truth.",
             "title": "Internal end date.",
             "format": "date-time",
             "x-displayname": "Internal end date.",
@@ -4920,7 +5048,7 @@
           },
           "internal_start_date": {
             "type": "string",
-            "description": "Internal start date that serves as source of truth\n\nExample: ` \"2020-05-20T12:32:51.341959216Z\"`",
+            "description": "Internal start date that serves as source of truth.",
             "title": "Internal start date.",
             "format": "date-time",
             "x-displayname": "Internal start date.",
@@ -4946,7 +5074,7 @@
           },
           "start_date": {
             "type": "string",
-            "description": "The first day of the last billing_period in external provider\n\nExample: ` \"2020-05-20T12:32:51.341959216Z\"`",
+            "description": "The first day of the last billing_period in external provider.",
             "title": "Start date.",
             "format": "date-time",
             "x-displayname": "Start date.",
@@ -4961,7 +5089,7 @@
           },
           "uid": {
             "type": "string",
-            "description": "Unique identifier of this time frame\n\nExample: ` \"a536793b-2852-455c-9df8-ef237e811825\"`",
+            "description": "Unique identifier of this time frame.",
             "title": "UUID",
             "x-displayname": "UUID",
             "x-ves-example": "A536793b-2852-455c-9df8-ef237e811825."
@@ -4977,7 +5105,7 @@
         "properties": {
           "cancellation_date": {
             "type": "string",
-            "description": "Date when subscription become cancelled\n\nExample: ` \"2020-04-20T12:32:51.341959216Z\"`",
+            "description": "Date when subscription become cancelled.",
             "title": "Cancellation date.",
             "format": "date-time",
             "x-displayname": "Cancellation date.",
@@ -4999,7 +5127,7 @@
           },
           "last_billing_period_end_date": {
             "type": "string",
-            "description": "The last day of the last billing_period\n\nExample: ` \"2020-05-20T12:32:51.341959216Z\"`",
+            "description": "The last day of the last billing_period.",
             "title": "Billing period end date.",
             "format": "date-time",
             "x-displayname": "Billing period end date.",
@@ -5007,7 +5135,7 @@
           },
           "last_billing_period_start_date": {
             "type": "string",
-            "description": "The first day of the last billing_period\n\nExample: ` \"2020-04-20T12:32:51.341959216Z\"`",
+            "description": "The first day of the last billing_period.",
             "title": "Billing period start date.",
             "format": "date-time",
             "x-displayname": "Billing period start date.",
@@ -5015,21 +5143,21 @@
           },
           "name": {
             "type": "string",
-            "description": "Name of the subscription (internal name, not human readable), a subscription has no human readable name\n\nExample: ` \"sub-name-2e170678-4f50-4336-8af9-5413e9bdf250\"`",
+            "description": "Name of the subscription (internal name, not human readable), a subscription has no human readable name.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Sub-name-2e170678-4f50-4336-8af9-5413e9bdf250."
           },
           "plan_name": {
             "type": "string",
-            "description": "Plan name\n\nExample: ` \"Teams plan\"`",
+            "description": "Plan name",
             "title": "Plan name",
             "x-displayname": "Plan name",
             "x-ves-example": "Teams plan."
           },
           "plan_object_name": {
             "type": "string",
-            "description": "Plan object name\n\nExample: ` \"plan-000f0453-9719-45bf-9cc9-c3e1f491f634\"`",
+            "description": "Plan object name.",
             "title": "Plan object name.",
             "x-displayname": "Plan object name.",
             "x-ves-example": "Plan-000f0453-9719-45bf-9cc9-c3e1f491f634."
@@ -5045,7 +5173,7 @@
           },
           "start_date": {
             "type": "string",
-            "description": "Date when subscription become active\n\nExample: ` \"2020-04-20T12:32:51.341959216Z\"`",
+            "description": "Date when subscription become active.",
             "title": "Start date.",
             "format": "date-time",
             "x-displayname": "Start date.",
@@ -5055,7 +5183,7 @@
       },
       "schemausageStatusType": {
         "type": "string",
-        "description": "All possible usage line statuses\n\n - STATUS_UNKNOWN: No value defined\n - STATUS_NO_DATA: No data\n - STATUS_NOT_MEASURED: No measured\n - STATUS_ACTIVE: Active.",
+        "description": "All possible usage line statuses\n\n- STATUS_UNKNOWN: No value defined\n- STATUS_NO_DATA: No data\n- STATUS_NOT_MEASURED: No measured\n- STATUS_ACTIVE: Active.",
         "title": "Status type.",
         "enum": [
           "STATUS_UNKNOWN",
@@ -5076,7 +5204,7 @@
         "properties": {
           "amount": {
             "type": "string",
-            "description": "Cost as hundredths of currency\n\nExample: ` \"1234\"`",
+            "description": "Cost as hundredths of currency.",
             "title": "Amount",
             "format": "int64",
             "x-displayname": "Amount",
@@ -5084,14 +5212,14 @@
           },
           "currency_code": {
             "type": "string",
-            "description": "ISO currency code\n\nExample: ` \"USD\"`",
+            "description": "ISO currency code.",
             "title": "Currency code.",
             "x-displayname": "Currency code.",
             "x-ves-example": "USD"
           },
           "end_timestamp": {
             "type": "string",
-            "description": "End of the time unit\n\nExample: ` \"2020-04-20T12:32:51.341959216Z\"`",
+            "description": "End of the time unit.",
             "title": "Timestamp end.",
             "format": "date-time",
             "x-displayname": "End",
@@ -5106,7 +5234,7 @@
           },
           "metric_labels": {
             "type": "array",
-            "description": "ID of the corresponding aggregated_usage metric labels from which this calculated usage item is assembled\n\nExample: ` \"['container-usage-large', 'container-usage-medium']\"`",
+            "description": "ID of the corresponding aggregated_usage metric labels from which this calculated usage item is assembled.",
             "title": "Metric labels.",
             "items": {
               "type": "string"
@@ -5116,7 +5244,7 @@
           },
           "quantity": {
             "type": "number",
-            "description": "Quantity incurred\n\nExample: ` \"100\"`",
+            "description": "Quantity incurred.",
             "title": "Quantity",
             "format": "double",
             "x-displayname": "Quantity",
@@ -5124,14 +5252,15 @@
           },
           "quantity_billable": {
             "type": "string",
-            "description": "Quantity which is used to calculate the amount. Rounded from quantity as the following:\n * after converting quantity from unit_code to unit_code of this addon_id, if the value < 1, then\n quantity_billable is rounded to 1\n * after converting quantity from unit_code to unit_code of this addon_id, if the value > 1, then\n quantity_billable is rounded down to the nearest value.\n\nExample: ` 115`",
+            "description": "Quantity which is used to calculate the amount. Rounded from quantity as the following:\n* after converting quantity from unit_code to unit_code of this addon_id, if the value < 1, then\nquantity_billable is rounded to 1\n* after converting quantity from unit_code to unit_code of this addon_id, if the value > 1, then\nquantity_billable is rounded down to the nearest value.",
             "title": "Quantity billable.",
             "format": "int64",
-            "x-displayname": "Quantity billable."
+            "x-displayname": "Quantity billable.",
+            "x-ves-example": "115"
           },
           "start_timestamp": {
             "type": "string",
-            "description": "Beginning of the time unit\n\nExample: ` \"2020-04-20T12:32:51.341959216Z\"`",
+            "description": "Beginning of the time unit.",
             "title": "Timestamp start.",
             "format": "date-time",
             "x-displayname": "Start",
@@ -5142,20 +5271,21 @@
           },
           "unit_name": {
             "type": "string",
-            "description": "Name of the quantity unit\n\nExample: ` \"MB\"`",
+            "description": "Name of the quantity unit.",
             "title": "Unit name",
             "x-displayname": "Unit name",
             "x-ves-example": "MB"
           },
           "unit_name_billable": {
             "type": "string",
-            "description": "Unit name a quantity_billable is provided in\n\nExample: ` GB`",
+            "description": "Unit name a quantity_billable is provided in.",
             "title": "Unit name billable.",
-            "x-displayname": "Unit name billable."
+            "x-displayname": "Unit name billable.",
+            "x-ves-example": "GB"
           },
           "usage_type": {
             "type": "string",
-            "description": "Type of the resource\n\nExample: ` \"ADN App Mgmt - VoltStack Large Containers\"`",
+            "description": "Type of the resource.",
             "title": "Usage type.",
             "x-displayname": "Usage type.",
             "x-ves-example": "ADN App Mgmt - VoltStack Large Containers."
@@ -5171,7 +5301,7 @@
         "properties": {
           "discount_amount": {
             "type": "integer",
-            "description": "[x-required]\n If discount_type is fixed_amount, discount_amount is in cents\n If discount_type is percentage, discount_amount is in percentages of 0.01% precision (12.35% equals to 1235)\n\nExample: ` \"1234\"`\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true.",
+            "description": "[x-required]\nIf discount_type is fixed_amount, discount_amount is in cents\nIf discount_type is percentage, discount_amount is in percentages of 0.01% precision (12.35% equals to 1235)",
             "title": "Discount amount.",
             "format": "int32",
             "x-displayname": "Discount amount.",
@@ -5179,6 +5309,9 @@
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true"
             }
           },
           "discount_type": {
@@ -5186,7 +5319,7 @@
           },
           "title": {
             "type": "string",
-            "description": "Title (or name) of the coupon\n\nExample: ` \"Coupon 1\"`",
+            "description": "Title (or name) of the coupon.",
             "title": "Title",
             "x-displayname": "Title",
             "x-ves-example": "Coupon 1"
@@ -5215,25 +5348,28 @@
         "properties": {
           "container": {
             "type": "string",
-            "description": "Container name if this item correspond to the container usage. Otherwise it's empty\n\nExample: ` \"pa4-deployment1-abcd12\"`",
+            "description": "Container name if this item correspond to the container usage. Otherwise it's empty.",
             "title": "Container",
             "x-displayname": "Container",
             "x-ves-example": "Pa4-deployment1-abcd12."
           },
           "deployment": {
             "type": "string",
-            "description": "[x-required]\n Deployment name if this item correspond to the container usage. Otherwise it's empty\n\nExample: ` \"pa4-deployment1\"`\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true.",
+            "description": "[x-required]\nDeployment name if this item correspond to the container usage. Otherwise it's empty.",
             "title": "Deployment.",
             "x-displayname": "Deployment.",
             "x-ves-example": "Pa4-deployment1.",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true"
             }
           },
           "end_timestamp": {
             "type": "string",
-            "description": "End of the time unit\n\nExample: ` \"2020-04-20T12:32:51.341959216Z\"`",
+            "description": "End of the time unit.",
             "title": "Timestamp end.",
             "format": "date-time",
             "x-displayname": "End",
@@ -5241,7 +5377,7 @@
           },
           "quantity": {
             "type": "number",
-            "description": "Quantity incurred\n\nExample: ` \"100\"`",
+            "description": "Quantity incurred.",
             "title": "Quantity",
             "format": "double",
             "x-displayname": "Quantity",
@@ -5249,7 +5385,7 @@
           },
           "start_timestamp": {
             "type": "string",
-            "description": "Beginning of the time unit\n\nExample: ` \"2020-04-20T12:32:51.341959216Z\"`",
+            "description": "Beginning of the time unit.",
             "title": "Timestamp start.",
             "format": "date-time",
             "x-displayname": "Start",
@@ -5257,7 +5393,7 @@
           },
           "unit_name": {
             "type": "string",
-            "description": "Name of the quantity unit\n\nExample: ` \"MB\"`",
+            "description": "Name of the quantity unit.",
             "title": "Unit name",
             "x-displayname": "Unit name",
             "x-ves-example": "MB"
@@ -5273,7 +5409,7 @@
         "properties": {
           "from": {
             "type": "string",
-            "description": "Indicates the \"from\" part of the request\n\nExample: ` \"2020-04-20T12:32:51.341959216Z\"`",
+            "description": "Indicates the \"from\" part of the request.",
             "title": "Timestamp from.",
             "format": "date-time",
             "x-displayname": "From",
@@ -5281,14 +5417,14 @@
           },
           "namespace": {
             "type": "string",
-            "description": "Namespace to be considered\n\nExample: ` \"system\"`",
+            "description": "Namespace to be considered.",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "System"
           },
           "to": {
             "type": "string",
-            "description": "Indicates the \"to\" part of the request\n\nExample: ` \"2020-04-20T12:32:51.341959216Z\"`",
+            "description": "Indicates the \"to\" part of the request.",
             "title": "Timestamp to.",
             "format": "date-time",
             "x-displayname": "To",
@@ -5314,7 +5450,7 @@
           },
           "discount": {
             "type": "string",
-            "description": "Discount as hundredths of currency\n\nExample: ` \"12345\"`",
+            "description": "Discount as hundredths of currency.",
             "title": "Discount",
             "format": "int64",
             "x-displayname": "Discount",
@@ -5322,7 +5458,7 @@
           },
           "total_cost": {
             "type": "string",
-            "description": "Total cost as hundredths of currency\n\nExample: ` \"12345\"`",
+            "description": "Total cost as hundredths of currency.",
             "title": "Total cost.",
             "format": "int64",
             "x-displayname": "Total cost.",
@@ -5348,14 +5484,14 @@
         "properties": {
           "namespace": {
             "type": "string",
-            "description": "Namespace\n\nExample: ` \"system\"`",
+            "description": "Namespace",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "System"
           },
           "query": {
             "type": "string",
-            "description": "Encoded query which is passed as is to barracute daemon\n\nExample: ` \"{'MetricLabel':'label'}\"`",
+            "description": "Encoded query which is passed as is to barracute daemon.",
             "title": "Query",
             "x-displayname": "Query",
             "x-ves-example": "{'MetricLabel':'label'}"
@@ -5389,7 +5525,7 @@
         "properties": {
           "namespace": {
             "type": "string",
-            "description": "Namespace to be considered\n\nExample: ` \"system\"`",
+            "description": "Namespace to be considered.",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "System"
@@ -5423,7 +5559,7 @@
         "properties": {
           "from": {
             "type": "string",
-            "description": "Indicates the \"from\" part of the request\n\nExample: ` \"2020-04-20T12:32:51.341959216Z\"`",
+            "description": "Indicates the \"from\" part of the request.",
             "title": "Timestamp from.",
             "format": "date-time",
             "x-displayname": "From",
@@ -5431,14 +5567,14 @@
           },
           "namespace": {
             "type": "string",
-            "description": "Namespace to be considered\n\nExample: ` \"system\"`",
+            "description": "Namespace to be considered.",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "System"
           },
           "to": {
             "type": "string",
-            "description": "Indicates the \"to\" part of the request\n\nExample: ` \"2020-04-20T12:32:51.341959216Z\"`",
+            "description": "Indicates the \"to\" part of the request.",
             "title": "Timestamp to.",
             "format": "date-time",
             "x-displayname": "To",
@@ -5473,7 +5609,7 @@
         "properties": {
           "amount": {
             "type": "string",
-            "description": "Cost as hundredths of currency\n\nExample: ` \"1234\"`",
+            "description": "Cost as hundredths of currency.",
             "title": "Amount",
             "format": "int64",
             "x-displayname": "Amount",
@@ -5481,14 +5617,14 @@
           },
           "currency_code": {
             "type": "string",
-            "description": "ISO currency code\n\nExample: ` \"USD\"`",
+            "description": "ISO currency code.",
             "title": "Currency code.",
             "x-displayname": "Currency code.",
             "x-ves-example": "USD"
           },
           "end_timestamp": {
             "type": "string",
-            "description": "End of the time unit\n\nExample: ` \"2020-04-20T12:32:51.341959216Z\"`",
+            "description": "End of the time unit.",
             "title": "Timestamp end.",
             "format": "date-time",
             "x-displayname": "End",
@@ -5496,7 +5632,7 @@
           },
           "start_timestamp": {
             "type": "string",
-            "description": "Beginning of the time unit\n\nExample: ` \"2020-04-20T12:32:51.341959216Z\"`",
+            "description": "Beginning of the time unit.",
             "title": "Timestamp start.",
             "format": "date-time",
             "x-displayname": "Start",
@@ -5513,7 +5649,7 @@
         "properties": {
           "end_timestamp": {
             "type": "string",
-            "description": "End of the time unit\n\nExample: ` \"2020-04-20T12:32:51.341959216Z\"`",
+            "description": "End of the time unit.",
             "title": "Timestamp end.",
             "format": "date-time",
             "x-displayname": "End",
@@ -5521,7 +5657,7 @@
           },
           "hourly_breakdown": {
             "type": "array",
-            "description": "An array of HourlyItem with usage per hour. The sum of these items will result into the parent's object `quantity`\n Deprecated: use /hourly_usage_details along with hourly_breakdown_query.",
+            "description": "An array of HourlyItem with usage per hour. The sum of these items will result into the parent's object `quantity`\nDeprecated: use /hourly_usage_details along with hourly_breakdown_query.",
             "title": "Hourly breakdown.",
             "items": {
               "$ref": "#/components/schemas/usageHourlyItem"
@@ -5530,42 +5666,48 @@
           },
           "hourly_breakdown_query": {
             "type": "string",
-            "description": "[x-required]\n A base64 encoded JSON which should be passed as is to /hourly_usage_details\n to GET hourly items for this aggregated usage.\n\nExample: ` \"{'MetricLabel':'label'}\"`\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true.",
+            "description": "[x-required]\nA base64 encoded JSON which should be passed as is to /hourly_usage_details\nto GET hourly items for this aggregated usage.",
             "title": "Hourly breakdown query.",
             "x-displayname": "Hourly breakdown query.",
             "x-ves-example": "{'MetricLabel':'label'}",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true"
             }
           },
           "metric_label": {
             "type": "string",
-            "description": "[x-required]\n ID of the usage type. As Usage type is shown for user and is a subject of frequent changes,\n this metric_label should be static and should be usage for mapping between calculated usage and aggregated_usage.\n\nValidation Rules:\n F5 XC.schema.rules.message.required: true.",
+            "description": "[x-required]\nID of the usage type. As Usage type is shown for user and is a subject of frequent changes,\nthis metric_label should be static and should be usage for mapping between calculated usage and aggregated_usage.",
             "title": "Metric label.",
             "x-displayname": "Metric label.",
             "x-ves-required": "true",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.message.required": "true"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.message.required": "true"
             }
           },
           "namespace": {
             "type": "string",
-            "description": "Namespace where the usage occurred\n\nExample: ` \"system\"`",
+            "description": "Namespace where the usage occurred.",
             "title": "Namespace",
             "x-displayname": "Namespace",
             "x-ves-example": "System"
           },
           "object_name": {
             "type": "string",
-            "description": "Name of the object where the usage occurred\n\nExample: ` \"pa4-resource1\"`",
+            "description": "Name of the object where the usage occurred.",
             "title": "Object name.",
             "x-displayname": "Object name.",
             "x-ves-example": "Pa4-resource1."
           },
           "quantity": {
             "type": "number",
-            "description": "Quantity incurred\n\nExample: ` \"100\"`",
+            "description": "Quantity incurred.",
             "title": "Quantity",
             "format": "double",
             "x-displayname": "Quantity",
@@ -5573,7 +5715,7 @@
           },
           "start_timestamp": {
             "type": "string",
-            "description": "Beginning of the time unit\n\nExample: ` \"2020-04-20T12:32:51.341959216Z\"`",
+            "description": "Beginning of the time unit.",
             "title": "Timestamp start.",
             "format": "date-time",
             "x-displayname": "Start",
@@ -5581,14 +5723,14 @@
           },
           "unit_name": {
             "type": "string",
-            "description": "Name of the quantity unit\n\nExample: ` \"MB\"`",
+            "description": "Name of the quantity unit.",
             "title": "Unit name",
             "x-displayname": "Unit name",
             "x-ves-example": "MB"
           },
           "usage_type": {
             "type": "string",
-            "description": "Type of the resource\n\nExample: ` \"ADN App Mgmt - VoltStack Large Containers\"`",
+            "description": "Type of the resource.",
             "title": "Usage type.",
             "x-displayname": "Usage type.",
             "x-ves-example": "ADN App Mgmt - VoltStack Large Containers."
@@ -5604,14 +5746,14 @@
         "properties": {
           "display_name": {
             "type": "string",
-            "description": "Human readable name of addon\n\nExample: ` \"Transfer from RE to CE\"`",
+            "description": "Human readable name of addon.",
             "title": "Display name.",
             "x-displayname": "Display name.",
             "x-ves-example": "Transfer from RE to CE."
           },
           "name": {
             "type": "string",
-            "description": "Name of the addon feature\n\nExample: ` \"RE-2-CE-v1\"`",
+            "description": "Name of the addon feature.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "RE-2-CE-v1."
@@ -5645,7 +5787,7 @@
         "properties": {
           "locale": {
             "type": "string",
-            "description": "Locale in the ISO dashed format\n\nExample: ` \"en-us\"`",
+            "description": "Locale in the ISO dashed format.",
             "title": "Locale",
             "x-displayname": "Locale",
             "x-ves-example": "En-us"
@@ -5663,7 +5805,7 @@
       },
       "planPeriodUnitType": {
         "type": "string",
-        "description": "Temporal period type\n\n - PERIOD_UNKNOWN: unknown, undefined period of time\n - PERIOD_DAY: Day\n - PERIOD_WEEK: Week\n - PERIOD_MONTH: Month\n - PERIOD_YEAR: Year.",
+        "description": "Temporal period type\n\n- PERIOD_UNKNOWN: unknown, undefined period of time\n- PERIOD_DAY: Day\n- PERIOD_WEEK: Week\n- PERIOD_MONTH: Month\n- PERIOD_YEAR: Year.",
         "title": "Period type.",
         "enum": [
           "PERIOD_UNKNOWN",
@@ -5710,14 +5852,14 @@
           },
           "description": {
             "type": "string",
-            "description": "Description of the plan as mark-down text.\n\nExample: ` \"###Free plan, includes x y z *Free item 1 *Free item 2 ##Self-support only\"`",
+            "description": "Description of the plan as mark-down text.",
             "title": "Description.",
             "x-displayname": "Description.",
             "x-ves-example": "###Free plan, includes x y z *Free item 1 *Free item 2 ##Self-support only."
           },
           "flat_price": {
             "type": "integer",
-            "description": "Flat fee of the plan in cents\n\nExample: ` \"100\"`",
+            "description": "Flat fee of the plan in cents.",
             "title": "Flat price.",
             "format": "int32",
             "x-displayname": "Flat price.",
@@ -5733,7 +5875,7 @@
           },
           "name": {
             "type": "string",
-            "description": "Name of the plan, the name is not guaranteed to be human readable.\n\nExample: ` \"free-p25-v2\"`",
+            "description": "Name of the plan, the name is not guaranteed to be human readable.",
             "title": "Name",
             "x-displayname": "Name",
             "x-ves-example": "Free-p25-v2."
@@ -5746,7 +5888,7 @@
           },
           "subtitle": {
             "type": "string",
-            "description": "Optional second line of the title of the plan, human readable.\n\nExample: ` \"Our free plan\"`",
+            "description": "Optional second line of the title of the plan, human readable.",
             "title": "Sub-Title",
             "x-displayname": "Sub-title",
             "x-ves-example": "Our free plan."
@@ -5756,7 +5898,7 @@
           },
           "title": {
             "type": "string",
-            "description": "Title of the plan, human readable.\n\nExample: ` \"Free\"`",
+            "description": "Title of the plan, human readable.",
             "title": "Title",
             "x-displayname": "Title",
             "x-ves-example": "Free"
@@ -5766,7 +5908,7 @@
           },
           "trial_period": {
             "type": "integer",
-            "description": "Trial period associated with this plan. Different pricing conditions are in place during the trial period - flat fee my not apply, or similar\n\nExample: ` \"3\"`",
+            "description": "Trial period associated with this plan. Different pricing conditions are in place during the trial period - flat fee my not apply, or similar.",
             "title": "Trial period.",
             "format": "int32",
             "x-displayname": "Trial period.",
@@ -5782,7 +5924,7 @@
       },
       "planPlanState": {
         "type": "string",
-        "description": "State of the\n\n - STATE_UNSPECIFIED: zero value\n - STATE_READY: the plan is in default state\n - STATE_TRANSITION_PENDING: the plan is in the state of plan transitioning. If the plan has current flag equals to true and in\nTRANSITION_PENDING then tenant moves to another plan which is in state TRANSITION_PENDING.\nAt the same moment in time no more than 2 plans should have TRANSITION_PENDING state.",
+        "description": "State of the\n\n- STATE_UNSPECIFIED: zero value\n- STATE_READY: the plan is in default state\n- STATE_TRANSITION_PENDING: the plan is in the state of plan transitioning. If the plan has current flag equals to true and in\nTRANSITION_PENDING then tenant moves to another plan which is in state TRANSITION_PENDING.\nAt the same moment in time no more than 2 plans should have TRANSITION_PENDING state.",
         "title": "PlanTransitionState.",
         "enum": [
           "STATE_UNSPECIFIED",
@@ -5795,7 +5937,7 @@
       },
       "planPlanTransitionMethod": {
         "type": "string",
-        "description": "Transitioning method which UI should show to the customer to properly execute the transition between\n\n - TRANSITION_METHOD_UNSPECIFIED: Zero value\n - TRANSITION_METHOD_SUPPORT: The transition should be done via a support request, the current behaviour for any transition\n - TRANSITION_METHOD_WIZARD: The transition should be done via a custom Wizard. Fields which should be\nprovided will be guided by PlanTransitionRequiredField\n - TRANSITION_METHOD_RECREATE: The transition should be done via logging the user out, deleting the current tenant and creating a new one.",
+        "description": "Transitioning method which UI should show to the customer to properly execute the transition between\n\n- TRANSITION_METHOD_UNSPECIFIED: Zero value\n- TRANSITION_METHOD_SUPPORT: The transition should be done via a support request, the current behaviour for any transition\n- TRANSITION_METHOD_WIZARD: The transition should be done via a custom Wizard. Fields which should be\nprovided will be guided by PlanTransitionRequiredField\n- TRANSITION_METHOD_RECREATE: The transition should be done via logging the user out, deleting the current tenant and creating a new one.",
         "title": "PlanTransitionMethod.",
         "enum": [
           "TRANSITION_METHOD_UNSPECIFIED",
@@ -5809,7 +5951,7 @@
       },
       "planPlanTransitionRequiredField": {
         "type": "string",
-        "description": "Fields which UI should provide to the backend to properly execute the transition between plans\n\n - TRANSITION_REQUIRED_FIELD_UNSPECIFIED: Zero value\n - TRANSITION_REQUIRED_FIELD_PAYMENT_TOKEN: Stripe token after user enters CC info and we submit it to stripe\n - TRANSITION_REQUIRED_FIELD_DOMAIN: Domain for team/organization plans which will be used for keycloak realm\n - TRANSITION_REQUIRED_FIELD_CONTACTS: Contacts is billing contacts.",
+        "description": "Fields which UI should provide to the backend to properly execute the transition between plans\n\n- TRANSITION_REQUIRED_FIELD_UNSPECIFIED: Zero value\n- TRANSITION_REQUIRED_FIELD_PAYMENT_TOKEN: Stripe token after user enters CC info and we submit it to stripe\n- TRANSITION_REQUIRED_FIELD_DOMAIN: Domain for team/organization plans which will be used for keycloak realm\n- TRANSITION_REQUIRED_FIELD_CONTACTS: Contacts is billing contacts.",
         "title": "PlanTransitionRequiredField.",
         "enum": [
           "TRANSITION_REQUIRED_FIELD_UNSPECIFIED",
@@ -5911,7 +6053,7 @@
       },
       "rate_limiterRateLimitPeriodUnit": {
         "type": "string",
-        "description": "X-displayName: \"Rate Limit Period Unit\"\nUnit for the period per which the rate limit is applied.\n\n - SECOND: Second\n\nx-displayName: \"Seconds\"\nRate limit period unit is seconds\n - MINUTE: Minute\n\nx-displayName: \"Minutes\"\nRate limit period unit is minutes\n - HOUR: Hour\n\nx-displayName: \"Hours\"\nRate limit period unit is hours\n - DAY: Day\n\nx-displayName: \"Days\"\nRate limit period unit is days.",
+        "description": "X-displayName: \"Rate Limit Period Unit\"\nUnit for the period per which the rate limit is applied.\n\n- SECOND: Second\n\nx-displayName: \"Seconds\"\nRate limit period unit is seconds\n- MINUTE: Minute\n\nx-displayName: \"Minutes\"\nRate limit period unit is minutes\n- HOUR: Hour\n\nx-displayName: \"Hours\"\nRate limit period unit is hours\n- DAY: Day\n\nx-displayName: \"Days\"\nRate limit period unit is days.",
         "title": "RateLimitPeriodUnit.",
         "enum": [
           "SECOND",
@@ -5931,9 +6073,10 @@
           },
           "burst_multiplier": {
             "type": "integer",
-            "description": "X-displayName: \"Burst Multiplier\"\nx-example: \"1\"\nThe maximum burst of requests to accommodate, expressed as a multiple of the rate.",
+            "description": "X-displayName: \"Burst Multiplier\"\nThe maximum burst of requests to accommodate, expressed as a multiple of the rate.",
             "title": "Burst_multiplier.",
-            "format": "int64"
+            "format": "int64",
+            "x-ves-example": "1"
           },
           "disabled": {
             "$ref": "#/components/schemas/schemaEmpty"
@@ -5943,18 +6086,20 @@
           },
           "period_multiplier": {
             "type": "integer",
-            "description": "X-displayName: \"Periods\"\nx-example: \"1\"\nThis setting, combined with Per Period units, provides a duration.",
+            "description": "X-displayName: \"Periods\"\nThis setting, combined with Per Period units, provides a duration.",
             "title": "Period_multiplier.",
-            "format": "int64"
+            "format": "int64",
+            "x-ves-example": "1"
           },
           "token_bucket": {
             "$ref": "#/components/schemas/rate_limiterTokenBucketRateLimiter"
           },
           "total_number": {
             "type": "integer",
-            "description": "X-displayName: \"Number Of Requests\"\nx-example: \"1\"\nx-required\nThe total number of allowed requests per rate-limiting period.",
+            "description": "X-displayName: \"Number Of Requests\"\nx-required\nThe total number of allowed requests per rate-limiting period.",
             "title": "Total_number.",
-            "format": "int64"
+            "format": "int64",
+            "x-ves-example": "1"
           },
           "unit": {
             "$ref": "#/components/schemas/rate_limiterRateLimitPeriodUnit"
@@ -6008,46 +6153,66 @@
         "properties": {
           "api_limits": {
             "type": "object",
-            "description": "API Limits defines ratelimit parameters for an API at the stdlib service\n The key of the api_limits map is rpc FQN e.g. \"F5 XC.schema.advertise_policy.API.Create\"\n\nValidation Rules:\n F5 XC.schema.rules.map.keys.string.max_len: 512\n F5 XC.schema.rules.map.keys.string.min_len: 1\n F5 XC.schema.rules.map.keys.string.pattern: ^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$.",
+            "description": "API Limits defines ratelimit parameters for an API at the stdlib service\nThe key of the api_limits map is rpc FQN e.g. \"F5 XC.schema.advertise_policy.API.Create\"",
             "title": "Api_limits.",
             "x-displayname": "API Limits.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.map.keys.string.max_len": "512",
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.map.keys.string.max_len": "512",
+              "F5 XC.schema.rules.map.keys.string.min_len": "1",
+              "F5 XC.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
             }
           },
           "apigw_limits": {
             "type": "object",
-            "description": "API Gateway Limits defines rate limit value parameters for an API at a service level (prism, sentinel, etc)\n The key of the apigw_limits map is rpc FQN e.g. \"F5 XC.schema.advertise_policy.API.Create\"\n\nValidation Rules:\n F5 XC.schema.rules.map.keys.string.max_len: 512\n F5 XC.schema.rules.map.keys.string.min_len: 1\n F5 XC.schema.rules.map.keys.string.pattern: ^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$.",
+            "description": "API Gateway Limits defines rate limit value parameters for an API at a service level (prism, sentinel, etc)\nThe key of the apigw_limits map is rpc FQN e.g. \"F5 XC.schema.advertise_policy.API.Create\"",
             "title": "Apigw_limits.",
             "x-displayname": "API Gateway Limits.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.map.keys.string.max_len": "512",
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.map.keys.string.max_len": "512",
+              "F5 XC.schema.rules.map.keys.string.min_len": "1",
+              "F5 XC.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
             }
           },
           "object_limits": {
             "type": "object",
-            "description": "Object Limits define maximum number of instances that can be present per object kind for the tenant\n The key of the object_limits map is object kind e.g. \"virtual_host\"\n\nValidation Rules:\n F5 XC.schema.rules.map.keys.string.max_len: 512\n F5 XC.schema.rules.map.keys.string.min_len: 1\n F5 XC.schema.rules.map.keys.string.pattern: ^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$.",
+            "description": "Object Limits define maximum number of instances that can be present per object kind for the tenant\nThe key of the object_limits map is object kind e.g. \"virtual_host\"",
             "title": "Object_limits.",
             "x-displayname": "Object Limits.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.map.keys.string.max_len": "512",
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.map.keys.string.max_len": "512",
+              "F5 XC.schema.rules.map.keys.string.min_len": "1",
+              "F5 XC.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
             }
           },
           "resource_limits": {
             "type": "object",
-            "description": "Resource Limits define maximum value of resources in the appropriate units that can be present. The key of\n the resource limits is the resource name\n\nValidation Rules:\n F5 XC.schema.rules.map.keys.string.max_len: 512\n F5 XC.schema.rules.map.keys.string.min_len: 1\n F5 XC.schema.rules.map.keys.string.pattern: ^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$.",
+            "description": "Resource Limits define maximum value of resources in the appropriate units that can be present. The key of\nthe resource limits is the resource name.",
             "title": "Resource_limits.",
             "x-displayname": "Resource Limits.",
             "x-ves-validation-rules": {
               "ves.io.schema.rules.map.keys.string.max_len": "512",
               "ves.io.schema.rules.map.keys.string.min_len": "1",
               "ves.io.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
+            },
+            "x-validation-rules": {
+              "F5 XC.schema.rules.map.keys.string.max_len": "512",
+              "F5 XC.schema.rules.map.keys.string.min_len": "1",
+              "F5 XC.schema.rules.map.keys.string.pattern": "^[a-zA-Z][a-zA-Z0-9-._]*[a-zA-Z0-9]$"
             }
           }
         }
