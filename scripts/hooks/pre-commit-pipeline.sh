@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Pre-commit hook: Regenerate enriched specs and stage changes
+# Pre-commit hook: Regenerate enriched specs on every commit
 #
-# This hook ensures docs/specifications/api/ is always in sync with specs/original/
-# by running the same pipeline used by make build and GitHub Actions.
+# This hook runs the enrichment pipeline unconditionally on every commit,
+# ensuring docs/specifications/api/ is always in sync with specs/original/.
 #
 # DRY Principle: All methods use the same command:
 #   - Manual: make pipeline
-#   - Pre-commit: this script
+#   - Pre-commit: this script (runs on every commit)
 #   - GitHub Actions: python -m scripts.pipeline
 #
 # All call: python -m scripts.pipeline
@@ -21,20 +21,7 @@ NC='\033[0m' # No Color
 
 echo -e "${YELLOW}Running F5 XC API enrichment pipeline...${NC}"
 
-# Check if original specs have changed (staged for commit)
-ORIGINAL_CHANGED=$(git diff --cached --name-only -- 'specs/original/*.json' 2>/dev/null | wc -l | tr -d ' ')
-
-# Check if scripts have changed (could affect output)
-SCRIPTS_CHANGED=$(git diff --cached --name-only -- 'scripts/*.py' 'scripts/utils/*.py' 'config/*.yaml' 2>/dev/null | wc -l | tr -d ' ')
-
-if [ "$ORIGINAL_CHANGED" -eq 0 ] && [ "$SCRIPTS_CHANGED" -eq 0 ]; then
-    echo -e "${GREEN}No spec or script changes detected. Skipping pipeline.${NC}"
-    exit 0
-fi
-
-echo "Detected changes: $ORIGINAL_CHANGED spec files, $SCRIPTS_CHANGED script/config files"
-
-# Run the unified pipeline (same as make pipeline and GitHub Actions)
+# Run the unified pipeline on every commit (same as make pipeline and GitHub Actions)
 # This is the single source of truth for processing
 if [ -d ".venv" ]; then
     PYTHON=".venv/bin/python"
