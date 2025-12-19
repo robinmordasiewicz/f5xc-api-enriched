@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 XC Service Mesh API",
     "description": "F5 Distributed Cloud Service Mesh API specifications",
-    "version": "2025.12.19",
+    "version": "1.0.0",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com"
@@ -30,7 +30,16 @@
       "ApiToken": []
     }
   ],
-  "tags": [],
+  "tags": [
+    {
+      "name": "Other",
+      "description": "Miscellaneous operations"
+    },
+    {
+      "name": "Service Mesh",
+      "description": "Service discovery, endpoints, and container management"
+    }
+  ],
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/clusters": {
       "post": {
@@ -53,6 +62,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -63,6 +73,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -73,6 +84,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -83,6 +95,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -93,6 +106,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -103,6 +117,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -113,6 +128,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -123,6 +139,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -156,7 +173,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cluster-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cluster.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.cluster.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Cluster",
       "x-ves-proto-service": "ves.io.schema.cluster.API",
@@ -183,6 +203,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -193,6 +214,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -203,6 +225,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -213,6 +236,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -223,6 +247,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -233,6 +258,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -243,6 +269,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -253,6 +280,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -297,7 +325,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cluster-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cluster.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.cluster.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Cluster",
       "x-ves-proto-service": "ves.io.schema.cluster.API",
@@ -324,6 +355,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -334,6 +366,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -344,6 +377,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -354,6 +388,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -364,6 +399,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -374,6 +410,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -384,6 +421,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -394,6 +432,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -456,7 +495,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cluster-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cluster.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.cluster.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Cluster",
       "x-ves-proto-service": "ves.io.schema.cluster.API",
@@ -483,6 +525,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -493,6 +536,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -503,6 +547,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -513,6 +558,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -523,6 +569,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -533,6 +580,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -543,6 +591,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -553,6 +602,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -607,7 +657,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cluster-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cluster.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.cluster.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE Cluster.",
@@ -627,6 +680,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -637,6 +691,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -647,6 +702,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -657,6 +713,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -667,6 +724,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -677,6 +735,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -687,6 +746,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -697,6 +757,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -741,7 +802,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cluster-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cluster.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.cluster.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Cluster",
       "x-ves-proto-service": "ves.io.schema.cluster.API",
@@ -768,6 +832,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -778,6 +843,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -788,6 +854,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -798,6 +865,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -808,6 +876,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -818,6 +887,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -828,6 +898,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -838,6 +909,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -871,7 +943,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-container_registry-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.container_registry.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.container_registry.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Container Registry.",
       "x-ves-proto-service": "ves.io.schema.container_registry.API",
@@ -898,6 +973,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -908,6 +984,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -918,6 +995,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -928,6 +1006,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -938,6 +1017,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -948,6 +1028,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -958,6 +1039,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -968,6 +1050,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1012,7 +1095,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-container_registry-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.container_registry.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.container_registry.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Container Registry.",
       "x-ves-proto-service": "ves.io.schema.container_registry.API",
@@ -1039,6 +1125,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1049,6 +1136,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1059,6 +1147,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1069,6 +1158,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1079,6 +1169,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1089,6 +1180,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1099,6 +1191,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1109,6 +1202,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1171,7 +1265,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-container_registry-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.container_registry.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.container_registry.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Container Registry.",
       "x-ves-proto-service": "ves.io.schema.container_registry.API",
@@ -1198,6 +1295,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1208,6 +1306,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1218,6 +1317,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1228,6 +1328,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1238,6 +1339,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1248,6 +1350,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1258,6 +1361,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1268,6 +1372,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1322,7 +1427,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-container_registry-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.container_registry.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.container_registry.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE Container Registry.",
@@ -1342,6 +1450,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1352,6 +1461,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1362,6 +1472,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1372,6 +1483,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1382,6 +1494,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1392,6 +1505,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1402,6 +1516,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1412,6 +1527,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1456,7 +1572,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-container_registry-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.container_registry.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.container_registry.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Container Registry.",
       "x-ves-proto-service": "ves.io.schema.container_registry.API",
@@ -1483,6 +1602,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1493,6 +1613,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1503,6 +1624,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1513,6 +1635,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1523,6 +1646,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1533,6 +1657,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1543,6 +1668,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1553,6 +1679,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1598,7 +1725,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovered_service-customapi-listdiscoveredservices"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.ListDiscoveredServices"
+        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.ListDiscoveredServices",
+        "tags": [
+          "Service Mesh"
+        ]
       },
       "x-displayname": "Discovered Services.",
       "x-ves-proto-service": "ves.io.schema.discovered_service.CustomAPI",
@@ -1625,6 +1755,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1635,6 +1766,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1645,6 +1777,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1655,6 +1788,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1665,6 +1799,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1675,6 +1810,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1685,6 +1821,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1695,6 +1832,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1757,7 +1895,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovered_service-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovered_service.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.discovered_service.API.List",
+        "tags": [
+          "Service Mesh"
+        ]
       },
       "x-displayname": "Discovered Services.",
       "x-ves-proto-service": "ves.io.schema.discovered_service.API",
@@ -1784,6 +1925,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1794,6 +1936,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1804,6 +1947,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1814,6 +1958,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1824,6 +1969,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1834,6 +1980,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1844,6 +1991,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1854,6 +2002,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1905,7 +2054,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovered_service-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovered_service.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.discovered_service.API.Get",
+        "tags": [
+          "Service Mesh"
+        ]
       },
       "x-displayname": "Discovered Services.",
       "x-ves-proto-service": "ves.io.schema.discovered_service.API",
@@ -1932,6 +2084,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1942,6 +2095,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1952,6 +2106,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1962,6 +2117,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1972,6 +2128,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1982,6 +2139,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1992,6 +2150,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2002,6 +2161,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2046,7 +2206,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovered_service-customapi-createhttploadbalancer"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.CreateHTTPLoadBalancer"
+        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.CreateHTTPLoadBalancer",
+        "tags": [
+          "Service Mesh"
+        ]
       },
       "x-displayname": "Discovered Services.",
       "x-ves-proto-service": "ves.io.schema.discovered_service.CustomAPI",
@@ -2073,6 +2236,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2083,6 +2247,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2093,6 +2258,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2103,6 +2269,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2113,6 +2280,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2123,6 +2291,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2133,6 +2302,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2143,6 +2313,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2187,7 +2358,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovered_service-customapi-createtcploadbalancer"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.CreateTCPLoadBalancer"
+        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.CreateTCPLoadBalancer",
+        "tags": [
+          "Service Mesh"
+        ]
       },
       "x-displayname": "Discovered Services.",
       "x-ves-proto-service": "ves.io.schema.discovered_service.CustomAPI",
@@ -2214,6 +2388,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2224,6 +2399,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2234,6 +2410,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2244,6 +2421,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2254,6 +2432,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2264,6 +2443,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2274,6 +2454,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2284,6 +2465,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2328,7 +2510,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovered_service-customapi-disablevisibility"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.DisableVisibility"
+        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.DisableVisibility",
+        "tags": [
+          "Service Mesh"
+        ]
       },
       "x-displayname": "Discovered Services.",
       "x-ves-proto-service": "ves.io.schema.discovered_service.CustomAPI",
@@ -2355,6 +2540,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2365,6 +2551,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2375,6 +2562,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2385,6 +2573,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2395,6 +2584,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2405,6 +2595,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2415,6 +2606,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2425,6 +2617,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2469,7 +2662,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovered_service-customapi-enablevisibility"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.EnableVisibility"
+        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.EnableVisibility",
+        "tags": [
+          "Service Mesh"
+        ]
       },
       "x-displayname": "Discovered Services.",
       "x-ves-proto-service": "ves.io.schema.discovered_service.CustomAPI",
@@ -2496,6 +2692,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2506,6 +2703,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2516,6 +2714,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2526,6 +2725,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2536,6 +2736,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2546,6 +2747,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2556,6 +2758,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2566,6 +2769,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2600,7 +2804,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovered_service-customdataapi-discoveredservicehealthstatus"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomDataAPI.DiscoveredServiceHealthStatus"
+        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomDataAPI.DiscoveredServiceHealthStatus",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Discovered Services.",
       "x-ves-proto-service": "ves.io.schema.discovered_service.CustomDataAPI",
@@ -2627,6 +2834,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2637,6 +2845,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2647,6 +2856,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2657,6 +2867,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2667,6 +2878,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2677,6 +2889,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2687,6 +2900,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2697,6 +2911,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2730,7 +2945,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovered_service-customapi-suggestvalues"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.SuggestValues"
+        "x-ves-proto-rpc": "ves.io.schema.discovered_service.CustomAPI.SuggestValues",
+        "tags": [
+          "Service Mesh"
+        ]
       },
       "x-displayname": "Discovered Services.",
       "x-ves-proto-service": "ves.io.schema.discovered_service.CustomAPI",
@@ -2757,6 +2975,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2767,6 +2986,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2777,6 +2997,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2787,6 +3008,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2797,6 +3019,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2807,6 +3030,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2817,6 +3041,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2827,6 +3052,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2860,7 +3086,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovery-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovery.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.discovery.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Discovery",
       "x-ves-proto-service": "ves.io.schema.discovery.API",
@@ -2887,6 +3116,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2897,6 +3127,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2907,6 +3138,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2917,6 +3149,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2927,6 +3160,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2937,6 +3171,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2947,6 +3182,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2957,6 +3193,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3001,7 +3238,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovery-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovery.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.discovery.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Discovery",
       "x-ves-proto-service": "ves.io.schema.discovery.API",
@@ -3028,6 +3268,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3038,6 +3279,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3048,6 +3290,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3058,6 +3301,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3068,6 +3312,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3078,6 +3323,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3088,6 +3334,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3098,6 +3345,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3142,7 +3390,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovery-customapi-downloadcertificates"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovery.CustomAPI.DownloadCertificates"
+        "x-ves-proto-rpc": "ves.io.schema.discovery.CustomAPI.DownloadCertificates",
+        "tags": [
+          "Service Mesh"
+        ]
       },
       "x-displayname": "Discovery",
       "x-ves-proto-service": "ves.io.schema.discovery.CustomAPI",
@@ -3169,6 +3420,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3179,6 +3431,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3189,6 +3442,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3199,6 +3453,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3209,6 +3464,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3219,6 +3475,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3229,6 +3486,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3239,6 +3497,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3301,7 +3560,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovery-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovery.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.discovery.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Discovery",
       "x-ves-proto-service": "ves.io.schema.discovery.API",
@@ -3328,6 +3590,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3338,6 +3601,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3348,6 +3612,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3358,6 +3623,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3368,6 +3634,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3378,6 +3645,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3388,6 +3656,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3398,6 +3667,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3452,7 +3722,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovery-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovery.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.discovery.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE Discovery.",
@@ -3472,6 +3745,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3482,6 +3756,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3492,6 +3767,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3502,6 +3778,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3512,6 +3789,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3522,6 +3800,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3532,6 +3811,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3542,6 +3822,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3586,7 +3867,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-discovery-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.discovery.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.discovery.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Discovery",
       "x-ves-proto-service": "ves.io.schema.discovery.API",
@@ -3613,6 +3897,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3623,6 +3908,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3633,6 +3919,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3643,6 +3930,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3653,6 +3941,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3663,6 +3952,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3673,6 +3963,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3683,6 +3974,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3716,7 +4008,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-endpoint-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.endpoint.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.endpoint.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Endpoint",
       "x-ves-proto-service": "ves.io.schema.endpoint.API",
@@ -3743,6 +4038,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3753,6 +4049,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3763,6 +4060,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3773,6 +4071,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3783,6 +4082,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3793,6 +4093,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3803,6 +4104,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3813,6 +4115,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3857,7 +4160,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-endpoint-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.endpoint.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.endpoint.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Endpoint",
       "x-ves-proto-service": "ves.io.schema.endpoint.API",
@@ -3884,6 +4190,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3894,6 +4201,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3904,6 +4212,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3914,6 +4223,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3924,6 +4234,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3934,6 +4245,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3944,6 +4256,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3954,6 +4267,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4016,7 +4330,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-endpoint-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.endpoint.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.endpoint.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Endpoint",
       "x-ves-proto-service": "ves.io.schema.endpoint.API",
@@ -4043,6 +4360,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4053,6 +4371,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4063,6 +4382,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4073,6 +4393,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4083,6 +4404,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4093,6 +4415,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4103,6 +4426,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4113,6 +4437,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4167,7 +4492,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-endpoint-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.endpoint.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.endpoint.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE Endpoint.",
@@ -4187,6 +4515,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4197,6 +4526,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4207,6 +4537,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4217,6 +4548,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4227,6 +4559,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4237,6 +4570,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4247,6 +4581,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4257,6 +4592,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4301,7 +4637,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-endpoint-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.endpoint.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.endpoint.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Endpoint",
       "x-ves-proto-service": "ves.io.schema.endpoint.API",
@@ -4328,6 +4667,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4338,6 +4678,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4348,6 +4689,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4358,6 +4700,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4368,6 +4711,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4378,6 +4722,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4388,6 +4733,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4398,6 +4744,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4431,7 +4778,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nfv_service-customapi-forcedeletenfvservice"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nfv_service.CustomAPI.ForceDeleteNFVService"
+        "x-ves-proto-rpc": "ves.io.schema.nfv_service.CustomAPI.ForceDeleteNFVService",
+        "tags": [
+          "Service Mesh"
+        ]
       },
       "x-displayname": "NFV Service.",
       "x-ves-proto-service": "ves.io.schema.nfv_service.CustomAPI",
@@ -4458,6 +4808,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4468,6 +4819,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4478,6 +4830,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4488,6 +4841,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4498,6 +4852,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4508,6 +4863,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4518,6 +4874,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4528,6 +4885,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4561,7 +4919,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nfv_service-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nfv_service.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.nfv_service.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "NFV Service.",
       "x-ves-proto-service": "ves.io.schema.nfv_service.API",
@@ -4588,6 +4949,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4598,6 +4960,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4608,6 +4971,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4618,6 +4982,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4628,6 +4993,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4638,6 +5004,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4648,6 +5015,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4658,6 +5026,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4702,7 +5071,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nfv_service-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nfv_service.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.nfv_service.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "NFV Service.",
       "x-ves-proto-service": "ves.io.schema.nfv_service.API",
@@ -4729,6 +5101,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4739,6 +5112,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4749,6 +5123,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4759,6 +5134,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4769,6 +5145,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4779,6 +5156,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4789,6 +5167,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4799,6 +5178,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4861,7 +5241,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nfv_service-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nfv_service.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.nfv_service.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "NFV Service.",
       "x-ves-proto-service": "ves.io.schema.nfv_service.API",
@@ -4888,6 +5271,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4898,6 +5282,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4908,6 +5293,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4918,6 +5304,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4928,6 +5315,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4938,6 +5326,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4948,6 +5337,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4958,6 +5348,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4991,7 +5382,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nfv_service-customdataapi-metrics"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nfv_service.CustomDataAPI.Metrics"
+        "x-ves-proto-rpc": "ves.io.schema.nfv_service.CustomDataAPI.Metrics",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "NFV Service.",
       "x-ves-proto-service": "ves.io.schema.nfv_service.CustomDataAPI",
@@ -5018,6 +5412,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5028,6 +5423,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5038,6 +5434,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5048,6 +5445,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5058,6 +5456,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5068,6 +5467,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5078,6 +5478,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5088,6 +5489,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5142,7 +5544,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nfv_service-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nfv_service.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.nfv_service.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE NFV Service.",
@@ -5162,6 +5567,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5172,6 +5578,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5182,6 +5589,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5192,6 +5600,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5202,6 +5611,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5212,6 +5622,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5222,6 +5633,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5232,6 +5644,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5276,7 +5689,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nfv_service-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nfv_service.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.nfv_service.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "NFV Service.",
       "x-ves-proto-service": "ves.io.schema.nfv_service.API",

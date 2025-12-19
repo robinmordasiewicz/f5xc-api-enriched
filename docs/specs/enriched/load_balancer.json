@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 XC Load Balancer API",
     "description": "F5 Distributed Cloud Load Balancer API specifications",
-    "version": "2025.12.19",
+    "version": "1.0.0",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com"
@@ -30,7 +30,16 @@
       "ApiToken": []
     }
   ],
-  "tags": [],
+  "tags": [
+    {
+      "name": "Load Balancing",
+      "description": "HTTP, TCP, and UDP load balancer configuration"
+    },
+    {
+      "name": "Other",
+      "description": "Miscellaneous operations"
+    }
+  ],
   "paths": {
     "/api/config/namespaces/{metadata.namespace}/forward_proxy_policys": {
       "post": {
@@ -53,6 +62,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -63,6 +73,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -73,6 +84,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -83,6 +95,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -93,6 +106,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -103,6 +117,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -113,6 +128,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -123,6 +139,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -152,7 +169,10 @@
           },
           "required": true
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.forward_proxy_policy.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.views.forward_proxy_policy.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure Forward Proxy Policy.",
       "x-ves-proto-service": "ves.io.schema.views.forward_proxy_policy.API",
@@ -179,6 +199,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -189,6 +210,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -199,6 +221,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -209,6 +232,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -219,6 +243,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -229,6 +254,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -239,6 +265,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -249,6 +276,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -289,7 +317,10 @@
           },
           "required": true
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.forward_proxy_policy.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.views.forward_proxy_policy.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure Forward Proxy Policy.",
       "x-ves-proto-service": "ves.io.schema.views.forward_proxy_policy.API",
@@ -316,6 +347,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -326,6 +358,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -336,6 +369,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -346,6 +380,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -356,6 +391,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -366,6 +402,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -376,6 +413,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -386,6 +424,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -419,7 +458,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-forward_proxy_policy-customdataapi-forwardproxypolicyhits"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.forward_proxy_policy.CustomDataAPI.ForwardProxyPolicyHits"
+        "x-ves-proto-rpc": "ves.io.schema.views.forward_proxy_policy.CustomDataAPI.ForwardProxyPolicyHits",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure Forward Proxy Policy.",
       "x-ves-proto-service": "ves.io.schema.views.forward_proxy_policy.CustomDataAPI",
@@ -446,6 +488,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -456,6 +499,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -466,6 +510,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -476,6 +521,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -486,6 +532,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -496,6 +543,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -506,6 +554,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -516,6 +565,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -574,7 +624,10 @@
             }
           }
         ],
-        "x-ves-proto-rpc": "ves.io.schema.views.forward_proxy_policy.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.views.forward_proxy_policy.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure Forward Proxy Policy.",
       "x-ves-proto-service": "ves.io.schema.views.forward_proxy_policy.API",
@@ -601,6 +654,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -611,6 +665,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -621,6 +676,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -631,6 +687,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -641,6 +698,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -651,6 +709,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -661,6 +720,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -671,6 +731,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -721,7 +782,10 @@
             }
           }
         ],
-        "x-ves-proto-rpc": "ves.io.schema.views.forward_proxy_policy.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.forward_proxy_policy.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE Configure Forward Proxy Policy.",
@@ -741,6 +805,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -751,6 +816,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -761,6 +827,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -771,6 +838,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -781,6 +849,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -791,6 +860,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -801,6 +871,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -811,6 +882,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -851,7 +923,10 @@
           },
           "required": true
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.forward_proxy_policy.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.views.forward_proxy_policy.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure Forward Proxy Policy.",
       "x-ves-proto-service": "ves.io.schema.views.forward_proxy_policy.API",
@@ -878,6 +953,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -888,6 +964,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -898,6 +975,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -908,6 +986,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -918,6 +997,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -928,6 +1008,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -938,6 +1019,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -948,6 +1030,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -981,7 +1064,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure HTTP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.API",
@@ -1008,6 +1094,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1018,6 +1105,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1028,6 +1116,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1038,6 +1127,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1048,6 +1138,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1058,6 +1149,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1068,6 +1160,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1078,6 +1171,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1122,7 +1216,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure HTTP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.API",
@@ -1149,6 +1246,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1159,6 +1257,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1169,6 +1268,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1179,6 +1279,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1189,6 +1290,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1199,6 +1301,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1209,6 +1312,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1219,6 +1323,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1252,7 +1357,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-cdncustomapi-getserviceoperationhttplbcacheenabled"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CDNCustomAPI.GetServiceOperationHTTPLBCacheEnabled"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CDNCustomAPI.GetServiceOperationHTTPLBCacheEnabled",
+        "tags": [
+          "Load Balancing"
+        ]
       },
       "x-displayname": "Configure HTTP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.CDNCustomAPI",
@@ -1279,6 +1387,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1289,6 +1398,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1299,6 +1409,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1309,6 +1420,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1319,6 +1431,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1329,6 +1442,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1339,6 +1453,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1349,6 +1464,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1382,7 +1498,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-cdncustomapi-listserviceoperationshttplbcacheenabled"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CDNCustomAPI.ListServiceOperationsHTTPLBCacheEnabled"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CDNCustomAPI.ListServiceOperationsHTTPLBCacheEnabled",
+        "tags": [
+          "Load Balancing"
+        ]
       },
       "x-displayname": "Configure HTTP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.CDNCustomAPI",
@@ -1409,6 +1528,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1419,6 +1539,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1429,6 +1550,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1439,6 +1561,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1449,6 +1572,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1459,6 +1583,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1469,6 +1594,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1479,6 +1605,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1523,7 +1650,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-cdncustomapi-cdncachepurgehttplbcacheenabled"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CDNCustomAPI.CDNCachePurgeHTTPLBCacheEnabled"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CDNCustomAPI.CDNCachePurgeHTTPLBCacheEnabled",
+        "tags": [
+          "Load Balancing"
+        ]
       },
       "x-displayname": "Configure HTTP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.CDNCustomAPI",
@@ -1550,6 +1680,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1560,6 +1691,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1570,6 +1702,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1580,6 +1713,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1590,6 +1724,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1600,6 +1735,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1610,6 +1746,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1620,6 +1757,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1682,7 +1820,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure HTTP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.API",
@@ -1709,6 +1850,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1719,6 +1861,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1729,6 +1872,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1739,6 +1883,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1749,6 +1894,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1759,6 +1905,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1769,6 +1916,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1779,6 +1927,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1812,7 +1961,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-customapi-getsecurityconfig"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.GetSecurityConfig"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.GetSecurityConfig",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure HTTP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.CustomAPI",
@@ -1839,6 +1991,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1849,6 +2002,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1859,6 +2013,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1869,6 +2024,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1879,6 +2035,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1889,6 +2046,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1899,6 +2057,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1909,6 +2068,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1963,7 +2123,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE Configure HTTP Load Balancer.",
@@ -1983,6 +2146,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1993,6 +2157,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2003,6 +2168,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2013,6 +2179,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2023,6 +2190,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2033,6 +2201,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2043,6 +2212,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2053,6 +2223,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2097,7 +2268,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure HTTP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.API",
@@ -2124,6 +2298,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2134,6 +2309,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2144,6 +2320,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2154,6 +2331,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2164,6 +2342,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2174,6 +2353,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2184,6 +2364,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2194,6 +2375,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2239,7 +2421,10 @@
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-customapi-assignapidefinition"
         },
         "x-ves-deprecated": "instead use virtual host public custom api - AssignAPIDefinition",
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.AssignAPIDefinition"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.AssignAPIDefinition",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure HTTP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.CustomAPI",
@@ -2266,6 +2451,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2276,6 +2462,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2286,6 +2473,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2296,6 +2484,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2306,6 +2495,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2316,6 +2506,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2326,6 +2517,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2336,6 +2528,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2371,7 +2564,10 @@
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-customapi-listavailableapidefinitions"
         },
         "x-ves-deprecated": "instead use public crud api definition - GET List",
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.ListAvailableAPIDefinitions"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.ListAvailableAPIDefinitions",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure HTTP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.CustomAPI",
@@ -2398,6 +2594,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2408,6 +2605,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2418,6 +2616,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2428,6 +2627,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2438,6 +2638,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2448,6 +2649,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2458,6 +2660,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2468,6 +2671,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2513,7 +2717,10 @@
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-apieplbcustomapi-getapiendpointsforgroups"
         },
         "x-ves-deprecated": "Use GetAPIEndpoints in virtual_host.ApiepCustomAPI",
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI.GetAPIEndpointsForGroups"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI.GetAPIEndpointsForGroups",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure HTTP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI",
@@ -2540,6 +2747,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2550,6 +2758,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2560,6 +2769,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2570,6 +2780,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2580,6 +2791,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2590,6 +2802,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2600,6 +2813,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2610,6 +2824,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2644,7 +2859,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-apieplbcustomapi-getswaggerspec"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI.GetSwaggerSpec"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI.GetSwaggerSpec",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure HTTP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI",
@@ -2671,6 +2889,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2681,6 +2900,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2691,6 +2911,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2701,6 +2922,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2711,6 +2933,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2721,6 +2944,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2731,6 +2955,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2741,6 +2966,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2786,7 +3012,10 @@
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-apieplbcustomapi-getapiendpointsschemaupdates"
         },
         "x-ves-deprecated": "USE virtual host custom api GetAPIEndpointsSchemaUpdates",
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI.GetAPIEndpointsSchemaUpdates"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI.GetAPIEndpointsSchemaUpdates",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure HTTP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI",
@@ -2813,6 +3042,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2823,6 +3053,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2833,6 +3064,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2843,6 +3075,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2853,6 +3086,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2863,6 +3097,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2873,6 +3108,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2883,6 +3119,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2928,7 +3165,10 @@
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-apieplbcustomapi-updateapiendpointsschemas"
         },
         "x-ves-deprecated": "USE virtual host custom api UpdateAPIEndpointsSchemas",
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI.UpdateAPIEndpointsSchemas"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI.UpdateAPIEndpointsSchemas",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure HTTP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.ApiepLBCustomAPI",
@@ -2955,6 +3195,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2965,6 +3206,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2975,6 +3217,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2985,6 +3228,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2995,6 +3239,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3005,6 +3250,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3015,6 +3261,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3025,6 +3272,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3059,7 +3307,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-customapi-getdosautomitigationrules"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.GetDoSAutoMitigationRules"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.GetDoSAutoMitigationRules",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure HTTP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.CustomAPI",
@@ -3086,6 +3337,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3096,6 +3348,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3106,6 +3359,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3116,6 +3370,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3126,6 +3381,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3136,6 +3392,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3146,6 +3403,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3156,6 +3414,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3201,7 +3460,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-customapi-deletedosautomitigationrule"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.DeleteDoSAutoMitigationRule"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.DeleteDoSAutoMitigationRule",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure HTTP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.CustomAPI",
@@ -3228,6 +3490,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3238,6 +3501,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3248,6 +3512,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3258,6 +3523,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3268,6 +3534,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3278,6 +3545,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3288,6 +3556,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3298,6 +3567,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3332,7 +3602,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-customapi-getdnsinfo"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.GetDnsInfo"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.GetDnsInfo",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure HTTP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.CustomAPI",
@@ -3359,6 +3632,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3369,6 +3643,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3379,6 +3654,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3389,6 +3665,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3399,6 +3676,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3409,6 +3687,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3419,6 +3698,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3429,6 +3709,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3473,7 +3754,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-http_loadbalancer-customapi-setl7ddosrpsthreshold"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.SetL7DDoSRPSThreshold"
+        "x-ves-proto-rpc": "ves.io.schema.views.http_loadbalancer.CustomAPI.SetL7DDoSRPSThreshold",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure HTTP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.http_loadbalancer.CustomAPI",
@@ -3500,6 +3784,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3510,6 +3795,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3520,6 +3806,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3530,6 +3817,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3540,6 +3828,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3550,6 +3839,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3560,6 +3850,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3570,6 +3861,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3603,7 +3895,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-tcp_loadbalancer-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.tcp_loadbalancer.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.views.tcp_loadbalancer.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure TCP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.tcp_loadbalancer.API",
@@ -3630,6 +3925,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3640,6 +3936,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3650,6 +3947,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3660,6 +3958,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3670,6 +3969,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3680,6 +3980,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3690,6 +3991,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3700,6 +4002,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3744,7 +4047,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-tcp_loadbalancer-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.tcp_loadbalancer.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.views.tcp_loadbalancer.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure TCP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.tcp_loadbalancer.API",
@@ -3771,6 +4077,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3781,6 +4088,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3791,6 +4099,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3801,6 +4110,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3811,6 +4121,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3821,6 +4132,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3831,6 +4143,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3841,6 +4154,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3903,7 +4217,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-tcp_loadbalancer-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.tcp_loadbalancer.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.views.tcp_loadbalancer.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure TCP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.tcp_loadbalancer.API",
@@ -3930,6 +4247,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3940,6 +4258,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3950,6 +4269,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3960,6 +4280,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3970,6 +4291,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3980,6 +4302,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -3990,6 +4313,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4000,6 +4324,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4054,7 +4379,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-tcp_loadbalancer-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.tcp_loadbalancer.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.tcp_loadbalancer.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE Configure TCP Load Balancer.",
@@ -4074,6 +4402,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4084,6 +4413,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4094,6 +4424,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4104,6 +4435,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4114,6 +4446,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4124,6 +4457,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4134,6 +4468,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4144,6 +4479,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4188,7 +4524,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-tcp_loadbalancer-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.tcp_loadbalancer.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.views.tcp_loadbalancer.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure TCP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.tcp_loadbalancer.API",
@@ -4215,6 +4554,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4225,6 +4565,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4235,6 +4576,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4245,6 +4587,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4255,6 +4598,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4265,6 +4609,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4275,6 +4620,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4285,6 +4631,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4319,7 +4666,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-tcp_loadbalancer-customapi-getdnsinfo"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.tcp_loadbalancer.CustomAPI.GetDnsInfo"
+        "x-ves-proto-rpc": "ves.io.schema.views.tcp_loadbalancer.CustomAPI.GetDnsInfo",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure TCP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.tcp_loadbalancer.CustomAPI",
@@ -4346,6 +4696,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4356,6 +4707,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4366,6 +4718,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4376,6 +4729,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4386,6 +4740,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4396,6 +4751,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4406,6 +4762,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4416,6 +4773,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4449,7 +4807,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-udp_loadbalancer-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.udp_loadbalancer.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.views.udp_loadbalancer.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure UDP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.udp_loadbalancer.API",
@@ -4476,6 +4837,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4486,6 +4848,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4496,6 +4859,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4506,6 +4870,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4516,6 +4881,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4526,6 +4892,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4536,6 +4903,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4546,6 +4914,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4590,7 +4959,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-udp_loadbalancer-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.udp_loadbalancer.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.views.udp_loadbalancer.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure UDP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.udp_loadbalancer.API",
@@ -4617,6 +4989,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4627,6 +5000,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4637,6 +5011,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4647,6 +5022,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4657,6 +5033,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4667,6 +5044,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4677,6 +5055,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4687,6 +5066,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4749,7 +5129,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-udp_loadbalancer-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.udp_loadbalancer.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.views.udp_loadbalancer.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure UDP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.udp_loadbalancer.API",
@@ -4776,6 +5159,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4786,6 +5170,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4796,6 +5181,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4806,6 +5192,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4816,6 +5203,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4826,6 +5214,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4836,6 +5225,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4846,6 +5236,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4900,7 +5291,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-udp_loadbalancer-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.udp_loadbalancer.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.udp_loadbalancer.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE Configure UDP Load Balancer.",
@@ -4920,6 +5314,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4930,6 +5325,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4940,6 +5336,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4950,6 +5347,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4960,6 +5358,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4970,6 +5369,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4980,6 +5380,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -4990,6 +5391,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5034,7 +5436,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-udp_loadbalancer-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.udp_loadbalancer.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.views.udp_loadbalancer.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure UDP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.udp_loadbalancer.API",
@@ -5061,6 +5466,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5071,6 +5477,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5081,6 +5488,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5091,6 +5499,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5101,6 +5510,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5111,6 +5521,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5121,6 +5532,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5131,6 +5543,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5165,7 +5578,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-udp_loadbalancer-customapi-getdnsinfo"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.udp_loadbalancer.CustomAPI.GetDnsInfo"
+        "x-ves-proto-rpc": "ves.io.schema.views.udp_loadbalancer.CustomAPI.GetDnsInfo",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Configure UDP Load Balancer.",
       "x-ves-proto-service": "ves.io.schema.views.udp_loadbalancer.CustomAPI",
@@ -5192,6 +5608,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5202,6 +5619,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5212,6 +5630,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5222,6 +5641,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5232,6 +5652,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5242,6 +5663,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5252,6 +5674,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5262,6 +5685,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5295,7 +5719,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-healthcheck-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.healthcheck.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.healthcheck.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Health Check.",
       "x-ves-proto-service": "ves.io.schema.healthcheck.API",
@@ -5322,6 +5749,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5332,6 +5760,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5342,6 +5771,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5352,6 +5782,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5362,6 +5793,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5372,6 +5804,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5382,6 +5815,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5392,6 +5826,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5436,7 +5871,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-healthcheck-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.healthcheck.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.healthcheck.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Health Check.",
       "x-ves-proto-service": "ves.io.schema.healthcheck.API",
@@ -5463,6 +5901,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5473,6 +5912,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5483,6 +5923,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5493,6 +5934,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5503,6 +5945,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5513,6 +5956,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5523,6 +5967,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5533,6 +5978,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5595,7 +6041,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-healthcheck-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.healthcheck.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.healthcheck.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Health Check.",
       "x-ves-proto-service": "ves.io.schema.healthcheck.API",
@@ -5622,6 +6071,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5632,6 +6082,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5642,6 +6093,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5652,6 +6104,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5662,6 +6115,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5672,6 +6126,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5682,6 +6137,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5692,6 +6148,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5746,7 +6203,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-healthcheck-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.healthcheck.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.healthcheck.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE Health Check.",
@@ -5766,6 +6226,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5776,6 +6237,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5786,6 +6248,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5796,6 +6259,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5806,6 +6270,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5816,6 +6281,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5826,6 +6292,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5836,6 +6303,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5880,7 +6348,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-healthcheck-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.healthcheck.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.healthcheck.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Health Check.",
       "x-ves-proto-service": "ves.io.schema.healthcheck.API",
@@ -5907,6 +6378,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5917,6 +6389,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5927,6 +6400,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5937,6 +6411,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5947,6 +6422,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5957,6 +6433,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5967,6 +6444,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -5977,6 +6455,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6010,7 +6489,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-origin_pool-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.origin_pool.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.views.origin_pool.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Origin Pool.",
       "x-ves-proto-service": "ves.io.schema.views.origin_pool.API",
@@ -6037,6 +6519,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6047,6 +6530,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6057,6 +6541,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6067,6 +6552,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6077,6 +6563,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6087,6 +6574,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6097,6 +6585,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6107,6 +6596,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6151,7 +6641,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-origin_pool-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.origin_pool.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.views.origin_pool.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Origin Pool.",
       "x-ves-proto-service": "ves.io.schema.views.origin_pool.API",
@@ -6178,6 +6671,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6188,6 +6682,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6198,6 +6693,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6208,6 +6704,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6218,6 +6715,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6228,6 +6726,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6238,6 +6737,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6248,6 +6748,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6310,7 +6811,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-origin_pool-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.origin_pool.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.views.origin_pool.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Origin Pool.",
       "x-ves-proto-service": "ves.io.schema.views.origin_pool.API",
@@ -6337,6 +6841,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6347,6 +6852,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6357,6 +6863,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6367,6 +6874,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6377,6 +6885,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6387,6 +6896,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6397,6 +6907,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6407,6 +6918,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6460,7 +6972,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-origin_pool-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.origin_pool.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.origin_pool.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE Origin Pool.",
@@ -6480,6 +6995,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6490,6 +7006,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6500,6 +7017,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6510,6 +7028,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6520,6 +7039,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6530,6 +7050,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6540,6 +7061,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6550,6 +7072,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6594,7 +7117,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-origin_pool-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.origin_pool.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.views.origin_pool.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Origin Pool.",
       "x-ves-proto-service": "ves.io.schema.views.origin_pool.API",
@@ -6621,6 +7147,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6631,6 +7158,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6641,6 +7169,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6651,6 +7180,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6661,6 +7191,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6671,6 +7202,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6681,6 +7213,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6691,6 +7224,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6724,7 +7258,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-proxy-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.proxy.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.views.proxy.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Proxy",
       "x-ves-proto-service": "ves.io.schema.views.proxy.API",
@@ -6751,6 +7288,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6761,6 +7299,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6771,6 +7310,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6781,6 +7321,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6791,6 +7332,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6801,6 +7343,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6811,6 +7354,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6821,6 +7365,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6865,7 +7410,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-proxy-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.proxy.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.views.proxy.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Proxy",
       "x-ves-proto-service": "ves.io.schema.views.proxy.API",
@@ -6892,6 +7440,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6902,6 +7451,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6912,6 +7462,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6922,6 +7473,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6932,6 +7484,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6942,6 +7495,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6952,6 +7506,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -6962,6 +7517,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7024,7 +7580,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-proxy-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.proxy.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.views.proxy.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Proxy",
       "x-ves-proto-service": "ves.io.schema.views.proxy.API",
@@ -7051,6 +7610,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7061,6 +7621,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7071,6 +7632,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7081,6 +7643,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7091,6 +7654,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7101,6 +7665,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7111,6 +7676,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7121,6 +7687,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7175,7 +7742,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-proxy-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.proxy.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.proxy.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE Proxy.",
@@ -7195,6 +7765,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7205,6 +7776,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7215,6 +7787,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7225,6 +7798,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7235,6 +7809,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7245,6 +7820,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7255,6 +7831,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7265,6 +7842,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7309,7 +7887,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-proxy-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.proxy.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.views.proxy.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Proxy",
       "x-ves-proto-service": "ves.io.schema.views.proxy.API",
@@ -7336,6 +7917,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7346,6 +7928,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7356,6 +7939,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7366,6 +7950,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7376,6 +7961,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7386,6 +7972,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7396,6 +7983,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7406,6 +7994,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -7440,7 +8029,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-proxy-customapi-getproxyservercacert"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.proxy.CustomAPI.GetProxyServerCACert"
+        "x-ves-proto-rpc": "ves.io.schema.views.proxy.CustomAPI.GetProxyServerCACert",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "Proxy",
       "x-ves-proto-service": "ves.io.schema.views.proxy.CustomAPI",

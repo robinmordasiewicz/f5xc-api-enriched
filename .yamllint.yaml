@@ -1,0 +1,112 @@
+# Yamllint configuration
+# Strict mode for YAML file validation
+# Excludes specs/original/ which is read-only from F5
+
+extends: default
+
+# Ignore patterns
+ignore: |
+  specs/original/
+  .venv/
+  node_modules/
+
+rules:
+  # Line length - allow longer lines for URLs and complex values
+  line-length:
+    max: 120
+    level: warning
+    allow-non-breakable-words: true
+    allow-non-breakable-inline-mappings: true
+
+  # Indentation - strict 2-space indentation
+  indentation:
+    spaces: 2
+    indent-sequences: true
+    check-multi-line-strings: false
+
+  # Braces - no spaces inside braces
+  braces:
+    min-spaces-inside: 0
+    max-spaces-inside: 0
+    min-spaces-inside-empty: 0
+    max-spaces-inside-empty: 0
+
+  # Brackets - no spaces inside brackets
+  brackets:
+    min-spaces-inside: 0
+    max-spaces-inside: 0
+    min-spaces-inside-empty: 0
+    max-spaces-inside-empty: 0
+
+  # Colons - space after, no space before
+  colons:
+    max-spaces-before: 0
+    max-spaces-after: 1
+
+  # Commas - space after, no space before
+  commas:
+    max-spaces-before: 0
+    min-spaces-after: 1
+    max-spaces-after: 1
+
+  # Comments - require space after #
+  comments:
+    require-starting-space: true
+    ignore-shebangs: true
+    min-spaces-from-content: 1
+
+  # Comments indentation
+  comments-indentation: enable
+
+  # Document markers (---, ...)
+  document-end: disable
+  document-start: disable
+
+  # Empty lines
+  empty-lines:
+    max: 2
+    max-start: 0
+    max-end: 0
+
+  # Empty values
+  empty-values:
+    forbid-in-block-mappings: false
+    forbid-in-flow-mappings: false
+
+  # Hyphens - single space after
+  hyphens:
+    max-spaces-after: 1
+
+  # Key duplicates - strict
+  key-duplicates: enable
+
+  # Key ordering - disabled (not required)
+  key-ordering: disable
+
+  # New line at end of file
+  new-line-at-end-of-file: enable
+
+  # New lines - Unix style
+  new-lines:
+    type: unix
+
+  # Octal values
+  octal-values:
+    forbid-implicit-octal: true
+    forbid-explicit-octal: false
+
+  # Quoted strings - allow any quoting style
+  quoted-strings:
+    quote-type: any
+    required: false
+    extra-required: []
+    extra-allowed: []
+    allow-quoted-quotes: true
+
+  # Trailing spaces
+  trailing-spaces: enable
+
+  # Truthy values - strict boolean naming
+  truthy:
+    allowed-values: ['true', 'false', 'yes', 'no', 'on', 'off']
+    check-keys: false

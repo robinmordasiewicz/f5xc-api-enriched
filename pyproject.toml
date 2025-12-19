@@ -21,6 +21,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 
 dependencies = [
@@ -36,12 +37,14 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=7.4.0",
-    "pytest-cov>=4.1.0",
-    "pytest-asyncio>=0.21.0",
-    "black>=23.0.0",
-    "ruff>=0.1.0",
-    "mypy>=1.7.0",
+    "pytest>=9.0.0",
+    "pytest-cov>=7.0.0",
+    "pytest-asyncio>=1.0.0",
+    "ruff>=0.14.0",
+    "mypy>=1.14.0",
+    "pre-commit>=4.0.0",
+    "types-requests",
+    "types-PyYAML",
 ]
 
 [project.scripts]
@@ -54,23 +57,306 @@ f5xc-merge = "scripts.merge_specs:main"
 where = ["."]
 include = ["scripts*", "config*"]
 
-[tool.black]
-line-length = 100
-target-version = ['py310', 'py311', 'py312']
+# =============================================================================
+# RUFF - Comprehensive Python Linting and Formatting
+# Replaces: Black, Flake8, isort, pyupgrade, bandit, and many plugins
+# =============================================================================
 
 [tool.ruff]
 line-length = 100
 target-version = "py310"
-select = ["E", "F", "W", "I", "UP", "B", "C4", "SIM"]
-ignore = ["E501"]
+# Respect .gitignore and exclude patterns
+respect-gitignore = true
+exclude = [
+    ".git",
+    ".venv",
+    "__pycache__",
+    "*.egg-info",
+    "build",
+    "dist",
+    "specs/original",  # READ-ONLY source files
+]
+
+[tool.ruff.format]
+# Use double quotes for strings (consistent with Black)
+quote-style = "double"
+# Indent with spaces
+indent-style = "space"
+# Respect magic trailing commas
+skip-magic-trailing-comma = false
+# Auto-detect line ending
+line-ending = "auto"
+# Format docstrings
+docstring-code-format = true
+
+[tool.ruff.lint]
+# Comprehensive rule selection for security, quality, and best practices
+select = [
+    # ==========================================================================
+    # CORE RULES
+    # ==========================================================================
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # Pyflakes (undefined names, unused imports, etc.)
+    "I",      # isort (import sorting)
+    "UP",     # pyupgrade (modernize Python syntax)
+
+    # ==========================================================================
+    # CODE QUALITY & BEST PRACTICES
+    # ==========================================================================
+    "B",      # flake8-bugbear (common bugs and design problems)
+    "C4",     # flake8-comprehensions (better list/dict/set comprehensions)
+    "SIM",    # flake8-simplify (simplify code)
+    "RUF",    # Ruff-specific rules
+    "PERF",   # Perflint (performance anti-patterns)
+    "FURB",   # refurb (modernize code)
+
+    # ==========================================================================
+    # SECURITY
+    # ==========================================================================
+    "S",      # flake8-bandit (security issues)
+
+    # ==========================================================================
+    # ERROR HANDLING
+    # ==========================================================================
+    "TRY",    # tryceratops (exception handling best practices)
+    "RSE",    # flake8-raise (raise statement improvements)
+    "EM",     # flake8-errmsg (error message formatting)
+
+    # ==========================================================================
+    # CODE STYLE
+    # ==========================================================================
+    "N",      # pep8-naming (naming conventions)
+    "A",      # flake8-builtins (don't shadow builtins)
+    "Q",      # flake8-quotes (quote consistency)
+    "COM",    # flake8-commas (trailing commas)
+
+    # ==========================================================================
+    # FUNCTION & RETURN PATTERNS
+    # ==========================================================================
+    "RET",    # flake8-return (return statement consistency)
+    "ARG",    # flake8-unused-arguments (unused function arguments)
+    "PTH",    # flake8-use-pathlib (use pathlib instead of os.path)
+
+    # ==========================================================================
+    # LOGGING & DEBUGGING
+    # ==========================================================================
+    "T20",    # flake8-print (no print statements in production)
+    "LOG",    # flake8-logging (logging best practices)
+    "G",      # flake8-logging-format (logging format strings)
+
+    # ==========================================================================
+    # TYPE CHECKING
+    # ==========================================================================
+    "TCH",    # flake8-type-checking (type checking imports)
+    "ANN",    # flake8-annotations (type annotation presence)
+
+    # ==========================================================================
+    # TESTING
+    # ==========================================================================
+    "PT",     # flake8-pytest-style (pytest best practices)
+
+    # ==========================================================================
+    # DOCUMENTATION
+    # ==========================================================================
+    "D",      # pydocstyle (docstring conventions)
+
+    # ==========================================================================
+    # DEAD CODE & CLEANUP
+    # ==========================================================================
+    "ERA",    # eradicate (commented-out code detection)
+
+    # ==========================================================================
+    # PYLINT SUBSET
+    # ==========================================================================
+    "PLC",    # Pylint conventions
+    "PLE",    # Pylint errors
+    "PLR",    # Pylint refactor suggestions
+    "PLW",    # Pylint warnings
+
+    # ==========================================================================
+    # ADDITIONAL CHECKS
+    # ==========================================================================
+    "PIE",    # flake8-pie (misc lints)
+    "ISC",    # flake8-implicit-str-concat (implicit string concatenation)
+    "ICN",    # flake8-import-conventions (import alias conventions)
+    "PGH",    # pygrep-hooks (misc grep-based checks)
+    "FLY",    # flynt (f-string conversion)
+    "SLF",    # flake8-self (private member access)
+    "SLOT",   # flake8-slots (__slots__ usage)
+    "TD",     # flake8-todos (TODO comment format)
+    "FIX",    # flake8-fixme (FIXME comment detection)
+    "YTT",    # flake8-2020 (sys.version checks)
+    "DTZ",    # flake8-datetimez (datetime timezone awareness)
+    "EXE",    # flake8-executable (shebang checks)
+    "FA",     # flake8-future-annotations (future annotations)
+    "INT",    # flake8-gettext (i18n)
+    "INP",    # flake8-no-pep420 (implicit namespace packages)
+]
+
+ignore = [
+    # Line length handled by formatter
+    "E501",
+
+    # Allow non-abstract empty methods in abstract base classes
+    "B027",
+
+    # Docstring rules - too strict for this project
+    "D100",   # Missing docstring in public module
+    "D104",   # Missing docstring in public package
+    "D203",   # 1 blank line required before class docstring (conflicts with D211)
+    "D213",   # Multi-line docstring summary should start at the second line (conflicts with D212)
+
+    # Type annotation rules - gradual adoption
+    "ANN101", # Missing type annotation for self
+    "ANN102", # Missing type annotation for cls
+    "ANN401", # Dynamically typed expressions (Any) are disallowed
+
+    # Allow print in CLI applications (we use rich.console)
+    "T201",   # print found
+
+    # Too strict for this codebase
+    "PLR0913", # Too many arguments to function call
+    "PLR2004", # Magic value used in comparison
+    "PLR0912", # Too many branches
+    "PLR0915", # Too many statements
+
+    # TODO/FIXME comments are allowed during development
+    "TD002",  # Missing author in TODO
+    "TD003",  # Missing issue link in TODO
+    "FIX002", # Line contains TODO
+
+    # Allow relative imports within package
+    "TID252",
+
+    # Security - these need case-by-case review
+    "S101",   # Use of assert (allowed in tests)
+    "S311",   # Standard pseudo-random generators (not for crypto)
+    "S603",   # subprocess call - check for untrusted input
+    "S607",   # Starting a process with a partial executable path
+
+    # Error messages - sometimes inline is clearer
+    "EM101",  # Exception must not use a string literal
+    "EM102",  # Exception must not use f-string literal
+
+    # Try/except - allow broad exception handling in specific cases
+    "TRY003", # Avoid specifying long messages outside exception class
+    "TRY300", # Consider moving statement into else block
+]
+
+# Per-file rule ignores
+[tool.ruff.lint.per-file-ignores]
+# Tests can use assert, magic values, and don't need docstrings
+"tests/**/*.py" = [
+    "S101",    # assert allowed in tests
+    "PLR2004", # Magic values allowed in tests
+    "D",       # Docstrings not required in tests
+    "ANN",     # Type annotations not required in tests
+    "ARG",     # Unused arguments allowed in fixtures
+]
+
+# __init__.py files can have unused imports (re-exports)
+"**/__init__.py" = [
+    "F401",    # Unused imports (used for re-exports)
+    "D104",    # Missing docstring in public package
+]
+
+# Scripts can use print and have simpler error handling
+"scripts/**/*.py" = [
+    "T201",    # print allowed in CLI scripts (though we use rich)
+    "INP001",  # Implicit namespace package (scripts is not a package)
+]
+
+# Config files
+"config/**/*.py" = [
+    "INP001",  # Implicit namespace package
+]
+
+[tool.ruff.lint.isort]
+# isort configuration
+known-first-party = ["scripts"]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.ruff.lint.pydocstyle]
+# Use Google-style docstrings
+convention = "google"
+
+[tool.ruff.lint.pylint]
+# Maximum number of arguments for functions
+max-args = 10
+# Maximum number of return statements
+max-returns = 8
+# Maximum number of branches
+max-branches = 15
+
+[tool.ruff.lint.flake8-quotes]
+# Prefer double quotes
+inline-quotes = "double"
+
+[tool.ruff.lint.mccabe]
+# Maximum cyclomatic complexity
+max-complexity = 15
+
+# =============================================================================
+# PYTEST
+# =============================================================================
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
-addopts = "-v --cov=scripts --cov-report=term-missing"
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --cov=scripts --cov-report=term-missing --cov-report=html"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
+# =============================================================================
+# MYPY - Static Type Checking
+# =============================================================================
 
 [tool.mypy]
 python_version = "3.10"
-warn_return_any = true
+# Relaxed for JSON/dictionary-heavy codebase (OpenAPI specs)
+warn_return_any = false
 warn_unused_configs = true
 ignore_missing_imports = true
+strict_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+show_error_codes = true
+# Gradually enable stricter checks
+disallow_untyped_defs = false
+check_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "scripts.*"
+# OpenAPI spec processing uses dict[str, Any] extensively
+warn_return_any = false
+
+# =============================================================================
+# COVERAGE
+# =============================================================================
+
+[tool.coverage.run]
+source = ["scripts"]
+branch = true
+omit = [
+    "scripts/__init__.py",
+    "scripts/utils/__init__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.:",
+]

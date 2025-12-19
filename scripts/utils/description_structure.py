@@ -21,7 +21,7 @@ class DescriptionStructureTransformer:
     Normalizes leading whitespace artifacts.
     """
 
-    def __init__(self, config_path: Path | None = None):
+    def __init__(self, config_path: Path | None = None) -> None:
         """Initialize with configuration from file.
 
         Args:
@@ -48,15 +48,15 @@ class DescriptionStructureTransformer:
             # Example: `"value"` or Example: ` "value"`
             re.compile(r'\n*Example:\s*`\s*"([^"]+)"\s*`\n*', re.IGNORECASE),
             # Example: `value` (without quotes)
-            re.compile(r'\n*Example:\s*`([^`]+)`\n*', re.IGNORECASE),
+            re.compile(r"\n*Example:\s*`([^`]+)`\n*", re.IGNORECASE),
             # x-example: "value" embedded in description
             re.compile(r'\n*x-example:\s*"([^"]+)"\n*', re.IGNORECASE),
         ]
 
         # Validation rules pattern - matches multi-line validation sections
         self._validation_pattern = re.compile(
-            r'\n*Validation Rules:\n((?:\s+[^\n]+\n?)+)',
-            re.IGNORECASE
+            r"\n*Validation Rules:\n((?:\s+[^\n]+\n?)+)",
+            re.IGNORECASE,
         )
 
     def _load_config(self, config_path: Path) -> None:
@@ -64,7 +64,7 @@ class DescriptionStructureTransformer:
         if not config_path.exists():
             return
 
-        with open(config_path) as f:
+        with config_path.open() as f:
             config = yaml.safe_load(f) or {}
 
         desc_config = config.get("description_structure", {})
@@ -123,18 +123,17 @@ class DescriptionStructureTransformer:
                         existing_example = obj.get("x-ves-example")
 
                         # Transform the description (extract metadata)
-                        new_value, extracted_example, extracted_validation, extracted_required = self._transform_description(
-                            value, existing_example
+                        new_value, extracted_example, extracted_validation, extracted_required = (
+                            self._transform_description(value, existing_example)
                         )
                         result[key] = new_value
-                    else:
+                    elif self._normalize_leading_spaces:
                         # Just normalize whitespace for non-description fields
-                        if self._normalize_leading_spaces:
-                            result[key] = self._cleanup_whitespace(
-                                self._normalize_leading_whitespace(value)
-                            )
-                        else:
-                            result[key] = value
+                        result[key] = self._cleanup_whitespace(
+                            self._normalize_leading_whitespace(value),
+                        )
+                    else:
+                        result[key] = value
                 else:
                     result[key] = self._transform_recursive(value, target_fields)
 
@@ -149,13 +148,9 @@ class DescriptionStructureTransformer:
                 result["x-required"] = True
 
             return result
-        elif isinstance(obj, list):
-            return [
-                self._transform_recursive(item, target_fields)
-                for item in obj
-            ]
-        else:
-            return obj
+        if isinstance(obj, list):
+            return [self._transform_recursive(item, target_fields) for item in obj]
+        return obj
 
     def _transform_description(
         self,
@@ -200,23 +195,23 @@ class DescriptionStructureTransformer:
 
     def _normalize_leading_whitespace(self, text: str) -> str:
         """Strip leading spaces while preserving bullet point indentation."""
-        lines = text.split('\n')
+        lines = text.split("\n")
         normalized = []
 
         for line in lines:
             if not line.strip():
                 # Preserve empty lines for paragraph breaks
-                normalized.append('')
-            elif self._preserve_bullet_indentation and re.match(r'^\s+[*\-]', line):
+                normalized.append("")
+            elif self._preserve_bullet_indentation and re.match(r"^\s+[*\-]", line):
                 # Preserve indentation for bullets, but normalize to standard
                 stripped = line.lstrip()
                 indent_depth = (len(line) - len(stripped)) // 2
-                normalized.append('  ' * indent_depth + stripped.rstrip())
+                normalized.append("  " * indent_depth + stripped.rstrip())
             else:
                 # Strip all leading/trailing whitespace from regular lines
                 normalized.append(line.strip())
 
-        return '\n'.join(normalized)
+        return "\n".join(normalized)
 
     def _extract_example_section(
         self,
@@ -236,7 +231,7 @@ class DescriptionStructureTransformer:
 
                 # Remove the Example: section if configured
                 if self._remove_extracted_examples:
-                    result = pattern.sub('\n', result)
+                    result = pattern.sub("\n", result)
 
         return result.strip(), extracted_value
 
@@ -253,17 +248,17 @@ class DescriptionStructureTransformer:
         rules_text = match.group(1)
         rules = {}
 
-        for line in rules_text.strip().split('\n'):
-            line = line.strip()
+        for raw_line in rules_text.strip().split("\n"):
+            line = raw_line.strip()
             if not line:
                 continue
 
             # Handle various rule formats
             # Format: ves.io.schema.rules.uint32.lte: 600000
             # Format: F5 XC.schema.rules.string.max_len: 64
-            if ':' in line:
+            if ":" in line:
                 # Split on first colon only
-                parts = line.split(':', 1)
+                parts = line.split(":", 1)
                 if len(parts) == 2:
                     key = parts[0].strip()
                     value = parts[1].strip()
@@ -272,7 +267,7 @@ class DescriptionStructureTransformer:
 
         # Remove the Validation Rules: section if configured
         if self._remove_extracted_validation and rules:
-            result = self._validation_pattern.sub('\n', description)
+            result = self._validation_pattern.sub("\n", description)
         else:
             result = description
 
@@ -292,10 +287,10 @@ class DescriptionStructureTransformer:
         """
         # Patterns for required markers at the start of descriptions
         patterns = [
-            r'^X-required\s*\n*',      # X-required at start
-            r'^x-required\s*\n*',      # lowercase variant
-            r'^Required:\s*\n*',       # Required: prefix
-            r'^X-Required\s*\n*',      # Mixed case variant
+            r"^X-required\s*\n*",  # X-required at start
+            r"^x-required\s*\n*",  # lowercase variant
+            r"^Required:\s*\n*",  # Required: prefix
+            r"^X-Required\s*\n*",  # Mixed case variant
         ]
 
         is_required = False
@@ -305,7 +300,7 @@ class DescriptionStructureTransformer:
             if re.match(pattern, result, flags=re.IGNORECASE):
                 is_required = True
                 if self._remove_extracted_required:
-                    result = re.sub(pattern, '', result, count=1, flags=re.IGNORECASE)
+                    result = re.sub(pattern, "", result, count=1, flags=re.IGNORECASE)
                 break
 
         return result.strip(), is_required
@@ -313,15 +308,13 @@ class DescriptionStructureTransformer:
     def _cleanup_whitespace(self, text: str) -> str:
         """Final cleanup of whitespace in description."""
         # Remove excessive blank lines (more than 2 newlines in a row)
-        result = re.sub(r'\n{3,}', '\n\n', text)
+        result = re.sub(r"\n{3,}", "\n\n", text)
 
         # Remove leading/trailing whitespace
         result = result.strip()
 
         # Ensure proper spacing after sentences (but don't double-space)
-        result = re.sub(r'\.  +', '. ', result)
-
-        return result
+        return re.sub(r"\.  +", ". ", result)
 
     def get_stats(self) -> dict[str, Any]:
         """Return configuration statistics."""

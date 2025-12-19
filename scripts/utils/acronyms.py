@@ -15,7 +15,7 @@ class AcronymNormalizer:
     Loads rules from config/acronyms.yaml.
     """
 
-    def __init__(self, config_path: Path | None = None):
+    def __init__(self, config_path: Path | None = None) -> None:
         """Initialize with acronym mappings from config file.
 
         Args:
@@ -36,7 +36,7 @@ class AcronymNormalizer:
         if not config_path.exists():
             return
 
-        with open(config_path) as f:
+        with config_path.open() as f:
             config = yaml.safe_load(f) or {}
 
         self.acronyms = config.get("acronyms", {})
@@ -46,10 +46,7 @@ class AcronymNormalizer:
         """Pre-compile regex patterns for efficient matching."""
         for lowercase_form, normalized_form in self.acronyms.items():
             # Match word boundaries, case-insensitive
-            pattern = re.compile(
-                rf"\b{re.escape(lowercase_form)}\b",
-                re.IGNORECASE
-            )
+            pattern = re.compile(rf"\b{re.escape(lowercase_form)}\b", re.IGNORECASE)
             self._compiled_patterns.append((pattern, normalized_form))
 
         # Sort by length (longest first) to handle overlapping patterns
@@ -70,18 +67,23 @@ class AcronymNormalizer:
         result = text
 
         for pattern, replacement in self._compiled_patterns:
-            def replace_match(match: re.Match) -> str:
+
+            def replace_match(match: re.Match, repl: str = replacement) -> str:
                 matched_word = match.group(0)
                 # Skip if this word is in exceptions list
                 if matched_word.lower() in self.exceptions:
                     return matched_word
-                return replacement
+                return repl
 
             result = pattern.sub(replace_match, result)
 
         return result
 
-    def normalize_spec(self, spec: dict[str, Any], target_fields: list[str] | None = None) -> dict[str, Any]:
+    def normalize_spec(
+        self,
+        spec: dict[str, Any],
+        target_fields: list[str] | None = None,
+    ) -> dict[str, Any]:
         """Recursively normalize acronyms in an OpenAPI specification.
 
         Args:
@@ -106,10 +108,9 @@ class AcronymNormalizer:
                 else:
                     result[key] = self._normalize_recursive(value, target_fields)
             return result
-        elif isinstance(obj, list):
+        if isinstance(obj, list):
             return [self._normalize_recursive(item, target_fields) for item in obj]
-        else:
-            return obj
+        return obj
 
     def get_stats(self) -> dict[str, int]:
         """Return statistics about loaded acronym rules."""

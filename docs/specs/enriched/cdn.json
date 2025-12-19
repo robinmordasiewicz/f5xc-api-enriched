@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 XC Cdn API",
     "description": "F5 Distributed Cloud Cdn API specifications",
-    "version": "2025.12.19",
+    "version": "1.0.0",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com"
@@ -30,7 +30,16 @@
       "ApiToken": []
     }
   ],
-  "tags": [],
+  "tags": [
+    {
+      "name": "CDN",
+      "description": "Content delivery network and caching operations"
+    },
+    {
+      "name": "Other",
+      "description": "Miscellaneous operations"
+    }
+  ],
   "paths": {
     "/api/cdn/namespaces/system/lilac-cdn/addon/subscribe": {
       "post": {
@@ -53,6 +62,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -63,6 +73,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -73,6 +84,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -83,6 +95,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -93,6 +106,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -103,6 +117,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -113,6 +128,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -123,6 +139,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -143,7 +160,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-customapi-subscribe"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.Subscribe"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.Subscribe",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "CDN Loadbalancer.",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.CustomAPI",
@@ -170,6 +190,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -180,6 +201,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -190,6 +212,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -200,6 +223,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -210,6 +234,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -220,6 +245,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -230,6 +256,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -240,6 +267,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -260,7 +288,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-customapi-unsubscribe"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.Unsubscribe"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.Unsubscribe",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "CDN Loadbalancer.",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.CustomAPI",
@@ -287,6 +318,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -297,6 +329,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -307,6 +340,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -317,6 +351,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -327,6 +362,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -337,6 +373,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -347,6 +384,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -357,6 +395,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -390,7 +429,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "CDN Loadbalancer.",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.API",
@@ -417,6 +459,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -427,6 +470,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -437,6 +481,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -447,6 +492,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -457,6 +503,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -467,6 +514,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -477,6 +525,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -487,6 +536,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -531,7 +581,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "CDN Loadbalancer.",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.API",
@@ -558,6 +611,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -568,6 +622,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -578,6 +633,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -588,6 +644,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -598,6 +655,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -608,6 +666,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -618,6 +677,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -628,6 +688,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -661,7 +722,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-customapi-cdnaccesslogs"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.CDNAccessLogs"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.CDNAccessLogs",
+        "tags": [
+          "CDN"
+        ]
       },
       "x-displayname": "CDN Loadbalancer.",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.CustomAPI",
@@ -688,6 +752,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -698,6 +763,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -708,6 +774,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -718,6 +785,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -728,6 +796,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -738,6 +807,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -748,6 +818,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -758,6 +829,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -791,7 +863,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-customapi-cdnaccesslogaggregationquery"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.CDNAccessLogAggregationQuery"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.CDNAccessLogAggregationQuery",
+        "tags": [
+          "CDN"
+        ]
       },
       "x-displayname": "CDN Loadbalancer.",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.CustomAPI",
@@ -818,6 +893,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -828,6 +904,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -838,6 +915,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -848,6 +926,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -858,6 +937,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -868,6 +948,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -878,6 +959,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -888,6 +970,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -921,7 +1004,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-customapi-getserviceoperation"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.GetServiceOperation"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.GetServiceOperation",
+        "tags": [
+          "CDN"
+        ]
       },
       "x-displayname": "CDN Loadbalancer.",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.CustomAPI",
@@ -948,6 +1034,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -958,6 +1045,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -968,6 +1056,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -978,6 +1067,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -988,6 +1078,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -998,6 +1089,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1008,6 +1100,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1018,6 +1111,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1051,7 +1145,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-customapi-listserviceoperations"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.ListServiceOperations"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.ListServiceOperations",
+        "tags": [
+          "CDN"
+        ]
       },
       "x-displayname": "CDN Loadbalancer.",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.CustomAPI",
@@ -1078,6 +1175,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1088,6 +1186,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1098,6 +1197,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1108,6 +1208,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1118,6 +1219,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1128,6 +1230,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1138,6 +1241,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1148,6 +1252,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1181,7 +1286,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-customapi-cdnmetrics"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.CDNMetrics"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.CDNMetrics",
+        "tags": [
+          "CDN"
+        ]
       },
       "x-displayname": "CDN Loadbalancer.",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.CustomAPI",
@@ -1208,6 +1316,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1218,6 +1327,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1228,6 +1338,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1238,6 +1349,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1248,6 +1360,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1258,6 +1371,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1268,6 +1382,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1278,6 +1393,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1322,7 +1438,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-customapi-cdncachepurge"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.CDNCachePurge"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomAPI.CDNCachePurge",
+        "tags": [
+          "CDN"
+        ]
       },
       "x-displayname": "CDN Loadbalancer.",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.CustomAPI",
@@ -1349,6 +1468,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1359,6 +1479,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1369,6 +1490,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1379,6 +1501,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1389,6 +1512,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1399,6 +1523,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1409,6 +1534,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1419,6 +1545,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1481,7 +1608,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "CDN Loadbalancer.",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.API",
@@ -1508,6 +1638,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1518,6 +1649,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1528,6 +1660,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1538,6 +1671,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1548,6 +1682,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1558,6 +1693,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1568,6 +1704,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1578,6 +1715,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1611,7 +1749,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-customcdnwaapapi-getcdnsecurityconfig"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomCDNWAAPAPI.GetCDNSecurityConfig"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomCDNWAAPAPI.GetCDNSecurityConfig",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "CDN Loadbalancer.",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.CustomCDNWAAPAPI",
@@ -1638,6 +1779,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1648,6 +1790,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1658,6 +1801,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1668,6 +1812,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1678,6 +1823,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1688,6 +1834,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1698,6 +1845,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1708,6 +1856,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1762,7 +1911,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE CDN Loadbalancer.",
@@ -1782,6 +1934,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1792,6 +1945,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1802,6 +1956,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1812,6 +1967,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1822,6 +1978,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1832,6 +1989,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1842,6 +2000,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1852,6 +2011,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1896,7 +2056,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "CDN Loadbalancer.",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.API",
@@ -1923,6 +2086,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1933,6 +2097,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1943,6 +2108,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1953,6 +2119,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1963,6 +2130,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1973,6 +2141,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1983,6 +2152,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1993,6 +2163,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2027,7 +2198,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-customcdnwaapapi-getcdndosautomitigationrules"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomCDNWAAPAPI.GetCDNDoSAutoMitigationRules"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomCDNWAAPAPI.GetCDNDoSAutoMitigationRules",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "CDN Loadbalancer.",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.CustomCDNWAAPAPI",
@@ -2054,6 +2228,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2064,6 +2239,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2074,6 +2250,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2084,6 +2261,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2094,6 +2272,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2104,6 +2283,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2114,6 +2294,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2124,6 +2305,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2169,7 +2351,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-views-cdn_loadbalancer-customcdnwaapapi-deletecdndosautomitigationrule"
         },
-        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomCDNWAAPAPI.DeleteCDNDoSAutoMitigationRule"
+        "x-ves-proto-rpc": "ves.io.schema.views.cdn_loadbalancer.CustomCDNWAAPAPI.DeleteCDNDoSAutoMitigationRule",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "CDN Loadbalancer.",
       "x-ves-proto-service": "ves.io.schema.views.cdn_loadbalancer.CustomCDNWAAPAPI",
@@ -2196,6 +2381,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2206,6 +2392,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2216,6 +2403,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2226,6 +2414,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2236,6 +2425,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2246,6 +2436,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2256,6 +2447,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2266,6 +2458,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2299,7 +2492,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cdn_cache_rule-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cdn_cache_rule.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.cdn_cache_rule.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "CDN cache rule.",
       "x-ves-proto-service": "ves.io.schema.cdn_cache_rule.API",
@@ -2326,6 +2522,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2336,6 +2533,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2346,6 +2544,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2356,6 +2555,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2366,6 +2566,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2376,6 +2577,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2386,6 +2588,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2396,6 +2599,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2440,7 +2644,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cdn_cache_rule-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cdn_cache_rule.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.cdn_cache_rule.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "CDN cache rule.",
       "x-ves-proto-service": "ves.io.schema.cdn_cache_rule.API",
@@ -2467,6 +2674,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2477,6 +2685,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2487,6 +2696,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2497,6 +2707,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2507,6 +2718,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2517,6 +2729,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2527,6 +2740,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2537,6 +2751,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2599,7 +2814,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cdn_cache_rule-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cdn_cache_rule.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.cdn_cache_rule.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "CDN cache rule.",
       "x-ves-proto-service": "ves.io.schema.cdn_cache_rule.API",
@@ -2626,6 +2844,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2636,6 +2855,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2646,6 +2866,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2656,6 +2877,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2666,6 +2888,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2676,6 +2899,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2686,6 +2910,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2696,6 +2921,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2749,7 +2975,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cdn_cache_rule-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cdn_cache_rule.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.cdn_cache_rule.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE CDN cache rule.",
@@ -2769,6 +2998,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2779,6 +3009,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2789,6 +3020,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2799,6 +3031,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2809,6 +3042,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2819,6 +3053,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2829,6 +3064,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2839,6 +3075,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2883,7 +3120,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-cdn_cache_rule-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.cdn_cache_rule.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.cdn_cache_rule.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "CDN cache rule.",
       "x-ves-proto-service": "ves.io.schema.cdn_cache_rule.API",

@@ -13,7 +13,7 @@ import shutil
 import subprocess
 import sys
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -58,6 +58,7 @@ class LintIssue:
 
     @property
     def severity_name(self) -> str:
+        """Return human-readable severity name."""
         return {0: "error", 1: "warning", 2: "info", 3: "hint"}.get(self.severity, "unknown")
 
 
@@ -92,7 +93,7 @@ class LintStats:
 def load_config(config_path: Path | None = None) -> dict:
     """Load configuration from YAML file or use defaults."""
     if config_path and config_path.exists():
-        with open(config_path) as f:
+        with config_path.open() as f:
             config = yaml.safe_load(f) or {}
             return _deep_merge(DEFAULT_CONFIG, config)
     return DEFAULT_CONFIG
@@ -114,7 +115,10 @@ def check_spectral_installed() -> bool:
     return shutil.which("spectral") is not None
 
 
-def run_spectral(spec_path: Path, ruleset_path: Path | None = None) -> tuple[bool, list[dict[str, Any]], str | None]:
+def run_spectral(
+    spec_path: Path,
+    ruleset_path: Path | None = None,
+) -> tuple[bool, list[dict[str, Any]], str | None]:
     """Run Spectral linter on a specification file.
 
     Returns (success, issues, error_message).
@@ -130,6 +134,7 @@ def run_spectral(spec_path: Path, ruleset_path: Path | None = None) -> tuple[boo
             capture_output=True,
             text=True,
             timeout=60,
+            check=False,
         )
 
         # Parse JSON output
@@ -150,7 +155,11 @@ def run_spectral(spec_path: Path, ruleset_path: Path | None = None) -> tuple[boo
     except subprocess.TimeoutExpired:
         return False, [], "Spectral timed out after 60 seconds"
     except FileNotFoundError:
-        return False, [], "Spectral CLI not found. Install with: npm install -g @stoplight/spectral-cli"
+        return (
+            False,
+            [],
+            "Spectral CLI not found. Install with: npm install -g @stoplight/spectral-cli",
+        )
     except Exception as e:
         return False, [], str(e)
 
@@ -190,7 +199,7 @@ def lint_spec_file(
     """
     filename = spec_path.name
 
-    success, raw_issues, error = run_spectral(spec_path, ruleset_path)
+    _success, raw_issues, error = run_spectral(spec_path, ruleset_path)
 
     if error:
         return LintResult(
@@ -290,7 +299,7 @@ def lint_all_specs(
 def generate_report(stats: LintStats, output_path: Path) -> None:
     """Generate linting report."""
     report = {
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": datetime.now(tz=timezone.utc).isoformat(),
         "summary": {
             "files_processed": stats.files_processed,
             "files_passed": stats.files_passed,
@@ -324,8 +333,9 @@ def generate_report(stats: LintStats, output_path: Path) -> None:
     }
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_path, "w") as f:
+    with output_path.open("w") as f:
         json.dump(report, f, indent=2)
+        f.write("\n")
 
     console.print(f"[green]Report saved to {output_path}[/green]")
 
@@ -404,7 +414,9 @@ def main() -> int:
     if not check_spectral_installed():
         console.print("[red]Spectral CLI not found![/red]")
         console.print("[yellow]Install with: npm install -g @stoplight/spectral-cli[/yellow]")
-        console.print("[yellow]Or skip linting by removing the lint step from the workflow[/yellow]")
+        console.print(
+            "[yellow]Or skip linting by removing the lint step from the workflow[/yellow]",
+        )
         return 1
 
     # Load configuration
@@ -427,7 +439,9 @@ def main() -> int:
 
     if not input_dir.exists():
         console.print(f"[red]Input directory not found: {input_dir}[/red]")
-        console.print("[yellow]Run 'python -m scripts.normalize' first to normalize specifications[/yellow]")
+        console.print(
+            "[yellow]Run 'python -m scripts.normalize' first to normalize specifications[/yellow]",
+        )
         return 1
 
     # Check ruleset exists
@@ -458,7 +472,9 @@ def main() -> int:
     if stats.files_failed > 0:
         console.print(f"\n[yellow]Completed with {stats.files_failed} files having issues[/yellow]")
     else:
-        console.print(f"\n[bold green]All {stats.files_passed} specifications passed linting![/bold green]")
+        console.print(
+            f"\n[bold green]All {stats.files_passed} specifications passed linting![/bold green]",
+        )
 
     return 0
 

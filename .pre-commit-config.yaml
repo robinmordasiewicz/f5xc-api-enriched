@@ -1,0 +1,198 @@
+# Pre-commit hooks configuration
+# Install: make pre-commit-install
+# Run manually: pre-commit run --all-files
+#
+# This ensures idempotent output across:
+# - Local manual builds (make pipeline)
+# - Pre-commit hooks (automatic on commit)
+# - GitHub Actions (CI/CD)
+#
+# All methods use the same pipeline: python -m scripts.pipeline
+#
+# IMPORTANT: specs/original/ is READ-ONLY (delivered from F5 on schedule)
+# All hooks exclude this directory to prevent modifications.
+#
+# Hook Categories:
+# 1. Security: gitleaks, detect-private-key, Ruff S rules (bandit)
+# 2. Code Quality: Ruff comprehensive linting and formatting
+# 3. Type Safety: mypy static type checking
+# 4. YAML/Config: yamllint, actionlint
+# 5. File Hygiene: trailing-whitespace, end-of-file-fixer, etc.
+# 6. Custom: F5 XC API enrichment pipeline
+
+default_stages: [pre-commit]
+
+repos:
+  # =============================================================================
+  # SECURITY HOOKS
+  # =============================================================================
+
+  # Gitleaks - Scan for secrets, API keys, passwords
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.21.2
+    hooks:
+      - id: gitleaks
+
+  # =============================================================================
+  # FILE HYGIENE HOOKS
+  # =============================================================================
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      # Whitespace and line ending fixes
+      - id: trailing-whitespace
+        exclude: ^specs/original/
+      - id: end-of-file-fixer
+        exclude: ^specs/original/
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+        exclude: ^specs/original/
+
+      # File format validation
+      - id: check-yaml
+        args: ['--unsafe']  # Allow custom YAML tags
+        exclude: ^specs/original/
+      - id: check-json
+        exclude: ^specs/original/
+      - id: check-toml
+      - id: check-xml
+        exclude: ^specs/original/
+
+      # Python-specific checks
+      - id: check-ast
+      - id: debug-statements
+      - id: check-docstring-first
+      - id: name-tests-test
+        args: ['--pytest-test-first']
+        exclude: ^tests/conftest\.py$
+
+      # Git hygiene
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+        exclude: ^specs/original/
+      - id: check-symlinks
+      - id: destroyed-symlinks
+      - id: no-commit-to-branch
+        args: ['--branch', 'main', '--branch', 'master']
+
+      # Security
+      - id: detect-private-key
+
+      # Executable checks
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+
+  # =============================================================================
+  # YAML LINTING - yamllint
+  # =============================================================================
+
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+        args: ['--strict', '-c', '.yamllint.yaml']
+        exclude: ^specs/original/
+
+  # =============================================================================
+  # GITHUB ACTIONS LINTING - actionlint
+  # =============================================================================
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.4
+    hooks:
+      - id: actionlint
+
+  # =============================================================================
+  # SHELL SCRIPT LINTING - shellcheck
+  # =============================================================================
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+        args: ['--severity=warning']
+
+  # =============================================================================
+  # PYTHON CODE QUALITY - RUFF (replaces Black, Flake8, isort, bandit, etc.)
+  # =============================================================================
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.10
+    hooks:
+      # Linting - must run before formatting
+      # --exit-non-zero-on-fix ensures we fail if fixes were applied
+      - id: ruff
+        name: ruff-lint
+        args: ['--fix', '--exit-non-zero-on-fix']
+        types_or: [python, pyi]
+
+      # Formatting (replaces Black)
+      - id: ruff-format
+        name: ruff-format
+        types_or: [python, pyi]
+
+  # =============================================================================
+  # TYPE CHECKING - MYPY (strict mode)
+  # =============================================================================
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.14.1
+    hooks:
+      - id: mypy
+        additional_dependencies:
+          - types-requests
+          - types-PyYAML
+        args: [
+          '--ignore-missing-imports',
+          '--no-error-summary',
+          '--strict-optional',
+          '--warn-redundant-casts',
+          '--warn-unused-ignores',
+        ]
+        exclude: ^(tests/|docs/)
+
+  # =============================================================================
+  # MARKDOWN LINTING
+  # =============================================================================
+
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.43.0
+    hooks:
+      - id: markdownlint
+        args: ['--fix', '--disable', 'MD013', 'MD033', 'MD041', '--']
+
+  # =============================================================================
+  # CUSTOM HOOKS
+  # =============================================================================
+
+  - repo: local
+    hooks:
+      # F5 XC API Enrichment Pipeline
+      # Runs the unified pipeline and stages enriched specs
+      - id: f5xc-pipeline
+        name: F5 XC API Enrichment Pipeline
+        entry: scripts/hooks/pre-commit-pipeline.sh
+        language: script
+        files: ^(specs/original/.*\.json|scripts/.*\.py|config/.*\.yaml)$
+        pass_filenames: false
+        stages: [pre-commit]
+        verbose: true
+
+# =============================================================================
+# CI CONFIGURATION
+# =============================================================================
+
+ci:
+  autofix_commit_msg: |
+    [pre-commit.ci] auto fixes from pre-commit hooks
+
+    for more information, see https://pre-commit.ci
+  autofix_prs: true
+  autoupdate_branch: ''
+  autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+  autoupdate_schedule: weekly
+  skip: [f5xc-pipeline, gitleaks]  # Skip custom pipeline and gitleaks in CI
+  submodules: false

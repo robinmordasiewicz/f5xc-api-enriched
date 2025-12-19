@@ -8,7 +8,7 @@ reporting issues without auto-fixing them.
 import re
 from collections import defaultdict
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 import yaml
 
@@ -24,20 +24,22 @@ class ConsistencyValidator:
     """
 
     # Common parameter naming patterns
-    PARAMETER_PATTERNS = {
+    PARAMETER_PATTERNS: ClassVar[dict[str, re.Pattern[str]]] = {
         "path_params": re.compile(r"^[a-z][a-z0-9]*(_[a-z0-9]+)*$"),  # snake_case
-        "query_params": re.compile(r"^[a-z][a-z0-9]*([._][a-z0-9]+)*$"),  # snake_case or dot.notation
+        "query_params": re.compile(
+            r"^[a-z][a-z0-9]*([._][a-z0-9]+)*$",
+        ),  # snake_case or dot.notation
         "header_params": re.compile(r"^[A-Z][a-zA-Z0-9]*(-[A-Z][a-zA-Z0-9]*)*$"),  # Title-Case
     }
 
     # Schema naming patterns
-    SCHEMA_PATTERNS = {
+    SCHEMA_PATTERNS: ClassVar[dict[str, re.Pattern[str]]] = {
         "request": re.compile(r"(Request|Input|Create|Update|Payload)$"),
         "response": re.compile(r"(Response|Output|Result|Reply)$"),
         "type": re.compile(r"(Type|Spec|Config|Settings|Options)$"),
     }
 
-    def __init__(self, config_path: Path | None = None):
+    def __init__(self, config_path: Path | None = None) -> None:
         """Initialize with configuration from file.
 
         Args:
@@ -62,7 +64,7 @@ class ConsistencyValidator:
         if not config_path.exists():
             return
 
-        with open(config_path) as f:
+        with config_path.open() as f:
             config = yaml.safe_load(f) or {}
 
         consistency_config = config.get("consistency_validation", {})
@@ -133,7 +135,8 @@ class ConsistencyValidator:
         threshold = severity_levels.get(self._severity_threshold, 1)
 
         return [
-            issue for issue in self._issues
+            issue
+            for issue in self._issues
             if severity_levels.get(issue["severity"], 0) >= threshold
         ]
 
@@ -152,7 +155,16 @@ class ConsistencyValidator:
 
             # Check operation-level parameters
             for method, operation in path_item.items():
-                if method.lower() not in ("get", "post", "put", "patch", "delete", "head", "options", "trace"):
+                if method.lower() not in (
+                    "get",
+                    "post",
+                    "put",
+                    "patch",
+                    "delete",
+                    "head",
+                    "options",
+                    "trace",
+                ):
                     continue
 
                 if not isinstance(operation, dict):
@@ -207,18 +219,20 @@ class ConsistencyValidator:
                     suggestion="Consider using consistent notation",
                 )
 
-        elif param_in == "header":
+        elif param_in == "header" and not re.match(r"^[A-Z]", name) and not name.startswith("x-"):
             # Headers should typically be Title-Case
-            if not re.match(r"^[A-Z]", name) and not name.startswith("x-"):
-                self._add_issue(
-                    severity="info",
-                    category="parameter",
-                    message=f"Header parameter '{name}' should start with uppercase",
-                    location=location,
-                    suggestion=f"Consider using '{name.title()}'",
-                )
+            self._add_issue(
+                severity="info",
+                category="parameter",
+                message=f"Header parameter '{name}' should start with uppercase",
+                location=location,
+                suggestion=f"Consider using '{name.title()}'",
+            )
 
-    def _check_parameter_inconsistencies(self, param_names_by_location: dict[str, set[str]]) -> None:
+    def _check_parameter_inconsistencies(
+        self,
+        param_names_by_location: dict[str, set[str]],
+    ) -> None:
         """Check for naming inconsistencies between path and query parameters."""
         path_params = param_names_by_location.get("path", set())
         query_params = param_names_by_location.get("query", set())
@@ -267,28 +281,32 @@ class ConsistencyValidator:
                 no_suffix_count += 1
 
             # Check for mixed naming conventions
-            if "_" in schema_name and any(c.isupper() for c in schema_name[1:]):
-                # Skip known prefixes like "ves_io_"
-                if not schema_name.startswith("ves_io_") and not schema_name.startswith("schema"):
-                    self._add_issue(
-                        severity="info",
-                        category="schema",
-                        message=f"Schema '{schema_name}' mixes snake_case and CamelCase",
-                        location=f"components.schemas.{schema_name}",
-                        suggestion="Consider using consistent naming convention",
-                    )
-
-        # Report on naming pattern distribution
-        total_schemas = len(schemas)
-        if total_schemas > 100:  # Only report for larger specs
-            if no_suffix_count > total_schemas * 0.5:
+            # Skip known prefixes like "ves_io_"
+            if (
+                "_" in schema_name
+                and any(c.isupper() for c in schema_name[1:])
+                and not schema_name.startswith("ves_io_")
+                and not schema_name.startswith("schema")
+            ):
                 self._add_issue(
                     severity="info",
                     category="schema",
-                    message=f"{no_suffix_count}/{total_schemas} schemas lack type suffix (Type, Request, Response, etc.)",
-                    location="components.schemas",
-                    suggestion="Consider adding descriptive suffixes for clarity",
+                    message=f"Schema '{schema_name}' mixes snake_case and CamelCase",
+                    location=f"components.schemas.{schema_name}",
+                    suggestion="Consider using consistent naming convention",
                 )
+
+        # Report on naming pattern distribution
+        total_schemas = len(schemas)
+        if total_schemas > 100 and no_suffix_count > total_schemas * 0.5:
+            # Only report for larger specs
+            self._add_issue(
+                severity="info",
+                category="schema",
+                message=f"{no_suffix_count}/{total_schemas} schemas lack type suffix (Type, Request, Response, etc.)",
+                location="components.schemas",
+                suggestion="Consider adding descriptive suffixes for clarity",
+            )
 
     def _check_operation_ids(self, spec: dict[str, Any]) -> None:
         """Check operationId consistency."""
@@ -299,7 +317,16 @@ class ConsistencyValidator:
                 continue
 
             for method, operation in path_item.items():
-                if method.lower() not in ("get", "post", "put", "patch", "delete", "head", "options", "trace"):
+                if method.lower() not in (
+                    "get",
+                    "post",
+                    "put",
+                    "patch",
+                    "delete",
+                    "head",
+                    "options",
+                    "trace",
+                ):
                     continue
 
                 if not isinstance(operation, dict):
@@ -328,7 +355,9 @@ class ConsistencyValidator:
 
         # Check for mixed patterns
         if len([p for p, c in operation_id_patterns.items() if c > 0]) > 1:
-            pattern_summary = ", ".join(f"{p}: {c}" for p, c in operation_id_patterns.items() if c > 0)
+            pattern_summary = ", ".join(
+                f"{p}: {c}" for p, c in operation_id_patterns.items() if c > 0
+            )
             self._add_issue(
                 severity="info",
                 category="operationId",
@@ -341,12 +370,21 @@ class ConsistencyValidator:
         """Check for deprecation markers."""
         deprecated_count = 0
 
-        for path, path_item in spec.get("paths", {}).items():
+        for path_item in spec.get("paths", {}).values():
             if not isinstance(path_item, dict):
                 continue
 
             for method, operation in path_item.items():
-                if method.lower() not in ("get", "post", "put", "patch", "delete", "head", "options", "trace"):
+                if method.lower() not in (
+                    "get",
+                    "post",
+                    "put",
+                    "patch",
+                    "delete",
+                    "head",
+                    "options",
+                    "trace",
+                ):
                     continue
 
                 if isinstance(operation, dict) and operation.get("deprecated"):
@@ -354,10 +392,12 @@ class ConsistencyValidator:
 
         # Report on deprecation usage
         total_operations = sum(
-            1 for path_item in spec.get("paths", {}).values()
+            1
+            for path_item in spec.get("paths", {}).values()
             if isinstance(path_item, dict)
             for method, op in path_item.items()
-            if method.lower() in ("get", "post", "put", "patch", "delete", "head", "options", "trace")
+            if method.lower()
+            in ("get", "post", "put", "patch", "delete", "head", "options", "trace")
             and isinstance(op, dict)
         )
 
@@ -379,7 +419,16 @@ class ConsistencyValidator:
                 continue
 
             for method, operation in path_item.items():
-                if method.lower() not in ("get", "post", "put", "patch", "delete", "head", "options", "trace"):
+                if method.lower() not in (
+                    "get",
+                    "post",
+                    "put",
+                    "patch",
+                    "delete",
+                    "head",
+                    "options",
+                    "trace",
+                ):
                     continue
 
                 if not isinstance(operation, dict):
@@ -402,7 +451,7 @@ class ConsistencyValidator:
 
     def get_stats(self) -> dict[str, Any]:
         """Return statistics about validation."""
-        issue_counts = defaultdict(int)
+        issue_counts: defaultdict[str, int] = defaultdict(int)
         for issue in self._issues:
             issue_counts[issue["severity"]] += 1
             issue_counts[f"category_{issue['category']}"] += 1

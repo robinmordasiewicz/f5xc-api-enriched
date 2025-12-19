@@ -3,7 +3,7 @@
   "info": {
     "title": "F5 XC Nginx API",
     "description": "F5 Distributed Cloud Nginx API specifications",
-    "version": "2025.12.19",
+    "version": "1.0.0",
     "contact": {
       "name": "F5 Distributed Cloud",
       "url": "https://docs.cloud.f5.com"
@@ -30,7 +30,16 @@
       "ApiToken": []
     }
   ],
-  "tags": [],
+  "tags": [
+    {
+      "name": "NGINX",
+      "description": "NGINX One management and configuration"
+    },
+    {
+      "name": "Other",
+      "description": "Miscellaneous operations"
+    }
+  ],
   "paths": {
     "/api/config/namespaces/{namespace}/nginx_csgs": {
       "get": {
@@ -53,6 +62,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -63,6 +73,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -73,6 +84,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -83,6 +95,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -93,6 +106,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -103,6 +117,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -113,6 +128,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -123,6 +139,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -185,7 +202,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nginx-one-nginx_csg-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_csg.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_csg.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "NGINX One CSG Object configuration.",
       "x-ves-proto-service": "ves.io.schema.nginx.one.nginx_csg.API",
@@ -212,6 +232,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -222,6 +243,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -232,6 +254,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -242,6 +265,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -252,6 +276,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -262,6 +287,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -272,6 +298,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -282,6 +309,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -333,7 +361,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nginx-one-nginx_csg-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_csg.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_csg.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "NGINX One CSG Object configuration.",
       "x-ves-proto-service": "ves.io.schema.nginx.one.nginx_csg.API",
@@ -360,6 +391,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -370,6 +402,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -380,6 +413,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -390,6 +424,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -400,6 +435,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -410,6 +446,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -420,6 +457,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -430,6 +468,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -492,7 +531,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nginx-one-nginx_instance-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_instance.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_instance.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "NGINX One Instance Object configuration.",
       "x-ves-proto-service": "ves.io.schema.nginx.one.nginx_instance.API",
@@ -519,6 +561,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -529,6 +572,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -539,6 +583,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -549,6 +594,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -559,6 +605,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -569,6 +616,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -579,6 +627,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -589,6 +638,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -640,7 +690,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nginx-one-nginx_instance-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_instance.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_instance.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "NGINX One Instance Object configuration.",
       "x-ves-proto-service": "ves.io.schema.nginx.one.nginx_instance.API",
@@ -667,6 +720,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -677,6 +731,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -687,6 +742,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -697,6 +753,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -707,6 +764,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -717,6 +775,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -727,6 +786,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -737,6 +797,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -770,7 +831,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nginx-one-nginx_server-customapi-getdataplaneservers"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_server.CustomAPI.GetDataplaneServers"
+        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_server.CustomAPI.GetDataplaneServers",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "NGINX One Server APIs.",
       "x-ves-proto-service": "ves.io.schema.nginx.one.nginx_server.CustomAPI",
@@ -797,6 +861,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -807,6 +872,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -817,6 +883,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -827,6 +894,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -837,6 +905,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -847,6 +916,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -857,6 +927,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -867,6 +938,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -929,7 +1001,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nginx-one-nginx_server-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_server.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_server.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "NGINX One Server APIs.",
       "x-ves-proto-service": "ves.io.schema.nginx.one.nginx_server.API",
@@ -956,6 +1031,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -966,6 +1042,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -976,6 +1053,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -986,6 +1064,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -996,6 +1075,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1006,6 +1086,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1016,6 +1097,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1026,6 +1108,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1078,7 +1161,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nginx-one-nginx_server-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_server.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_server.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "NGINX One Server APIs.",
       "x-ves-proto-service": "ves.io.schema.nginx.one.nginx_server.API",
@@ -1105,6 +1191,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1115,6 +1202,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1125,6 +1213,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1135,6 +1224,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1145,6 +1235,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1155,6 +1246,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1165,6 +1257,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1175,6 +1268,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1195,7 +1289,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nginx-one-subscription-customapi-subscribe"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nginx.one.subscription.CustomAPI.Subscribe"
+        "x-ves-proto-rpc": "ves.io.schema.nginx.one.subscription.CustomAPI.Subscribe",
+        "tags": [
+          "NGINX"
+        ]
       },
       "x-displayname": "NGINX One Subscription API.",
       "x-ves-proto-service": "ves.io.schema.nginx.one.subscription.CustomAPI",
@@ -1222,6 +1319,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1232,6 +1330,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1242,6 +1341,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1252,6 +1352,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1262,6 +1363,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1272,6 +1374,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1282,6 +1385,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1292,6 +1396,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1312,7 +1417,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nginx-one-subscription-customapi-unsubscribe"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nginx.one.subscription.CustomAPI.Unsubscribe"
+        "x-ves-proto-rpc": "ves.io.schema.nginx.one.subscription.CustomAPI.Unsubscribe",
+        "tags": [
+          "NGINX"
+        ]
       },
       "x-displayname": "NGINX One Subscription API.",
       "x-ves-proto-service": "ves.io.schema.nginx.one.subscription.CustomAPI",
@@ -1339,6 +1447,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1349,6 +1458,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1359,6 +1469,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1369,6 +1480,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1379,6 +1491,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1389,6 +1502,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1399,6 +1513,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1409,6 +1524,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1442,7 +1558,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nginx-one-nginx_service_discovery-api-create"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_service_discovery.API.Create"
+        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_service_discovery.API.Create",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "NGINX Service Discovery.",
       "x-ves-proto-service": "ves.io.schema.nginx.one.nginx_service_discovery.API",
@@ -1469,6 +1588,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1479,6 +1599,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1489,6 +1610,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1499,6 +1621,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1509,6 +1632,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1519,6 +1643,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1529,6 +1654,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1539,6 +1665,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1583,7 +1710,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nginx-one-nginx_service_discovery-api-replace"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_service_discovery.API.Replace"
+        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_service_discovery.API.Replace",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "NGINX Service Discovery.",
       "x-ves-proto-service": "ves.io.schema.nginx.one.nginx_service_discovery.API",
@@ -1610,6 +1740,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1620,6 +1751,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1630,6 +1762,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1640,6 +1773,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1650,6 +1784,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1660,6 +1795,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1670,6 +1806,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1680,6 +1817,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1742,7 +1880,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nginx-one-nginx_service_discovery-api-list"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_service_discovery.API.List"
+        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_service_discovery.API.List",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "NGINX Service Discovery.",
       "x-ves-proto-service": "ves.io.schema.nginx.one.nginx_service_discovery.API",
@@ -1769,6 +1910,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1779,6 +1921,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1789,6 +1932,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1799,6 +1943,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1809,6 +1954,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1819,6 +1965,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1829,6 +1976,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1839,6 +1987,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1893,7 +2042,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nginx-one-nginx_service_discovery-api-get"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_service_discovery.API.Get"
+        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_service_discovery.API.Get",
+        "tags": [
+          "Other"
+        ]
       },
       "delete": {
         "summary": "DELETE NGINX Service Discovery.",
@@ -1913,6 +2065,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1923,6 +2076,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1933,6 +2087,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1943,6 +2098,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1953,6 +2109,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1963,6 +2120,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1973,6 +2131,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -1983,6 +2142,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "string"
                 }
               }
@@ -2027,7 +2187,10 @@
           "description": "Examples of this operation.",
           "url": "https://docs.cloud.f5.com/docs-v2/platform/reference/api-ref/ves-io-schema-nginx-one-nginx_service_discovery-api-delete"
         },
-        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_service_discovery.API.Delete"
+        "x-ves-proto-rpc": "ves.io.schema.nginx.one.nginx_service_discovery.API.Delete",
+        "tags": [
+          "Other"
+        ]
       },
       "x-displayname": "NGINX Service Discovery.",
       "x-ves-proto-service": "ves.io.schema.nginx.one.nginx_service_discovery.API",

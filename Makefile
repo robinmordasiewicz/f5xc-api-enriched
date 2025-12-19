@@ -39,7 +39,7 @@
 #       ├── openapi.json    (master combined spec)
 #       └── index.json      (spec metadata)
 
-.PHONY: all build clean install download pipeline enrich normalize merge validate serve help check-deps venv
+.PHONY: all build clean install download pipeline enrich normalize merge lint validate serve help check-deps venv pre-commit-install pre-commit-run pre-commit-uninstall
 
 # Virtual environment
 VENV := .venv
@@ -93,6 +93,10 @@ normalize:
 merge:
 	$(PYTHON) -m scripts.merge_specs
 
+# Lint specifications with Spectral (requires: npm install -g @stoplight/spectral-cli)
+lint:
+	$(PYTHON) scripts/lint.py --input-dir specs/enriched
+
 # Copy enriched specs to docs folder for GitHub Pages
 copy-docs:
 	@mkdir -p docs/specs
@@ -132,6 +136,21 @@ clean-all: clean
 # Quick rebuild - skip download, run pipeline only
 rebuild: pipeline copy-docs
 
+# Install pre-commit hooks
+pre-commit-install: check-deps
+	$(PYTHON) -m pre_commit install
+	chmod +x scripts/hooks/pre-commit-pipeline.sh
+	@echo "Pre-commit hooks installed successfully"
+
+# Run pre-commit on all files (for CI or manual check)
+pre-commit-run: check-deps
+	$(PYTHON) -m pre_commit run --all-files
+
+# Uninstall pre-commit hooks
+pre-commit-uninstall:
+	$(PYTHON) -m pre_commit uninstall
+	@echo "Pre-commit hooks uninstalled"
+
 # Help
 help:
 	@echo "F5 XC API Enrichment Pipeline"
@@ -157,8 +176,14 @@ help:
 	@echo "  enrich      Apply branding, acronyms, grammar"
 	@echo "  normalize   Fix orphan refs, clean operations"
 	@echo "  merge       Combine specs by domain"
+	@echo "  lint        Validate specs with Spectral OpenAPI linter"
 	@echo "  validate    Test with live API (needs credentials)"
 	@echo ""
 	@echo "Setup:"
 	@echo "  install     Install Python and Node.js dependencies"
 	@echo "  check-deps  Verify all dependencies are installed"
+	@echo ""
+	@echo "Pre-commit:"
+	@echo "  pre-commit-install    Install git pre-commit hooks"
+	@echo "  pre-commit-run        Run all pre-commit hooks manually"
+	@echo "  pre-commit-uninstall  Remove pre-commit hooks"

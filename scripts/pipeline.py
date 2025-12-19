@@ -43,13 +43,20 @@ Usage:
     python -m scripts.pipeline --dry-run    # Analyze without writing
 """
 
+from __future__ import annotations
+
 import argparse
 import json
+import re
 import sys
+from collections import defaultdict
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 import yaml
 from rich.console import Console
@@ -57,12 +64,16 @@ from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn, TimeEl
 from rich.table import Table
 
 # Import processing modules
+from scripts.merge_specs import DOMAIN_PATTERNS
 from scripts.utils import (
     AcronymNormalizer,
     BrandingTransformer,
-    BrandingValidator,
+    ConsistencyValidator,
     DescriptionStructureTransformer,
+    DescriptionValidator,
     GrammarImprover,
+    SchemaFixer,
+    TagGenerator,
 )
 
 console = Console()
@@ -111,6 +122,10 @@ class PipelineStats:
     files_failed: int = 0
     enrichment_changes: int = 0
     normalization_changes: int = 0
+    schemas_fixed: int = 0
+    operations_tagged: int = 0
+    descriptions_generated: int = 0
+    consistency_issues: int = 0
     domains_created: int = 0
     paths_merged: int = 0
     schemas_merged: int = 0
@@ -120,7 +135,7 @@ class PipelineStats:
 def load_config(config_path: Path | None = None) -> dict:
     """Load configuration from YAML file or use defaults."""
     if config_path and config_path.exists():
-        with open(config_path) as f:
+        with config_path.open() as f:
             config = yaml.safe_load(f) or {}
             return _deep_merge(DEFAULT_CONFIG, config)
     return DEFAULT_CONFIG
@@ -139,15 +154,16 @@ def _deep_merge(base: dict, override: dict) -> dict:
 
 def load_spec(spec_path: Path) -> dict[str, Any]:
     """Load an OpenAPI specification from JSON file."""
-    with open(spec_path) as f:
+    with spec_path.open() as f:
         return json.load(f)
 
 
 def save_spec(spec: dict[str, Any], output_path: Path, indent: int = 2) -> None:
     """Save an OpenAPI specification to JSON file."""
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_path, "w") as f:
+    with output_path.open("w") as f:
         json.dump(spec, f, indent=indent, ensure_ascii=False)
+        f.write("\n")
 
 
 # =============================================================================
@@ -155,10 +171,15 @@ def save_spec(spec: dict[str, Any], output_path: Path, indent: int = 2) -> None:
 # =============================================================================
 
 
-def enrich_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], int]:
+def enrich_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], dict[str, int]]:
     """Apply enrichment transformations to a specification.
 
-    Returns (enriched_spec, change_count).
+    Returns (enriched_spec, stats_dict) where stats_dict contains:
+        - field_count: number of text fields processed
+        - schemas_fixed: number of schemas fixed by SchemaFixer
+        - operations_tagged: number of operations tagged
+        - descriptions_generated: number of descriptions auto-generated
+        - consistency_issues: number of consistency issues found
     """
     target_fields = config.get("target_fields", ["description", "summary", "title"])
     grammar_config = config.get("grammar", {})
@@ -175,6 +196,10 @@ def enrich_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], int
         trim_whitespace=grammar_config.get("trim_whitespace", True),
         use_language_tool=False,  # Disable for pipeline performance
     )
+    schema_fixer = SchemaFixer()
+    tag_generator = TagGenerator()
+    description_validator = DescriptionValidator()
+    consistency_validator = ConsistencyValidator()
 
     # Count fields before
     field_count = _count_text_fields(spec, target_fields)
@@ -189,13 +214,35 @@ def enrich_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], int
     # 3. Acronym normalization
     spec = acronym_normalizer.normalize_spec(spec, target_fields)
 
-    # 4. Grammar improvements last (most general)
+    # 4. Grammar improvements
     spec = grammar_improver.improve_spec(spec, target_fields)
+
+    # 5. Schema fixes (fix format-without-type issues)
+    spec = schema_fixer.fix_spec(spec)
+    schema_stats = schema_fixer.get_stats()
+
+    # 6. Tag generation (assign tags to operations based on path patterns)
+    spec = tag_generator.generate_tags(spec)
+    tag_stats = tag_generator.get_stats()
+
+    # 7. Description validation (auto-generate missing descriptions)
+    spec = description_validator.validate_and_generate(spec)
+    desc_stats = description_validator.get_stats()
+
+    # 8. Consistency validation (report issues without auto-fixing)
+    consistency_validator.validate(spec)
+    consistency_stats = consistency_validator.get_stats()
 
     # Close grammar improver resources
     grammar_improver.close()
 
-    return spec, field_count
+    return spec, {
+        "field_count": field_count,
+        "schemas_fixed": schema_stats.get("fixes_applied", 0),
+        "operations_tagged": tag_stats.get("operations_tagged", 0),
+        "descriptions_generated": desc_stats.get("descriptions_generated", 0),
+        "consistency_issues": consistency_stats.get("total_issues", 0),
+    }
 
 
 def _count_text_fields(spec: dict[str, Any], target_fields: list[str]) -> int:
@@ -254,11 +301,8 @@ def normalize_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], 
     return spec, total_changes
 
 
-def _fix_orphan_refs(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], int]:
+def _fix_orphan_refs(spec: dict[str, Any], _config: dict) -> tuple[dict[str, Any], int]:
     """Fix orphan $ref references by creating missing components."""
-    import re
-    from collections import defaultdict
-
     # Collect all $refs
     all_refs: set[str] = set()
 
@@ -303,24 +347,43 @@ def _fix_orphan_refs(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any]
 
 def _create_stub(comp_type: str, comp_name: str) -> dict[str, Any]:
     """Create a stub component definition."""
-    if comp_type == "schemas":
-        return {"type": "object", "description": f"Auto-generated stub for {comp_name}", "x-generated": True}
-    elif comp_type == "requestBodies":
+
+    def create_schema_stub(name: str) -> dict[str, Any]:
         return {
-            "description": f"Auto-generated stub for {comp_name}",
+            "type": "object",
+            "description": f"Auto-generated stub for {name}",
+            "x-generated": True,
+        }
+
+    def create_request_body_stub(name: str) -> dict[str, Any]:
+        return {
+            "description": f"Auto-generated stub for {name}",
             "content": {"application/json": {"schema": {"type": "object"}}},
             "x-generated": True,
         }
-    elif comp_type == "responses":
-        return {"description": f"Auto-generated stub response for {comp_name}", "x-generated": True}
-    else:
-        return {"description": f"Auto-generated stub for {comp_name}", "x-generated": True}
+
+    def create_response_stub(name: str) -> dict[str, Any]:
+        return {
+            "description": f"Auto-generated stub response for {name}",
+            "x-generated": True,
+        }
+
+    def create_default_stub(name: str) -> dict[str, Any]:
+        return {
+            "description": f"Auto-generated stub for {name}",
+            "x-generated": True,
+        }
+
+    stub_factories: dict[str, Callable[[str], dict[str, Any]]] = {
+        "schemas": create_schema_stub,
+        "requestBodies": create_request_body_stub,
+        "responses": create_response_stub,
+    }
+    return stub_factories.get(comp_type, create_default_stub)(comp_name)
 
 
 def _inline_orphan_request_bodies(spec: dict[str, Any]) -> tuple[dict[str, Any], int]:
     """Convert orphan requestBody $refs to inline definitions."""
-    import re
-
     inlined_count = 0
     existing = set(spec.get("components", {}).get("requestBodies", {}).keys())
 
@@ -372,7 +435,11 @@ def _remove_empty_operations(spec: dict[str, Any]) -> tuple[dict[str, Any], int]
             del path_item[method]
             removed_count += 1
 
-        remaining = [m for m in ["get", "post", "put", "delete", "patch", "options", "head", "trace"] if m in path_item]
+        remaining = [
+            m
+            for m in ["get", "post", "put", "delete", "patch", "options", "head", "trace"]
+            if m in path_item
+        ]
         if not remaining:
             paths_to_remove.append(path)
 
@@ -402,7 +469,7 @@ def _normalize_types(spec: dict[str, Any]) -> tuple[dict[str, Any], int]:
                 else:
                     result[key] = normalize_recursive(value)
             return result
-        elif isinstance(obj, list):
+        if isinstance(obj, list):
             return [normalize_recursive(item) for item in obj]
         return obj
 
@@ -412,12 +479,6 @@ def _normalize_types(spec: dict[str, Any]) -> tuple[dict[str, Any], int]:
 # =============================================================================
 # MERGE FUNCTIONS
 # =============================================================================
-
-import re
-from collections import defaultdict
-
-# Import domain patterns from merge_specs module (single source of truth)
-from scripts.merge_specs import DOMAIN_PATTERNS
 
 
 def categorize_spec(filename: str) -> str:
@@ -445,8 +506,10 @@ def create_base_spec(title: str, description: str, version: str) -> dict[str, An
             {
                 "url": "https://{tenant}.console.ves.volterra.io",
                 "description": "F5 Distributed Cloud Console",
-                "variables": {"tenant": {"default": "console", "description": "Your F5 XC tenant name"}},
-            }
+                "variables": {
+                    "tenant": {"default": "console", "description": "Your F5 XC tenant name"},
+                },
+            },
         ],
         "security": [{"ApiToken": []}],
         "tags": [],
@@ -458,7 +521,7 @@ def create_base_spec(title: str, description: str, version: str) -> dict[str, An
                     "name": "Authorization",
                     "in": "header",
                     "description": "API Token authentication. Format: 'APIToken <your-token>'",
-                }
+                },
             },
             "schemas": {},
             "responses": {},
@@ -494,7 +557,7 @@ def merge_specs_by_domain(
         )
 
         all_tags = []
-        for filename, spec in spec_list:
+        for _filename, spec in spec_list:
             # Merge paths
             for path, path_item in spec.get("paths", {}).items():
                 if path not in merged_spec["paths"]:
@@ -523,8 +586,7 @@ def merge_specs_by_domain(
             for path_item in spec.get("paths", {}).values():
                 for operation in path_item.values():
                     if isinstance(operation, dict):
-                        for tag in operation.get("tags", []):
-                            all_tags.append({"name": tag})
+                        all_tags.extend({"name": tag} for tag in operation.get("tags", []))
 
         # Deduplicate tags
         seen = set()
@@ -568,23 +630,27 @@ def create_master_spec(domain_specs: dict[str, dict[str, Any]], version: str) ->
         all_tags.extend(spec.get("tags", []))
 
     # Deduplicate tags
-    seen = set()
+    seen: set[str] = set()
     unique_tags = []
     for tag in all_tags:
         name = tag.get("name") if isinstance(tag, dict) else tag
         if name and name not in seen:
             unique_tags.append(tag if isinstance(tag, dict) else {"name": tag})
             seen.add(name)
-    master["tags"] = sorted(unique_tags, key=lambda t: t.get("name", ""))
+
+    def get_tag_name(t: dict[str, Any]) -> str:
+        return t.get("name", "")
+
+    master["tags"] = sorted(unique_tags, key=get_tag_name)
 
     return master
 
 
 def create_spec_index(domain_specs: dict[str, dict[str, Any]], version: str) -> dict[str, Any]:
     """Create an index file listing all available specifications."""
-    index = {
+    index: dict[str, Any] = {
         "version": version,
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": datetime.now(tz=timezone.utc).isoformat(),
         "specifications": [],
     }
 
@@ -598,7 +664,7 @@ def create_spec_index(domain_specs: dict[str, dict[str, Any]], version: str) -> 
                 "file": f"{domain}.json",
                 "path_count": len(spec.get("paths", {})),
                 "schema_count": len(spec.get("components", {}).get("schemas", {})),
-            }
+            },
         )
 
     return index
@@ -614,7 +680,7 @@ def get_version() -> str:
     version_file = Path(".version")
     if version_file.exists():
         return version_file.read_text().strip()
-    return datetime.now().strftime("%Y.%m.%d")
+    return datetime.now(tz=timezone.utc).strftime("%Y.%m.%d")
 
 
 def run_pipeline(
@@ -672,8 +738,12 @@ def run_pipeline(
                 spec = load_spec(spec_file)
 
                 # Step 1: Enrich (in memory)
-                spec, enrich_count = enrich_spec(spec, config)
-                stats.enrichment_changes += enrich_count
+                spec, enrich_stats = enrich_spec(spec, config)
+                stats.enrichment_changes += enrich_stats.get("field_count", 0)
+                stats.schemas_fixed += enrich_stats.get("schemas_fixed", 0)
+                stats.operations_tagged += enrich_stats.get("operations_tagged", 0)
+                stats.descriptions_generated += enrich_stats.get("descriptions_generated", 0)
+                stats.consistency_issues += enrich_stats.get("consistency_issues", 0)
 
                 # Step 2: Normalize (in memory)
                 spec, norm_count = normalize_spec(spec, config)
@@ -730,6 +800,10 @@ def print_summary(stats: PipelineStats) -> None:
     table.add_row("Files Failed", str(stats.files_failed))
     table.add_row("Enrichment Changes", str(stats.enrichment_changes))
     table.add_row("Normalization Changes", str(stats.normalization_changes))
+    table.add_row("Schemas Fixed", str(stats.schemas_fixed))
+    table.add_row("Operations Tagged", str(stats.operations_tagged))
+    table.add_row("Descriptions Generated", str(stats.descriptions_generated))
+    table.add_row("Consistency Issues", str(stats.consistency_issues))
     table.add_row("Domains Created", str(stats.domains_created))
     table.add_row("Paths Merged", str(stats.paths_merged))
     table.add_row("Schemas Merged", str(stats.schemas_merged))
@@ -747,13 +821,17 @@ def print_summary(stats: PipelineStats) -> None:
 def generate_report(stats: PipelineStats, output_path: Path) -> None:
     """Generate pipeline report."""
     report = {
-        "timestamp": datetime.now().isoformat(),
+        "timestamp": datetime.now(tz=timezone.utc).isoformat(),
         "summary": {
             "files_processed": stats.files_processed,
             "files_succeeded": stats.files_succeeded,
             "files_failed": stats.files_failed,
             "enrichment_changes": stats.enrichment_changes,
             "normalization_changes": stats.normalization_changes,
+            "schemas_fixed": stats.schemas_fixed,
+            "operations_tagged": stats.operations_tagged,
+            "descriptions_generated": stats.descriptions_generated,
+            "consistency_issues": stats.consistency_issues,
             "domains_created": stats.domains_created,
             "paths_merged": stats.paths_merged,
             "schemas_merged": stats.schemas_merged,
@@ -762,8 +840,9 @@ def generate_report(stats: PipelineStats, output_path: Path) -> None:
     }
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_path, "w") as f:
+    with output_path.open("w") as f:
         json.dump(report, f, indent=2)
+        f.write("\n")
 
     console.print(f"[green]Report saved to {output_path}[/green]")
 

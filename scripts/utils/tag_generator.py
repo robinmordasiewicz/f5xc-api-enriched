@@ -7,7 +7,7 @@ aligned with F5 XC domain categorization.
 
 import re
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 import yaml
 
@@ -20,7 +20,7 @@ class TagGenerator:
     """
 
     # Tag definitions with descriptions (aligned with DOMAIN_PATTERNS in merge_specs.py)
-    TAG_DEFINITIONS = {
+    TAG_DEFINITIONS: ClassVar[dict[str, dict[str, Any]]] = {
         "API Security": {
             "description": "API security, discovery, testing, and protection operations",
             "patterns": [
@@ -287,7 +287,7 @@ class TagGenerator:
         },
     }
 
-    def __init__(self, config_path: Path | None = None):
+    def __init__(self, config_path: Path | None = None) -> None:
         """Initialize with configuration from file.
 
         Args:
@@ -307,9 +307,7 @@ class TagGenerator:
         self._compiled_patterns: dict[str, list[re.Pattern]] = {}
         for tag_name, tag_info in self._tag_definitions.items():
             patterns = tag_info.get("patterns", [])
-            self._compiled_patterns[tag_name] = [
-                re.compile(p, re.IGNORECASE) for p in patterns
-            ]
+            self._compiled_patterns[tag_name] = [re.compile(p, re.IGNORECASE) for p in patterns]
 
         # Statistics tracking
         self._operations_tagged = 0
@@ -320,7 +318,7 @@ class TagGenerator:
         if not config_path.exists():
             return
 
-        with open(config_path) as f:
+        with config_path.open() as f:
             config = yaml.safe_load(f) or {}
 
         tags_config = config.get("tags", {})
@@ -374,7 +372,16 @@ class TagGenerator:
 
             for method, operation in path_item.items():
                 # Skip non-operation keys like parameters, summary, etc.
-                if method.lower() not in ("get", "post", "put", "patch", "delete", "head", "options", "trace"):
+                if method.lower() not in (
+                    "get",
+                    "post",
+                    "put",
+                    "patch",
+                    "delete",
+                    "head",
+                    "options",
+                    "trace",
+                ):
                     continue
 
                 if not isinstance(operation, dict):
@@ -385,7 +392,7 @@ class TagGenerator:
 
                 # Only add tag if not already present
                 if tag and tag not in existing_tags:
-                    operation["tags"] = [tag] + existing_tags
+                    operation["tags"] = [tag, *existing_tags]
                     self._operations_tagged += 1
 
         return result

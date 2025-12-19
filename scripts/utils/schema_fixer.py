@@ -6,7 +6,7 @@ such as schemas with 'format' but missing 'type' field.
 """
 
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 import yaml
 
@@ -19,7 +19,7 @@ class SchemaFixer:
     """
 
     # Mapping of format values to their corresponding type
-    FORMAT_TYPE_MAPPING = {
+    FORMAT_TYPE_MAPPING: ClassVar[dict[str, str]] = {
         # String formats
         "string": "string",
         "binary": "string",
@@ -41,7 +41,7 @@ class SchemaFixer:
         "double": "number",
     }
 
-    def __init__(self, config_path: Path | None = None):
+    def __init__(self, config_path: Path | None = None) -> None:
         """Initialize with configuration from file.
 
         Args:
@@ -64,7 +64,7 @@ class SchemaFixer:
         if not config_path.exists():
             return
 
-        with open(config_path) as f:
+        with config_path.open() as f:
             config = yaml.safe_load(f) or {}
 
         schema_config = config.get("schema_fixes", {})
@@ -96,10 +96,9 @@ class SchemaFixer:
 
             # Recurse into all values
             return {key: self._fix_recursive(value) for key, value in obj.items()}
-        elif isinstance(obj, list):
+        if isinstance(obj, list):
             return [self._fix_recursive(item) for item in obj]
-        else:
-            return obj
+        return obj
 
     def _needs_type_fix(self, obj: dict[str, Any]) -> bool:
         """Check if object has 'format' but no 'type' field.
@@ -120,10 +119,7 @@ class SchemaFixer:
             return False
 
         # Must NOT have allOf/oneOf/anyOf (composition)
-        if any(key in obj for key in ("allOf", "oneOf", "anyOf")):
-            return False
-
-        return True
+        return not any(key in obj for key in ("allOf", "oneOf", "anyOf"))
 
     def _apply_type_fix(self, obj: dict[str, Any]) -> dict[str, Any]:
         """Add missing 'type' field based on 'format' value."""
