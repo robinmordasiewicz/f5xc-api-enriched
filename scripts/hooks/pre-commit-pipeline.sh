@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Pre-commit hook: Regenerate enriched specs and stage changes
 #
-# This hook ensures specs/enriched/ is always in sync with specs/original/
+# This hook ensures docs/specifications/api/ is always in sync with specs/original/
 # by running the same pipeline used by make build and GitHub Actions.
 #
 # DRY Principle: All methods use the same command:
@@ -51,26 +51,15 @@ if ! $PYTHON -m scripts.pipeline; then
     exit 1
 fi
 
-# Stage any changes to enriched specs
-ENRICHED_CHANGES=$(git diff --name-only -- 'specs/enriched/*.json' 2>/dev/null | wc -l | tr -d ' ')
+# Stage any changes to enriched specs (output is directly in docs/)
+ENRICHED_CHANGES=$(git diff --name-only -- 'docs/specifications/api/*.json' 2>/dev/null | wc -l | tr -d ' ')
 
 if [ "$ENRICHED_CHANGES" -gt 0 ]; then
     echo -e "${YELLOW}Staging $ENRICHED_CHANGES updated enriched spec files...${NC}"
-    git add specs/enriched/*.json
+    git add docs/specifications/api/*.json
     echo -e "${GREEN}Enriched specs updated and staged.${NC}"
 else
     echo -e "${GREEN}No enriched spec changes detected.${NC}"
-fi
-
-# Also stage docs copy if present
-if [ -d "docs/specs/enriched" ]; then
-    # Copy enriched specs to docs
-    cp -r specs/enriched/* docs/specs/enriched/ 2>/dev/null || true
-    DOCS_CHANGES=$(git diff --name-only -- 'docs/specs/enriched/*.json' 2>/dev/null | wc -l | tr -d ' ')
-    if [ "$DOCS_CHANGES" -gt 0 ]; then
-        git add docs/specs/enriched/*.json
-        echo -e "${GREEN}Docs specs also staged.${NC}"
-    fi
 fi
 
 echo -e "${GREEN}Pre-commit pipeline complete.${NC}"

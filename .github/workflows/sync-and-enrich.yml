@@ -112,7 +112,7 @@ jobs:
 
       - name: Lint specifications with Spectral
         continue-on-error: true
-        run: python scripts/lint.py --input-dir specs/enriched
+        run: python scripts/lint.py --input-dir docs/specifications/api
 
       - name: Validate specifications
         continue-on-error: true
@@ -125,10 +125,10 @@ jobs:
         id: version
         run: |
           # Stage enriched specs for comparison
-          git add specs/enriched/
+          git add docs/specifications/api/
 
           # Check if enriched specs have changes
-          if git diff --cached --quiet -- specs/enriched/*.json; then
+          if git diff --cached --quiet -- docs/specifications/api/*.json; then
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
             echo "No changes in enriched specs"
             exit 0
@@ -158,10 +158,10 @@ jobs:
               BUMP_TYPE="major"
             else
               # Check for new domain files (minor bump)
-              PREV_COUNT=$(git show HEAD:specs/enriched/index.json 2>/dev/null | \
+              PREV_COUNT=$(git show HEAD:docs/specifications/api/index.json 2>/dev/null | \
                 jq '.specifications | length' 2>/dev/null || echo "0")
               CURR_COUNT=$(jq '.specifications | length' \
-                specs/enriched/index.json 2>/dev/null || echo "0")
+                docs/specifications/api/index.json 2>/dev/null || echo "0")
 
               if [ "$CURR_COUNT" -gt "$PREV_COUNT" ]; then
                 NEW_VERSION="${MAJOR}.$((MINOR + 1)).0"
@@ -195,23 +195,16 @@ jobs:
           VERSION="${{ steps.version.outputs.new_version }}"
 
           # Update index.json
-          jq --arg v "$VERSION" '.version = $v' specs/enriched/index.json > /tmp/index.json
-          mv /tmp/index.json specs/enriched/index.json
+          jq --arg v "$VERSION" '.version = $v' docs/specifications/api/index.json > /tmp/index.json
+          mv /tmp/index.json docs/specifications/api/index.json
 
           # Update all domain specs
-          for spec in specs/enriched/*.json; do
+          for spec in docs/specifications/api/*.json; do
             if [ "$(basename "$spec")" != "index.json" ]; then
               jq --arg v "$VERSION" '.info.version = $v' "$spec" > /tmp/spec.json
               mv /tmp/spec.json "$spec"
             fi
           done
-
-      - name: Copy specs to docs
-        if: steps.version.outputs.has_changes == 'true'
-        run: |
-          mkdir -p docs/specs
-          rm -rf docs/specs/enriched
-          cp -r specs/enriched docs/specs/
 
       - name: Generate changelog
         if: steps.version.outputs.has_changes == 'true'
@@ -243,13 +236,13 @@ jobs:
 
           ### Statistics
           - Original specs: $(find specs/original -name '*.json' 2>/dev/null | wc -l | xargs)
-          - Domains: $(jq '.specifications | length' specs/enriched/index.json)
-          - Total paths: $(jq '[.specifications[].path_count] | add' specs/enriched/index.json)
-          - Total schemas: $(jq '[.specifications[].schema_count] | add' specs/enriched/index.json)
+          - Domains: $(jq '.specifications | length' docs/specifications/api/index.json)
+          - Total paths: $(jq '[.specifications[].path_count] | add' docs/specifications/api/index.json)
+          - Total schemas: $(jq '[.specifications[].schema_count] | add' docs/specifications/api/index.json)
 
           ### Output Structure
           \`\`\`text
-          specs/enriched/
+          docs/specifications/api/
           ├── [domain].json        # Domain-specific specs
           ├── openapi.json         # Master combined spec
           └── index.json           # Metadata index
@@ -304,8 +297,8 @@ jobs:
           gh release create "v$VERSION" \
             --title "API Specs v$VERSION" \
             --notes-file CHANGELOG.md \
-            specs/enriched/openapi.json \
-            specs/enriched/index.json
+            docs/specifications/api/openapi.json \
+            docs/specifications/api/index.json
 
   deploy-docs:
     name: Deploy Documentation
@@ -326,13 +319,6 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
-
-      - name: Prepare docs directory
-        run: |
-          # Ensure specs are in docs folder
-          mkdir -p docs/specs
-          rm -rf docs/specs/enriched
-          cp -r specs/enriched docs/specs/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4

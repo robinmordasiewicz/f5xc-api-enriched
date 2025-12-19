@@ -14,7 +14,7 @@ Pipeline flow:
         ↓
     [Merge: combine by domain]
         ↓
-    specs/enriched/
+    docs/specifications/api/
         ├── api_security.json
         ├── applications.json
         ├── bigip.json
@@ -83,7 +83,7 @@ console = Console()
 DEFAULT_CONFIG = {
     "paths": {
         "original": "specs/original",
-        "enriched": "specs/enriched",
+        "enriched": "docs/specifications/api",
         "reports": "reports",
     },
     "target_fields": ["description", "summary", "title", "x-displayname"],
@@ -858,7 +858,7 @@ Examples:
     python -m scripts.pipeline --dry-run    # Analyze without writing
 
 Output (merged domain specs only):
-    specs/enriched/
+    docs/specifications/api/
         ├── api_security.json
         ├── applications.json
         ├── bigip.json

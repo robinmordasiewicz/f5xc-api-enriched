@@ -5,7 +5,7 @@ Resolves orphan $ref references, removes empty operations, and ensures
 schema compliance for Scalar and Swagger UI compatibility.
 Fully automated - no manual intervention required.
 
-IMPORTANT: This script reads from specs/enriched/ and writes to specs/normalized/
+IMPORTANT: This script reads from docs/specifications/api and writes in-place.
 The original specs (specs/original/) are NEVER modified.
 """
 
@@ -36,8 +36,8 @@ console = Console()
 # Default configuration
 DEFAULT_CONFIG = {
     "paths": {
-        "enriched": "specs/enriched/individual",
-        "normalized": "specs/enriched/individual",
+        "enriched": "docs/specifications/api",
+        "normalized": "docs/specifications/api",
         "reports": "reports",
     },
     "normalization": {
