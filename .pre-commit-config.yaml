@@ -24,6 +24,22 @@ default_stages: [pre-commit]
 
 repos:
   # =============================================================================
+  # CUSTOM HOOKS
+  # =============================================================================
+
+  - repo: local
+    hooks:
+      # F5 XC API Enrichment Pipeline
+      # Runs the unified pipeline and stages enriched specs
+      - id: f5xc-pipeline
+        name: F5 XC API Enrichment Pipeline
+        entry: scripts/hooks/pre-commit-pipeline.sh
+        language: script
+        files: ^(specs/original/.*\.json|scripts/.*\.py|config/.*\.yaml)$
+        pass_filenames: false
+        stages: [pre-commit]
+        verbose: true
+  # =============================================================================
   # SECURITY HOOKS
   # =============================================================================
 
@@ -41,6 +57,8 @@ repos:
     rev: v5.0.0
     hooks:
       # Whitespace and line ending fixes
+      - id: no-commit-to-branch
+        args: ['--branch', 'main', '--branch', 'master']
       - id: trailing-whitespace
         exclude: ^specs/original/
       - id: end-of-file-fixer
@@ -75,8 +93,6 @@ repos:
         exclude: ^specs/original/
       - id: check-symlinks
       - id: destroyed-symlinks
-      - id: no-commit-to-branch
-        args: ['--branch', 'main', '--branch', 'master']
 
       # Security
       - id: detect-private-key
@@ -164,22 +180,6 @@ repos:
       - id: markdownlint
         args: ['--fix', '--disable', 'MD013', 'MD033', 'MD041', '--']
 
-  # =============================================================================
-  # CUSTOM HOOKS
-  # =============================================================================
-
-  - repo: local
-    hooks:
-      # F5 XC API Enrichment Pipeline
-      # Runs the unified pipeline and stages enriched specs
-      - id: f5xc-pipeline
-        name: F5 XC API Enrichment Pipeline
-        entry: scripts/hooks/pre-commit-pipeline.sh
-        language: script
-        files: ^(specs/original/.*\.json|scripts/.*\.py|config/.*\.yaml)$
-        pass_filenames: false
-        stages: [pre-commit]
-        verbose: true
 
 # =============================================================================
 # CI CONFIGURATION
