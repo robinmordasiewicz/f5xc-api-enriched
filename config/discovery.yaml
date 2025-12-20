@@ -1,0 +1,85 @@
+# F5 XC API Discovery Configuration
+# Systematically explores live API to discover undocumented behavior
+
+discovery:
+  # API Connection (uses environment variables)
+  api_url: "${F5XC_API_URL}"
+  auth_token: "${F5XC_API_TOKEN}"
+
+  # Rate Limiting
+  rate_limit:
+    requests_per_second: 5        # Conservative rate to avoid throttling
+    burst_limit: 10               # Max concurrent requests
+    backoff_base: 1.0             # Initial backoff in seconds
+    backoff_max: 60.0             # Maximum backoff in seconds
+    backoff_multiplier: 2.0       # Exponential backoff multiplier
+    retry_attempts: 3             # Retries on transient failures
+
+  # Exploration Settings
+  exploration:
+    # Namespaces to explore (start with common ones)
+    namespaces:
+      - "system"
+      - "shared"
+    # HTTP methods for discovery (read-only)
+    methods:
+      - "GET"
+      - "OPTIONS"
+    timeout_seconds: 30           # Request timeout
+    max_endpoints_per_run: 500    # Limit per discovery run
+    skip_patterns:                # Endpoints to skip
+      - "/api/web/"               # Web UI endpoints
+      - "/api/swagger/"           # Swagger endpoints
+      - "/__debug__"              # Debug endpoints
+
+  # Schema Inference
+  schema_inference:
+    sample_size: 3                # Responses per endpoint to sample
+    infer_types: true             # Detect JSON types
+    detect_patterns: true         # Regex patterns for strings (email, uuid, url)
+    detect_constraints: true      # min/max, enum values
+    detect_defaults: true         # Default value identification
+    max_array_items: 10           # Max items to analyze in arrays
+    string_pattern_thresholds:
+      uuid: 0.9                   # Confidence threshold for UUID pattern
+      email: 0.9                  # Confidence threshold for email pattern
+      date: 0.8                   # Confidence threshold for date pattern
+      url: 0.9                    # Confidence threshold for URL pattern
+
+  # Diff Analysis
+  diff_analysis:
+    compare_required_fields: true
+    compare_types: true
+    compare_constraints: true
+    compare_enums: true
+    compare_defaults: true
+    ignore_fields:                # Fields to ignore in comparison
+      - "metadata.creation_timestamp"
+      - "metadata.modification_timestamp"
+      - "metadata.uid"
+      - "system_metadata"
+
+  # Output Configuration
+  output:
+    base_dir: "specs/discovered"
+    format: "json"
+    pretty_print: true
+    include_examples: true
+    include_raw_responses: false  # Don't store raw responses (large)
+    generate_openapi: true        # Generate OpenAPI spec
+    generate_diff_report: true    # Generate comparison report
+    generate_markdown: true       # Generate human-readable summary
+
+  # CLI Integration (f5xcctl)
+  cli:
+    executable: "f5xcctl"
+    use_cli_for_list: true        # Use CLI for listing resources
+    use_cli_for_rpc: true         # Use CLI for RPC calls
+    output_format: "json"
+
+  # Logging
+  logging:
+    level: "INFO"
+    log_file: "reports/discovery.log"
+    log_requests: false           # Don't log individual requests (verbose)
+    log_responses: false          # Don't log responses (very verbose)

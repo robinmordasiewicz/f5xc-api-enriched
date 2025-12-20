@@ -28,6 +28,7 @@ from scripts.utils import (
     ConsistencyValidator,
     DescriptionStructureTransformer,
     DescriptionValidator,
+    DiscoveryEnricher,
     GrammarImprover,
     SchemaFixer,
     TagGenerator,
@@ -42,6 +43,7 @@ DEFAULT_CONFIG = {
         "original": "specs/original",
         "enriched": "docs/specifications/api",
         "reports": "reports",
+        "discovered": "specs/discovered",
     },
     "target_fields": ["description", "summary", "title", "x-displayname"],
     "preserve_fields": ["operationId", "$ref", "x-ves-proto-rpc", "x-ves-proto-service"],
@@ -64,7 +66,15 @@ DEFAULT_CONFIG = {
         "json_indent": 2,
         "sort_keys": False,
     },
+    "discovery_enrichment": {
+        "enabled": False,
+        "discovered_specs_dir": "specs/discovered",
+    },
 }
+
+# Global discovery enricher instance (loaded once, reused)
+_discovery_enricher: DiscoveryEnricher | None = None
+_discovery_config: dict | None = None
 
 
 @dataclass
@@ -84,6 +94,7 @@ class EnrichmentStats:
     validation_passed: int = 0
     validation_failed: int = 0
     consistency_issues: int = 0
+    discovery_enrichments: int = 0
     errors: list[dict[str, Any]] = field(default_factory=list)
 
 
@@ -117,6 +128,56 @@ def _deep_merge(base: dict, override: dict) -> dict:
         else:
             result[key] = value
     return result
+
+
+def load_discovery_enricher(config: dict) -> DiscoveryEnricher | None:
+    """Load discovery enricher with discovery data.
+
+    Args:
+        config: Enrichment configuration
+
+    Returns:
+        Initialized DiscoveryEnricher or None if disabled/unavailable
+    """
+    global _discovery_enricher, _discovery_config
+
+    discovery_config = config.get("discovery_enrichment", {})
+    if not discovery_config.get("enabled", False):
+        return None
+
+    # Return cached enricher if config hasn't changed
+    if _discovery_enricher is not None and _discovery_config == discovery_config:
+        return _discovery_enricher
+
+    discovered_dir = Path(
+        discovery_config.get("discovered_specs_dir", "specs/discovered"),
+    )
+
+    if not discovered_dir.exists():
+        console.print(
+            f"[yellow]Discovery data not found: {discovered_dir}[/yellow]",
+        )
+        console.print("[yellow]Run 'make discover' to generate discovery data[/yellow]")
+        return None
+
+    # Load discovery enrichment config from separate file if exists
+    discovery_config_path = Path("config/discovery_enrichment.yaml")
+    if discovery_config_path.exists():
+        with discovery_config_path.open() as f:
+            full_discovery_config = yaml.safe_load(f) or {}
+            discovery_config = _deep_merge(discovery_config, full_discovery_config)
+
+    enricher = DiscoveryEnricher(discovery_config)
+
+    try:
+        enricher.load_discovery_data(discovered_dir)
+        console.print(f"[green]Loaded discovery data from {discovered_dir}[/green]")
+        _discovery_enricher = enricher
+        _discovery_config = discovery_config
+        return enricher
+    except Exception as e:
+        console.print(f"[red]Failed to load discovery data: {e}[/red]")
+        return None
 
 
 def load_spec(spec_path: Path) -> dict[str, Any]:
@@ -237,6 +298,14 @@ def enrich_spec_file(
         # 7. Description validation and generation (auto-generate missing descriptions)
         spec = description_validator.validate_and_generate(spec)
 
+        # 8. Discovery enrichment (add x-discovered-* extensions)
+        discovery_enrichments = 0
+        discovery_enricher = load_discovery_enricher(config)
+        if discovery_enricher:
+            spec = discovery_enricher.enrich_with_discoveries(spec)
+            discovery_stats = discovery_enricher.get_stats()
+            discovery_enrichments = discovery_stats.get("fields_enriched", 0)
+
         # Close grammar improver resources
         grammar_improver.close()
 
@@ -281,6 +350,7 @@ def enrich_spec_file(
                 "tags_generated": tag_stats.get("tags_generated", 0),
                 "descriptions_generated": desc_stats.get("operations_generated", 0),
                 "consistency_issues": consistency_stats.get("total_issues", 0),
+                "discovery_enrichments": discovery_enrichments,
             },
             validation_passed=validation_passed,
             error=validation_error if not validation_passed else None,
@@ -501,6 +571,11 @@ def main() -> int:
         action="store_true",
         help="Only validate existing enriched specs",
     )
+    parser.add_argument(
+        "--use-discovery",
+        action="store_true",
+        help="Enable discovery enrichment (adds x-discovered-* extensions)",
+    )
 
     args = parser.parse_args()
 
@@ -516,9 +591,18 @@ def main() -> int:
     if args.workers:
         config["processing"]["parallel_workers"] = args.workers
 
+    # Enable discovery enrichment if requested
+    if args.use_discovery:
+        if "discovery_enrichment" not in config:
+            config["discovery_enrichment"] = {}
+        config["discovery_enrichment"]["enabled"] = True
+
     console.print("[bold blue]F5 XC API Specification Enrichment[/bold blue]")
     console.print(f"  Input:  {input_dir}")
     console.print(f"  Output: {output_dir}")
+
+    if config.get("discovery_enrichment", {}).get("enabled", False):
+        console.print("  [green]Discovery enrichment: enabled[/green]")
 
     if not input_dir.exists():
         console.print(f"[red]Input directory not found: {input_dir}[/red]")

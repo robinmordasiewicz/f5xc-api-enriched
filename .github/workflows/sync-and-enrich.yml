@@ -97,8 +97,26 @@ jobs:
       - name: Download specifications
         run: python -m scripts.download --force
 
+      - name: Check for Discovery Data
+        id: check-discovery
+        run: |
+          # Check for session.json (metadata) since openapi.json is gitignored due to size
+          if [ -f "specs/discovered/session.json" ]; then
+            echo "has_discovery=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::Discovery session found - discovery enrichment available locally"
+          else
+            echo "has_discovery=false" >> "$GITHUB_OUTPUT"
+            echo "No discovery data - running standard enrichment"
+          fi
+
       - name: Run enrichment pipeline
         run: python -m scripts.pipeline
+        env:
+          DISCOVERY_ENRICHMENT_ENABLED: ${{ steps.check-discovery.outputs.has_discovery }}
+
+      - name: Generate constraint analysis report
+        if: steps.check-discovery.outputs.has_discovery == 'true'
+        run: python -m scripts.analyze_constraints
 
       - name: Lint specifications with Spectral
         run: python scripts/lint.py --input-dir docs/specifications/api --fail-on-error
@@ -200,6 +218,22 @@ jobs:
             fi
           done
 
+      - name: Generate discovery summary
+        id: discovery-summary
+        if: steps.check-discovery.outputs.has_discovery == 'true'
+        run: |
+          if [ -f "specs/discovered/session.json" ]; then
+            ENDPOINTS=$(jq -r '.statistics.endpoints_total // 0' specs/discovered/session.json)
+            SUCCESS=$(jq -r '.statistics.endpoints_successful // 0' specs/discovered/session.json)
+            TIMESTAMP=$(jq -r '.started_at // "unknown"' specs/discovered/session.json)
+            {
+              echo "endpoints_total=$ENDPOINTS"
+              echo "endpoints_success=$SUCCESS"
+              echo "discovery_timestamp=$TIMESTAMP"
+            } >> "$GITHUB_OUTPUT"
+            echo "::notice::Discovery: ${SUCCESS}/${ENDPOINTS} endpoints discovered at ${TIMESTAMP}"
+          fi
+
       - name: Generate changelog
         if: steps.version.outputs.has_changes == 'true'
         run: |
@@ -212,6 +246,12 @@ jobs:
           UPSTREAM_ETAG=$(jq -r '."x-upstream-etag" // "unknown"' docs/specifications/api/index.json)
           ENRICHED_VER=$(jq -r '."x-enriched-version" // "'$VERSION'"' docs/specifications/api/index.json)
           FULL_VERSION=$(jq -r '.version' docs/specifications/api/index.json)
+
+          # Discovery info (if available)
+          HAS_DISCOVERY="${{ steps.check-discovery.outputs.has_discovery }}"
+          DISCOVERY_ENDPOINTS="${{ steps.discovery-summary.outputs.endpoints_total }}"
+          DISCOVERY_SUCCESS="${{ steps.discovery-summary.outputs.endpoints_success }}"
+          DISCOVERY_TIMESTAMP="${{ steps.discovery-summary.outputs.discovery_timestamp }}"
 
           cat > CHANGELOG.md << EOF
           # Changelog
@@ -247,6 +287,21 @@ jobs:
           - Domains: $(jq '.specifications | length' docs/specifications/api/index.json)
           - Total paths: $(jq '[.specifications[].path_count] | add' docs/specifications/api/index.json)
           - Total schemas: $(jq '[.specifications[].schema_count] | add' docs/specifications/api/index.json)
+          EOF
+
+          # Add discovery section if available
+          if [ "$HAS_DISCOVERY" = "true" ] && [ -n "$DISCOVERY_ENDPOINTS" ]; then
+            cat >> CHANGELOG.md << EOF
+
+          ### API Discovery Enrichment
+          - Discovery timestamp: $DISCOVERY_TIMESTAMP
+          - Endpoints explored: $DISCOVERY_SUCCESS / $DISCOVERY_ENDPOINTS
+          - Applied x-discovered-* extensions from live API exploration
+          - See \`reports/constraint-analysis.md\` for detailed comparison
+          EOF
+          fi
+
+          cat >> CHANGELOG.md << EOF
 
           ### Output Structure
           \`\`\`text

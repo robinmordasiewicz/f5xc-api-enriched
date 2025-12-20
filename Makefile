@@ -42,7 +42,7 @@
 #       ├── openapi.json    (master combined spec)
 #       └── index.json      (spec metadata)
 
-.PHONY: all build clean install download download-force pipeline enrich normalize merge lint validate serve help check-deps venv pre-commit-install pre-commit-run pre-commit-uninstall
+.PHONY: all build clean install download download-force pipeline enrich normalize merge lint validate serve help check-deps venv pre-commit-install pre-commit-run pre-commit-uninstall discover discover-namespace discover-dry-run discover-cli enrich-with-discovery constraint-report build-enriched pipeline-enriched push-discovery discover-and-push
 
 # Virtual environment
 VENV := .venv
@@ -111,6 +111,72 @@ validate:
 		$(PYTHON) -m scripts.validate --dry-run; \
 	fi
 
+# API Discovery - explore live API to find undocumented behavior
+discover:
+	@if [ -z "$$F5XC_API_TOKEN" ]; then \
+		echo "F5XC_API_TOKEN not set. Set credentials first."; \
+		exit 1; \
+	fi
+	$(PYTHON) -m scripts.discover
+
+# Discover specific namespace (usage: make discover-namespace NS=system)
+discover-namespace:
+	@if [ -z "$$F5XC_API_TOKEN" ]; then \
+		echo "F5XC_API_TOKEN not set. Set credentials first."; \
+		exit 1; \
+	fi
+	$(PYTHON) -m scripts.discover --namespace $(NS)
+
+# Dry run discovery (list endpoints without making requests)
+discover-dry-run:
+	$(PYTHON) -m scripts.discover --dry-run
+
+# CLI-only discovery using f5xcctl
+discover-cli:
+	@if [ -z "$$F5XC_API_TOKEN" ]; then \
+		echo "F5XC_API_TOKEN not set. Set credentials first."; \
+		exit 1; \
+	fi
+	$(PYTHON) -m scripts.discover --cli-only
+
+# Enrichment with discovery data (adds x-discovered-* extensions)
+enrich-with-discovery:
+	$(PYTHON) -m scripts.enrich --use-discovery
+
+# Generate constraint comparison report
+constraint-report:
+	$(PYTHON) -m scripts.analyze_constraints
+
+# Push discovery session metadata to GitHub (run after make discover)
+# Note: openapi.json is gitignored due to size (~26MB), only session.json is tracked
+push-discovery:
+	@if [ ! -f specs/discovered/session.json ]; then \
+		echo "No discovery data. Run 'make discover' first."; \
+		exit 1; \
+	fi
+	git add specs/discovered/session.json
+	git commit -m "chore: update API discovery session metadata"
+	git push
+	@echo ""
+	@echo "Discovery session pushed. Run 'make discover' locally before pipeline for enrichment."
+
+# Full local discovery workflow (discover + push)
+discover-and-push: discover push-discovery
+
+# Full pipeline with discovery enrichment
+build-enriched: check-deps download discover pipeline-enriched
+	@echo ""
+	@echo "Build complete with discovery enrichment. Output in:"
+	@echo "  docs/specifications/api/  - Enriched domain API specifications"
+	@echo "  reports/                  - Constraint analysis report"
+	@echo ""
+	@echo "Run 'make serve' to preview locally"
+
+# Pipeline with discovery enrichment
+pipeline-enriched:
+	$(PYTHON) -m scripts.pipeline
+	$(PYTHON) -m scripts.analyze_constraints
+
 # Serve documentation locally
 serve:
 	@echo "Starting local server at http://localhost:8000"
@@ -128,6 +194,7 @@ clean:
 # Deep clean - removes everything including downloaded specs
 clean-all: clean
 	rm -rf specs/original
+	rm -rf specs/discovered
 	rm -f .etag
 	rm -f .version
 	@echo "Deep clean complete. Run 'make download' to fetch specs."
@@ -180,6 +247,19 @@ help:
 	@echo "  merge          Combine specs by domain"
 	@echo "  lint           Validate specs with Spectral OpenAPI linter"
 	@echo "  validate       Test with live API (needs credentials)"
+	@echo ""
+	@echo "API Discovery (explore live API for undocumented behavior):"
+	@echo "  discover           Full API discovery (needs F5XC_API_TOKEN)"
+	@echo "  discover-namespace Discover specific namespace (NS=system)"
+	@echo "  discover-dry-run   List endpoints without making requests"
+	@echo "  discover-cli       CLI-only discovery using f5xcctl"
+	@echo ""
+	@echo "Discovery Enrichment (enhance specs with real API behavior):"
+	@echo "  enrich-with-discovery  Enrich specs with discovery data (x-discovered-* extensions)"
+	@echo "  constraint-report      Generate constraint comparison report"
+	@echo "  build-enriched         Full pipeline with discovery (download → discover → pipeline)"
+	@echo "  push-discovery         Commit and push discovery data to GitHub (for CI consumption)"
+	@echo "  discover-and-push      Full workflow: discover + push (behind VPN → GitHub Actions)"
 	@echo ""
 	@echo "Setup:"
 	@echo "  install        Install Python and Node.js dependencies"
