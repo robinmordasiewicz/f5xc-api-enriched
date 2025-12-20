@@ -12,18 +12,7 @@ on:
       - 'config/**'
       - 'requirements.txt'
       - '.github/workflows/sync-and-enrich.yml'
-  workflow_dispatch:
-    inputs:
-      bump_type:
-        description: 'Version bump type'
-        required: false
-        default: 'auto'
-        type: choice
-        options:
-          - auto
-          - patch
-          - minor
-          - major
+      - 'docs/**/*.html'
 
 permissions:
   contents: write
@@ -140,8 +129,8 @@ jobs:
           CURRENT_VERSION=$(cat .version 2>/dev/null | tr -d '[:space:]')
           echo "current_version=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
 
-          # Determine bump type
-          BUMP_TYPE="${{ github.event.inputs.bump_type || 'auto' }}"
+          # Determine bump type (always auto since workflow_dispatch removed)
+          BUMP_TYPE="auto"
 
           # Migration check: if not semver format, start at 1.0.0
           if [[ ! "$CURRENT_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
