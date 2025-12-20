@@ -247,6 +247,53 @@ jobs:
           - ETag: ${{ needs.check-updates.outputs.etag || 'N/A' }}
           EOF
 
+      - name: Create release package
+        id: package
+        if: steps.version.outputs.has_changes == 'true'
+        run: |
+          VERSION="${{ steps.version.outputs.new_version }}"
+          RELEASE_DIR="release-package"
+          ZIP_NAME="f5xc-api-specs-v${VERSION}.zip"
+
+          mkdir -p "$RELEASE_DIR/domains"
+
+          # Copy master specs
+          cp docs/specifications/api/openapi.json "$RELEASE_DIR/"
+
+          # Convert JSON to YAML
+          python -c "
+          import json
+          import yaml
+
+          with open('docs/specifications/api/openapi.json', 'r') as f:
+              spec = json.load(f)
+
+          with open('$RELEASE_DIR/openapi.yaml', 'w') as f:
+              yaml.dump(spec, f, default_flow_style=False, allow_unicode=True, sort_keys=False)
+          "
+
+          # Copy domain specs
+          for f in docs/specifications/api/*.json; do
+            basename_f=$(basename "$f")
+            if [ "$basename_f" != "openapi.json" ] && [ "$basename_f" != "index.json" ]; then
+              cp "$f" "$RELEASE_DIR/domains/"
+            fi
+          done
+
+          # Copy metadata
+          cp docs/specifications/api/index.json "$RELEASE_DIR/"
+          cp CHANGELOG.md "$RELEASE_DIR/"
+
+          # Generate README from template (replace placeholders)
+          sed "s/{VERSION}/$VERSION/g; s/{DATE}/$(date -u +%Y-%m-%d)/g" \
+            release/README.md > "$RELEASE_DIR/README.md"
+
+          # Create ZIP
+          cd "$RELEASE_DIR" && zip -r "../$ZIP_NAME" .
+
+          echo "zip_name=$ZIP_NAME" >> "$GITHUB_OUTPUT"
+          echo "::notice::Created release package: $ZIP_NAME"
+
       - name: Upload docs artifact for deployment
         if: steps.version.outputs.has_changes == 'true'
         uses: actions/upload-artifact@v4
@@ -289,6 +336,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION="${{ steps.version.outputs.new_version }}"
+          ZIP_NAME="${{ steps.package.outputs.zip_name }}"
 
           # Check if release already exists
           if gh release view "v$VERSION" >/dev/null 2>&1; then
@@ -296,12 +344,11 @@ jobs:
             exit 0
           fi
 
-          # Create release with enriched specs (files exist locally, just gitignored)
+          # Create release with ZIP package
           gh release create "v$VERSION" \
-            --title "API Specs v$VERSION" \
+            --title "F5 XC API Specs v$VERSION" \
             --notes-file CHANGELOG.md \
-            docs/specifications/api/openapi.json \
-            docs/specifications/api/index.json
+            "$ZIP_NAME"
 
   deploy-docs:
     name: Deploy Documentation
