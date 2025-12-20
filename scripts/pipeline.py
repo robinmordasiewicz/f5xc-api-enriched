@@ -240,7 +240,8 @@ def enrich_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], dic
         "field_count": field_count,
         "schemas_fixed": schema_stats.get("fixes_applied", 0),
         "operations_tagged": tag_stats.get("operations_tagged", 0),
-        "descriptions_generated": desc_stats.get("descriptions_generated", 0),
+        "descriptions_generated": desc_stats.get("operations_generated", 0)
+        + desc_stats.get("schemas_generated", 0),
         "consistency_issues": consistency_stats.get("total_issues", 0),
     }
 
