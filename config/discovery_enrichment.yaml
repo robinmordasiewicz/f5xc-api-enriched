@@ -174,3 +174,38 @@ discovery_enrichment:
 
     # Include field-by-field comparison
     include_field_comparison: true
+
+# Constraint Reconciliation Configuration
+# Reconciles discovered values INTO standard OpenAPI fields
+# Discovery values from live API are treated as source of truth
+reconciliation:
+  # Master switch for reconciliation
+  enabled: true
+
+  # Reconciliation mode:
+  #   - "replace": Always use discovered value (discovery is source of truth) [DEFAULT]
+  #   - "tighten": Only update if discovered constraint is stricter
+  #   - "add_missing": Only add if published field is missing
+  mode: "replace"
+
+  # Minimum confidence level to reconcile a constraint (0.0-1.0)
+  confidence_threshold: 0.8
+
+  # Minimum sample size required before reconciling
+  min_sample_size: 5
+
+  # Maintain audit trail of changes
+  # - x-original-* for overwritten values
+  # - x-reconciled-* for traceability
+  audit_enabled: true
+
+  # Field-specific mode overrides
+  # Use to be more conservative with sensitive fields
+  field_rules:
+    # Patterns are sensitive - only add if missing
+    pattern:
+      mode: "add_missing"
+
+    # Type changes can be breaking - only add if missing
+    type:
+      mode: "add_missing"

@@ -70,8 +70,10 @@ from scripts.utils import (
     AcronymNormalizer,
     BrandingTransformer,
     ConsistencyValidator,
+    ConstraintReconciler,
     DescriptionStructureTransformer,
     DescriptionValidator,
+    DiscoveryEnricher,
     GrammarImprover,
     SchemaFixer,
     TagGenerator,
@@ -130,6 +132,9 @@ class PipelineStats:
     domains_created: int = 0
     paths_merged: int = 0
     schemas_merged: int = 0
+    discovery_enriched: int = 0
+    constraints_reconciled: int = 0
+    constraints_preserved: int = 0
     errors: list[dict[str, Any]] = field(default_factory=list)
 
 
@@ -1016,7 +1021,7 @@ def run_pipeline(
 ) -> PipelineStats:
     """Run the complete enrichment pipeline.
 
-    Processes specs in memory (enrich → normalize) then merges by domain.
+    Processes specs in memory (enrich → normalize → discovery → reconcile) then merges by domain.
     No individual files are written - only merged domain specs.
 
     Args:
@@ -1041,6 +1046,46 @@ def run_pipeline(
     # Create output directory
     if not dry_run:
         output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Load discovery enrichment configuration
+    discovery_config_path = Path("config/discovery_enrichment.yaml")
+    discovery_config: dict = {}
+    if discovery_config_path.exists():
+        with discovery_config_path.open() as f:
+            discovery_config = yaml.safe_load(f) or {}
+
+    # Check if discovery enrichment is enabled
+    discovery_enabled = config.get("discovery_enrichment", {}).get("enabled", False)
+    discovery_enricher = None
+    discovery_data = None
+
+    if discovery_enabled:
+        discovery_settings = discovery_config.get("discovery_enrichment", {})
+        discovered_dir = Path(discovery_settings.get("discovered_specs_dir", "specs/discovered"))
+
+        if discovered_dir.exists() and (discovered_dir / "openapi.json").exists():
+            console.print("[blue]Loading discovery data for enrichment...[/blue]")
+            discovery_enricher = DiscoveryEnricher(discovery_settings)
+            discovery_data = discovery_enricher.load_discovery_data(discovered_dir)
+            console.print(
+                f"[green]Discovery data loaded: {len(discovery_data.schemas)} schemas, "
+                f"{len(discovery_data.paths)} paths[/green]",
+            )
+        else:
+            console.print(
+                "[yellow]Discovery enrichment enabled but no discovery data found[/yellow]",
+            )
+
+    # Check if constraint reconciliation is enabled
+    reconciliation_config = discovery_config.get("reconciliation", {})
+    reconciliation_enabled = reconciliation_config.get("enabled", True) and discovery_enabled
+    reconciler = None
+
+    if reconciliation_enabled:
+        reconciler = ConstraintReconciler(reconciliation_config)
+        console.print(
+            f"[blue]Constraint reconciliation enabled (mode: {reconciler.mode})[/blue]",
+        )
 
     # Process specs in memory
     processed_specs: dict[str, dict[str, Any]] = {}
@@ -1074,6 +1119,19 @@ def run_pipeline(
                 spec, norm_count = normalize_spec(spec, config)
                 stats.normalization_changes += norm_count
 
+                # Step 3: Discovery enrichment (in memory)
+                if discovery_enricher and discovery_data:
+                    spec = discovery_enricher.enrich_with_discoveries(spec, discovery_data)
+                    discovery_stats = discovery_enricher.get_stats()
+                    stats.discovery_enriched += discovery_stats.get("fields_enriched", 0)
+
+                # Step 4: Constraint reconciliation (in memory)
+                if reconciler:
+                    spec, reconcile_report = reconciler.reconcile_spec(spec)
+                    reconcile_stats = reconcile_report.get("statistics", {})
+                    stats.constraints_reconciled += reconcile_stats.get("reconciled", 0)
+                    stats.constraints_preserved += reconcile_stats.get("preserved", 0)
+
                 # Store for merging (no individual file output)
                 processed_specs[spec_file.name] = spec
                 stats.files_succeeded += 1
@@ -1087,7 +1145,7 @@ def run_pipeline(
             stats.files_processed += 1
             progress.update(task, advance=1)
 
-    # Step 3: Merge by domain (only merged specs are written)
+    # Step 5: Merge by domain (only merged specs are written)
     if not dry_run and processed_specs:
         console.print("[blue]Merging specifications by domain...[/blue]")
         version = get_version()
@@ -1133,6 +1191,14 @@ def print_summary(stats: PipelineStats) -> None:
     table.add_row("Paths Merged", str(stats.paths_merged))
     table.add_row("Schemas Merged", str(stats.schemas_merged))
 
+    # Discovery enrichment stats (if any)
+    if stats.discovery_enriched > 0:
+        table.add_row("Discovery Enriched", str(stats.discovery_enriched))
+    if stats.constraints_reconciled > 0:
+        table.add_row("Constraints Reconciled", str(stats.constraints_reconciled))
+    if stats.constraints_preserved > 0:
+        table.add_row("Custom Extensions Preserved", str(stats.constraints_preserved))
+
     console.print(table)
 
     if stats.errors:
@@ -1160,6 +1226,9 @@ def generate_report(stats: PipelineStats, output_path: Path) -> None:
             "domains_created": stats.domains_created,
             "paths_merged": stats.paths_merged,
             "schemas_merged": stats.schemas_merged,
+            "discovery_enriched": stats.discovery_enriched,
+            "constraints_reconciled": stats.constraints_reconciled,
+            "constraints_preserved": stats.constraints_preserved,
         },
         "errors": stats.errors,
     }
