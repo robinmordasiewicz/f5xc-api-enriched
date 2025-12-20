@@ -39,11 +39,13 @@ if ! $PYTHON -m scripts.pipeline; then
 fi
 
 # Stage any changes to enriched specs (output is directly in docs/)
+# Note: openapi.json is in .gitignore (too large for GitHub), so we only stage domain specs
 ENRICHED_CHANGES=$(git diff --name-only -- 'docs/specifications/api/*.json' 2>/dev/null | wc -l | tr -d ' ')
 
 if [ "$ENRICHED_CHANGES" -gt 0 ]; then
     echo -e "${YELLOW}Staging $ENRICHED_CHANGES updated enriched spec files...${NC}"
-    git add docs/specifications/api/*.json
+    # Use --ignore-errors to skip ignored files like openapi.json
+    git add --ignore-errors docs/specifications/api/*.json 2>/dev/null || true
     echo -e "${GREEN}Enriched specs updated and staged.${NC}"
 else
     echo -e "${GREEN}No enriched spec changes detected.${NC}"

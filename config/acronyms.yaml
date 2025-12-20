@@ -1,5 +1,6 @@
 # Acronym normalization rules for F5 Distributed Cloud API specifications
 # Format: lowercase_term: NORMALIZED_FORM
+# Synchronized with f5xc-api-mcp project (142+ acronyms)
 
 acronyms:
   # F5 and Product Specific
@@ -7,10 +8,15 @@ acronyms:
   xc: XC
   volterra: Volterra
   ves: VES
+  big-ip: BIG-IP
+  bigip: BIG-IP
+  nginx: NGINX
+  adc: ADC
 
   # Protocols and Standards
   api: API
   apis: APIs
+  rest: REST
   url: URL
   urls: URLs
   uri: URI
@@ -30,11 +36,22 @@ acronyms:
   grpc: gRPC
   ssh: SSH
   smtp: SMTP
+  imap: IMAP
+  pop3: POP3
+  ftp: FTP
+  sftp: SFTP
+  rdp: RDP
+  snmp: SNMP
+  ntp: NTP
   ldap: LDAP
   saml: SAML
   oidc: OIDC
   oauth: OAuth
   jwt: JWT
+  sni: SNI
+  rfc: RFC
+  iso: ISO
+  utc: UTC
 
   # Security
   waf: WAF
@@ -42,12 +59,20 @@ acronyms:
   xss: XSS
   csrf: CSRF
   sql: SQL
+  sqli: SQLi
+  owasp: OWASP
+  cve: CVE
   rbac: RBAC
   acl: ACL
   mfa: MFA
+  sso: SSO
   pki: PKI
   ca: CA
   crl: CRL
+  ad: AD
+  radius: RADIUS
+  tacacs: TACACS
+  ipsec: IPsec
 
   # Cloud and Infrastructure
   cdn: CDN
@@ -62,37 +87,62 @@ acronyms:
   vms: VMs
   ce: CE
   re: RE
+  pop: POP
+  ec2: EC2
+  eks: EKS
+  aks: AKS
+  gke: GKE
+  saas: SaaS
+  paas: PaaS
+  iaas: IaaS
+  sdk: SDK
+  crd: CRD
+  crds: CRDs
 
   # Networking
   lb: LB
   nlb: NLB
   alb: ALB
   elb: ELB
+  slb: SLB
+  glb: GLB
+  gslb: GSLB
   bgp: BGP
+  ospf: OSPF
   asn: ASN
   cidr: CIDR
   nat: NAT
   snat: SNAT
   dnat: DNAT
   vip: VIP
+  vpn: VPN
   nic: NIC
+  mac: MAC
+  arp: ARP
   mtu: MTU
   qos: QoS
   vlan: VLAN
+  mpls: MPLS
+  gre: GRE
+  vxlan: VXLAN
 
   # Data and Formats
   json: JSON
   yaml: YAML
   xml: XML
   csv: CSV
+  html: HTML
+  css: CSS
   uuid: UUID
   id: ID
   ids: IDs
 
   # Technical Terms
   cpu: CPU
+  gpu: GPU
   ram: RAM
   io: I/O
+  iops: IOPS
   ssd: SSD
   hdd: HDD
   os: OS

@@ -16,7 +16,17 @@ paths:
   reports: "reports"
 
 # Branding transformations
+# Synchronized with f5xc-api-mcp project for compatibility
 branding:
+  # Protected patterns - these should NOT be transformed
+  # Used to preserve API URLs, console URLs, and schema references
+  protected_patterns:
+    - "https?://[^\\s]*\\.volterra\\.(io|us)"  # API URLs
+    - "console\\.ves\\.volterra\\.io"           # Console URLs
+    - "/api/(config|data)/"                     # API paths
+    - "\\$ref"                                  # Schema $ref references
+    - "ves\\.io\\.schema"                       # Schema namespaces
+
   replacements:
     # Company/Product naming
     - pattern: "\\bVolterra\\b"
@@ -26,6 +36,28 @@ branding:
     - pattern: "\\bvolterra\\b"
       replacement: "F5 Distributed Cloud"
       case_sensitive: false
+
+    # VoltStack transformations (MCP compatibility)
+    - pattern: "\\bVoltStack\\b"
+      replacement: "Customer Edge"
+      case_sensitive: true
+
+    - pattern: "\\bvoltstack_site\\b"
+      replacement: "customer_edge_site"
+      case_sensitive: false
+
+    # VES transformations (MCP compatibility)
+    - pattern: "\\bVES Console\\b"
+      replacement: "F5XC Console"
+      case_sensitive: true
+
+    - pattern: "\\bVES\\b"
+      replacement: "F5XC"
+      case_sensitive: true
+
+    - pattern: "\\bVolterra Edge Services\\b"
+      replacement: "F5 Distributed Cloud"
+      case_sensitive: true
 
     # Domain references (be careful not to break URLs in external docs)
     - pattern: "volterra\\.us"
@@ -39,7 +71,7 @@ branding:
       case_sensitive: false
       context: "description"
 
-    # Naming convention: my- prefix → example- prefix
+    # Naming convention: my- prefix → example- prefix (MCP compatibility)
     - pattern: "\\bmy-"
       replacement: "example-"
       case_sensitive: true
