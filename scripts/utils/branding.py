@@ -17,6 +17,7 @@ class BrandingTransformer:
 
     Fully automated branding updates with configurable rules.
     Loads rules from config/enrichment.yaml.
+    Respects protected patterns (URLs, schema refs) that should not be transformed.
     """
 
     def __init__(self, config_path: Path | None = None) -> None:
@@ -30,6 +31,7 @@ class BrandingTransformer:
 
         self.replacements: list[dict[str, Any]] = []
         self._compiled_patterns: list[tuple[re.Pattern, str, str | None]] = []
+        self._protected_patterns: list[re.Pattern] = []
         self._preserve_fields: set[str] = set()
 
         self._load_config(config_path)
@@ -72,6 +74,40 @@ class BrandingTransformer:
         self.replacements = branding.get("replacements", [])
         self._preserve_fields = set(config.get("preserve_fields", []))
 
+        # Load protected patterns (URLs, schema refs that should not be transformed)
+        protected = branding.get("protected_patterns", [])
+        self._protected_patterns = self._compile_protected_patterns(protected)
+
+    @staticmethod
+    def _try_compile_pattern(pattern_str: str) -> re.Pattern[str] | None:
+        """Try to compile a regex pattern, returning None on failure.
+
+        Args:
+            pattern_str: Regex pattern string to compile.
+
+        Returns:
+            Compiled pattern or None if invalid.
+        """
+        try:
+            return re.compile(pattern_str)
+        except re.error:
+            return None
+
+    def _compile_protected_patterns(
+        self,
+        patterns: list[str],
+    ) -> list[re.Pattern[str]]:
+        """Compile protected pattern strings to regex patterns.
+
+        Args:
+            patterns: List of regex pattern strings.
+
+        Returns:
+            List of compiled regex patterns (invalid patterns are skipped).
+        """
+        compiled = [self._try_compile_pattern(p) for p in patterns]
+        return [p for p in compiled if p is not None]
+
     def _compile_patterns(self) -> None:
         """Pre-compile regex patterns for efficient matching."""
         for rule in self.replacements:
@@ -89,8 +125,69 @@ class BrandingTransformer:
                 # Skip invalid patterns
                 continue
 
+    def _contains_protected_pattern(self, text: str) -> bool:
+        """Check if text contains any protected pattern.
+
+        Args:
+            text: Text to check.
+
+        Returns:
+            True if text contains a protected pattern that should not be transformed.
+        """
+        return any(pattern.search(text) for pattern in self._protected_patterns)
+
+    def _apply_with_protection(
+        self,
+        text: str,
+        pattern: re.Pattern,
+        replacement: str,
+    ) -> str:
+        """Apply replacement while protecting certain patterns.
+
+        Splits text on protected patterns, applies replacement only to
+        unprotected segments, then rejoins.
+
+        Args:
+            text: Input text.
+            pattern: Compiled regex pattern to apply.
+            replacement: Replacement string.
+
+        Returns:
+            Text with replacement applied to unprotected segments.
+        """
+        if not self._protected_patterns:
+            return pattern.sub(replacement, text)
+
+        # Build a combined pattern for all protected segments
+        protected_combined = "|".join(f"({p.pattern})" for p in self._protected_patterns)
+
+        try:
+            split_pattern = re.compile(f"({protected_combined})")
+        except re.error:
+            # If combined pattern is invalid, fall back to simple replacement
+            return pattern.sub(replacement, text)
+
+        # Split on protected patterns, keeping the delimiters
+        parts = split_pattern.split(text)
+
+        # Apply replacement only to non-protected parts
+        result_parts = []
+        for part in parts:
+            if part is None:
+                continue
+            # Check if this part matches any protected pattern
+            is_protected = any(p.fullmatch(part) for p in self._protected_patterns)
+            if is_protected:
+                result_parts.append(part)
+            else:
+                result_parts.append(pattern.sub(replacement, part))
+
+        return "".join(result_parts)
+
     def transform_text(self, text: str, field_name: str | None = None) -> str:
         """Apply branding transformations to a text string.
+
+        Respects protected patterns (URLs, schema refs) that should not be modified.
 
         Args:
             text: Input text with legacy branding.
@@ -109,7 +206,11 @@ class BrandingTransformer:
             if context is not None and field_name is not None and field_name != context:
                 continue
 
-            result = pattern.sub(replacement, result)
+            # Apply replacement with protection for special patterns
+            if self._protected_patterns and self._contains_protected_pattern(result):
+                result = self._apply_with_protection(result, pattern, replacement)
+            else:
+                result = pattern.sub(replacement, result)
 
         return result
 
@@ -163,6 +264,7 @@ class BrandingTransformer:
         return {
             "replacement_count": len(self.replacements),
             "pattern_count": len(self._compiled_patterns),
+            "protected_pattern_count": len(self._protected_patterns),
             "preserve_field_count": len(self._preserve_fields),
         }
 
