@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 1.0.4 (2025-12-19)
+## Version 1.0.5 (2025-12-19)
 
 ### Release Type
 
