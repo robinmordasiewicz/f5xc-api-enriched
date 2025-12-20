@@ -1,13 +1,19 @@
 # Changelog
 
-## Version 1.0.13 (2025-12-20)
+## Version 1.0.14 (2025-12-20)
+
+### Version Information
+| Field | Value |
+|-------|-------|
+| Full Version | 1.0.14 |
+| Upstream Timestamp | unknown |
+| Upstream ETag | unknown |
+| Enriched Version | 1.0.14 |
 
 ### Release Type
-
 - **patch** release
 
 ### Changes
-
 - Updated API specifications from F5 Distributed Cloud
 - Applied enrichment pipeline:
   - Acronym normalization (100+ terms)
@@ -21,14 +27,18 @@
 - Merged specifications by domain
 
 ### Statistics
-
 - Original specs: 270
 - Domains: 23
 - Total paths: 1553
 - Total schemas: 8014
 
-### Output Structure
+### API Discovery Enrichment
+- Discovery timestamp: 2025-12-20T19:39:20.211392+00:00
+- Endpoints explored: 300 / 1000
+- Applied x-discovered-* extensions from live API exploration
+- See `reports/constraint-analysis.md` for detailed comparison
 
+### Output Structure
 ```text
 docs/specifications/api/
 ├── [domain].json        # Domain-specific specs
@@ -36,7 +46,9 @@ docs/specifications/api/
 └── index.json           # Metadata index
 ```
 
-### Source
+### Download
+- ZIP Package: F5xc-api-(unknown-1.0.14).zip
 
+### Source
 - Source: F5 Distributed Cloud OpenAPI specifications
-- ETag: N/A
+- Upstream: unknown (ETag: unknown)
