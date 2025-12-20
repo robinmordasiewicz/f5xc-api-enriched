@@ -2,16 +2,20 @@
 # Local builds produce identical output to GitHub Actions workflow
 #
 # Simplified two-folder architecture:
-#   specs/original/          - READ-ONLY source from F5
+#   specs/original/          - READ-ONLY source from F5 (gitignored, downloaded on demand)
 #   docs/specifications/api/ - Merged domain specs (served directly by GitHub Pages)
 #
+# ETag-based caching: Downloads only when F5 source has changed, minimizing bandwidth.
+# The .etag file stores the last downloaded version for comparison.
+#
 # Usage:
-#   make build      - Full pipeline (download → enrich → normalize → merge)
-#   make clean      - Remove generated files
-#   make install    - Install dependencies
-#   make download   - Download specs only
-#   make pipeline   - Run unified pipeline (enrich + normalize + merge)
-#   make serve      - Serve docs locally
+#   make build          - Full pipeline (download → enrich → normalize → merge)
+#   make download       - Download specs (only if changed, uses ETag caching)
+#   make download-force - Force download even if unchanged
+#   make pipeline       - Run unified pipeline (enrich + normalize + merge)
+#   make serve          - Serve docs locally
+#   make clean          - Remove generated files
+#   make install        - Install dependencies
 #
 # The pipeline ensures deterministic output:
 #   specs/original/          → READ-ONLY source from F5
@@ -38,7 +42,7 @@
 #       ├── openapi.json    (master combined spec)
 #       └── index.json      (spec metadata)
 
-.PHONY: all build clean install download pipeline enrich normalize merge lint validate serve help check-deps venv pre-commit-install pre-commit-run pre-commit-uninstall
+.PHONY: all build clean install download download-force pipeline enrich normalize merge lint validate serve help check-deps venv pre-commit-install pre-commit-run pre-commit-uninstall
 
 # Virtual environment
 VENV := .venv
@@ -73,8 +77,12 @@ install: venv
 	$(PIP) install -r requirements.txt
 	@echo "Dependencies installed successfully"
 
-# Download specifications from F5 (with ETag caching)
+# Download specifications from F5 (with ETag caching - only downloads if changed)
 download:
+	$(PYTHON) -m scripts.download
+
+# Force download even if ETag hasn't changed
+download-force:
 	$(PYTHON) -m scripts.download --force
 
 # Run unified pipeline (enrich → normalize → merge)
@@ -147,32 +155,35 @@ help:
 	@echo "F5 XC API Enrichment Pipeline"
 	@echo ""
 	@echo "Simplified two-folder architecture:"
-	@echo "  specs/original/          - READ-ONLY source from F5"
+	@echo "  specs/original/          - READ-ONLY source from F5 (gitignored, downloaded on demand)"
 	@echo "  docs/specifications/api/ - Merged domain specs (GitHub Pages)"
 	@echo ""
 	@echo "Usage: make [target]"
 	@echo ""
 	@echo "Main targets:"
-	@echo "  build       Full pipeline (download → pipeline)"
-	@echo "  rebuild     Quick rebuild (skip download, use existing original specs)"
-	@echo "  serve       Start local server to preview docs"
-	@echo "  clean       Remove generated files (keeps original specs)"
-	@echo "  clean-all   Remove all generated files including downloads"
+	@echo "  build          Full pipeline (download → pipeline)"
+	@echo "  rebuild        Quick rebuild (skip download, use existing original specs)"
+	@echo "  serve          Start local server to preview docs"
+	@echo "  clean          Remove generated files (keeps original specs)"
+	@echo "  clean-all      Remove all generated files including downloads"
+	@echo ""
+	@echo "Download (with ETag caching to minimize bandwidth):"
+	@echo "  download       Download specs from F5 (only if changed, uses ETag)"
+	@echo "  download-force Force download even if ETag unchanged"
 	@echo ""
 	@echo "Pipeline:"
-	@echo "  download    Download specs from F5"
-	@echo "  pipeline    Run unified pipeline (enrich → normalize → merge)"
+	@echo "  pipeline       Run unified pipeline (enrich → normalize → merge)"
 	@echo ""
 	@echo "Individual steps (for debugging):"
-	@echo "  enrich      Apply branding, acronyms, grammar"
-	@echo "  normalize   Fix orphan refs, clean operations"
-	@echo "  merge       Combine specs by domain"
-	@echo "  lint        Validate specs with Spectral OpenAPI linter"
-	@echo "  validate    Test with live API (needs credentials)"
+	@echo "  enrich         Apply branding, acronyms, grammar"
+	@echo "  normalize      Fix orphan refs, clean operations"
+	@echo "  merge          Combine specs by domain"
+	@echo "  lint           Validate specs with Spectral OpenAPI linter"
+	@echo "  validate       Test with live API (needs credentials)"
 	@echo ""
 	@echo "Setup:"
-	@echo "  install     Install Python and Node.js dependencies"
-	@echo "  check-deps  Verify all dependencies are installed"
+	@echo "  install        Install Python and Node.js dependencies"
+	@echo "  check-deps     Verify all dependencies are installed"
 	@echo ""
 	@echo "Pre-commit:"
 	@echo "  pre-commit-install    Install git pre-commit hooks"
