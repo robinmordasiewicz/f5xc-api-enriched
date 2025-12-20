@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 # Pre-commit hook: Regenerate enriched specs and validate on every commit
 #
+# IMPORTANT: This hook validates ALL files on every commit, including:
+#   - All 270 original specs in specs/original/
+#   - All 25 generated specs in docs/specifications/api/ (gitignored)
+#   - Linting runs on ALL generated specs, not just staged files
+#
 # This hook runs the same steps as GitHub Actions workflow:
 #   1. Enrichment pipeline (python -m scripts.pipeline)
-#   2. Spectral linting (python scripts/lint.py)
+#   2. Spectral linting (python scripts/lint.py --input-dir docs/specifications/api)
 #
 # DRY Principle: All methods use the same commands:
 #   - Manual: make pipeline && make lint
@@ -11,6 +16,7 @@
 #   - GitHub Actions: same python commands
 #
 # This ensures idempotent, deterministic output between local and CI/CD.
+# Linting is NEVER skipped - Spectral must be installed.
 
 set -e
 
@@ -54,24 +60,29 @@ else
 fi
 
 # =============================================================================
-# STEP 2: Run Spectral Linting (same as GitHub Actions)
+# STEP 2: Run Spectral Linting on ALL generated specs (same as GitHub Actions)
 # =============================================================================
-echo -e "${YELLOW}[2/2] Running Spectral linting...${NC}"
+echo -e "${YELLOW}[2/2] Running Spectral linting on ALL generated specs...${NC}"
 
-# Check if Spectral is installed
+# Check if Spectral is installed - REQUIRED, never skip
 if ! command -v spectral &> /dev/null; then
-    echo -e "${YELLOW}Spectral not installed. Install with: npm install -g @stoplight/spectral-cli${NC}"
-    echo -e "${YELLOW}Skipping Spectral linting (will run in CI/CD)${NC}"
-else
-    echo -e "${YELLOW}Executing: $PYTHON scripts/lint.py --input-dir docs/specifications/api${NC}"
+    echo -e "${RED}ERROR: Spectral CLI is not installed!${NC}"
+    echo -e "${RED}Linting is REQUIRED and cannot be skipped.${NC}"
+    echo -e "${YELLOW}Install with: npm install -g @stoplight/spectral-cli${NC}"
+    exit 1
+fi
 
-    # Run linting - capture output but don't fail on lint issues
-    # (matches GitHub Actions behavior with continue-on-error: true)
-    if $PYTHON scripts/lint.py --input-dir docs/specifications/api; then
-        echo -e "${GREEN}Spectral linting passed.${NC}"
-    else
-        echo -e "${YELLOW}Spectral linting completed with issues (non-blocking).${NC}"
-    fi
+echo -e "${YELLOW}Executing: $PYTHON scripts/lint.py --input-dir docs/specifications/api --fail-on-error${NC}"
+echo -e "${YELLOW}Note: Validating ALL 25 generated specs (including gitignored files)${NC}"
+
+# Run linting on ALL files in the directory - fail on errors to ensure clean specs
+if $PYTHON scripts/lint.py --input-dir docs/specifications/api --fail-on-error; then
+    echo -e "${GREEN}Spectral linting passed (all files validated).${NC}"
+else
+    LINT_EXIT_CODE=$?
+    echo -e "${RED}Spectral linting failed with errors!${NC}"
+    echo -e "${RED}Fix linting errors before committing.${NC}"
+    exit $LINT_EXIT_CODE
 fi
 
 echo -e "${GREEN}Pre-commit pipeline complete.${NC}"

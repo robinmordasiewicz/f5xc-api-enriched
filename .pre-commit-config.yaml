@@ -30,8 +30,11 @@ repos:
   - repo: local
     hooks:
       # F5 XC API Enrichment Pipeline
-      # Runs the unified pipeline and stages enriched specs
-      # Always runs first to ensure generated output is validated by subsequent hooks
+      # Runs the unified pipeline and Spectral linting on EVERY commit
+      # Validates ALL files including gitignored specs in docs/specifications/api/
+      # - always_run: true = runs on every commit regardless of staged files
+      # - pass_filenames: false = processes all files, not just staged ones
+      # - Linting is REQUIRED and never skipped (fails if Spectral not installed)
       - id: f5xc-pipeline
         name: F5 XC API Enrichment Pipeline
         entry: scripts/hooks/pre-commit-pipeline.sh

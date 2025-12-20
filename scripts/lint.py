@@ -33,9 +33,9 @@ DEFAULT_CONFIG = {
         "ruleset": "config/spectral.yaml",
     },
     "linting": {
-        "fail_on_error": False,
+        "fail_on_error": True,
         "fail_on_warning": False,
-        "skip_on_lint_failure": True,
+        "skip_on_lint_failure": False,
         "max_errors_per_file": 100,
     },
     "spectral": {

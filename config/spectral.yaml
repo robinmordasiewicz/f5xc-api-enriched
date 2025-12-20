@@ -26,6 +26,12 @@ rules:
   # Don't require examples for everything
   oas3-valid-schema-example: off
 
+  # F5 XC API specs have schema properties named "examples" that Spectral
+  # incorrectly validates as OpenAPI Example objects. These are schema
+  # definitions, not media type examples. Disable to avoid false positives.
+  oas3-valid-media-example: off
+  oas3-examples-value-or-externalValue: off
+
   # Allow missing tags on operations (F5 specs don't always tag)
   operation-tag-defined: off
 
