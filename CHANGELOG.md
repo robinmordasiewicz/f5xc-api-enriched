@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 1.0.6 (2025-12-20)
+## Version 1.0.7 (2025-12-20)
 
 ### Release Type
 - **patch** release
