@@ -31,11 +31,12 @@ repos:
     hooks:
       # F5 XC API Enrichment Pipeline
       # Runs the unified pipeline and stages enriched specs
+      # Always runs first to ensure generated output is validated by subsequent hooks
       - id: f5xc-pipeline
         name: F5 XC API Enrichment Pipeline
         entry: scripts/hooks/pre-commit-pipeline.sh
         language: script
-        files: ^(specs/original/.*\.json|scripts/.*\.py|config/.*\.yaml)$
+        always_run: true
         pass_filenames: false
         stages: [pre-commit]
         verbose: true
