@@ -25,6 +25,7 @@
         .header-nav {
             display: flex;
             gap: 1.5rem;
+            align-items: center;
         }
         .header-nav a {
             color: rgba(255,255,255,0.8);
@@ -33,11 +34,54 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         .header-nav a:hover { color: white; }
+        .spec-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .spec-selector label {
+            font-size: 0.9rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .spec-selector select {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 4px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 0.85rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            cursor: pointer;
+        }
+        .spec-selector select:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        .spec-selector select option {
+            background: #1a1a2e;
+            color: white;
+        }
+        #scalar-container {
+            min-height: calc(100vh - 60px);
+        }
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 60px);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #666;
+        }
     </style>
 </head>
 <body>
     <div class="header-bar">
         <span class="header-title">F5 Distributed Cloud API</span>
+        <div class="spec-selector">
+            <label for="spec-select">API Domain:</label>
+            <select id="spec-select" onchange="loadSpec(this.value)">
+                <option value="">Loading...</option>
+            </select>
+        </div>
         <nav class="header-nav">
             <a href="../">Home</a>
             <a href="../swagger-ui/">Swagger UI</a>
@@ -45,10 +89,88 @@
         </nav>
     </div>
 
-    <script
-        id="api-reference"
-        data-url="../specifications/api/openapi.json">
-    </script>
+    <div id="scalar-container">
+        <div class="loading">Loading API documentation...</div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
+    <script>
+        let currentSpec = null;
+
+        function loadSpec(url) {
+            if (!url) return;
+            currentSpec = url;
+
+            // Clear and recreate container
+            const container = document.getElementById('scalar-container');
+            container.innerHTML = '<div class="loading">Loading API documentation...</div>';
+
+            // Create new script element for Scalar
+            const script = document.createElement('script');
+            script.id = 'api-reference';
+            script.dataset.url = url;
+            container.innerHTML = '';
+            container.appendChild(script);
+
+            // Reinitialize Scalar
+            if (window.Scalar) {
+                window.Scalar.createApiReference('#scalar-container', {
+                    spec: { url: url }
+                });
+            }
+        }
+
+        // Initialize on page load
+        window.onload = async function() {
+            const select = document.getElementById('spec-select');
+            let defaultSpec = null;
+
+            try {
+                const response = await fetch('../specifications/api/index.json');
+                if (response.ok) {
+                    const index = await response.json();
+                    select.innerHTML = '';
+
+                    index.specifications.forEach((spec, idx) => {
+                        const option = document.createElement('option');
+                        option.value = `../specifications/api/${spec.file}`;
+                        option.textContent = `${spec.title} (${spec.path_count} endpoints)`;
+                        select.appendChild(option);
+
+                        // Use load_balancer as default, or first spec
+                        if (spec.domain === 'load_balancer') {
+                            defaultSpec = option.value;
+                            option.selected = true;
+                        } else if (idx === 0 && !defaultSpec) {
+                            defaultSpec = option.value;
+                        }
+                    });
+
+                    // Load default spec
+                    if (defaultSpec) {
+                        const container = document.getElementById('scalar-container');
+                        container.innerHTML = '';
+
+                        const script = document.createElement('script');
+                        script.id = 'api-reference';
+                        script.dataset.url = defaultSpec;
+                        container.appendChild(script);
+
+                        // Initialize Scalar
+                        if (window.Scalar) {
+                            window.Scalar.createApiReference('#scalar-container', {
+                                spec: { url: defaultSpec }
+                            });
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error('Could not load spec index:', e);
+                select.innerHTML = '<option value="">Error loading specs</option>';
+                document.getElementById('scalar-container').innerHTML =
+                    '<div class="loading">Error loading API specifications</div>';
+            }
+        };
+    </script>
 </body>
 </html>

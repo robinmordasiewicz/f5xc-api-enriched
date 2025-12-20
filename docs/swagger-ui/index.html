@@ -123,9 +123,9 @@
     </div>
 
     <div class="spec-selector">
-        <label for="spec-select">Select API:</label>
+        <label for="spec-select">Select API Domain:</label>
         <select id="spec-select" onchange="loadSpec(this.value)">
-            <option value="../specifications/api/openapi.json">Complete API (All Domains)</option>
+            <option value="">Loading...</option>
         </select>
     </div>
 
@@ -136,58 +136,9 @@
     <script>
         let ui = null;
 
-        function loadSpec(url) {
-            if (ui) {
-                ui = SwaggerUIBundle({
-                    url: url,
-                    dom_id: '#swagger-ui',
-                    presets: [
-                        SwaggerUIBundle.presets.apis,
-                        SwaggerUIStandalonePreset
-                    ],
-                    plugins: [
-                        SwaggerUIBundle.plugins.DownloadUrl
-                    ],
-                    layout: "StandaloneLayout",
-                    deepLinking: true,
-                    showExtensions: true,
-                    showCommonExtensions: true,
-                    tryItOutEnabled: true,
-                    requestInterceptor: function(req) {
-                        // Add auth header if token is set
-                        const token = localStorage.getItem('f5xc_api_token');
-                        if (token) {
-                            req.headers['Authorization'] = 'APIToken ' + token;
-                        }
-                        return req;
-                    }
-                });
-            }
-        }
-
-        // Initialize Swagger UI
-        window.onload = async function() {
-            // Load spec index to populate dropdown
-            try {
-                const response = await fetch('../specifications/api/index.json');
-                if (response.ok) {
-                    const index = await response.json();
-                    const select = document.getElementById('spec-select');
-
-                    index.specifications.forEach(spec => {
-                        const option = document.createElement('option');
-                        option.value = `../specifications/api/${spec.file}`;
-                        option.textContent = `${spec.title} (${spec.path_count} endpoints)`;
-                        select.appendChild(option);
-                    });
-                }
-            } catch (e) {
-                console.log('Could not load spec index');
-            }
-
-            // Initialize Swagger UI with default spec
+        function initSwaggerUI(url) {
             ui = SwaggerUIBundle({
-                url: "../specifications/api/openapi.json",
+                url: url,
                 dom_id: '#swagger-ui',
                 presets: [
                     SwaggerUIBundle.presets.apis,
@@ -210,8 +161,51 @@
                     return req;
                 }
             });
-
             window.ui = ui;
+        }
+
+        function loadSpec(url) {
+            if (url && ui) {
+                initSwaggerUI(url);
+            }
+        }
+
+        // Initialize Swagger UI
+        window.onload = async function() {
+            const select = document.getElementById('spec-select');
+            let defaultSpec = null;
+
+            // Load spec index to populate dropdown
+            try {
+                const response = await fetch('../specifications/api/index.json');
+                if (response.ok) {
+                    const index = await response.json();
+                    select.innerHTML = ''; // Clear loading option
+
+                    index.specifications.forEach((spec, idx) => {
+                        const option = document.createElement('option');
+                        option.value = `../specifications/api/${spec.file}`;
+                        option.textContent = `${spec.title} (${spec.path_count} endpoints)`;
+                        select.appendChild(option);
+
+                        // Use load_balancer as default (common use case), or first spec
+                        if (spec.domain === 'load_balancer') {
+                            defaultSpec = option.value;
+                            option.selected = true;
+                        } else if (idx === 0 && !defaultSpec) {
+                            defaultSpec = option.value;
+                        }
+                    });
+                }
+            } catch (e) {
+                console.error('Could not load spec index:', e);
+                select.innerHTML = '<option value="">Error loading specs</option>';
+            }
+
+            // Initialize Swagger UI with default spec
+            if (defaultSpec) {
+                initSwaggerUI(defaultSpec);
+            }
         };
     </script>
 </body>
