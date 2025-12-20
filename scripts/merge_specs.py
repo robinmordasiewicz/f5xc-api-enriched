@@ -317,23 +317,43 @@ def categorize_spec(filename: str) -> str:
     return "other"
 
 
-def create_base_spec(title: str, description: str, version: str) -> dict[str, Any]:
-    """Create a base OpenAPI specification structure."""
+def create_base_spec(
+    title: str,
+    description: str,
+    version: str,
+    upstream_info: dict[str, str] | None = None,
+) -> dict[str, Any]:
+    """Create a base OpenAPI specification structure.
+
+    Args:
+        title: API title
+        description: API description
+        version: Full version string (upstream-enriched format)
+        upstream_info: Optional dict with upstream_timestamp, upstream_etag, enriched_version
+    """
+    info: dict[str, Any] = {
+        "title": title,
+        "description": description,
+        "version": version,
+        "contact": {
+            "name": "F5 Distributed Cloud",
+            "url": "https://docs.cloud.f5.com",
+        },
+        "license": {
+            "name": "Proprietary",
+            "url": "https://www.f5.com/company/policies/eula",
+        },
+    }
+
+    # Add upstream tracking fields if available
+    if upstream_info:
+        info["x-upstream-timestamp"] = upstream_info.get("upstream_timestamp", "unknown")
+        info["x-upstream-etag"] = upstream_info.get("upstream_etag", "unknown")
+        info["x-enriched-version"] = upstream_info.get("enriched_version", version)
+
     return {
         "openapi": "3.0.3",
-        "info": {
-            "title": title,
-            "description": description,
-            "version": version,
-            "contact": {
-                "name": "F5 Distributed Cloud",
-                "url": "https://docs.cloud.f5.com",
-            },
-            "license": {
-                "name": "Proprietary",
-                "url": "https://www.f5.com/company/policies/eula",
-            },
-        },
+        "info": info,
         "servers": [
             {
                 "url": "https://{tenant}.console.ves.volterra.io",
@@ -484,6 +504,7 @@ def merge_specs_by_domain(
     specs_dir: Path,
     output_dir: Path,
     version: str,
+    upstream_info: dict[str, str] | None = None,
 ) -> dict[str, dict[str, Any]]:
     """Merge specifications grouped by domain."""
     spec_files = sorted(specs_dir.glob("*.json"))
@@ -518,6 +539,7 @@ def merge_specs_by_domain(
                 title=f"F5 XC {domain_title} API",
                 description=f"F5 Distributed Cloud {domain_title} API specifications",
                 version=version,
+                upstream_info=upstream_info,
             )
 
             all_tags = []
@@ -572,12 +594,14 @@ def create_master_spec(
     merged_specs: dict[str, dict[str, Any]],
     output_path: Path,
     version: str,
+    upstream_info: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     """Create a master specification combining all domains."""
     master = create_base_spec(
         title="F5 Distributed Cloud API",
         description="Complete F5 Distributed Cloud API specification",
         version=version,
+        upstream_info=upstream_info,
     )
 
     all_tags = []
@@ -613,6 +637,7 @@ def create_spec_index(
     merged_specs: dict[str, dict[str, Any]],
     output_path: Path,
     version: str,
+    upstream_info: dict[str, str] | None = None,
 ) -> None:
     """Create an index file listing all available specifications."""
     index: dict[str, Any] = {
@@ -620,6 +645,12 @@ def create_spec_index(
         "timestamp": datetime.now(tz=timezone.utc).isoformat(),
         "specifications": [],
     }
+
+    # Add upstream tracking info if available
+    if upstream_info:
+        index["x-upstream-timestamp"] = upstream_info.get("upstream_timestamp", "unknown")
+        index["x-upstream-etag"] = upstream_info.get("upstream_etag", "unknown")
+        index["x-enriched-version"] = upstream_info.get("enriched_version", version)
 
     for domain, spec in sorted(merged_specs.items()):
         info = spec.get("info", {})
@@ -643,12 +674,64 @@ def create_spec_index(
     console.print(f"[green]Created spec index at {output_path}[/green]")
 
 
-def get_version() -> str:
-    """Get version from .version file or generate date-based version."""
+def get_upstream_info() -> dict[str, str]:
+    """Get upstream source information from manifest.json.
+
+    Returns dict with:
+        - upstream_timestamp: YYYYMMDDHHmm format
+        - upstream_etag: ETag from source
+        - enriched_version: Semantic version from .version file
+        - full_version: upstream_timestamp-enriched_version
+    """
+    enriched_version = get_enriched_version()
+
+    # Read manifest for upstream info
+    manifest_path = Path("specs/original/manifest.json")
+    if manifest_path.exists():
+        try:
+            manifest = json.loads(manifest_path.read_text())
+            upstream_ts = manifest.get("timestamp", "")
+            etag = manifest.get("etag", "unknown")
+
+            # Convert ISO timestamp to YYYYMMDDHHmm format
+            if upstream_ts:
+                # Handle both 'Z' suffix and explicit timezone
+                ts = upstream_ts.replace("Z", "+00:00")
+                dt = datetime.fromisoformat(ts)
+                upstream_timestamp = dt.strftime("%Y%m%d%H%M")
+            else:
+                upstream_timestamp = datetime.now(tz=timezone.utc).strftime("%Y%m%d%H%M")
+        except (json.JSONDecodeError, ValueError):
+            upstream_timestamp = datetime.now(tz=timezone.utc).strftime("%Y%m%d%H%M")
+            etag = "unknown"
+    else:
+        upstream_timestamp = datetime.now(tz=timezone.utc).strftime("%Y%m%d%H%M")
+        etag = "unknown"
+
+    return {
+        "upstream_timestamp": upstream_timestamp,
+        "upstream_etag": etag,
+        "enriched_version": enriched_version,
+        "full_version": f"{upstream_timestamp}-{enriched_version}",
+    }
+
+
+def get_enriched_version() -> str:
+    """Get enriched version from .version file or generate date-based version."""
     version_file = Path(".version")
     if version_file.exists():
         return version_file.read_text().strip()
     return datetime.now(tz=timezone.utc).strftime("%Y.%m.%d")
+
+
+def get_version() -> str:
+    """Get full version string (upstream-enriched format).
+
+    Returns version in format: YYYYMMDDHHmm-X.Y.Z
+    Example: 202512200813-1.0.12
+    """
+    info = get_upstream_info()
+    return info["full_version"]
 
 
 def main() -> int:
@@ -682,12 +765,18 @@ def main() -> int:
 
     args = parser.parse_args()
 
-    version = args.version or get_version()
+    # Get upstream info and version
+    upstream_info = get_upstream_info()
+    version = args.version or upstream_info["full_version"]
 
     console.print("[bold blue]F5 XC API Specification Merge[/bold blue]")
     console.print(f"  Input:   {args.input_dir}")
     console.print(f"  Output:  {args.output_dir}")
     console.print(f"  Version: {version}")
+    console.print(
+        f"  Upstream: {upstream_info['upstream_timestamp']} (ETag: {upstream_info['upstream_etag'][:12]}...)",
+    )
+    console.print(f"  Enriched: {upstream_info['enriched_version']}")
 
     if not args.input_dir.exists():
         console.print(f"[red]Input directory not found: {args.input_dir}[/red]")
@@ -699,6 +788,7 @@ def main() -> int:
         args.input_dir,
         args.output_dir,
         version,
+        upstream_info,
     )
 
     if not merged_specs:
@@ -708,11 +798,11 @@ def main() -> int:
     # Create master spec unless disabled
     if not args.no_master:
         master_path = args.output_dir / "openapi.json"
-        create_master_spec(merged_specs, master_path, version)
+        create_master_spec(merged_specs, master_path, version, upstream_info)
 
     # Create index file
     index_path = args.output_dir / "index.json"
-    create_spec_index(merged_specs, index_path, version)
+    create_spec_index(merged_specs, index_path, version, upstream_info)
 
     console.print("\n[bold green]Successfully merged specifications![/bold green]")
     console.print(f"  Domains: {len(merged_specs)}")
