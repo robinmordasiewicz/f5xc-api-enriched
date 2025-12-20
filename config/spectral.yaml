@@ -35,7 +35,10 @@ rules:
   info-license: off
 
   # Path rules
-  path-params: error
+  # path-params: off - F5 XC API uses Kubernetes-style dotted parameter names
+  # (metadata.namespace, metadata.name) which Spectral doesn't handle correctly.
+  # This is intentional upstream API design, not a spec error.
+  path-params: off
   path-declarations-must-exist: error
   path-keys-no-trailing-slash: warn
   path-not-include-query: error

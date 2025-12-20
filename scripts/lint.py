@@ -143,6 +143,27 @@ def run_spectral(
                 issues = json.loads(result.stdout)
                 return result.returncode == 0, issues, None
             except json.JSONDecodeError:
+                # Spectral may append text after JSON (e.g., "[]No results...")
+                # Try to extract just the JSON array
+                stdout = result.stdout.strip()
+                if stdout.startswith("["):
+                    # Find the end of the JSON array
+                    bracket_count = 0
+                    json_end = 0
+                    for i, char in enumerate(stdout):
+                        if char == "[":
+                            bracket_count += 1
+                        elif char == "]":
+                            bracket_count -= 1
+                            if bracket_count == 0:
+                                json_end = i + 1
+                                break
+                    if json_end > 0:
+                        try:
+                            issues = json.loads(stdout[:json_end])
+                            return result.returncode == 0, issues, None
+                        except json.JSONDecodeError:
+                            pass
                 return False, [], f"Failed to parse Spectral output: {result.stdout[:200]}"
 
         # Empty output means no issues
