@@ -108,6 +108,14 @@ jobs:
             echo "has_discovery=false" >> "$GITHUB_OUTPUT"
             echo "No discovery data - running standard enrichment"
           fi
+          # Check for full openapi.json (required for constraint analysis)
+          # This is gitignored due to 26MB size, only available when run locally
+          if [ -f "specs/discovered/openapi.json" ]; then
+            echo "has_full_discovery=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_full_discovery=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Full discovery openapi.json not available - constraint analysis skipped"
+          fi
 
       - name: Run enrichment pipeline
         run: python -m scripts.pipeline
@@ -115,7 +123,7 @@ jobs:
           DISCOVERY_ENRICHMENT_ENABLED: ${{ steps.check-discovery.outputs.has_discovery }}
 
       - name: Generate constraint analysis report
-        if: steps.check-discovery.outputs.has_discovery == 'true'
+        if: steps.check-discovery.outputs.has_full_discovery == 'true'
         run: python -m scripts.analyze_constraints
 
       - name: Lint specifications with Spectral
