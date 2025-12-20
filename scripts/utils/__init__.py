@@ -4,6 +4,7 @@ from .acronyms import AcronymNormalizer
 from .branding import BrandingTransformer, BrandingValidator
 from .consistency_validator import ConsistencyValidator
 from .constraint_analyzer import ConstraintAnalyzer
+from .constraint_reconciler import ConstraintReconciler
 from .description_structure import DescriptionStructureTransformer
 from .description_validator import DescriptionValidator
 from .discovery_enricher import DiscoveryEnricher
@@ -17,6 +18,7 @@ __all__ = [
     "BrandingValidator",
     "ConsistencyValidator",
     "ConstraintAnalyzer",
+    "ConstraintReconciler",
     "DescriptionStructureTransformer",
     "DescriptionValidator",
     "DiscoveryEnricher",
