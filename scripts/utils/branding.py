@@ -159,7 +159,10 @@ class BrandingTransformer:
             return pattern.sub(replacement, text)
 
         # Build a combined pattern for all protected segments
-        protected_combined = "|".join(f"({p.pattern})" for p in self._protected_patterns)
+        # NOTE: Don't wrap each pattern in () here - line 165 adds the single outer ()
+        # needed for re.split() to keep delimiters. Inner () would create nested groups
+        # causing re.split() to duplicate matches (each group level = one copy).
+        protected_combined = "|".join(p.pattern for p in self._protected_patterns)
 
         try:
             split_pattern = re.compile(f"({protected_combined})")
