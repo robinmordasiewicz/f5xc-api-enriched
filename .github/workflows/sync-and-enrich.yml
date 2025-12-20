@@ -100,8 +100,7 @@ jobs:
         run: python -m scripts.pipeline
 
       - name: Lint specifications with Spectral
-        continue-on-error: true
-        run: python scripts/lint.py --input-dir docs/specifications/api
+        run: python scripts/lint.py --input-dir docs/specifications/api --fail-on-error
 
       - name: Validate specifications
         continue-on-error: true

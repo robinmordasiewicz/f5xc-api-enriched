@@ -180,6 +180,7 @@ def enrich_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], dic
         - operations_tagged: number of operations tagged
         - descriptions_generated: number of descriptions auto-generated
         - consistency_issues: number of consistency issues found
+        - domains_normalized: number of domain names normalized (RFC 2606)
     """
     target_fields = config.get("target_fields", ["description", "summary", "title"])
     grammar_config = config.get("grammar", {})
@@ -217,19 +218,25 @@ def enrich_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], dic
     # 4. Grammar improvements
     spec = grammar_improver.improve_spec(spec, target_fields)
 
-    # 5. Schema fixes (fix format-without-type issues)
+    # 5. Sanitize script tags in descriptions (prevent Spectral security warnings)
+    spec, _script_sanitize_count = _sanitize_script_tags(spec, target_fields)
+
+    # 6. Normalize domain names (RFC 2606 compliance + lowercase hostnames)
+    spec, domain_normalize_count = _normalize_domain_names(spec, target_fields)
+
+    # 7. Schema fixes (fix format-without-type issues)
     spec = schema_fixer.fix_spec(spec)
     schema_stats = schema_fixer.get_stats()
 
-    # 6. Tag generation (assign tags to operations based on path patterns)
+    # 8. Tag generation (assign tags to operations based on path patterns)
     spec = tag_generator.generate_tags(spec)
     tag_stats = tag_generator.get_stats()
 
-    # 7. Description validation (auto-generate missing descriptions)
+    # 9. Description validation (auto-generate missing descriptions)
     spec = description_validator.validate_and_generate(spec)
     desc_stats = description_validator.get_stats()
 
-    # 8. Consistency validation (report issues without auto-fixing)
+    # 10. Consistency validation (report issues without auto-fixing)
     consistency_validator.validate(spec)
     consistency_stats = consistency_validator.get_stats()
 
@@ -243,6 +250,7 @@ def enrich_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], dic
         "descriptions_generated": desc_stats.get("operations_generated", 0)
         + desc_stats.get("schemas_generated", 0),
         "consistency_issues": consistency_stats.get("total_issues", 0),
+        "domains_normalized": domain_normalize_count,
     }
 
 
@@ -297,6 +305,11 @@ def normalize_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], 
     # 4. Normalize types
     if norm_config.get("type_standardization", True):
         spec, count = _normalize_types(spec)
+        total_changes += count
+
+    # 5. Fix invalid example schemas
+    if norm_config.get("fix_invalid_examples", True):
+        spec, count = _fix_invalid_examples(spec)
         total_changes += count
 
     return spec, total_changes
@@ -477,9 +490,280 @@ def _normalize_types(spec: dict[str, Any]) -> tuple[dict[str, Any], int]:
     return normalize_recursive(spec), normalized_count
 
 
+def _fix_invalid_examples(spec: dict[str, Any]) -> tuple[dict[str, Any], int]:
+    """Fix example objects that lack required value or externalValue field.
+
+    According to OpenAPI 3.0, Example objects in media types must have either:
+    - value: Embedded example value
+    - externalValue: URL pointing to external example
+
+    This only fixes examples in media type content (e.g., requestBody/responses content),
+    NOT schema properties that happen to be named "examples".
+
+    Returns (modified_spec, fix_count).
+    """
+    fixed_count = 0
+
+    def fix_examples_in_content(obj: Any, in_content: bool = False) -> Any:
+        """Recursively fix examples only within content sections."""
+        nonlocal fixed_count
+
+        if isinstance(obj, dict):
+            result = {}
+            for key, value in obj.items():
+                # Track if we're inside a content section (requestBody/responses)
+                entering_content = key == "content" and isinstance(value, dict)
+
+                # Only fix examples when inside a content section
+                if key == "examples" and isinstance(value, dict) and in_content:
+                    fixed_examples = {}
+                    for example_name, example_value in value.items():
+                        # Example object must have value or externalValue
+                        if (
+                            isinstance(example_value, dict)
+                            and "value" not in example_value
+                            and "externalValue" not in example_value
+                        ):
+                            fixed_example = example_value.copy()
+                            fixed_example["value"] = {}
+                            fixed_examples[example_name] = fixed_example
+                            fixed_count += 1
+                        else:
+                            fixed_examples[example_name] = example_value
+                    result[key] = fixed_examples
+                else:
+                    result[key] = fix_examples_in_content(value, in_content or entering_content)
+            return result
+
+        if isinstance(obj, list):
+            return [fix_examples_in_content(item, in_content) for item in obj]
+
+        return obj
+
+    return fix_examples_in_content(spec), fixed_count
+
+
+def _normalize_domain_names(
+    spec: dict[str, Any],
+    target_fields: list[str],
+) -> tuple[dict[str, Any], int]:
+    """Normalize domain names in documentation to RFC 2606 compliant examples.
+
+    RFC 2606 reserves specific domains for documentation:
+    - example.com, example.org, example.net
+    - *.example (for any TLD)
+
+    This function:
+    1. Replaces non-compliant domains (foo.com, bar.com, etc.) with example.com
+    2. Normalizes DNS hostnames to lowercase (Www.Example.com -> www.example.com)
+
+    Args:
+        spec: OpenAPI specification dictionary.
+        target_fields: List of field names to process (e.g., description, summary).
+
+    Returns:
+        Tuple of (modified_spec, normalize_count).
+    """
+    normalize_count = 0
+
+    # Non-RFC compliant domains to replace with example.com
+    non_compliant_domains = [
+        r"\bfoo\.com\b",
+        r"\bbar\.com\b",
+        r"\bbaz\.com\b",
+        r"\btest\.com\b",
+        r"\bdemo\.com\b",
+        r"\bsample\.com\b",
+        r"\bmysite\.com\b",
+        r"\bmydomain\.com\b",
+        r"\byourdomain\.com\b",
+        r"\byoursite\.com\b",
+        r"\bacmecorp\.com\b",
+        r"\bacme\.com\b",
+    ]
+
+    # Pattern to match URLs and normalize hostname case
+    # Matches http(s)://HOSTNAME or just HOSTNAME patterns
+    url_pattern = re.compile(
+        r"(https?://)?([A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?)*\.[A-Za-z]{2,})",
+        re.IGNORECASE,
+    )
+
+    def normalize_url_case(match: re.Match) -> str:
+        """Normalize hostname portion of URL to lowercase."""
+        protocol = match.group(1) or ""
+        hostname = match.group(2)
+        # Only lowercase the hostname, preserve the protocol case
+        return protocol.lower() + hostname.lower()
+
+    def normalize_text(text: str) -> tuple[str, int]:
+        """Normalize domains and URL case in text."""
+        changes = 0
+        result = text
+
+        # First, replace non-compliant domains with example.com
+        for pattern in non_compliant_domains:
+            new_result = re.sub(pattern, "example.com", result, flags=re.IGNORECASE)
+            if new_result != result:
+                changes += len(re.findall(pattern, result, flags=re.IGNORECASE))
+                result = new_result
+
+        # Then normalize URL/hostname case to lowercase
+        # Find all URLs and check if any have uppercase
+        matches = list(url_pattern.finditer(result))
+        for match in reversed(matches):  # Reverse to preserve positions during replacement
+            original = match.group(0)
+            normalized = normalize_url_case(match)
+            if original != normalized:
+                result = result[: match.start()] + normalized + result[match.end() :]
+                changes += 1
+
+        return result, changes
+
+    def normalize_recursive(obj: Any) -> Any:
+        nonlocal normalize_count
+
+        if isinstance(obj, dict):
+            result = {}
+            for key, value in obj.items():
+                if key in target_fields and isinstance(value, str):
+                    normalized, changes = normalize_text(value)
+                    result[key] = normalized
+                    normalize_count += changes
+                else:
+                    result[key] = normalize_recursive(value)
+            return result
+
+        if isinstance(obj, list):
+            return [normalize_recursive(item) for item in obj]
+
+        return obj
+
+    return normalize_recursive(spec), normalize_count
+
+
+def _sanitize_script_tags(
+    spec: dict[str, Any],
+    target_fields: list[str],
+) -> tuple[dict[str, Any], int]:
+    """Escape <script> tags from description fields.
+
+    Spectral's no-script-tags-in-markdown rule flags descriptions containing
+    <script> tags as a security warning. This function escapes them to HTML entities
+    while preserving the documentation content.
+
+    Args:
+        spec: OpenAPI specification dictionary.
+        target_fields: List of field names to sanitize (e.g., description, summary).
+
+    Returns:
+        Tuple of (modified_spec, sanitize_count).
+    """
+    sanitize_count = 0
+
+    def sanitize_recursive(obj: Any) -> Any:
+        nonlocal sanitize_count
+
+        if isinstance(obj, dict):
+            result = {}
+            for key, value in obj.items():
+                if key in target_fields and isinstance(value, str):
+                    # Check if value contains script tags
+                    if "<script" in value.lower():
+                        # Escape script tags to HTML entities
+                        sanitized = re.sub(
+                            r"<script",
+                            "&lt;script",
+                            value,
+                            flags=re.IGNORECASE,
+                        )
+                        sanitized = re.sub(
+                            r"</script>",
+                            "&lt;/script&gt;",
+                            sanitized,
+                            flags=re.IGNORECASE,
+                        )
+                        result[key] = sanitized
+                        sanitize_count += 1
+                    else:
+                        result[key] = value
+                else:
+                    result[key] = sanitize_recursive(value)
+            return result
+
+        if isinstance(obj, list):
+            return [sanitize_recursive(item) for item in obj]
+
+        return obj
+
+    return sanitize_recursive(spec), sanitize_count
+
+
 # =============================================================================
 # MERGE FUNCTIONS
 # =============================================================================
+
+
+def ensure_unique_operation_ids(
+    paths: dict[str, Any],
+    existing_ids: set[str],
+    source_prefix: str,
+) -> tuple[dict[str, Any], set[str], int]:
+    """Ensure all operationIds in paths are unique.
+
+    When merging specs, duplicate operationIds violate OpenAPI 3.0 requirements.
+    This function prefixes duplicates with the source name to ensure uniqueness.
+
+    Args:
+        paths: Dict of path -> path_item to process.
+        existing_ids: Set of operationIds already used across merged specs.
+        source_prefix: Prefix to add for deduplication (derived from source filename).
+
+    Returns:
+        Tuple of (modified_paths, updated_existing_ids, dedup_count).
+    """
+    modified_paths = {}
+    dedup_count = 0
+    http_methods = {"get", "post", "put", "delete", "patch", "options", "head", "trace"}
+
+    for path, path_item in paths.items():
+        if not isinstance(path_item, dict):
+            modified_paths[path] = path_item
+            continue
+
+        modified_path_item = {}
+        for key, value in path_item.items():
+            if key.lower() not in http_methods:
+                modified_path_item[key] = value
+                continue
+
+            if not isinstance(value, dict):
+                modified_path_item[key] = value
+                continue
+
+            operation = value.copy()
+            op_id = operation.get("operationId", "")
+
+            if op_id:
+                if op_id in existing_ids:
+                    # Generate unique operationId by prefixing with source
+                    new_op_id = f"{source_prefix}_{op_id}"
+                    # Handle case where prefixed ID also exists
+                    counter = 1
+                    while new_op_id in existing_ids:
+                        new_op_id = f"{source_prefix}_{op_id}_{counter}"
+                        counter += 1
+                    operation["operationId"] = new_op_id
+                    dedup_count += 1
+                    op_id = new_op_id
+
+                existing_ids.add(op_id)
+
+            modified_path_item[key] = operation
+
+        modified_paths[path] = modified_path_item
+
+    return modified_paths, existing_ids, dedup_count
 
 
 def categorize_spec(filename: str) -> str:
@@ -538,6 +822,9 @@ def merge_specs_by_domain(
 ) -> tuple[dict[str, dict[str, Any]], dict[str, int]]:
     """Merge specifications grouped by domain.
 
+    Ensures operationId uniqueness across merged specs by prefixing
+    duplicates with the source filename.
+
     Returns (merged_specs_by_domain, stats).
     """
     # Group specs by domain
@@ -547,7 +834,13 @@ def merge_specs_by_domain(
         domain_specs[domain].append((filename, spec))
 
     merged = {}
-    stats = {"domains": 0, "paths": 0, "schemas": 0, "requestBodies": 0}
+    stats = {
+        "domains": 0,
+        "paths": 0,
+        "schemas": 0,
+        "requestBodies": 0,
+        "operationIds_deduplicated": 0,
+    }
 
     for domain, spec_list in sorted(domain_specs.items()):
         domain_title = domain.replace("_", " ").title()
@@ -558,9 +851,25 @@ def merge_specs_by_domain(
         )
 
         all_tags = []
-        for _filename, spec in spec_list:
-            # Merge paths
-            for path, path_item in spec.get("paths", {}).items():
+        existing_operation_ids: set[str] = set()  # Track operationIds within domain
+
+        for filename, spec in spec_list:
+            # Extract source name for prefix (remove .json and common patterns)
+            source_prefix = re.sub(r"\.json$", "", filename)
+            source_prefix = re.sub(r"^ves\.io\.schema\.", "", source_prefix)
+            source_prefix = re.sub(r"[^a-zA-Z0-9_]", "_", source_prefix)
+
+            # Process paths with operationId deduplication
+            spec_paths = spec.get("paths", {})
+            deduplicated_paths, existing_operation_ids, dedup_count = ensure_unique_operation_ids(
+                spec_paths,
+                existing_operation_ids,
+                source_prefix,
+            )
+            stats["operationIds_deduplicated"] += dedup_count
+
+            # Merge deduplicated paths
+            for path, path_item in deduplicated_paths.items():
                 if path not in merged_spec["paths"]:
                     merged_spec["paths"][path] = path_item
                     stats["paths"] += 1
@@ -606,7 +915,11 @@ def merge_specs_by_domain(
 
 
 def create_master_spec(domain_specs: dict[str, dict[str, Any]], version: str) -> dict[str, Any]:
-    """Create a master specification combining all domains."""
+    """Create a master specification combining all domains.
+
+    Ensures operationId uniqueness across all domains by prefixing
+    cross-domain duplicates with the domain name.
+    """
     master = create_base_spec(
         title="F5 Distributed Cloud API",
         description="Complete F5 Distributed Cloud API specification",
@@ -614,9 +927,19 @@ def create_master_spec(domain_specs: dict[str, dict[str, Any]], version: str) ->
     )
 
     all_tags = []
-    for spec in domain_specs.values():
-        # Merge paths
-        for path, path_item in spec.get("paths", {}).items():
+    existing_operation_ids: set[str] = set()  # Track operationIds across all domains
+
+    for domain, spec in domain_specs.items():
+        # Process paths with operationId deduplication across domains
+        spec_paths = spec.get("paths", {})
+        deduplicated_paths, existing_operation_ids, _ = ensure_unique_operation_ids(
+            spec_paths,
+            existing_operation_ids,
+            domain,  # Use domain name as prefix for cross-domain deduplication
+        )
+
+        # Merge deduplicated paths
+        for path, path_item in deduplicated_paths.items():
             if path not in master["paths"]:
                 master["paths"][path] = path_item
 
