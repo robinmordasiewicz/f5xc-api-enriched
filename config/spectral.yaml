@@ -18,8 +18,7 @@ rules:
   # Allow missing operation descriptions (many F5 APIs don't have them)
   operation-description: off
 
-  # Allow missing operation summaries
-  operation-summary: off
+  # Note: operation-summary rule does not exist in spectral:oas - removed
 
   # Allow missing parameter descriptions
   oas3-parameter-description: off
