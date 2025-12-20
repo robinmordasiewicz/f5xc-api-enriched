@@ -44,16 +44,11 @@ Thumbs.db
 # Build artifacts
 reports/
 
-# Large combined OpenAPI spec (113MB) - use domain specs instead
-# Consumers can bundle with: npx @redocly/cli bundle docs/specifications/api/index.json -o openapi.json
-docs/specifications/api/
+# Generated specs - downloaded on demand with ETag caching
+# specs/original/ contains proprietary F5 API specs that cannot be committed
+# Run 'make download' to fetch fresh copy (uses ETag to minimize bandwidth)
 specs/
 
-# Legacy directories (from old pipeline structure)
-# Remove these after migration to simplified two-folder architecture
-specs/normalized/
-specs/merged/
-
-# Keep these:
-# specs/original/   - READ-ONLY source from F5
-# specs/enriched/   - Single output folder for all processed specs
+# Generated documentation (built by pipeline, served by GitHub Pages)
+# Consumers can bundle with: npx @redocly/cli bundle docs/specifications/api/index.json -o openapi.json
+docs/specifications/api/
