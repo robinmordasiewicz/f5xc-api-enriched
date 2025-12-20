@@ -208,8 +208,6 @@ ignore = [
     "D213",   # Multi-line docstring summary should start at the second line (conflicts with D212)
 
     # Type annotation rules - gradual adoption
-    "ANN101", # Missing type annotation for self
-    "ANN102", # Missing type annotation for cls
     "ANN401", # Dynamically typed expressions (Any) are disallowed
 
     # Allow print in CLI applications (we use rich.console)
@@ -265,6 +263,72 @@ ignore = [
 "scripts/**/*.py" = [
     "T201",    # print allowed in CLI scripts (though we use rich)
     "INP001",  # Implicit namespace package (scripts is not a package)
+]
+
+# Discovery modules - async patterns and complex data processing
+"scripts/discover.py" = [
+    "PLR1714", # Repeated equality comparisons (method checks)
+    "PLC0415", # Import outside top-level (conditional imports for async)
+    "PERF401", # List comprehension over loop (clarity over perf)
+    "ANN001",  # Missing type annotation for function argument
+    "ANN201",  # Missing return type annotation
+    "RET504",  # Unnecessary assignment before return (clarity)
+    "ARG001",  # Unused function argument (interface compliance)
+]
+
+# Enrich module - global state for lazy initialization
+"scripts/enrich.py" = [
+    "PLW0603", # Global statement (lazy singleton pattern)
+]
+
+# Constraint analyzer - complex analysis patterns
+"scripts/analyze_constraints.py" = [
+    "PLR1714", # Repeated equality comparisons
+    "RET504",  # Unnecessary assignment before return
+    "ANN001",  # Missing type annotation
+    "ANN201",  # Missing return type annotation
+]
+
+"scripts/discovery/**/*.py" = [
+    "PLR1714", # Repeated equality comparisons
+    "PLC0415", # Import outside top-level (conditional async imports)
+    "RET504",  # Unnecessary assignment before return (clarity)
+    "ARG001",  # Unused function argument (interface compliance)
+    "ARG002",  # Unused method argument (interface compliance)
+    "PLW2901", # Loop variable overwritten (intentional in parsers)
+    "ANN001",  # Missing type annotation for function argument
+    "ANN201",  # Missing return type annotation
+    "PERF401", # List comprehension over loop (clarity over perf)
+    "SIM102",  # Nested if (sometimes clearer)
+    "SIM118",  # Use key in dict (sometimes clearer with .keys())
+    "RUF012",  # Mutable class attributes (dataclass patterns)
+    "C401",    # Unnecessary generator (sometimes clearer)
+    "PLW0603", # Global statement (rate limiter state)
+    "B007",    # Loop control variable not used (intentional)
+]
+
+# Constraint analyzer utils - complex analysis patterns
+"scripts/utils/constraint_analyzer.py" = [
+    "PLR1714", # Repeated equality comparisons
+    "RET504",  # Unnecessary assignment before return
+    "ARG001",  # Unused function argument
+    "ANN001",  # Missing type annotation
+    "ANN201",  # Missing return type annotation
+    "PERF401", # List comprehension over loop
+    "B007",    # Loop control variable not used (intentional)
+    "SIM102",  # Nested if (sometimes clearer)
+    "SIM118",  # Use key in dict (clearer with .keys())
+    "PLC0415", # Import outside top-level (local timestamp import)
+]
+
+# Discovery enricher - complex data transformation
+"scripts/utils/discovery_enricher.py" = [
+    "PLR1714", # Repeated equality comparisons
+    "RET504",  # Unnecessary assignment before return
+    "ARG001",  # Unused function argument
+    "ANN001",  # Missing type annotation
+    "ANN201",  # Missing return type annotation
+    "PLW2901", # Loop variable overwritten
 ]
 
 # Config files

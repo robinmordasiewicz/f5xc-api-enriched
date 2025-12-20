@@ -237,3 +237,16 @@ output:
 
   # Preserve original file names
   preserve_filenames: true
+
+# Discovery enrichment settings
+# Merges live API discovery data into published specifications
+# Run 'make discover' first to generate discovery data
+discovery_enrichment:
+  # Enable discovery-driven enrichment
+  # Can also be enabled via: python -m scripts.enrich --use-discovery
+  enabled: false
+
+  # Location of discovered specs (from make discover)
+  discovered_specs_dir: "specs/discovered"
+
+  # See config/discovery_enrichment.yaml for detailed configuration

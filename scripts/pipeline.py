@@ -47,6 +47,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
 from collections import defaultdict
@@ -1233,6 +1234,16 @@ Output (merged domain specs only):
 
     # Load configuration
     config = load_config(args.config)
+
+    # Auto-enable discovery enrichment if environment variable is set
+    # This allows GitHub Actions to enable discovery without config changes
+    if os.environ.get("DISCOVERY_ENRICHMENT_ENABLED", "").lower() == "true":
+        if "discovery_enrichment" not in config:
+            config["discovery_enrichment"] = {}
+        config["discovery_enrichment"]["enabled"] = True
+        console.print(
+            "[blue]Discovery enrichment enabled via DISCOVERY_ENRICHMENT_ENABLED env var[/blue]",
+        )
 
     # Determine directories
     input_dir = args.input_dir or Path(config["paths"]["original"])

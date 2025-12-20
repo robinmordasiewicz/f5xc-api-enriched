@@ -47,7 +47,14 @@ reports/
 # Generated specs - downloaded on demand with ETag caching
 # specs/original/ contains proprietary F5 API specs that cannot be committed
 # Run 'make download' to fetch fresh copy (uses ETag to minimize bandwidth)
-specs/
+specs/original/
+
+# Discovery data - track session metadata only, openapi.json is too large (26MB)
+# Pipeline uses local discovery data when available
+specs/discovered/openapi.json
+specs/discovered/diffs/
+specs/discovered/endpoints/
+specs/discovered/schemas/
 
 # Generated documentation (built by pipeline, served by GitHub Pages)
 # Consumers can bundle with: npx @redocly/cli bundle docs/specifications/api/index.json -o openapi.json
