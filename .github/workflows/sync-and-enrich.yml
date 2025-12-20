@@ -113,13 +113,18 @@ jobs:
       - name: Detect changes and bump version
         id: version
         run: |
-          # Stage enriched specs for comparison
-          git add docs/specifications/api/
-
-          # Check if enriched specs have changes
-          if git diff --cached --quiet -- docs/specifications/api/*.json; then
+          # Check if enriched specs exist (pipeline generated them)
+          if [ ! -f docs/specifications/api/index.json ]; then
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
-            echo "No changes in enriched specs"
+            echo "No enriched specs generated"
+            exit 0
+          fi
+
+          # Compare with previous release or mark as changed for new runs
+          # Since specs are gitignored, we check if the original specs have changes
+          if git diff --quiet -- specs/original/ .etag; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "No changes in source specs"
             exit 0
           fi
 
@@ -242,13 +247,22 @@ jobs:
           - ETag: ${{ needs.check-updates.outputs.etag || 'N/A' }}
           EOF
 
+      - name: Upload docs artifact for deployment
+        if: steps.version.outputs.has_changes == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-site
+          path: docs
+          retention-days: 1
+
       - name: Commit changes
         if: steps.version.outputs.has_changes == 'true'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-          git add -A
+          # Only add files that are tracked (specs are gitignored)
+          git add .version CHANGELOG.md .etag specs/original/
 
           if git diff --staged --quiet; then
             echo "No changes to commit"
@@ -282,7 +296,7 @@ jobs:
             exit 0
           fi
 
-          # Create release with enriched specs
+          # Create release with enriched specs (files exist locally, just gitignored)
           gh release create "v$VERSION" \
             --title "API Specs v$VERSION" \
             --notes-file CHANGELOG.md \
@@ -298,13 +312,11 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
+      - name: Download docs artifact
+        uses: actions/download-artifact@v4
         with:
-          ref: main  # Get the latest changes
-
-      - name: Pull latest changes
-        run: git pull origin main
+          name: docs-site
+          path: docs
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
