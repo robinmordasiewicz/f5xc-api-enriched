@@ -242,6 +242,19 @@ make pre-commit-run      # Run all hooks manually
 
 **Impact**: This is intentional and correct - pipeline changes affect output quality and should be versioned.
 
+### 8. Documentation-Only Changes Skip Pipeline
+
+**Issue**: CLAUDE.md or README.md changes trigger workflow but skip expensive pipeline execution.
+**Detection**: Workflow log shows "Documentation-only changes detected - skipping pipeline".
+**Prevention**: This is intentional optimization - docs changes don't need full pipeline execution.
+**Impact**: Saves ~50 seconds per docs-only commit.
+
+**Behavior**:
+
+- Pure documentation commits (CLAUDE.md, README.md, docs/**/*.md, LICENSE only) → Skip 50-second pipeline
+- No release created for docs-only changes
+- Mixed changes (docs + code) → Full pipeline runs normally
+
 ## Claude-Specific Instructions
 
 ### When User Says "Fix Specs"
@@ -326,6 +339,28 @@ make clean && make build
 
 ```bash
 jq '.started_at' specs/discovered/session.json
+```
+
+### Test Workflow Skip Logic
+
+```bash
+# Test docs-only early exit (should skip pipeline in ~5s)
+echo "\n## Test" >> CLAUDE.md
+git add CLAUDE.md
+git commit -m "docs: test early exit"
+git push
+
+# Test workflow file detection (should create patch release)
+# Edit .github/workflows/sync-and-enrich.yml (add comment), then:
+git add .github/workflows/sync-and-enrich.yml
+git commit -m "ci: test workflow detection"
+git push
+
+# Test config file detection (should create patch release)
+echo "  # test: test" >> config/enrichment.yaml
+git add config/enrichment.yaml
+git commit -m "config: test config detection"
+git push
 ```
 
 ## Anti-Patterns to Avoid

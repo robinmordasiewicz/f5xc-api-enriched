@@ -138,6 +138,20 @@ jobs:
           F5XC_API_URL: ${{ secrets.F5XC_API_URL }}
         run: python -m scripts.validate --dry-run
 
+      - name: Early exit for docs-only changes
+        id: docs_check
+        run: |
+          echo "Checking for documentation-only changes..."
+
+          # Check if ALL changes are docs-only using git pathspec exclusion
+          if git diff --quiet HEAD~1 HEAD -- . ':!CLAUDE.md' ':!README.md' ':!docs/**/*.md' ':!LICENSE'; then
+            echo "📝 Documentation-only changes detected - skipping pipeline"
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          else
+            echo "✅ Non-documentation changes detected - proceeding with pipeline"
+          fi
+
       - name: Detect changes and bump version
         id: version
         run: |
@@ -150,21 +164,25 @@ jobs:
 
           # Compare with previous release or mark as changed for new runs
           # Check for changes in source specs, pipeline config, or dependencies
-          if git diff --quiet -- specs/original/ .etag scripts/ config/ requirements.txt; then
+          if git diff --quiet HEAD~1 HEAD -- \
+            specs/original/ .etag scripts/ config/ requirements.txt \
+            .github/workflows/sync-and-enrich.yml; then
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
-            echo "No changes in source specs"
+            echo "⏭️  No changes in: specs, pipeline scripts, configs, or workflow"
             exit 0
           fi
 
           echo "has_changes=true" >> "$GITHUB_OUTPUT"
 
           # Determine change type for semantic versioning (as bash variable for use in this script)
-          if ! git diff --quiet -- specs/original/ .etag; then
+          if ! git diff --quiet HEAD~1 HEAD -- specs/original/ .etag; then
             CHANGE_TYPE="source"
             echo "Source spec changes detected"
-          elif ! git diff --quiet -- config/ scripts/ requirements.txt; then
+          elif ! git diff --quiet HEAD~1 HEAD -- \
+            config/ scripts/ requirements.txt \
+            .github/workflows/sync-and-enrich.yml; then
             CHANGE_TYPE="pipeline"
-            echo "Pipeline/config changes detected"
+            echo "Pipeline/config/workflow changes detected"
           else
             CHANGE_TYPE="unknown"
             echo "Unknown change type"
@@ -172,6 +190,20 @@ jobs:
 
           # Output change type for downstream steps
           echo "change_type=$CHANGE_TYPE" >> "$GITHUB_OUTPUT"
+
+          # Verify .version file integrity
+          if [ ! -f .version ]; then
+            echo "::error::.version file missing - cannot determine version"
+            exit 1
+          fi
+
+          TEMP_VERSION=$(cat .version 2>/dev/null || echo "0.0.0")
+          if ! [[ "$TEMP_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Invalid version format in .version: $TEMP_VERSION"
+            exit 1
+          fi
+
+          echo "✅ Current version validated: $TEMP_VERSION"
 
           # Read current version
           CURRENT_VERSION=$(cat .version 2>/dev/null | tr -d '[:space:]')
