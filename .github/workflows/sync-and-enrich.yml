@@ -149,14 +149,29 @@ jobs:
           fi
 
           # Compare with previous release or mark as changed for new runs
-          # Since specs are gitignored, we check if the original specs have changes
-          if git diff --quiet -- specs/original/ .etag; then
+          # Check for changes in source specs, pipeline config, or dependencies
+          if git diff --quiet -- specs/original/ .etag scripts/ config/ requirements.txt; then
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
             echo "No changes in source specs"
             exit 0
           fi
 
           echo "has_changes=true" >> "$GITHUB_OUTPUT"
+
+          # Determine change type for semantic versioning (as bash variable for use in this script)
+          if ! git diff --quiet -- specs/original/ .etag; then
+            CHANGE_TYPE="source"
+            echo "Source spec changes detected"
+          elif ! git diff --quiet -- config/ scripts/ requirements.txt; then
+            CHANGE_TYPE="pipeline"
+            echo "Pipeline/config changes detected"
+          else
+            CHANGE_TYPE="unknown"
+            echo "Unknown change type"
+          fi
+
+          # Output change type for downstream steps
+          echo "change_type=$CHANGE_TYPE" >> "$GITHUB_OUTPUT"
 
           # Read current version
           CURRENT_VERSION=$(cat .version 2>/dev/null | tr -d '[:space:]')
@@ -172,14 +187,14 @@ jobs:
           elif [ "$BUMP_TYPE" = "auto" ]; then
             IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
 
-            # Check for major bump via commit message
+            # Check for major bump via commit message (highest priority)
             COMMIT_MSG=$(git log -1 --pretty=%B 2>/dev/null || echo "")
             if [[ "$COMMIT_MSG" == *"[major]"* ]] || \
                [[ "$COMMIT_MSG" == *"BREAKING CHANGE"* ]]; then
               NEW_VERSION="$((MAJOR + 1)).0.0"
               BUMP_TYPE="major"
-            else
-              # Check for new domain files (minor bump)
+            elif [ "$CHANGE_TYPE" = "source" ]; then
+              # Source spec changes → check for new domains (minor) or patch
               PREV_COUNT=$(git show HEAD:docs/specifications/api/index.json 2>/dev/null | \
                 jq '.specifications | length' 2>/dev/null || echo "0")
               CURR_COUNT=$(jq '.specifications | length' \
@@ -192,6 +207,16 @@ jobs:
                 NEW_VERSION="${MAJOR}.${MINOR}.$((PATCH + 1))"
                 BUMP_TYPE="patch"
               fi
+            elif [ "$CHANGE_TYPE" = "pipeline" ]; then
+              # Pipeline/config/dependency changes → patch bump
+              NEW_VERSION="${MAJOR}.${MINOR}.$((PATCH + 1))"
+              BUMP_TYPE="patch"
+              echo "::notice::Pipeline changes detected - patch bump"
+            else
+              # Fallback for unknown change types
+              NEW_VERSION="${MAJOR}.${MINOR}.$((PATCH + 1))"
+              BUMP_TYPE="patch"
+              echo "::warning::Unknown change type - defaulting to patch bump"
             fi
           else
             # Manual bump type
