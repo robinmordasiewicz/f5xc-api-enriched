@@ -19,6 +19,8 @@ permissions:
   contents: write
   pages: write
   id-token: write
+  issues: write
+  actions: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -480,3 +482,71 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  # ==========================================================================
+  # WORKFLOW MONITORING - Create issues for failures
+  # ==========================================================================
+  monitor-failures:
+    name: Monitor Workflow Failures
+    runs-on: ubuntu-latest
+    needs: [check-updates, sync-and-enrich, deploy-docs]
+    if: always()
+    steps:
+      - name: Check for failures
+        id: check_failure
+        run: |
+          # Check if any job failed or was cancelled
+          if [ "${{ needs.check-updates.result }}" = "failure" ] || \
+             [ "${{ needs.sync-and-enrich.result }}" = "failure" ] || \
+             [ "${{ needs.deploy-docs.result }}" = "failure" ] || \
+             [ "${{ needs.check-updates.result }}" = "cancelled" ] || \
+             [ "${{ needs.sync-and-enrich.result }}" = "cancelled" ] || \
+             [ "${{ needs.deploy-docs.result }}" = "cancelled" ]; then
+            echo "has_failure=true" >> "$GITHUB_OUTPUT"
+            echo "::warning::Workflow failure detected - will create issue"
+          else
+            echo "has_failure=false" >> "$GITHUB_OUTPUT"
+            echo "All jobs completed successfully"
+          fi
+
+      - name: Checkout repository
+        if: steps.check_failure.outputs.has_failure == 'true'
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        if: steps.check_failure.outputs.has_failure == 'true'
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        if: steps.check_failure.outputs.has_failure == 'true'
+        run: pip install -r requirements.txt
+
+      - name: Ensure monitoring labels exist
+        if: steps.check_failure.outputs.has_failure == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/ensure_labels.py
+
+      - name: Analyze failures and create/update issues
+        if: steps.check_failure.outputs.has_failure == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_ID: ${{ github.run_id }}
+          WORKFLOW_NAME: ${{ github.workflow }}
+          TRIGGER_EVENT: ${{ github.event_name }}
+          BRANCH: ${{ github.ref_name }}
+          COMMIT_SHA: ${{ github.sha }}
+          ACTOR: ${{ github.actor }}
+          JOB_CHECK_UPDATES: ${{ needs.check-updates.result }}
+          JOB_SYNC_ENRICH: ${{ needs.sync-and-enrich.result }}
+          JOB_DEPLOY: ${{ needs.deploy-docs.result }}
+        run: |
+          python scripts/monitor_workflow.py \
+            --run-id "$RUN_ID" \
+            --workflow "$WORKFLOW_NAME" \
+            --event "$TRIGGER_EVENT" \
+            --branch "$BRANCH" \
+            --commit "$COMMIT_SHA"
