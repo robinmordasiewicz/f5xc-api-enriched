@@ -94,7 +94,8 @@ repos:
       - id: check-case-conflict
       - id: check-added-large-files
         args: ['--maxkb=1000']
-        exclude: ^specs/original/
+        # Exclude specs/original/ and specs/discovered/openapi.json (25MB, tracked for CI/CD)
+        exclude: ^(specs/original/|specs/discovered/openapi\.json)$
       - id: check-symlinks
       - id: destroyed-symlinks
 

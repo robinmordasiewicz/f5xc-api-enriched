@@ -49,9 +49,8 @@ reports/
 # Run 'make download' to fetch fresh copy (uses ETag to minimize bandwidth)
 specs/original/
 
-# Discovery data - track session metadata only, openapi.json is too large (26MB)
-# Pipeline uses local discovery data when available
-specs/discovered/openapi.json
+# Discovery data - full openapi.json tracked for CI/CD enrichment and git diffs
+# Run 'make discover' locally (VPN required), then 'make push-discovery' to commit
 specs/discovered/diffs/
 specs/discovered/endpoints/
 specs/discovered/schemas/

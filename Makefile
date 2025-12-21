@@ -147,18 +147,18 @@ enrich-with-discovery:
 constraint-report:
 	$(PYTHON) -m scripts.analyze_constraints
 
-# Push discovery session metadata to GitHub (run after make discover)
-# Note: openapi.json is gitignored due to size (~26MB), only session.json is tracked
+# Push discovery data to GitHub (run after make discover)
+# Commits full openapi.json (25MB) for git diff visibility and CI/CD enrichment
 push-discovery:
 	@if [ ! -f specs/discovered/session.json ]; then \
 		echo "No discovery data. Run 'make discover' first."; \
 		exit 1; \
 	fi
-	git add specs/discovered/session.json
-	git commit -m "chore: update API discovery session metadata"
+	git add specs/discovered/session.json specs/discovered/openapi.json
+	git commit -m "chore: update API discovery data"
 	git push
 	@echo ""
-	@echo "Discovery session pushed. Run 'make discover' locally before pipeline for enrichment."
+	@echo "Discovery data pushed (uncompressed for diff visibility)."
 
 # Full local discovery workflow (discover + push)
 discover-and-push: discover push-discovery
