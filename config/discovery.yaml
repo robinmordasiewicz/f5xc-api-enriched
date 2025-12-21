@@ -27,6 +27,7 @@ discovery:
       - "OPTIONS"
     timeout_seconds: 30           # Request timeout
     max_endpoints_per_run: 500    # Limit per discovery run
+    max_individual_resources: 5   # Max individual resources to fetch per type
     skip_patterns:                # Endpoints to skip
       - "/api/web/"               # Web UI endpoints
       - "/api/swagger/"           # Swagger endpoints
