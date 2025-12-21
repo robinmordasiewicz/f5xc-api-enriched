@@ -94,6 +94,41 @@ branding:
       replacement: "example-"
       case_sensitive: true
 
+    # DNS/Domain examples: my.example.com → www.example.com (standard DNS naming)
+    - pattern: "\\bmy\\.(example\\.[a-zA-Z]{2,})"
+      replacement: "www.\\1"
+      case_sensitive: false
+
+    # DNS/Domain examples: my.OTHERDOMAIN.com → example.OTHERDOMAIN.com
+    - pattern: "\\bmy\\.([a-zA-Z0-9][-a-zA-Z0-9]*\\.[a-zA-Z]{2,})"
+      replacement: "example.\\1"
+      case_sensitive: false
+
+    # Key-value pairs: mykey → example-key
+    - pattern: "\\bmykey\\b"
+      replacement: "example-key"
+      case_sensitive: false
+
+    # Key-value pairs: myvalue → example-value
+    - pattern: "\\bmyvalue\\b"
+      replacement: "example-value"
+      case_sensitive: false
+
+    # Natural language: "my account" → "example account"
+    - pattern: "\\bmy account\\b"
+      replacement: "example account"
+      case_sensitive: false
+
+    # Natural language: "my fast storage" → "example fast storage"
+    - pattern: "\\bmy fast storage\\b"
+      replacement: "example fast storage"
+      case_sensitive: false
+
+    # General fallback: mypool → example-pool, myserver → example-server
+    - pattern: "\\bmy([a-z][a-z0-9]*)"
+      replacement: "example-\\1"
+      case_sensitive: true
+
     # Tenant naming: AcmeCorp → Example-Corp (F5 XC documentation standard)
     - pattern: "\\bAcmecorp-web\\b"
       replacement: "Example-Corp-web"
