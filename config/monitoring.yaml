@@ -1,0 +1,106 @@
+# Workflow Monitoring Configuration
+# Controls how workflow failures are detected, categorized, and reported
+
+monitoring:
+  # Issue creation behavior
+  issues:
+    enabled: true
+    auto_close_on_success: false
+    max_open_issues: 20
+    aggregate_similar: true
+
+  # Deduplication settings
+  deduplication:
+    enabled: true
+    fingerprint_length: 16
+    search_limit: 50
+    match_on:
+      - job_name
+      - step_name
+      - error_pattern
+
+  # Failure categorization
+  categories:
+    download:
+      patterns:
+        - "download"
+        - "fetch"
+        - "etag"
+      severity: warning
+
+    enrichment:
+      patterns:
+        - "enrich"
+        - "pipeline"
+        - "process"
+      severity: warning
+
+    validation:
+      patterns:
+        - "lint"
+        - "spectral"
+        - "validate"
+        - "check"
+      severity: warning
+
+    git:
+      patterns:
+        - "git"
+        - "commit"
+        - "push"
+        - "merge"
+      severity: warning
+
+    release:
+      patterns:
+        - "release"
+        - "package"
+        - "version"
+        - "tag"
+      severity: critical
+
+    deployment:
+      patterns:
+        - "deploy"
+        - "pages"
+        - "upload"
+      severity: critical
+
+    deprecation:
+      patterns:
+        - "deprecat"
+        - "warning"
+        - "deprecated"
+      severity: info
+
+  # Deprecation detection
+  deprecation_patterns:
+    - "::warning::.*deprecated"
+    - "::warning::.*will be removed"
+    - "Node.js 16 actions are deprecated"
+    - "set-output command is deprecated"
+    - "save-state command is deprecated"
+
+  # Labels to apply
+  labels:
+    primary:
+      - "workflow-failure"
+      - "auto-created"
+
+    failure_types:
+      - "failure:download"
+      - "failure:enrichment"
+      - "failure:validation"
+      - "failure:git"
+      - "failure:release"
+      - "failure:deployment"
+      - "failure:deprecation"
+      - "failure:other"
+
+    severity:
+      - "severity:critical"
+      - "severity:warning"
+      - "severity:info"
+
+    status:
+      - "needs-investigation"
