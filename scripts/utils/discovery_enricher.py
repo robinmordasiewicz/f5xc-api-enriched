@@ -352,6 +352,11 @@ class DiscoveryEnricher:
             prop_path: Full path for lookup
             discovered_constraints: Discovered constraints lookup
         """
+        # OpenAPI 3.0: $ref cannot have sibling properties (except description/summary)
+        # Skip enrichment for schemas that use $ref to avoid invalid specs
+        if "$ref" in prop_schema:
+            return
+
         # confidence_threshold and min_sample_size reserved for future statistical validation
         _ = self.config.get("constraints", {}).get("confidence_threshold", 0.8)
         _ = self.config.get("constraints", {}).get("min_sample_size", 5)

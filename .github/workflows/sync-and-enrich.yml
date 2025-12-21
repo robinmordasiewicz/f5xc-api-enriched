@@ -129,7 +129,7 @@ jobs:
         run: python -m scripts.analyze_constraints
 
       - name: Lint specifications with Spectral
-        run: python scripts/lint.py --input-dir docs/specifications/api --fail-on-error
+        run: python scripts/lint.py --input-dir docs/specifications/api --fail-on-error --fail-on-warning
 
       - name: Validate specifications
         continue-on-error: true
