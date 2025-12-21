@@ -31,6 +31,7 @@ from rich.table import Table
 
 from .discovery import CLIExplorer, RateLimiter, ReportGenerator, SchemaInferrer
 from .discovery.report_generator import DiscoverySession, EndpointDiscovery
+from .discovery.schema_inferrer import InferredSchema
 
 console = Console()
 
@@ -288,6 +289,9 @@ async def discover_with_cli(
 
     console.print(f"[blue]Discovered {len(resource_types)} resource types from CLI[/blue]")
 
+    # Get max individual resources to fetch per type
+    max_individual_resources = config.get("exploration", {}).get("max_individual_resources", 5)
+
     for resource_type in resource_types[:50]:  # Limit
         async with rate_limiter:
             result = await cli.list_resources(resource_type, namespace)
@@ -296,13 +300,47 @@ async def discover_with_cli(
 
             if result.success and result.data:
                 schema = schema_inferrer.infer(result.data)
+                examples = [result.data] if isinstance(result.data, dict) else []
+
+                # Extract individual resource names from list response
+                items = []
+                if isinstance(result.data, dict):
+                    items = result.data.get("items", [])
+                elif isinstance(result.data, list):
+                    items = result.data
+
+                # Fetch individual resources for richer data (defaults, enum values)
+                individual_examples = []
+                for item in items[:max_individual_resources]:
+                    if isinstance(item, dict) and "name" in item:
+                        resource_name = item["name"]
+                        async with rate_limiter:
+                            individual_result = await cli.get_resource(
+                                resource_type.rstrip("s"),  # Singular form
+                                resource_name,
+                                namespace,
+                            )
+                            if individual_result.success and individual_result.data:
+                                individual_examples.append(individual_result.data)
+                                # Merge inferred schema from individual resource
+                                individual_schema = schema_inferrer.infer(individual_result.data)
+                                # Merge schemas to capture all fields
+                                if individual_schema:
+                                    merged = _merge_schemas(schema, individual_schema)
+                                    if merged:
+                                        schema = merged
+
+                # Combine examples
+                if individual_examples:
+                    examples.extend(individual_examples)
+
                 discoveries.append(
                     EndpointDiscovery(
                         path=path,
                         method="GET",
                         status_code=200,
                         inferred_schema=schema,
-                        examples=[result.data] if isinstance(result.data, dict) else [],
+                        examples=examples[:10],  # Limit stored examples
                     ),
                 )
             else:
@@ -315,6 +353,60 @@ async def discover_with_cli(
                 )
 
     return discoveries
+
+
+def _merge_schemas(
+    base: InferredSchema | None,
+    new: InferredSchema | None,
+) -> InferredSchema | None:
+    """Merge two inferred schemas to capture all discovered fields.
+
+    Args:
+        base: Base schema
+        new: New schema to merge in
+
+    Returns:
+        Merged schema with combined properties
+    """
+    if not base:
+        return new
+    if not new:
+        return base
+
+    # Merge properties
+    for prop_name, prop_schema in new.properties.items():
+        if prop_name not in base.properties:
+            base.properties[prop_name] = prop_schema
+        else:
+            # Merge constraints - keep tightest
+            base_prop = base.properties[prop_name]
+            new_constraints = prop_schema.constraints
+            base_constraints = base_prop.constraints
+
+            # Update lengths if new values are more restrictive
+            if new_constraints.min_length is not None and (
+                base_constraints.min_length is None
+                or new_constraints.min_length > base_constraints.min_length
+            ):
+                base_constraints.min_length = new_constraints.min_length
+            if new_constraints.max_length is not None and (
+                base_constraints.max_length is None
+                or new_constraints.max_length < base_constraints.max_length
+            ):
+                base_constraints.max_length = new_constraints.max_length
+
+            # Merge enum values
+            if new_constraints.enum_values:
+                existing_enums = set(base_constraints.enum_values or [])
+                for val in new_constraints.enum_values:
+                    existing_enums.add(val)
+                base_constraints.enum_values = list(existing_enums)
+
+            # Update format if not set
+            if not base_prop.format and prop_schema.format:
+                base_prop.format = prop_schema.format
+
+    return base
 
 
 async def run_discovery(

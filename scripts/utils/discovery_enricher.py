@@ -242,10 +242,29 @@ class DiscoveryEnricher:
         published_schemas = spec["components"]["schemas"]
         discovered_schemas = discoveries.schemas
 
-        # Build a lookup of discovered property constraints
+        # Build a lookup of discovered property constraints from component schemas
         discovered_constraints = self._extract_discovered_constraints(
             discovered_schemas,
         )
+
+        # ALSO extract constraints from inline schemas in paths
+        # This handles cases where discovered data has schemas inline in responses
+        inline_constraints = self._extract_inline_path_constraints(discoveries.paths)
+
+        # Merge inline constraints into discovered constraints
+        for prop_name, prop_constraints in inline_constraints.items():
+            if prop_name in discovered_constraints:
+                # Merge with existing (keep tightest constraints)
+                existing = discovered_constraints[prop_name]
+                for key, value in prop_constraints.items():
+                    if key == "minLength":
+                        existing[key] = max(existing.get(key, 0), value)
+                    elif key == "maxLength":
+                        existing[key] = min(existing.get(key, float("inf")), value)
+                    elif key not in existing:
+                        existing[key] = value
+            else:
+                discovered_constraints[prop_name] = prop_constraints
 
         # Enrich each published schema
         for schema_name, schema in published_schemas.items():
@@ -522,6 +541,249 @@ class DiscoveryEnricher:
             extract_from_schema(schema)
 
         return constraints
+
+    def _extract_inline_path_constraints(self, paths: dict) -> dict[str, dict]:
+        """Extract constraints from inline schemas in discovered paths.
+
+        The discovery process creates inline schemas within path responses,
+        not in components.schemas. This method extracts constraints from
+        those inline schemas.
+
+        Args:
+            paths: Discovered paths dictionary
+
+        Returns:
+            Dictionary mapping property names to their discovered constraints
+        """
+        constraints: dict[str, dict] = {}
+
+        def extract_from_schema(schema: dict) -> None:
+            """Recursively extract constraints from a schema."""
+            if not isinstance(schema, dict):
+                return
+
+            properties = schema.get("properties", {})
+            for prop_name, prop_schema in properties.items():
+                if not isinstance(prop_schema, dict):
+                    continue
+
+                prop_constraints: dict = {}
+
+                # Extract string constraints
+                if "minLength" in prop_schema:
+                    prop_constraints["minLength"] = prop_schema["minLength"]
+                if "maxLength" in prop_schema:
+                    prop_constraints["maxLength"] = prop_schema["maxLength"]
+                if "pattern" in prop_schema:
+                    prop_constraints["pattern"] = prop_schema["pattern"]
+                if "format" in prop_schema:
+                    prop_constraints["format"] = prop_schema["format"]
+
+                # Extract enum
+                if "enum" in prop_schema:
+                    prop_constraints["enum"] = prop_schema["enum"]
+
+                # Extract number constraints
+                if "minimum" in prop_schema:
+                    prop_constraints["minimum"] = prop_schema["minimum"]
+                if "maximum" in prop_schema:
+                    prop_constraints["maximum"] = prop_schema["maximum"]
+
+                # Extract examples as potential enum values for small sets
+                if (
+                    "examples" in prop_schema
+                    and len(prop_schema["examples"]) <= 10
+                    and "enum" not in prop_constraints
+                ):
+                    # Only use examples as potential enum if all are same type
+                    examples = prop_schema["examples"]
+                    if examples and all(isinstance(e, type(examples[0])) for e in examples):
+                        prop_constraints["x-discovered-examples"] = examples
+
+                if prop_constraints:
+                    # Merge with existing constraints (keep tightest)
+                    if prop_name in constraints:
+                        existing = constraints[prop_name]
+                        for key, value in prop_constraints.items():
+                            if key == "minLength":
+                                existing[key] = max(existing.get(key, 0), value)
+                            elif key == "maxLength":
+                                existing[key] = min(
+                                    existing.get(key, float("inf")),
+                                    value,
+                                )
+                            elif key not in existing:
+                                existing[key] = value
+                    else:
+                        constraints[prop_name] = prop_constraints
+
+                # Recurse into nested objects
+                if prop_schema.get("type") == "object":
+                    extract_from_schema(prop_schema)
+
+                # Handle array items
+                if prop_schema.get("type") == "array" and "items" in prop_schema:
+                    items = prop_schema["items"]
+                    if isinstance(items, dict):
+                        extract_from_schema(items)
+
+        # Process all paths and their inline schemas
+        for path_item in paths.values():
+            if not isinstance(path_item, dict):
+                continue
+
+            for operation in path_item.values():
+                if not isinstance(operation, dict):
+                    continue
+
+                # Extract from response schemas
+                responses = operation.get("responses", {})
+                for response in responses.values():
+                    if not isinstance(response, dict):
+                        continue
+
+                    content = response.get("content", {})
+                    for media_obj in content.values():
+                        if not isinstance(media_obj, dict):
+                            continue
+
+                        schema = media_obj.get("schema", {})
+                        if schema:
+                            extract_from_schema(schema)
+
+                        # Also check example data for additional constraints
+                        example = media_obj.get("example", {})
+                        if isinstance(example, dict):
+                            self._extract_constraints_from_example(
+                                example,
+                                constraints,
+                            )
+
+                # Extract from requestBody schemas
+                request_body = operation.get("requestBody", {})
+                if isinstance(request_body, dict):
+                    content = request_body.get("content", {})
+                    for media_obj in content.values():
+                        if isinstance(media_obj, dict):
+                            schema = media_obj.get("schema", {})
+                            if schema:
+                                extract_from_schema(schema)
+
+        return constraints
+
+    def _extract_constraints_from_example(
+        self,
+        example: dict,
+        constraints: dict[str, dict],
+        path: str = "",
+    ) -> None:
+        """Extract constraint hints from actual example data.
+
+        Analyzes real API response examples to infer constraints like
+        string lengths, patterns, and potential enum values.
+
+        Args:
+            example: Example response data
+            constraints: Constraints dict to update
+            path: Current path for nested objects
+        """
+        if not isinstance(example, dict):
+            return
+
+        for key, value in example.items():
+            if value is None:
+                continue
+
+            prop_constraints: dict = {}
+
+            if isinstance(value, str):
+                # Infer string constraints from actual values
+                length = len(value)
+                if length > 0:
+                    prop_constraints["minLength"] = length
+                    prop_constraints["maxLength"] = length
+
+                # Detect common formats
+                if self._looks_like_uuid(value):
+                    prop_constraints["format"] = "uuid"
+                elif self._looks_like_datetime(value):
+                    prop_constraints["format"] = "date-time"
+                elif self._looks_like_email(value):
+                    prop_constraints["format"] = "email"
+                elif self._looks_like_uri(value):
+                    prop_constraints["format"] = "uri"
+
+            elif isinstance(value, (int, float)) and not isinstance(value, bool):
+                # Infer numeric constraints
+                prop_constraints["minimum"] = value
+                prop_constraints["maximum"] = value
+
+            elif isinstance(value, dict):
+                # Recurse into nested objects
+                self._extract_constraints_from_example(
+                    value,
+                    constraints,
+                    f"{path}/{key}" if path else key,
+                )
+
+            elif isinstance(value, list) and value:
+                # For arrays, analyze items
+                for item in value[:5]:  # Limit to first 5 items
+                    if isinstance(item, dict):
+                        self._extract_constraints_from_example(
+                            item,
+                            constraints,
+                            f"{path}/{key}/items" if path else f"{key}/items",
+                        )
+
+            if prop_constraints:
+                if key in constraints:
+                    # Merge - expand min/max ranges
+                    existing = constraints[key]
+                    if "minLength" in prop_constraints:
+                        existing["minLength"] = min(
+                            existing.get("minLength", prop_constraints["minLength"]),
+                            prop_constraints["minLength"],
+                        )
+                    if "maxLength" in prop_constraints:
+                        existing["maxLength"] = max(
+                            existing.get("maxLength", prop_constraints["maxLength"]),
+                            prop_constraints["maxLength"],
+                        )
+                    if "minimum" in prop_constraints:
+                        existing["minimum"] = min(
+                            existing.get("minimum", prop_constraints["minimum"]),
+                            prop_constraints["minimum"],
+                        )
+                    if "maximum" in prop_constraints:
+                        existing["maximum"] = max(
+                            existing.get("maximum", prop_constraints["maximum"]),
+                            prop_constraints["maximum"],
+                        )
+                    if "format" in prop_constraints and "format" not in existing:
+                        existing["format"] = prop_constraints["format"]
+                else:
+                    constraints[key] = prop_constraints
+
+    def _looks_like_uuid(self, value: str) -> bool:
+        """Check if string looks like a UUID."""
+        uuid_pattern = re.compile(
+            r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            re.IGNORECASE,
+        )
+        return bool(uuid_pattern.match(value))
+
+    def _looks_like_datetime(self, value: str) -> bool:
+        """Check if string looks like ISO datetime."""
+        return bool(re.match(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}", value))
+
+    def _looks_like_email(self, value: str) -> bool:
+        """Check if string looks like an email."""
+        return bool(re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", value))
+
+    def _looks_like_uri(self, value: str) -> bool:
+        """Check if string looks like a URI."""
+        return bool(re.match(r"^https?://", value))
 
     def _find_discovered_operation(
         self,
