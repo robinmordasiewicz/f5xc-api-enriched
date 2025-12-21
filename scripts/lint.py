@@ -279,8 +279,8 @@ def lint_all_specs(
     """
     stats = LintStats()
 
-    # Find all JSON spec files
-    spec_files = sorted(input_dir.glob("*.json"))
+    # Find all JSON spec files (exclude index.json which is metadata, not OpenAPI)
+    spec_files = sorted(f for f in input_dir.glob("*.json") if f.name != "index.json")
     if not spec_files:
         console.print(f"[yellow]No specification files found in {input_dir}[/yellow]")
         return stats

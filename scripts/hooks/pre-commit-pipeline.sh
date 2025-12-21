@@ -72,11 +72,11 @@ if ! command -v spectral &> /dev/null; then
     exit 1
 fi
 
-echo -e "${YELLOW}Executing: $PYTHON scripts/lint.py --input-dir docs/specifications/api --fail-on-error${NC}"
+echo -e "${YELLOW}Executing: $PYTHON scripts/lint.py --input-dir docs/specifications/api --fail-on-error --fail-on-warning${NC}"
 echo -e "${YELLOW}Note: Validating ALL 25 generated specs (including gitignored files)${NC}"
 
-# Run linting on ALL files in the directory - fail on errors to ensure clean specs
-if $PYTHON scripts/lint.py --input-dir docs/specifications/api --fail-on-error; then
+# Run linting on ALL files in the directory - fail on errors AND warnings to ensure clean specs
+if $PYTHON scripts/lint.py --input-dir docs/specifications/api --fail-on-error --fail-on-warning; then
     echo -e "${GREEN}Spectral linting passed (all files validated).${NC}"
 else
     LINT_EXIT_CODE=$?
