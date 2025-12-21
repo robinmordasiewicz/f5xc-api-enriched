@@ -120,15 +120,36 @@ make discover-and-push
 2. **Download**: Fetch new specs if changed
 3. **Discovery Detection**: Check for committed discovery data
 4. **Pipeline**: Enrich → Normalize → Merge → Lint
-5. **Version Bump**: Auto-increment based on change type
+5. **Version Bump**: Auto-increment based on change type (see below)
 6. **Release**: Create GitHub release with changelog
 7. **Deploy**: Publish to GitHub Pages
 
+**Change Detection** (PR #68):
+
+The workflow monitors for changes in:
+
+- `specs/original/` - Downloaded F5 source specifications
+- `.etag` - Download cache file
+- `scripts/` - Pipeline Python scripts
+- `config/` - Configuration files (enrichment, normalization, discovery, spectral)
+- `requirements.txt` - Python dependencies
+
 **Version Bumping Logic**:
 
-- **Major**: `[major]` or `BREAKING CHANGE` in commit message
-- **Minor**: New domain specs added (spec count increased)
-- **Patch**: Default for all other changes
+| Change Type | Files Changed | Version Bump | Example |
+|-------------|---------------|--------------|---------|
+| **Source specs** (new domains) | `specs/original/`, `.etag` + domain count ↑ | **Minor** | 1.0.15 → 1.1.0 |
+| **Source specs** (no new domains) | `specs/original/`, `.etag` | **Patch** | 1.0.15 → 1.0.16 |
+| **Pipeline changes** | `config/`, `scripts/`, `requirements.txt` | **Patch** | 1.0.15 → 1.0.16 |
+| **Breaking changes** | Any + `[major]` or `BREAKING CHANGE` in commit | **Major** | 1.0.15 → 2.0.0 |
+
+**Priority Order** (commit message overrides everything):
+
+1. Explicit `[major]` or `BREAKING CHANGE` in commit message → Major bump
+2. Source spec changes with new domains → Minor bump
+3. Source spec changes without new domains → Patch bump
+4. Pipeline/config/dependency changes → Patch bump
+5. Unknown change types → Patch bump with warning
 
 **Key Files**:
 
@@ -209,6 +230,18 @@ make pre-commit-run      # Run all hooks manually
 **Detection**: Pre-commit fails with "exceeds X KB" message.
 **Prevention**: Add exclusion in `.pre-commit-config.yaml` for intentionally large files.
 
+### 7. Config/Script Changes Trigger Patch Releases (PR #68)
+
+**Issue**: Changes to enrichment rules, pipeline scripts, or dependencies now trigger patch releases automatically.
+**Detection**: Pushing changes to `config/`, `scripts/`, or `requirements.txt` to main creates a new release.
+**Behavior**:
+
+- Config/script changes → patch bump (e.g., 1.0.15 → 1.0.16)
+- Documentation and GitHub Pages automatically deployed with new release
+- CHANGELOG.md auto-generated with change type information
+
+**Impact**: This is intentional and correct - pipeline changes affect output quality and should be versioned.
+
 ## Claude-Specific Instructions
 
 ### When User Says "Fix Specs"
@@ -228,8 +261,12 @@ make pre-commit-run      # Run all hooks manually
 
 1. **Never Manual**: Releases are automated via GitHub Actions.
 2. **Trigger**: Push to main or manual workflow dispatch.
+   - Source spec changes → auto-release with patch/minor bump
+   - Config/script changes → auto-release with patch bump (PR #68)
+   - No relevant changes → workflow skips release
 3. **Monitor**: Watch workflow run for completion.
-4. **Verify**: Check GitHub Releases page for new release.
+4. **Verify**: Check GitHub Releases page for new release (v1.0.X).
+5. **Documentation**: GitHub Pages automatically deployed with release.
 
 ### When User Says "Update Dependencies"
 
