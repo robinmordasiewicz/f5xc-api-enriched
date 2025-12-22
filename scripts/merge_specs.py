@@ -71,7 +71,7 @@ DOMAIN_PATTERNS = {
         r"app_setting",
         r"app_type",
     ],
-    "web_application_firewall": [
+    "app_firewall": [
         r"app_firewall",
         r"app_security",
         r"waf",

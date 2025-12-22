@@ -78,7 +78,7 @@ NEW_DOMAIN_PATTERNS = {
         r"app_type",
     ],
     # ===== B. Security - Core (4 categories) =====
-    "web_application_firewall": [
+    "app_firewall": [
         r"app_firewall",
         r"app_security",
         r"waf",
