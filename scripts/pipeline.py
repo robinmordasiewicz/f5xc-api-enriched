@@ -875,7 +875,14 @@ def merge_specs_by_domain(
             stats["operationIds_deduplicated"] += dedup_count
 
             # Merge deduplicated paths
+            # Skip /api/cdn/ paths when not merging into cdn_and_content_delivery domain
+            is_cdn_domain = domain == "cdn_and_content_delivery"
+
             for path, path_item in deduplicated_paths.items():
+                # Skip CDN paths if not merging into CDN domain
+                if not is_cdn_domain and "/api/cdn/" in path:
+                    continue
+
                 if path not in merged_spec["paths"]:
                     merged_spec["paths"][path] = path_item
                     stats["paths"] += 1
