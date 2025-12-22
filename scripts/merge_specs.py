@@ -223,7 +223,6 @@ DOMAIN_PATTERNS = {
     "compliance_and_governance": [
         r"geo_location_set",
         r"label",
-        r"quota",
         r"usage_invoice",
     ],
     "bigip_integration": [
@@ -280,6 +279,7 @@ DOMAIN_PATTERNS = {
         r"subscription",
         r"payment_method",
         r"plan_transition",
+        r"quota",
     ],
 }
 
