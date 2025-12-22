@@ -78,7 +78,7 @@ NEW_DOMAIN_PATTERNS = {
         r"app_type",
     ],
     # ===== B. Security - Core (4 categories) =====
-    "web_application_firewall": [
+    "app_firewall": [
         r"app_firewall",
         r"app_security",
         r"waf",
@@ -134,22 +134,26 @@ NEW_DOMAIN_PATTERNS = {
         r"malicious_user",
     ],
     # ===== D. Application Delivery (2 categories) =====
-    "load_balancing": [
-        r"http_loadbalancer",
-        r"tcp_loadbalancer",
-        r"udp_loadbalancer",
-        r"dns_load_balancer",
-        r"cdn_loadbalancer",
-        r"cdn_cache",
-        r"healthcheck",
-        r"origin_pool",
-        r"proxy",
+    "virtual_server": [
+        # Core Standard-tier load balancers (views. prefix prevents CDN/DNS match)
+        r"views\.http_loadbalancer",
+        r"views\.tcp_loadbalancer",
+        r"views\.udp_loadbalancer",
+        # Supporting resources
+        r"views\.origin_pool",
+        r"(?<!dns_lb)\.healthcheck\.ves",  # Matches healthcheck specs, excludes dns_lb_health_check via negative lookbehind
+        r"\.virtual_host\.ves",
+        r"^[^.]*\.route\.ves",  # Excludes operate.route, traceroute
+        r"views\.rate_limiter_policy",  # LB-specific (not general rate_limiter)
+        r"views\.proxy\.ves",
+        r"views\.forward_proxy_policy",
     ],
     "dns_and_domain_management": [
+        r"dns_load_balancer",  # Moved from virtual_server (explicit)
         r"dns_zone",
         r"dns_domain",
         r"dns_compliance",
-        r"dns_lb_",
+        r"dns_lb_",  # Keeps dns_lb_health_check, dns_lb_pool
         r"rrset",
     ],
     # ===== E. Connectivity & Networking (2 categories) =====
@@ -177,7 +181,9 @@ NEW_DOMAIN_PATTERNS = {
     ],
     # ===== F. Content & Performance (1 category) =====
     "cdn_and_content_delivery": [
-        r"cdn_",
+        r"cdn_loadbalancer",  # Moved from virtual_server
+        r"cdn_cache",  # Moved from virtual_server
+        r"cdn_",  # Other CDN resources
         r"data_delivery",
     ],
     # ===== G. Observability (3 categories) =====

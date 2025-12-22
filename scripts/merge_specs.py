@@ -24,79 +24,7 @@ console = Console()
 # Domain categorization patterns - aligned with F5 XC Terraform provider categories
 # Order matters: more specific patterns should come before general ones
 DOMAIN_PATTERNS = {
-    # API Security - api_sec.*, api_group, sensitive_data
-    "api_security": [
-        r"api_sec\.",
-        r"api_crawler",
-        r"api_discovery",
-        r"api_testing",
-        r"api_group",
-        r"sensitive_data",
-        r"rule_suggestion",
-    ],
-    # Applications - app_*, workload, UI
-    "applications": [
-        r"app_setting",
-        r"app_type",
-        r"app_api_group",
-        r"workload",
-        r"static_component",  # UI static components
-    ],
-    # BIG-IP Integration
-    "bigip": [
-        r"bigip",
-        r"bigcne",
-    ],
-    # Billing & Usage
-    "billing": [
-        r"billing\.",
-        r"invoice",
-        r"payment",
-        r"quota",
-        r"usage\.",
-        r"usage\.plan",
-        r"usage\.subscription",
-    ],
-    # CDN / Content Delivery
-    "cdn": [
-        r"cdn_loadbalancer",
-        r"cdn_cache",
-    ],
-    # Configuration
-    "config": [
-        r"global_setting",
-        r"tenant_setting",
-        r"known_label_key",
-        r"known_label",
-        r"implicit_label",
-        r"view_internal",  # Internal view configurations
-    ],
-    # AI & Intelligence Features
-    "ai_intelligence": [
-        r"ai_assistant",  # Gen-AI assistant queries
-        r"ai_data",  # AI data features (bfdp)
-        r"\.gia\.",  # Global IP allocation intelligence
-    ],
-    # Identity & Access Management
-    "identity": [
-        r"namespace",
-        r"user_group",
-        r"user\.",
-        r"user_identification",
-        r"role",
-        r"service_credential",
-        r"api_credential",
-        r"certificate",
-        r"token",
-        r"oidc_provider",
-        r"scim",
-        r"authentication",
-        r"signup",
-        r"contact",
-    ],
-    # Infrastructure - cloud sites, site management
-    "infrastructure": [
-        r"cloud_credentials",
+    "site_management": [
         r"aws_vpc_site",
         r"aws_tgw_site",
         r"azure_vnet_site",
@@ -104,189 +32,252 @@ DOMAIN_PATTERNS = {
         r"voltstack_site",
         r"securemesh_site",
         r"k8s_cluster",
-        r"k8s_pod",
         r"virtual_k8s",
-        r"ce_cluster",
-        r"certified_hardware",
-        r"registration",
-        r"upgrade_status",
-        r"module_management",
-        r"\.site\.",  # Site configuration (ves.io.schema.site)
-        r"virtual_appliance",
-        r"graph\.site",  # Site graph/topology
-        r"usb_policy",  # USB device policies
+        r"virtual_site",
+        r"\.site\.",
     ],
-    # Infrastructure Protection (DDoS, etc.)
+    "cloud_infrastructure": [
+        r"cloud_credentials",
+        r"cloud_connect",
+        r"cloud_elastic",
+        r"cloud_link",
+        r"cloud_region",
+        r"certified_hardware",
+    ],
+    "vpm_and_node_management": [
+        r"registration",
+        r"module_management",
+        r"upgrade_status",
+        r"maintenance_status",
+        r"usb_policy",
+        r"network_interface",
+    ],
+    "kubernetes_and_orchestration": [
+        r"k8s_cluster",
+        r"k8s_pod_security",
+        r"virtual_appliance",
+        r"workload",
+        r"container_registry",
+        r"\.cluster\.",
+    ],
+    "service_mesh": [
+        r"site_mesh",
+        r"virtual_network",
+        r"virtual_host",
+        r"endpoint",
+        r"nfv_service",
+        r"fleet",
+        r"discovery",
+        r"app_setting",
+        r"app_type",
+    ],
+    "app_firewall": [
+        r"app_firewall",
+        r"app_security",
+        r"waf",
+        r"protocol_inspection",
+        r"enhanced_firewall",
+    ],
+    "api_security": [
+        r"api_sec\.",
+        r"api_crawler",
+        r"api_discovery",
+        r"api_testing",
+        r"api_group",
+        r"code_base_integration",
+        r"api_credential",
+        r"api_definition",
+    ],
+    "bot_and_threat_defense": [
+        r"bot_defense",
+        r"bot_allowlist",
+        r"bot_endpoint",
+        r"bot_infrastructure",
+        r"bot_network",
+        r"mobile_sdk",
+        r"mobile_base",
+        r"threat_intelligence",
+    ],
+    "network_security": [
+        r"network_firewall",
+        r"network_policy",
+        r"nat_policy",
+        r"forward_proxy",
+        r"fast_acl",
+        r"policy_based_routing",
+        r"service_policy",
+        r"segment",
+        r"filter_set",
+    ],
+    "data_and_privacy_security": [
+        r"sensitive_data_policy",
+        r"data_privacy",
+        r"client_side_defense",
+        r"device_id",
+        r"data_type",
+    ],
     "infrastructure_protection": [
         r"infraprotect",
     ],
-    # Third-Party & External Integrations
-    "integrations": [
-        r"tpm_",  # Third-party management (general)
-        r"tpm_api_key",
-        r"tpm_category",
-        r"tpm_manager",
-        r"tpm_provision",
-        r"third_party",  # Third-party applications
-        r"ticket_tracking",  # Issue tracking systems
-        r"stored_object",  # Mobile SDKs, artifacts
-        r"terraform_param",  # IaC parameters
-        r"cminstance",  # Cluster management instances
+    "secops_and_incident_response": [
+        r"secret_management",
+        r"secret_policy",
+        r"ticket_tracking",
+        r"malicious_user",
     ],
-    # Load Balancing
-    "load_balancer": [
-        r"http_loadbalancer",
-        r"tcp_loadbalancer",
-        r"udp_loadbalancer",
-        r"healthcheck",
-        r"origin_pool",
-        r"proxy",
+    "virtual_server": [
+        r"views\.http_loadbalancer",
+        r"views\.tcp_loadbalancer",
+        r"views\.udp_loadbalancer",
+        r"views\.origin_pool",
+        r"(?<!dns_lb)\.healthcheck\.ves",
+        r"\.virtual_host\.ves",
+        r"^[^.]*\.route\.ves",
+        r"views\.rate_limiter_policy",
+        r"views\.proxy\.ves",
+        r"views\.forward_proxy_policy",
     ],
-    # Networking
-    "networking": [
-        r"network_policy",
-        r"network_firewall",
-        r"network_interface",
-        r"network_connector",
-        r"virtual_network",
-        r"site_mesh",
-        r"dc_cluster",
-        r"fleet",
-        r"bgp",
+    "dns_and_domain_management": [
+        r"dns_load_balancer",
         r"dns_zone",
         r"dns_domain",
-        r"dns_load_balancer",
-        r"dns_lb",
         r"dns_compliance",
-        r"subnet",
-        r"segment",
-        r"cloud_connect",
-        r"cloud_link",
-        r"cloud_elastic",
-        r"cloud_region",
-        r"public_ip",
-        r"nat_policy",
-        r"address_allocator",
-        r"advertise_policy",
-        r"forwarding_class",
+        r"dns_lb_",
+        r"rrset",
+    ],
+    "network_connectivity": [
+        r"bgp_routing",
+        r"bgp",
+        r"bgp_asn",
+        r"route",
+        r"tunnel",
+        r"segment_connection",
+        r"network_connector",
         r"ip_prefix_set",
-        r"route\.",
+        r"advertise_policy",
+        r"subnet",
         r"srv6",
-        r"virtual_host",
-        r"virtual_site",
-        r"external_connector",
-        r"policy_based_routing",
-        r"geo_config",  # Geo-location config (data_privacy)
+        r"address_allocator",
+        r"public_ip",
+        r"forwarding_class",
+        r"dc_cluster_group",
     ],
-    # NGINX One
-    "nginx": [
-        r"nginx",
-    ],
-    # Site Operations & Diagnostics
-    "operations": [
-        r"operate\.debug",
-        r"operate\.ping",
-        r"operate\.traceroute",
-        r"operate\.tcpdump",
-        r"operate\.lte",
-        r"operate\.wifi",
-        r"operate\.usb",
-        r"operate\.dhcp",
-        r"customer_support",
-        r"maintenance_status",
-    ],
-    # Observability & Monitoring
-    "observability": [
-        r"log_receiver",
-        r"global_log_receiver",
-        r"log\.",
-        r"metric",
-        r"alert_policy",
-        r"alert_receiver",
-        r"alert\.",
-        r"synthetic_monitor",
-        r"monitor",
-        r"trace",
-        r"dashboard",
-        r"report",
-        r"flow_anomaly",
-        r"flow\.",
-        r"topology",
-        r"graph\.connectivity",  # Connectivity graphs
-        r"graph\.l3l4",  # L3/L4 graphs
-        r"graph\.service",  # Service graphs
-        r"status_at_site",
-        r"lma_region",  # Log/monitoring regions
-    ],
-    # Security - WAF, policies, protection
-    "security": [
-        r"app_firewall",
-        r"app_security",  # App security events, incidents, metrics
-        r"waf",
-        r"waf_exclusion",  # WAF exclusion policies
-        r"waf_signatures",  # WAF signature changelog
-        r"service_policy",
-        r"rate_limiter",
-        r"malicious",
-        r"bot_defense",
-        r"api_definition",
-        r"enhanced_firewall",
-        r"fast_acl",
-        r"rbac_policy",
-        r"secret_policy",
-        r"secret_management",
-        r"policer",
-        r"protocol_policer",
-        r"protocol_inspection",
-        r"filter_set",
-        r"trusted_ca",
-        r"crl",
-        r"geo_location",
-        r"data_type",
-        r"voltshare",
-        r"voltshare_admin",  # Voltshare admin policies
-    ],
-    # Service Mesh
-    "service_mesh": [
-        r"discovery\.",
-        r"discovered_service",
-        r"endpoint",
-        r"cluster\.",
-        r"container_registry",
-        r"nfv_service",
-    ],
-    # Shape Security (Client-Side Defense, Bot Defense advanced)
-    "shape_security": [
-        r"shape\.",
-        r"client_side_defense",
-        r"device_id",
-    ],
-    # Subscriptions & Marketplace
-    "subscriptions": [
-        r"\.subscription",
-        r"addon_service",
-        r"addon_subscription",
-        r"marketplace",
-        r"pbac\.catalog",
-        r"pbac\.plan",
-        r"pbac\.navigation",
-    ],
-    # Tenant Management
-    "tenant_management": [
-        r"tenant_management",
-        r"tenant_configuration",
-        r"tenant_profile",
-        r"tenant\.",
-        r"child_tenant",
-        r"allowed_tenant",
-        r"managed_tenant",
-    ],
-    # VPN / IPSec
-    "vpn": [
+    "vpn_and_encryption": [
         r"ike1",
         r"ike2",
         r"ike_phase",
-        r"tunnel\.",
+    ],
+    "cdn_and_content_delivery": [
+        r"cdn_loadbalancer",
+        r"cdn_cache",
+        r"cdn_",
+        r"data_delivery",
+    ],
+    "observability_and_analytics": [
+        r"synthetic_monitor",
+        r"alert_policy",
+        r"alert_receiver",
+        r"alert",
+        r"log_receiver",
+        r"global_log_receiver",
+        r"log",
+        r"report",
+        r"observability\.",
+        r"brmalerts",
+    ],
+    "telemetry_and_insights": [
+        r"graph",
+        r"topology",
+        r"flow",
+        r"discovered_service",
+        r"status_at_site",
+    ],
+    "platform_operations": [
+        r"operate\.",
+        r"customer_support",
+    ],
+    "tenant_and_identity_management": [
+        r"tenant_management",
+        r"tenant",
+        r"namespace",
+        r"user_group",
+        r"user",
+        r"rbac_policy",
+        r"role",
+        r"authentication",
+        r"oidc_provider",
+        r"scim",
+        r"signup",
+        r"contact",
+    ],
+    "user_and_account_management": [
+        r"user_setting",
+        r"user_identification",
+        r"implicit_label",
+        r"known_label",
+        r"token",
+        r"was\.user",
+    ],
+    "compliance_and_governance": [
+        r"geo_location_set",
+        r"label",
+        r"quota",
+        r"usage_invoice",
+    ],
+    "bigip_integration": [
+        r"bigip",
+        r"bigcne",
+        r"irule",
+        r"data_group",
+    ],
+    "nginx_one_management": [
+        r"nginx",
+    ],
+    "platform_and_marketplace": [
+        r"marketplace",
+        r"pbac\.",
+        r"addon_",
+        r"tpm_",
+        r"cminstance",
+        r"voltshare",
+        r"views\.third_party",
+        r"views\.terraform",
+        r"views\.external",
+        r"views\.view_internal",
+    ],
+    "advanced_ai_security": [
+        r"ai_assistant",
+        r"ai_data",
+        r"flow_anomaly",
+        r"malware_protection",
+        r"shape\.recognize",
+        r"shape\.safe",
+        r"shape\.safeap",
+        r"\.gia\.",
+    ],
+    "rate_limiting_and_quotas": [
+        r"rate_limiter",
+        r"policer",
+    ],
+    "configuration_and_deployment": [
+        r"stored_object",
+        r"manifest",
+        r"certificate",
+        r"config",
+        r"trusted_ca",
+        r"crl",
+    ],
+    "admin_console_and_ui": [
+        r"ui_static",
+        r"ui\.",
+        r"navigation_tile",
+    ],
+    "billing_and_usage": [
+        r"billing\.",
+        r"usage",
+        r"subscription",
+        r"payment_method",
+        r"plan_transition",
     ],
 }
 
