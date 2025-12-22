@@ -839,6 +839,17 @@ def merge_specs_by_domain(
         domain = categorize_spec(filename)
         domain_specs[domain].append((filename, spec))
 
+        # Also add specs to CDN domain if they contain CDN-specific paths
+        paths = spec.get("paths", {})
+        has_cdn_paths = any("/api/cdn/" in p or "/cdn_loadbalancers/" in p for p in paths)
+        if has_cdn_paths and domain != "cdn_and_content_delivery":
+            domain_specs["cdn_and_content_delivery"].append((filename, spec))
+
+        # Also add specs to data_intelligence domain if they contain data-intelligence paths
+        has_di_paths = any("/api/data-intelligence/" in p for p in paths)
+        if has_di_paths and domain != "data_intelligence":
+            domain_specs["data_intelligence"].append((filename, spec))
+
     merged = {}
     stats = {
         "domains": 0,
@@ -875,12 +886,17 @@ def merge_specs_by_domain(
             stats["operationIds_deduplicated"] += dedup_count
 
             # Merge deduplicated paths
-            # Skip /api/cdn/ paths when not merging into cdn_and_content_delivery domain
+            # Skip domain-specific paths when not merging into their target domains
             is_cdn_domain = domain == "cdn_and_content_delivery"
+            is_data_intelligence_domain = domain == "data_intelligence"
 
             for path, path_item in deduplicated_paths.items():
                 # Skip CDN paths if not merging into CDN domain
-                if not is_cdn_domain and "/api/cdn/" in path:
+                if not is_cdn_domain and ("/api/cdn/" in path or "/cdn_loadbalancers/" in path):
+                    continue
+
+                # Skip data-intelligence paths if not merging into data_intelligence domain
+                if not is_data_intelligence_domain and "/api/data-intelligence/" in path:
                     continue
 
                 if path not in merged_spec["paths"]:
