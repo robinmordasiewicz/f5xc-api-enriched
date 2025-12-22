@@ -175,6 +175,9 @@ DOMAIN_PATTERNS = {
         r"cdn_cache",
         r"cdn_",
     ],
+    "threat_campaign": [
+        r"threat_campaign",
+    ],
     "observability_and_analytics": [
         r"synthetic_monitor",
         r"alert_policy",
@@ -220,11 +223,8 @@ DOMAIN_PATTERNS = {
         r"token",
         r"was\.user",
     ],
-    "compliance_and_governance": [
+    "geo_location_sets": [
         r"geo_location_set",
-        r"label",
-        r"quota",
-        r"usage_invoice",
     ],
     "bigip_integration": [
         r"bigip",
@@ -262,12 +262,14 @@ DOMAIN_PATTERNS = {
         r"policer",
     ],
     "configuration_and_deployment": [
-        r"stored_object",
         r"manifest",
         r"certificate",
         r"config",
         r"trusted_ca",
         r"crl",
+    ],
+    "object_store": [
+        r"stored_object",
     ],
     "admin_console_and_ui": [
         r"ui_static",
@@ -280,6 +282,11 @@ DOMAIN_PATTERNS = {
         r"subscription",
         r"payment_method",
         r"plan_transition",
+        r"quota",
+        r"usage_invoice",
+    ],
+    "compliance_and_governance": [
+        r"label",
     ],
 }
 
@@ -445,10 +452,17 @@ def merge_paths(target: dict[str, Any], source: dict[str, Any], domain: str = ""
     is_data_intelligence_domain = domain == "data_intelligence"
     is_virtual_server_domain = domain == "virtual_server"
     is_user_mgmt_domain = domain == "user_and_account_management"
+    is_threat_campaign_domain = domain == "threat_campaign"
 
     for path, path_item in source_paths.items():
         # Skip CDN paths if not merging into CDN domain
         if not is_cdn_domain and ("/api/cdn/" in path or "/cdn_loadbalancers/" in path):
+            continue
+
+        # Skip threat_campaign/threat_mesh paths if not merging into threat_campaign domain
+        if not is_threat_campaign_domain and (
+            "/api/waf/threat_campaign" in path or "/threat_mesh" in path
+        ):
             continue
 
         # Skip data-intelligence paths if not merging into data_intelligence domain

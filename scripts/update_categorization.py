@@ -179,12 +179,15 @@ NEW_DOMAIN_PATTERNS = {
         r"ike2",
         r"ike_phase",
     ],
-    # ===== F. Content & Performance (1 category) =====
+    # ===== F. Content & Performance (2 categories) =====
     "cdn_and_content_delivery": [
         r"cdn_loadbalancer",  # Moved from virtual_server
         r"cdn_cache",  # Moved from virtual_server
         r"cdn_",  # Other CDN resources
         r"data_delivery",
+    ],
+    "threat_campaign": [
+        r"threat_campaign",
     ],
     # ===== G. Observability (3 categories) =====
     "observability_and_analytics": [
@@ -233,11 +236,8 @@ NEW_DOMAIN_PATTERNS = {
         r"token",
         r"was\.user",
     ],
-    "compliance_and_governance": [
+    "geo_location_sets": [
         r"geo_location_set",
-        r"label",
-        r"quota",
-        r"usage_invoice",
     ],
     # ===== I. Platform & Integrations (3 categories) =====
     "bigip_integration": [
@@ -277,12 +277,14 @@ NEW_DOMAIN_PATTERNS = {
         r"policer",
     ],
     "configuration_and_deployment": [
-        r"stored_object",
         r"manifest",
         r"certificate",
         r"config",
         r"trusted_ca",
         r"crl",
+    ],
+    "object_store": [
+        r"stored_object",
     ],
     # ===== K. UI & Platform Infrastructure (2 categories) =====
     "admin_console_and_ui": [
@@ -296,6 +298,11 @@ NEW_DOMAIN_PATTERNS = {
         r"subscription",
         r"payment_method",
         r"plan_transition",
+        r"quota",
+        r"usage_invoice",
+    ],
+    "compliance_and_governance": [
+        r"label",
     ],
 }
 

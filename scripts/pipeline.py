@@ -908,6 +908,13 @@ def merge_specs_by_domain(
         if has_http_lb_paths and domain != "virtual_server":
             domain_specs["virtual_server"].append((filename, spec))
 
+        # Also add specs to threat_campaign domain if they contain threat_campaign/threat_mesh paths
+        has_threat_campaign_paths = any(
+            "/api/waf/threat_campaign" in p or "/threat_mesh" in p for p in paths
+        )
+        if has_threat_campaign_paths and domain != "threat_campaign":
+            domain_specs["threat_campaign"].append((filename, spec))
+
         # Also add specs to user_and_account_management if they contain credential management paths
         # Pattern-based detection for credential/token management under /api/web/
         has_credential_paths = any(
@@ -971,10 +978,17 @@ def merge_specs_by_domain(
             is_data_intelligence_domain = domain == "data_intelligence"
             is_virtual_server_domain = domain == "virtual_server"
             is_user_mgmt_domain = domain == "user_and_account_management"
+            is_threat_campaign_domain = domain == "threat_campaign"
 
             for path, path_item in deduplicated_paths.items():
                 # Skip CDN paths if not merging into CDN domain
                 if not is_cdn_domain and ("/api/cdn/" in path or "/cdn_loadbalancers/" in path):
+                    continue
+
+                # Skip threat_campaign/threat_mesh paths if not merging into threat_campaign domain
+                if not is_threat_campaign_domain and (
+                    "/api/waf/threat_campaign" in path or "/threat_mesh" in path
+                ):
                     continue
 
                 # Skip data-intelligence paths if not merging into data_intelligence domain
