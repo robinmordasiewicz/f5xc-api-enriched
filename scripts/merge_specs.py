@@ -429,13 +429,23 @@ def merge_components(
     return stats
 
 
-def merge_paths(target: dict[str, Any], source: dict[str, Any]) -> int:
-    """Merge paths from source into target."""
+def merge_paths(target: dict[str, Any], source: dict[str, Any], domain: str = "") -> int:
+    """Merge paths from source into target, filtering by domain.
+
+    Filters out /api/cdn/ paths when domain is not cdn_and_content_delivery,
+    to prevent CDN endpoints from contaminating non-CDN domains.
+    """
     source_paths = source.get("paths", {})
     target_paths = target.setdefault("paths", {})
 
     paths_added = 0
+    is_cdn_domain = domain == "cdn_and_content_delivery"
+
     for path, path_item in source_paths.items():
+        # Skip CDN paths if not merging into CDN domain
+        if not is_cdn_domain and "/api/cdn/" in path:
+            continue
+
         if path not in target_paths:
             target_paths[path] = path_item
             paths_added += 1
@@ -475,15 +485,21 @@ def extract_tags(spec: dict[str, Any]) -> list[dict[str, str]]:
 def _process_single_spec_file(
     spec_file: Path,
     merged: dict[str, Any],
+    domain: str = "",
 ) -> tuple[bool, int, dict[str, int], list[dict[str, str]], str]:
     """Process a single spec file for merging.
+
+    Args:
+        spec_file: Path to the specification file to process
+        merged: Target merged specification to merge into
+        domain: Domain category for filtering (e.g., "cdn_and_content_delivery")
 
     Returns:
         Tuple of (success, paths_added, comp_stats, tags, error_message).
     """
     try:
         spec = load_spec(spec_file)
-        paths_added = merge_paths(merged, spec)
+        paths_added = merge_paths(merged, spec, domain=domain)
         comp_stats = merge_components(merged, spec)
         tags = extract_tags(spec)
         return True, paths_added, comp_stats, tags, ""
@@ -538,6 +554,7 @@ def merge_specs_by_domain(
                 success, paths_added, comp_stats, tags, error = _process_single_spec_file(
                     spec_file,
                     merged,
+                    domain=domain,
                 )
                 if success:
                     stats["paths"] += paths_added
