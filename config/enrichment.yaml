@@ -16,7 +16,7 @@ paths:
   reports: "reports"
 
 # Branding transformations
-# Synchronized with f5xc-api-mcp project and f5xcctl CLI tool for compatibility
+# Synchronized with f5xc-api-mcp project and xcsh CLI tool for compatibility
 branding:
   # Protected patterns - these should NOT be transformed
   # Used to preserve API URLs, console URLs, and schema references
@@ -71,22 +71,42 @@ branding:
       case_sensitive: false
       context: "description"
 
-    # f5xcctl CLI tool branding (for f5xcctl command-line tool)
+    # xcsh CLI tool branding (F5 Distributed Cloud Shell)
+    # Direct transformation: vesctl → xcsh (skipping f5xcctl intermediate step)
+    # Also removes any existing f5xcctl references
+
+    # Environment variable transformations (must come first to handle F5XCCTL_ prefix)
+    - pattern: "\\bF5XCCTL_([A-Z_]+)\\b"
+      replacement: "XCSH_\\1"
+      case_sensitive: true
+
+    - pattern: "\\bVES_([A-Z_]+)\\b"
+      replacement: "F5XC_\\1"
+      case_sensitive: true
+
+    # CLI tool name transformations
+    - pattern: "\\bf5xcctl\\b"
+      replacement: "xcsh"
+      case_sensitive: true
+
+    - pattern: "\\bF5xcctl\\b"
+      replacement: "Xcsh"
+      case_sensitive: true
+
+    - pattern: "\\bF5XCCTL\\b"
+      replacement: "XCSH"
+      case_sensitive: true
+
     - pattern: "\\bvesctl\\b"
-      replacement: "f5xcctl"
+      replacement: "xcsh"
       case_sensitive: true
 
     - pattern: "\\bVesctl\\b"
-      replacement: "F5xcctl"
+      replacement: "Xcsh"
       case_sensitive: true
 
     - pattern: "\\bVESCTL\\b"
-      replacement: "F5XCCTL"
-      case_sensitive: true
-
-    # Environment variable transformations for f5xcctl
-    - pattern: "\\bVES_([A-Z_]+)\\b"
-      replacement: "F5XC_\\1"
+      replacement: "XCSH"
       case_sensitive: true
 
     # Naming convention: my- prefix → example- prefix (MCP compatibility)

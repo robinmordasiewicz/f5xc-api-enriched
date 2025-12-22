@@ -71,9 +71,9 @@ discovery:
     generate_diff_report: true    # Generate comparison report
     generate_markdown: true       # Generate human-readable summary
 
-  # CLI Integration (f5xcctl)
+  # CLI Integration (xcsh - F5 Distributed Cloud Shell)
   cli:
-    executable: "f5xcctl"
+    executable: "xcsh"
     use_cli_for_list: true        # Use CLI for listing resources
     use_cli_for_rpc: true         # Use CLI for RPC calls
     output_format: "json"

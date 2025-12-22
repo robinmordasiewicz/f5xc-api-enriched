@@ -10,7 +10,7 @@ Usage:
     python -m scripts.discover --namespace system # Single namespace
     python -m scripts.discover --endpoint /path   # Single endpoint
     python -m scripts.discover --dry-run          # List endpoints only
-    python -m scripts.discover --cli-only         # Use only f5xcctl CLI
+    python -m scripts.discover --cli-only         # Use only xcsh CLI
 """
 
 import argparse
@@ -266,7 +266,7 @@ async def discover_with_cli(
     rate_limiter: RateLimiter,
     schema_inferrer: SchemaInferrer,
 ) -> list[EndpointDiscovery]:
-    """Discover API using f5xcctl CLI.
+    """Discover API using xcsh CLI.
 
     Args:
         cli: CLI explorer instance
@@ -481,8 +481,8 @@ async def run_discovery(
     if cli_only:
         # CLI-only discovery
         if not cli.is_available():
-            console.print("[red]Error: f5xcctl CLI not available[/red]")
-            session.errors.append("f5xcctl not found")
+            console.print("[red]Error: xcsh CLI not available[/red]")
+            session.errors.append("xcsh not found")
             return session
 
         for ns in session.namespaces:
@@ -582,7 +582,7 @@ def main() -> int:
     parser.add_argument(
         "--cli-only",
         action="store_true",
-        help="Use only f5xcctl CLI for discovery",
+        help="Use only xcsh CLI for discovery",
     )
     parser.add_argument(
         "--dry-run",

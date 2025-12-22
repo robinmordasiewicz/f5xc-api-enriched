@@ -131,7 +131,7 @@ discover-namespace:
 discover-dry-run:
 	$(PYTHON) -m scripts.discover --dry-run
 
-# CLI-only discovery using f5xcctl
+# CLI-only discovery using xcsh
 discover-cli:
 	@if [ -z "$$F5XC_API_TOKEN" ]; then \
 		echo "F5XC_API_TOKEN not set. Set credentials first."; \
@@ -252,7 +252,7 @@ help:
 	@echo "  discover           Full API discovery (needs F5XC_API_TOKEN)"
 	@echo "  discover-namespace Discover specific namespace (NS=system)"
 	@echo "  discover-dry-run   List endpoints without making requests"
-	@echo "  discover-cli       CLI-only discovery using f5xcctl"
+	@echo "  discover-cli       CLI-only discovery using xcsh"
 	@echo ""
 	@echo "Discovery Enrichment (enhance specs with real API behavior):"
 	@echo "  enrich-with-discovery  Enrich specs with discovery data (x-discovered-* extensions)"

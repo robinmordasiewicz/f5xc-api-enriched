@@ -1,6 +1,6 @@
-"""f5xcctl CLI integration for API discovery.
+"""xcsh CLI integration for API discovery.
 
-Uses the f5xcctl command-line tool to:
+Uses the xcsh command-line tool (F5 Distributed Cloud Shell) to:
 - List available resources
 - Execute RPC calls
 - Get CLI specification
@@ -38,7 +38,7 @@ class ResourceInfo:
 
 
 class CLIExplorer:
-    """Explore F5 XC API using f5xcctl CLI.
+    """Explore F5 XC API using xcsh CLI (F5 Distributed Cloud Shell).
 
     Provides:
     - Resource listing and discovery
@@ -49,14 +49,14 @@ class CLIExplorer:
 
     def __init__(
         self,
-        executable: str = "f5xcctl",
+        executable: str = "xcsh",
         output_format: str = "json",
         timeout: int = 30,
     ) -> None:
         """Initialize CLI explorer.
 
         Args:
-            executable: Path to f5xcctl executable
+            executable: Path to xcsh executable
             output_format: Output format (json or yaml)
             timeout: Command timeout in seconds
         """
@@ -66,7 +66,7 @@ class CLIExplorer:
         self._cli_available: bool | None = None
 
     def is_available(self) -> bool:
-        """Check if f5xcctl CLI is available."""
+        """Check if xcsh CLI is available."""
         if self._cli_available is not None:
             return self._cli_available
 
