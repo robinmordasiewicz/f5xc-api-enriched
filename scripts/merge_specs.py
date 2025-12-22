@@ -434,8 +434,9 @@ def merge_components(
 def merge_paths(target: dict[str, Any], source: dict[str, Any], domain: str = "") -> int:
     """Merge paths from source into target, filtering by domain.
 
-    Filters out /api/cdn/, /api/data-intelligence/, and /cdn_loadbalancers/
-    paths when not in their respective domains, to prevent endpoint contamination.
+    Filters out /api/cdn/, /api/data-intelligence/, /cdn_loadbalancers/,
+    and /http_loadbalancers/ paths when not in their respective domains,
+    to prevent endpoint contamination.
     """
     source_paths = source.get("paths", {})
     target_paths = target.setdefault("paths", {})
@@ -443,6 +444,7 @@ def merge_paths(target: dict[str, Any], source: dict[str, Any], domain: str = ""
     paths_added = 0
     is_cdn_domain = domain == "cdn_and_content_delivery"
     is_data_intelligence_domain = domain == "data_intelligence"
+    is_virtual_server_domain = domain == "virtual_server"
 
     for path, path_item in source_paths.items():
         # Skip CDN paths if not merging into CDN domain
@@ -451,6 +453,10 @@ def merge_paths(target: dict[str, Any], source: dict[str, Any], domain: str = ""
 
         # Skip data-intelligence paths if not merging into data_intelligence domain
         if not is_data_intelligence_domain and "/api/data-intelligence/" in path:
+            continue
+
+        # Skip http_loadbalancers paths if not merging into virtual_server domain
+        if not is_virtual_server_domain and "/http_loadbalancers/" in path:
             continue
 
         if path not in target_paths:

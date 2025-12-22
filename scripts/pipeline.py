@@ -850,6 +850,11 @@ def merge_specs_by_domain(
         if has_di_paths and domain != "data_intelligence":
             domain_specs["data_intelligence"].append((filename, spec))
 
+        # Also add specs to virtual_server domain if they contain http_loadbalancers paths
+        has_http_lb_paths = any("/http_loadbalancers/" in p for p in paths)
+        if has_http_lb_paths and domain != "virtual_server":
+            domain_specs["virtual_server"].append((filename, spec))
+
     merged = {}
     stats = {
         "domains": 0,
@@ -889,6 +894,7 @@ def merge_specs_by_domain(
             # Skip domain-specific paths when not merging into their target domains
             is_cdn_domain = domain == "cdn_and_content_delivery"
             is_data_intelligence_domain = domain == "data_intelligence"
+            is_virtual_server_domain = domain == "virtual_server"
 
             for path, path_item in deduplicated_paths.items():
                 # Skip CDN paths if not merging into CDN domain
@@ -897,6 +903,10 @@ def merge_specs_by_domain(
 
                 # Skip data-intelligence paths if not merging into data_intelligence domain
                 if not is_data_intelligence_domain and "/api/data-intelligence/" in path:
+                    continue
+
+                # Skip http_loadbalancers paths if not merging into virtual_server domain
+                if not is_virtual_server_domain and "/http_loadbalancers/" in path:
                     continue
 
                 if path not in merged_spec["paths"]:
