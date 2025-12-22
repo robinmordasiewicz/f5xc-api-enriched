@@ -434,9 +434,8 @@ def merge_components(
 def merge_paths(target: dict[str, Any], source: dict[str, Any], domain: str = "") -> int:
     """Merge paths from source into target, filtering by domain.
 
-    Filters out /api/cdn/, /api/data-intelligence/, /cdn_loadbalancers/,
-    and /http_loadbalancers/ paths when not in their respective domains,
-    to prevent endpoint contamination.
+    Filters out domain-specific paths when not in their respective domains,
+    using pattern-based detection to prevent endpoint contamination.
     """
     source_paths = source.get("paths", {})
     target_paths = target.setdefault("paths", {})
@@ -445,6 +444,7 @@ def merge_paths(target: dict[str, Any], source: dict[str, Any], domain: str = ""
     is_cdn_domain = domain == "cdn_and_content_delivery"
     is_data_intelligence_domain = domain == "data_intelligence"
     is_virtual_server_domain = domain == "virtual_server"
+    is_user_mgmt_domain = domain == "user_and_account_management"
 
     for path, path_item in source_paths.items():
         # Skip CDN paths if not merging into CDN domain
@@ -457,6 +457,14 @@ def merge_paths(target: dict[str, Any], source: dict[str, Any], domain: str = ""
 
         # Skip http_loadbalancers paths if not merging into virtual_server domain
         if not is_virtual_server_domain and "/http_loadbalancers/" in path:
+            continue
+
+        # Skip credential management paths if not merging into user_and_account_management
+        # Pattern-based: /api/web/ + (api_credentials|service_credentials|scim_token)
+        is_credential_path = "/api/web/" in path and (
+            "/api_credentials" in path or "/service_credentials" in path or "/scim_token" in path
+        )
+        if not is_user_mgmt_domain and is_credential_path:
             continue
 
         if path not in target_paths:

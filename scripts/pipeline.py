@@ -855,6 +855,16 @@ def merge_specs_by_domain(
         if has_http_lb_paths and domain != "virtual_server":
             domain_specs["virtual_server"].append((filename, spec))
 
+        # Also add specs to user_and_account_management if they contain credential management paths
+        # Pattern-based detection for credential/token management under /api/web/
+        has_credential_paths = any(
+            "/api/web/" in p
+            and ("/api_credentials" in p or "/service_credentials" in p or "/scim_token" in p)
+            for p in paths
+        )
+        if has_credential_paths and domain != "user_and_account_management":
+            domain_specs["user_and_account_management"].append((filename, spec))
+
     merged = {}
     stats = {
         "domains": 0,
@@ -895,6 +905,7 @@ def merge_specs_by_domain(
             is_cdn_domain = domain == "cdn_and_content_delivery"
             is_data_intelligence_domain = domain == "data_intelligence"
             is_virtual_server_domain = domain == "virtual_server"
+            is_user_mgmt_domain = domain == "user_and_account_management"
 
             for path, path_item in deduplicated_paths.items():
                 # Skip CDN paths if not merging into CDN domain
@@ -907,6 +918,16 @@ def merge_specs_by_domain(
 
                 # Skip http_loadbalancers paths if not merging into virtual_server domain
                 if not is_virtual_server_domain and "/http_loadbalancers/" in path:
+                    continue
+
+                # Skip credential management paths if not merging into user_and_account_management
+                # Pattern-based: /api/web/ + (api_credentials|service_credentials|scim_token)
+                is_credential_path = "/api/web/" in path and (
+                    "/api_credentials" in path
+                    or "/service_credentials" in path
+                    or "/scim_token" in path
+                )
+                if not is_user_mgmt_domain and is_credential_path:
                     continue
 
                 if path not in merged_spec["paths"]:
