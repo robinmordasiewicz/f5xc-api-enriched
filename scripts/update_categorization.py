@@ -236,7 +236,6 @@ NEW_DOMAIN_PATTERNS = {
     "compliance_and_governance": [
         r"geo_location_set",
         r"label",
-        r"quota",
         r"usage_invoice",
     ],
     # ===== I. Platform & Integrations (3 categories) =====
@@ -296,6 +295,7 @@ NEW_DOMAIN_PATTERNS = {
         r"subscription",
         r"payment_method",
         r"plan_transition",
+        r"quota",
     ],
 }
 
