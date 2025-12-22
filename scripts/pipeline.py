@@ -904,9 +904,16 @@ def merge_specs_by_domain(
             domain_specs["data_intelligence"].append((filename, spec))
 
         # Also add specs to virtual_server domain if they contain http_loadbalancers paths
-        has_http_lb_paths = any("/http_loadbalancers" in p for p in paths)
+        has_http_lb_paths = any("/http_loadbalancers/" in p for p in paths)
         if has_http_lb_paths and domain != "virtual_server":
             domain_specs["virtual_server"].append((filename, spec))
+
+        # Also add specs to threat_campaign domain if they contain threat_campaign/threat_mesh paths
+        has_threat_campaign_paths = any(
+            "/api/waf/threat_campaign" in p or "/threat_mesh" in p for p in paths
+        )
+        if has_threat_campaign_paths and domain != "threat_campaign":
+            domain_specs["threat_campaign"].append((filename, spec))
 
         # Also add specs to user_and_account_management if they contain credential management paths
         # Pattern-based detection for credential/token management under /api/web/
@@ -971,19 +978,16 @@ def merge_specs_by_domain(
             is_data_intelligence_domain = domain == "data_intelligence"
             is_virtual_server_domain = domain == "virtual_server"
             is_user_mgmt_domain = domain == "user_and_account_management"
+            is_threat_campaign_domain = domain == "threat_campaign"
 
             for path, path_item in deduplicated_paths.items():
                 # Skip CDN paths if not merging into CDN domain
                 if not is_cdn_domain and ("/api/cdn/" in path or "/cdn_loadbalancers/" in path):
                     continue
 
-                # Skip Standard-tier HTTP LB collection endpoints if merging into CDN
-                # Prevents /api/config/.../http_loadbalancers from appearing in CDN
-                if (
-                    is_cdn_domain
-                    and "/api/config/" in path
-                    and "http_loadbalancers" in path
-                    and "cdn_loadbalancer" not in path
+                # Skip threat_campaign/threat_mesh paths if not merging into threat_campaign domain
+                if not is_threat_campaign_domain and (
+                    "/api/waf/threat_campaign" in path or "/threat_mesh" in path
                 ):
                     continue
 
@@ -992,7 +996,7 @@ def merge_specs_by_domain(
                     continue
 
                 # Skip http_loadbalancers paths if not merging into virtual_server domain
-                if not is_virtual_server_domain and "/http_loadbalancers" in path:
+                if not is_virtual_server_domain and "/http_loadbalancers/" in path:
                     continue
 
                 # Skip credential management paths if not merging into user_and_account_management
