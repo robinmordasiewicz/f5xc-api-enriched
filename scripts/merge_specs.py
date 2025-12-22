@@ -167,11 +167,13 @@ DOMAIN_PATTERNS = {
         r"ike2",
         r"ike_phase",
     ],
+    "data_intelligence": [
+        r"data_delivery",
+    ],
     "cdn_and_content_delivery": [
         r"cdn_loadbalancer",
         r"cdn_cache",
         r"cdn_",
-        r"data_delivery",
     ],
     "observability_and_analytics": [
         r"synthetic_monitor",
@@ -432,18 +434,23 @@ def merge_components(
 def merge_paths(target: dict[str, Any], source: dict[str, Any], domain: str = "") -> int:
     """Merge paths from source into target, filtering by domain.
 
-    Filters out /api/cdn/ paths when domain is not cdn_and_content_delivery,
-    to prevent CDN endpoints from contaminating non-CDN domains.
+    Filters out /api/cdn/ and /api/data-intelligence/ paths when not in their
+    respective domains, to prevent endpoint contamination across domains.
     """
     source_paths = source.get("paths", {})
     target_paths = target.setdefault("paths", {})
 
     paths_added = 0
     is_cdn_domain = domain == "cdn_and_content_delivery"
+    is_data_intelligence_domain = domain == "data_intelligence"
 
     for path, path_item in source_paths.items():
         # Skip CDN paths if not merging into CDN domain
         if not is_cdn_domain and "/api/cdn/" in path:
+            continue
+
+        # Skip data-intelligence paths if not merging into data_intelligence domain
+        if not is_data_intelligence_domain and "/api/data-intelligence/" in path:
             continue
 
         if path not in target_paths:
