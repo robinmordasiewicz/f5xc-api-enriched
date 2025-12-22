@@ -822,6 +822,59 @@ def create_base_spec(title: str, description: str, version: str) -> dict[str, An
     }
 
 
+def get_api_data_target_domain(path: str) -> str | None:
+    """Determine the correct target domain for /api/data/ paths based on resource semantics.
+
+    Args:
+        path: API path to analyze
+
+    Returns:
+        Target domain name if path matches /api/data/ pattern, None otherwise
+    """
+    if "/api/data/" not in path:
+        return None
+
+    # Map resource patterns in /api/data/ paths to their semantic domains
+    # Order matters: more specific patterns first
+    data_routing = [
+        (r"/app_security/", "app_firewall"),
+        (r"/app_firewall/", "app_firewall"),
+        (r"/dns_", "dns_and_domain_management"),
+        (r"/access_logs", "observability_and_analytics"),
+        (r"/audit_logs", "observability_and_analytics"),
+        (r"/alerts", "observability_and_analytics"),
+        (r"/site/", "site_management"),
+        (r"/virtual_k8s/", "site_management"),
+        (r"/graph/site", "site_management"),
+        (r"/graph/connectivity", "telemetry_and_insights"),
+        (r"/graph/service", "telemetry_and_insights"),
+        (r"/graph/lb_cache", "telemetry_and_insights"),
+        (r"/discovered_services/", "telemetry_and_insights"),
+        (r"/status_at_site", "telemetry_and_insights"),
+        (r"/flow", "telemetry_and_insights"),
+        (r"/infraprotect/", "infrastructure_protection"),
+        (r"/network_policy", "network_security"),
+        (r"/service_policy", "network_security"),
+        (r"/forward_proxy_policy", "network_security"),
+        (r"/fast_acl/", "network_security"),
+        (r"/segments/", "network_security"),
+        (r"/bigip/", "bigip_integration"),
+        (r"/workloads/", "kubernetes_and_orchestration"),
+        (r"/cloud_connects", "cloud_infrastructure"),
+        (r"/nfv_services/", "service_mesh"),
+        (r"/virtual_network/", "service_mesh"),
+        (r"/dc_cluster_groups/", "network_connectivity"),
+        (r"/upgrade_status", "vpm_and_node_management"),
+    ]
+
+    for pattern, target_domain in data_routing:
+        if re.search(pattern, path):
+            return target_domain
+
+    # Default: if no specific match, return None (let filename-based categorization handle it)
+    return None
+
+
 def merge_specs_by_domain(
     specs: dict[str, dict[str, Any]],
     version: str,
@@ -864,6 +917,18 @@ def merge_specs_by_domain(
         )
         if has_credential_paths and domain != "user_and_account_management":
             domain_specs["user_and_account_management"].append((filename, spec))
+
+        # Add specs to appropriate domains based on /api/data/ resource semantics
+        # Collect unique target domains for /api/data/ paths in this spec
+        data_path_domains = set()
+        for path in paths:
+            target_domain = get_api_data_target_domain(path)
+            if target_domain and target_domain != domain:
+                data_path_domains.add(target_domain)
+
+        # Add this spec to all relevant /api/data/ target domains
+        for target_domain in data_path_domains:
+            domain_specs[target_domain].append((filename, spec))
 
     merged = {}
     stats = {
@@ -928,6 +993,12 @@ def merge_specs_by_domain(
                     or "/scim_token" in path
                 )
                 if not is_user_mgmt_domain and is_credential_path:
+                    continue
+
+                # Skip /api/data/ paths if not merging into their semantic target domain
+                # This prevents app_security data paths from appearing in CDN/virtual_server domains
+                data_target_domain = get_api_data_target_domain(path)
+                if data_target_domain and data_target_domain != domain:
                     continue
 
                 if path not in merged_spec["paths"]:
