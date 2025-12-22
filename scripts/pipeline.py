@@ -904,7 +904,7 @@ def merge_specs_by_domain(
             domain_specs["data_intelligence"].append((filename, spec))
 
         # Also add specs to virtual_server domain if they contain http_loadbalancers paths
-        has_http_lb_paths = any("/http_loadbalancers/" in p for p in paths)
+        has_http_lb_paths = any("/http_loadbalancers" in p for p in paths)
         if has_http_lb_paths and domain != "virtual_server":
             domain_specs["virtual_server"].append((filename, spec))
 
@@ -977,12 +977,22 @@ def merge_specs_by_domain(
                 if not is_cdn_domain and ("/api/cdn/" in path or "/cdn_loadbalancers/" in path):
                     continue
 
+                # Skip Standard-tier HTTP LB collection endpoints if merging into CDN
+                # Prevents /api/config/.../http_loadbalancers from appearing in CDN
+                if (
+                    is_cdn_domain
+                    and "/api/config/" in path
+                    and "http_loadbalancers" in path
+                    and "cdn_loadbalancer" not in path
+                ):
+                    continue
+
                 # Skip data-intelligence paths if not merging into data_intelligence domain
                 if not is_data_intelligence_domain and "/api/data-intelligence/" in path:
                     continue
 
                 # Skip http_loadbalancers paths if not merging into virtual_server domain
-                if not is_virtual_server_domain and "/http_loadbalancers/" in path:
+                if not is_virtual_server_domain and "/http_loadbalancers" in path:
                     continue
 
                 # Skip credential management paths if not merging into user_and_account_management
