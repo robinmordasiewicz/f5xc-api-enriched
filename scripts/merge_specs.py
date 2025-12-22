@@ -251,10 +251,12 @@ DOMAIN_PATTERNS = {
         r"ai_data",
         r"flow_anomaly",
         r"malware_protection",
+        r"\.gia\.",
+    ],
+    "shape_security": [
         r"shape\.recognize",
         r"shape\.safe",
         r"shape\.safeap",
-        r"\.gia\.",
     ],
     "rate_limiting_and_quotas": [
         r"rate_limiter",
