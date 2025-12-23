@@ -7,7 +7,6 @@ Fully automated - no manual intervention required.
 
 import argparse
 import json
-import re
 import sys
 from collections import defaultdict
 from datetime import datetime, timezone
@@ -18,277 +17,11 @@ from rich.console import Console
 from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
 from rich.table import Table
 
+from scripts.utils.domain_categorizer import (
+    categorize_spec as categorize_spec_util,
+)
+
 console = Console()
-
-
-# Domain categorization patterns - aligned with F5 XC Terraform provider categories
-# Order matters: more specific patterns should come before general ones
-DOMAIN_PATTERNS = {
-    "site_management": [
-        r"aws_vpc_site",
-        r"aws_tgw_site",
-        r"azure_vnet_site",
-        r"gcp_vpc_site",
-        r"voltstack_site",
-        r"securemesh_site",
-        r"k8s_cluster",
-        r"virtual_k8s",
-        r"virtual_site",
-        r"\.site\.",
-    ],
-    "cloud_infrastructure": [
-        r"cloud_credentials",
-        r"cloud_connect",
-        r"cloud_elastic",
-        r"cloud_link",
-        r"cloud_region",
-        r"certified_hardware",
-    ],
-    "vpm_and_node_management": [
-        r"registration",
-        r"module_management",
-        r"upgrade_status",
-        r"maintenance_status",
-        r"usb_policy",
-        r"network_interface",
-    ],
-    "kubernetes_and_orchestration": [
-        r"k8s_cluster",
-        r"k8s_pod_security",
-        r"virtual_appliance",
-        r"workload",
-        r"container_registry",
-        r"\.cluster\.",
-    ],
-    "service_mesh": [
-        r"site_mesh",
-        r"virtual_network",
-        r"virtual_host",
-        r"endpoint",
-        r"nfv_service",
-        r"fleet",
-        r"discovery",
-        r"app_setting",
-        r"app_type",
-    ],
-    "app_firewall": [
-        r"app_firewall",
-        r"app_security",
-        r"waf",
-        r"protocol_inspection",
-        r"enhanced_firewall",
-    ],
-    "api_security": [
-        r"api_sec\.",
-        r"api_crawler",
-        r"api_discovery",
-        r"api_testing",
-        r"api_group",
-        r"code_base_integration",
-        r"api_credential",
-        r"api_definition",
-    ],
-    "bot_and_threat_defense": [
-        r"bot_defense",
-        r"bot_allowlist",
-        r"bot_endpoint",
-        r"bot_infrastructure",
-        r"bot_network",
-        r"mobile_sdk",
-        r"mobile_base",
-        r"threat_intelligence",
-    ],
-    "network_security": [
-        r"network_firewall",
-        r"network_policy",
-        r"nat_policy",
-        r"forward_proxy",
-        r"fast_acl",
-        r"policy_based_routing",
-        r"service_policy",
-        r"segment",
-        r"filter_set",
-    ],
-    "data_and_privacy_security": [
-        r"sensitive_data_policy",
-        r"data_privacy",
-        r"client_side_defense",
-        r"device_id",
-        r"data_type",
-    ],
-    "infrastructure_protection": [
-        r"infraprotect",
-    ],
-    "secops_and_incident_response": [
-        r"secret_management",
-        r"secret_policy",
-        r"ticket_tracking",
-        r"malicious_user",
-    ],
-    "virtual_server": [
-        r"views\.http_loadbalancer",
-        r"views\.tcp_loadbalancer",
-        r"views\.udp_loadbalancer",
-        r"views\.origin_pool",
-        r"(?<!dns_lb)\.healthcheck\.ves",
-        r"\.virtual_host\.ves",
-        r"^[^.]*\.route\.ves",
-        r"views\.rate_limiter_policy",
-        r"views\.proxy\.ves",
-        r"views\.forward_proxy_policy",
-    ],
-    "dns_and_domain_management": [
-        r"dns_load_balancer",
-        r"dns_zone",
-        r"dns_domain",
-        r"dns_compliance",
-        r"dns_lb_",
-        r"rrset",
-    ],
-    "network_connectivity": [
-        r"bgp_routing",
-        r"bgp",
-        r"bgp_asn",
-        r"route",
-        r"tunnel",
-        r"segment_connection",
-        r"network_connector",
-        r"ip_prefix_set",
-        r"advertise_policy",
-        r"subnet",
-        r"srv6",
-        r"address_allocator",
-        r"public_ip",
-        r"forwarding_class",
-        r"dc_cluster_group",
-    ],
-    "vpn_and_encryption": [
-        r"ike1",
-        r"ike2",
-        r"ike_phase",
-    ],
-    "data_intelligence": [
-        r"data_delivery",
-    ],
-    "cdn_and_content_delivery": [
-        r"cdn_loadbalancer",
-        r"cdn_cache",
-        r"cdn_",
-    ],
-    "threat_campaign": [
-        r"threat_campaign",
-    ],
-    "observability_and_analytics": [
-        r"synthetic_monitor",
-        r"alert_policy",
-        r"alert_receiver",
-        r"alert",
-        r"log_receiver",
-        r"global_log_receiver",
-        r"log",
-        r"report",
-        r"observability\.",
-        r"brmalerts",
-    ],
-    "telemetry_and_insights": [
-        r"graph",
-        r"topology",
-        r"flow",
-        r"discovered_service",
-        r"status_at_site",
-    ],
-    "platform_operations": [
-        r"operate\.",
-        r"customer_support",
-    ],
-    "tenant_and_identity_management": [
-        r"tenant_management",
-        r"tenant",
-        r"namespace",
-        r"user_group",
-        r"user",
-        r"rbac_policy",
-        r"role",
-        r"authentication",
-        r"oidc_provider",
-        r"scim",
-        r"signup",
-        r"contact",
-    ],
-    "user_and_account_management": [
-        r"user_setting",
-        r"user_identification",
-        r"implicit_label",
-        r"known_label",
-        r"token",
-        r"was\.user",
-    ],
-    "geo_location_sets": [
-        r"geo_location_set",
-    ],
-    "bigip_integration": [
-        r"bigip",
-        r"bigcne",
-        r"irule",
-        r"data_group",
-    ],
-    "nginx_one_management": [
-        r"nginx",
-    ],
-    "platform_and_marketplace": [
-        r"marketplace",
-        r"pbac\.",
-        r"addon_",
-        r"tpm_",
-        r"cminstance",
-        r"voltshare",
-        r"views\.third_party",
-        r"views\.terraform",
-        r"views\.external",
-        r"views\.view_internal",
-    ],
-    "advanced_ai_security": [
-        r"ai_assistant",
-        r"ai_data",
-        r"flow_anomaly",
-        r"malware_protection",
-        r"shape\.recognize",
-        r"shape\.safe",
-        r"shape\.safeap",
-        r"\.gia\.",
-    ],
-    "rate_limiting_and_quotas": [
-        r"rate_limiter",
-        r"policer",
-    ],
-    "configuration_and_deployment": [
-        r"manifest",
-        r"certificate",
-        r"config",
-        r"trusted_ca",
-        r"crl",
-    ],
-    "object_store": [
-        r"stored_object",
-    ],
-    "admin_console_and_ui": [
-        r"ui_static",
-        r"ui\.",
-        r"navigation_tile",
-    ],
-    "billing_and_usage": [
-        r"billing\.",
-        r"usage",
-        r"subscription",
-        r"payment_method",
-        r"plan_transition",
-        r"quota",
-        r"usage_invoice",
-    ],
-    "compliance_and_governance": [
-        r"label",
-    ],
-}
 
 
 def load_spec(spec_path: Path) -> dict[str, Any]:
@@ -306,15 +39,11 @@ def save_spec(spec: dict[str, Any], output_path: Path, indent: int = 2) -> None:
 
 
 def categorize_spec(filename: str) -> str:
-    """Categorize a specification file by domain based on filename patterns."""
-    filename_lower = filename.lower()
+    """Categorize a specification file by domain based on filename patterns.
 
-    for domain, patterns in DOMAIN_PATTERNS.items():
-        for pattern in patterns:
-            if re.search(pattern, filename_lower):
-                return domain
-
-    return "other"
+    Delegates to centralized domain_categorizer utility for pattern matching.
+    """
+    return categorize_spec_util(filename)
 
 
 def create_base_spec(
