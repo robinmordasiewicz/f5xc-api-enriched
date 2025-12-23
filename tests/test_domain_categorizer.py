@@ -35,7 +35,7 @@ class TestDomainCategorizerSingleton:
 
 
 class TestDomainCategorization:
-    """Test domain categorization for all 31 domains."""
+    """Test domain categorization for all 33 domains."""
 
     # A. Infrastructure & Deployment (5 categories)
     def test_site_management(self) -> None:
@@ -43,7 +43,6 @@ class TestDomainCategorization:
         assert categorize_spec("ves.io.schema.views.aws_vpc_site.json") == "site_management"
         assert categorize_spec("ves.io.schema.views.azure_vnet_site.json") == "site_management"
         assert categorize_spec("ves.io.schema.views.gcp_vpc_site.json") == "site_management"
-        assert categorize_spec("ves.io.schema.views.k8s_cluster.json") == "site_management"
         assert categorize_spec("ves.io.schema.views.virtual_site.json") == "site_management"
 
     def test_cloud_infrastructure(self) -> None:
@@ -53,13 +52,10 @@ class TestDomainCategorization:
         )
         assert categorize_spec("ves.io.schema.views.cloud_region.json") == "cloud_infrastructure"
 
-    def test_vpm_and_node_management(self) -> None:
-        """Test categorization of VPM and node management specs."""
-        assert categorize_spec("ves.io.schema.views.registration.json") == "vpm_and_node_management"
-        assert (
-            categorize_spec("ves.io.schema.views.module_management.json")
-            == "vpm_and_node_management"
-        )
+    def test_ce_management(self) -> None:
+        """Test categorization of Customer Edge management specs."""
+        assert categorize_spec("ves.io.schema.views.registration.json") == "ce_management"
+        assert categorize_spec("ves.io.schema.views.module_management.json") == "ce_management"
 
     def test_kubernetes_and_orchestration(self) -> None:
         """Test categorization of Kubernetes specs."""
@@ -82,10 +78,10 @@ class TestDomainCategorization:
         assert categorize_spec("ves.io.schema.views.app_firewall.json") == "app_firewall"
         assert categorize_spec("ves.io.schema.views.waf.json") == "app_firewall"
 
-    def test_api_security(self) -> None:
+    def test_api(self) -> None:
         """Test categorization of API security specs."""
-        assert categorize_spec("ves.io.schema.views.api_sec.json") == "api_security"
-        assert categorize_spec("ves.io.schema.views.api_credential.json") == "api_security"
+        assert categorize_spec("ves.io.schema.views.api_sec.json") == "api"
+        assert categorize_spec("ves.io.schema.views.api_credential.json") == "api"
 
     def test_bot_and_threat_defense(self) -> None:
         """Test categorization of bot defense specs."""
@@ -146,17 +142,14 @@ class TestDomainCategorization:
         assert categorize_spec("ves.io.schema.views.dns_zone.json") == "dns"
         assert categorize_spec("ves.io.schema.views.rrset.json") == "dns"
 
-    # E. Connectivity & Networking (2 categories)
+    # E. Connectivity & Networking (1 category)
     def test_network(self) -> None:
-        """Test categorization of network routing specs."""
+        """Test categorization of network routing and tunnel specs."""
         assert categorize_spec("ves.io.schema.views.bgp_routing.json") == "network"
         assert categorize_spec("ves.io.schema.views.tunnel.json") == "network"
         assert categorize_spec("ves.io.schema.views.public_ip.json") == "network"
-
-    def test_site_to_site(self) -> None:
-        """Test categorization of site-to-site VPN specs."""
-        assert categorize_spec("ves.io.schema.views.ike1.json") == "site_to_site"
-        assert categorize_spec("ves.io.schema.views.ike2.json") == "site_to_site"
+        assert categorize_spec("ves.io.schema.views.ike1.json") == "network"
+        assert categorize_spec("ves.io.schema.views.ike2.json") == "network"
 
     # F. Content & Performance
     def test_cdn(self) -> None:
@@ -165,32 +158,17 @@ class TestDomainCategorization:
         assert categorize_spec("ves.io.schema.views.cdn_cache.json") == "cdn"
         assert categorize_spec("ves.io.schema.views.data_delivery.json") == "cdn"
 
-    # G. Observability (4 categories)
-    def test_observability_and_analytics(self) -> None:
+    # G. Observability (3 categories)
+    def test_observability(self) -> None:
         """Test categorization of observability specs."""
-        assert (
-            categorize_spec("ves.io.schema.views.alert_policy.json")
-            == "observability_and_analytics"
-        )
-        assert (
-            categorize_spec("ves.io.schema.views.log_receiver.json")
-            == "observability_and_analytics"
-        )
+        assert categorize_spec("ves.io.schema.views.synthetic_monitor.json") == "observability"
 
-    def test_synthetic_monitoring(self) -> None:
-        """Test categorization of synthetic monitoring specs.
-
-        Note: synthetic_monitor pattern appears in observability_and_analytics first,
-        so it gets categorized there. This is expected behavior with pattern ordering.
-        """
-        # synthetic_monitor matches observability_and_analytics first due to pattern order
-        result = categorize_spec("ves.io.schema.views.synthetic_monitor.json")
-        assert result in ["observability_and_analytics", "synthetic_monitoring"]
-
-    def test_telemetry_and_insights(self) -> None:
-        """Test categorization of telemetry specs."""
-        assert categorize_spec("ves.io.schema.views.graph.json") == "telemetry_and_insights"
-        assert categorize_spec("ves.io.schema.views.flow.json") == "telemetry_and_insights"
+    def test_statistics(self) -> None:
+        """Test categorization of statistics specs."""
+        assert categorize_spec("ves.io.schema.views.alert_policy.json") == "statistics"
+        assert categorize_spec("ves.io.schema.views.log_receiver.json") == "statistics"
+        assert categorize_spec("ves.io.schema.views.graph.json") == "statistics"
+        assert categorize_spec("ves.io.schema.views.flow.json") == "statistics"
 
     def test_support(self) -> None:
         """Test categorization of support specs."""
@@ -198,75 +176,63 @@ class TestDomainCategorization:
         assert categorize_spec("ves.io.schema.views.ticket_tracking.json") == "support"
 
     # H. Enterprise & Administration (2 categories)
-    def test_tenant_and_identity_management(self) -> None:
-        """Test categorization of tenant management specs."""
+    def test_tenant_and_identity(self) -> None:
+        """Test categorization of tenant and identity management specs."""
         assert (
-            categorize_spec("ves.io.schema.views.tenant_management.json")
-            == "tenant_and_identity_management"
+            categorize_spec("ves.io.schema.views.tenant_management.json") == "tenant_and_identity"
         )
-        assert (
-            categorize_spec("ves.io.schema.views.authentication.json")
-            == "tenant_and_identity_management"
-        )
+        assert categorize_spec("ves.io.schema.views.authentication.json") == "tenant_and_identity"
 
-    def test_user_and_account_management(self) -> None:
+    def test_users(self) -> None:
         """Test categorization of user management specs.
 
-        Note: 'user' pattern also exists in tenant_and_identity_management,
-        so it matches there first due to pattern order.
+        Note: 'user' pattern also exists in tenant_and_identity,
+        so it matches there first due to pattern order. Use token pattern which is unique to users.
         """
-        # Use token pattern which is unique to user_and_account_management
         result = categorize_spec("ves.io.schema.views.token.json")
-        # token could match user_and_account_management
-        assert result in ["user_and_account_management", "tenant_and_identity_management"]
+        # token matches users domain
+        assert result == "users"
 
     # I. Platform & Integrations (3 categories)
-    def test_bigip_integration(self) -> None:
+    def test_bigip(self) -> None:
         """Test categorization of BigIP integration specs."""
-        assert categorize_spec("ves.io.schema.views.bigip.json") == "bigip_integration"
-        assert categorize_spec("ves.io.schema.views.irule.json") == "bigip_integration"
+        assert categorize_spec("ves.io.schema.views.bigip.json") == "bigip"
+        assert categorize_spec("ves.io.schema.views.irule.json") == "bigip"
 
-    def test_nginx_one_management(self) -> None:
+    def test_nginx_one(self) -> None:
         """Test categorization of NGINX One specs."""
-        assert categorize_spec("ves.io.schema.views.nginx.json") == "nginx_one_management"
+        assert categorize_spec("ves.io.schema.views.nginx.json") == "nginx_one"
 
     def test_marketplace(self) -> None:
         """Test categorization of marketplace specs."""
         assert categorize_spec("ves.io.schema.views.marketplace.json") == "marketplace"
         assert categorize_spec("ves.io.schema.views.addon_package.json") == "marketplace"
 
-    # J. Advanced & Emerging (4 categories)
+    # J. Advanced & Emerging (5 categories)
     def test_generative_ai(self) -> None:
-        """Test categorization of generative AI specs.
-
-        Note: flow_anomaly pattern matches telemetry_and_insights ('flow' pattern)
-        and observability_and_analytics due to ordering.
-        """
+        """Test categorization of generative AI specs."""
         assert categorize_spec("ves.io.schema.views.ai_assistant.json") == "generative_ai"
         assert categorize_spec("ves.io.schema.views.ai_data.json") == "generative_ai"
 
-    def test_rate_limiting_and_quotas(self) -> None:
+    def test_rate_limiting(self) -> None:
         """Test categorization of rate limiting specs."""
-        assert (
-            categorize_spec("ves.io.schema.views.rate_limiter.json") == "rate_limiting_and_quotas"
-        )
-        assert categorize_spec("ves.io.schema.views.policer.json") == "rate_limiting_and_quotas"
+        assert categorize_spec("ves.io.schema.views.rate_limiter.json") == "rate_limiting"
+        assert categorize_spec("ves.io.schema.views.policer.json") == "rate_limiting"
 
-    def test_configuration_and_deployment(self) -> None:
-        """Test categorization of configuration specs."""
-        assert (
-            categorize_spec("ves.io.schema.views.manifest.json") == "configuration_and_deployment"
-        )
-        assert (
-            categorize_spec("ves.io.schema.views.certificate.json")
-            == "configuration_and_deployment"
-        )
+    def test_certificates(self) -> None:
+        """Test categorization of certificate and configuration specs."""
+        assert categorize_spec("ves.io.schema.views.manifest.json") == "certificates"
+        assert categorize_spec("ves.io.schema.views.certificate.json") == "certificates"
 
-    def test_object_store(self) -> None:
-        """Test categorization of object store specs."""
-        assert categorize_spec("ves.io.schema.views.stored_object.json") == "object_store"
+    def test_object_storage(self) -> None:
+        """Test categorization of object storage specs."""
+        assert categorize_spec("ves.io.schema.views.stored_object.json") == "object_storage"
 
-    # K. UI & Platform Infrastructure (2 categories)
+    def test_shape(self) -> None:
+        """Test categorization of Shape Security specs."""
+        assert categorize_spec("ves.io.schema.views.shape.safe.json") == "shape"
+
+    # K. UI & Platform Infrastructure (3 categories)
     def test_admin_console_and_ui(self) -> None:
         """Test categorization of admin console specs."""
         assert categorize_spec("ves.io.schema.views.ui_static.json") == "admin_console_and_ui"
@@ -277,9 +243,9 @@ class TestDomainCategorization:
         assert categorize_spec("ves.io.schema.views.billing.invoice.json") == "billing_and_usage"
         assert categorize_spec("ves.io.schema.views.subscription.json") == "billing_and_usage"
 
-    def test_compliance_and_governance(self) -> None:
-        """Test categorization of compliance specs."""
-        assert categorize_spec("ves.io.schema.views.label.json") == "compliance_and_governance"
+    def test_label(self) -> None:
+        """Test categorization of label and governance specs."""
+        assert categorize_spec("ves.io.schema.views.label.json") == "label"
 
 
 class TestFallbackBehavior:
@@ -303,14 +269,14 @@ class TestBackwardCompatibility:
     def test_domain_patterns_export(self) -> None:
         """Verify that DOMAIN_PATTERNS dictionary is exported."""
         assert isinstance(DOMAIN_PATTERNS, dict)
-        assert len(DOMAIN_PATTERNS) == 34  # 34 domains in new user structure
+        assert len(DOMAIN_PATTERNS) == 33  # 33 domains in current structure
         assert "site_management" in DOMAIN_PATTERNS
         assert isinstance(DOMAIN_PATTERNS["site_management"], list)
 
     def test_all_domains_in_patterns(self) -> None:
         """Verify that all domains are present in DOMAIN_PATTERNS."""
-        # Actual 34 domains from user's new structure
-        expected_domain_count = 34
+        # Actual 33 domains from current structure
+        expected_domain_count = 33
         assert len(DOMAIN_PATTERNS) == expected_domain_count
 
         # Verify key domains exist
@@ -321,13 +287,13 @@ class TestBackwardCompatibility:
             "virtual_server",
             "dns",
             "network",
-            "site_to_site",
             "cdn",
-            "synthetic_monitoring",
+            "observability",
+            "statistics",
             "support",
             "generative_ai",
             "admin_console_and_ui",
-            "compliance_and_governance",
+            "label",
         }
         assert key_domains.issubset(set(DOMAIN_PATTERNS.keys()))
 
@@ -339,7 +305,7 @@ class TestBackwardCompatibility:
         # Test get_domain_patterns function
         patterns = get_domain_patterns()
         assert isinstance(patterns, dict)
-        assert len(patterns) == 34  # 34 domains in new user structure
+        assert len(patterns) == 33  # 33 domains in current structure
 
 
 class TestCaching:
