@@ -61,13 +61,13 @@ domains:
       - "virtual_host"
       - "virtual_appliance"
       - "fleet"
+      - "secret_management"
+      - "workload"
 
   kubernetes:
     description: "Enterprise Kubernetes cluster management"
     patterns:
       - "k8s_pod_security"
-      - "secret_management"
-      - "workload"
       - "container_registry"
       - "\\.cluster\\."
 
@@ -90,6 +90,10 @@ domains:
       - "gcp_vpc_site"
       - "voltstack_site"
       - "securemesh_site"
+      # k8s_cluster represents deployment of F5 Customer Edge as pods within an
+      # external Kubernetes cluster (site type for existing K8s clusters owned by
+      # customer organization). Supports Mesh only, not AppStack. Different from
+      # managed Kubernetes configuration objects accessed via kubernetes domain APIs.
       - "k8s_cluster"
       - "\\.site\\."
 
