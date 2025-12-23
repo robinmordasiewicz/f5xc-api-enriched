@@ -20,6 +20,7 @@ from rich.table import Table
 from scripts.utils.domain_categorizer import (
     categorize_spec as categorize_spec_util,
 )
+from scripts.utils.domain_metadata import get_metadata
 
 console = Console()
 
@@ -427,6 +428,7 @@ def create_spec_index(
     for domain, spec in sorted(merged_specs.items()):
         info = spec.get("info", {})
         paths = spec.get("paths", {})
+        metadata = get_metadata(domain)
 
         index["specifications"].append(
             {
@@ -436,6 +438,9 @@ def create_spec_index(
                 "file": f"{domain}.json",
                 "path_count": len(paths),
                 "schema_count": len(spec.get("components", {}).get("schemas", {})),
+                "is_preview": metadata.get("is_preview", False),
+                "requires_tier": metadata.get("requires_tier", "Standard"),
+                "domain_category": metadata.get("domain_category", "Other"),
             },
         )
 

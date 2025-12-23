@@ -78,6 +78,7 @@ from scripts.utils import (
     TagGenerator,
     categorize_spec,
 )
+from scripts.utils.domain_metadata import get_metadata
 
 console = Console()
 
@@ -1115,6 +1116,7 @@ def create_spec_index(domain_specs: dict[str, dict[str, Any]], version: str) -> 
 
     for domain, spec in sorted(domain_specs.items()):
         info = spec.get("info", {})
+        metadata = get_metadata(domain)
         index["specifications"].append(
             {
                 "domain": domain,
@@ -1123,6 +1125,9 @@ def create_spec_index(domain_specs: dict[str, dict[str, Any]], version: str) -> 
                 "file": f"{domain}.json",
                 "path_count": len(spec.get("paths", {})),
                 "schema_count": len(spec.get("components", {}).get("schemas", {})),
+                "is_preview": metadata.get("is_preview", False),
+                "requires_tier": metadata.get("requires_tier", "Standard"),
+                "domain_category": metadata.get("domain_category", "Other"),
             },
         )
 
