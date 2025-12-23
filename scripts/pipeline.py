@@ -65,7 +65,6 @@ from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn, TimeEl
 from rich.table import Table
 
 # Import processing modules
-from scripts.merge_specs import DOMAIN_PATTERNS
 from scripts.utils import (
     AcronymNormalizer,
     BrandingTransformer,
@@ -77,6 +76,7 @@ from scripts.utils import (
     GrammarImprover,
     SchemaFixer,
     TagGenerator,
+    categorize_spec,
 )
 
 console = Console()
@@ -770,16 +770,6 @@ def ensure_unique_operation_ids(
         modified_paths[path] = modified_path_item
 
     return modified_paths, existing_ids, dedup_count
-
-
-def categorize_spec(filename: str) -> str:
-    """Categorize a specification file by domain based on filename patterns."""
-    filename_lower = filename.lower()
-    for domain, patterns in DOMAIN_PATTERNS.items():
-        for pattern in patterns:
-            if re.search(pattern, filename_lower):
-                return domain
-    return "other"
 
 
 def create_base_spec(title: str, description: str, version: str) -> dict[str, Any]:
