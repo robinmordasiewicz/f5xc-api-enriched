@@ -193,6 +193,12 @@ domains:
       - "\\.virtual_host\\.ves"
       - "^[^.]*\\.route\\.ves"
 
+  virtual_server:
+    description: "Virtual Server and HTTP Load Balancing"
+    patterns:
+      - "http_loadbalancer"
+      - "views\\.http_loadbalancer"
+
   network:
     description: "Routing, Tunnelling, and Network Connectivity"
     patterns:

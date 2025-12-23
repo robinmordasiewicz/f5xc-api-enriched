@@ -86,6 +86,11 @@ DOMAIN_METADATA = {
         "requires_tier": "Professional",
         "domain_category": "Networking",
     },
+    "virtual_server": {
+        "is_preview": False,
+        "requires_tier": "Professional",
+        "domain_category": "Networking",
+    },
     "network": {
         "is_preview": False,
         "requires_tier": "Professional",
