@@ -1,23 +1,36 @@
 # Domain categorization patterns for F5 XC API specifications
 # Single source of truth for mapping spec filenames to functional domains
+#
+# PATTERN MATCHING RULES:
+#   - Patterns are matched sequentially by domain order
+#   - First matching pattern determines domain assignment
+#   - Both literal strings and regex patterns are supported
+#
+# COMPLEX PATTERNS DOCUMENTED:
+#   - (?<!dns_lb)\.healthcheck\.ves: Matches healthcheck.ves EXCEPT dns_lb_*
+#     (negative lookahead pattern)
+#   - ^[^.]*\.route\.ves: Matches route.ves specs at root namespace level
+#   - api_sec\.: Regex - matches API security specs with dot separator
+#   - \.site\.: Regex - matches site-related specs using dot separators
+#   - Note: k8s_cluster appears in both site_management and
+#     kubernetes_and_orchestration (site_management takes priority)
+#
 version: "1.0.0"
-description: "31 functional domains aligned with F5 XC Terraform provider"
+description: >
+  33 functional domains organized in 11 categories, aligned with
+  F5 XC platform services
 
 domains:
   # ===== A. Infrastructure & Deployment (5 categories) =====
-  site_management:
-    description: "Cloud sites, K8s clusters, site infrastructure"
+  ce_management:
+    description: "Customer Edge"
     patterns:
-      - "aws_vpc_site"
-      - "aws_tgw_site"
-      - "azure_vnet_site"
-      - "gcp_vpc_site"
-      - "voltstack_site"
-      - "securemesh_site"
-      - "k8s_cluster"
-      - "virtual_k8s"
-      - "virtual_site"
-      - "\\.site\\."
+      - "registration"
+      - "module_management"
+      - "upgrade_status"
+      - "maintenance_status"
+      - "usb_policy"
+      - "network_interface"
 
   cloud_infrastructure:
     description: "Cloud connectivity and credentials"
@@ -28,16 +41,6 @@ domains:
       - "cloud_link"
       - "cloud_region"
       - "certified_hardware"
-
-  vpm_and_node_management:
-    description: "VPM, node management, upgrades"
-    patterns:
-      - "registration"
-      - "module_management"
-      - "upgrade_status"
-      - "maintenance_status"
-      - "usb_policy"
-      - "network_interface"
 
   kubernetes_and_orchestration:
     description: "Kubernetes and container orchestration"
@@ -62,286 +65,295 @@ domains:
       - "app_setting"
       - "app_type"
 
-  # ===== B. Security - Core (4 categories) =====
-  app_firewall:
-    description: "Web application firewall and protection"
+  site_management:
+    description: "Sites"
     patterns:
-      - "app_firewall"
-      - "app_security"
-      - "waf"
-      - "protocol_inspection"
-      - "enhanced_firewall"
+      - "aws_vpc_site"
+      - "aws_tgw_site"
+      - "azure_vnet_site"
+      - "gcp_vpc_site"
+      - "voltstack_site"
+      - "securemesh_site"
+      - "k8s_cluster"
+      - "virtual_k8s"
+      - "virtual_site"
+      - "\\.site\\."
 
-  api_security:
+  # ===== B. Security - Core (4 categories) =====
+  api:
     description: "API security, discovery, and testing"
     patterns:
       - "api_sec\\."
       - "api_crawler"
-      - "api_discovery"
-      - "api_testing"
-      - "api_group"
-      - "code_base_integration"
       - "api_credential"
       - "api_definition"
+      - "api_discovery"
+      - "api_group"
+      - "api_testing"
+      - "code_base_integration"
+
+  app_firewall:
+    description: "Web application firewall"
+    patterns:
+      - "app_firewall"
+      - "app_security"
+      - "enhanced_firewall"
+      - "protocol_inspection"
+      - "waf"
 
   bot_and_threat_defense:
     description: "Bot defense and threat intelligence"
     patterns:
-      - "bot_defense"
       - "bot_allowlist"
+      - "bot_defense"
       - "bot_endpoint"
       - "bot_infrastructure"
       - "bot_network"
-      - "mobile_sdk"
       - "mobile_base"
+      - "mobile_sdk"
       - "threat_intelligence"
 
   network_security:
     description: "Network firewall and policies"
     patterns:
+      - "fast_acl"
+      - "filter_set"
+      - "forward_proxy"
+      - "nat_policy"
       - "network_firewall"
       - "network_policy"
-      - "nat_policy"
-      - "forward_proxy"
-      - "fast_acl"
       - "policy_based_routing"
-      - "service_policy"
       - "segment"
-      - "filter_set"
 
-  # ===== C. Security - Advanced (3 categories) =====
+  # ===== C. Security - Advanced (4 categories) =====
+  blindfold:
+    description: "Secret policy and encryption"
+    patterns:
+      - "secret_policy"
+
   data_and_privacy_security:
     description: "Data privacy and protection"
     patterns:
-      - "sensitive_data_policy"
-      - "data_privacy"
       - "client_side_defense"
-      - "device_id"
+      - "data_privacy"
       - "data_type"
+      - "device_id"
+      - "sensitive_data_policy"
 
   ddos:
     description: "Distributed denial of service protection"
     patterns:
       - "infraprotect"
 
-  blindfold:
-    description: "Secret policy and encryption"
-    patterns:
-      - "secret_policy"
-
   secops_and_incident_response:
     description: "Security operations and incident response"
     patterns:
-      - "secret_management"
       - "malicious_user"
+      - "secret_management"
 
   # ===== D. Application Delivery (2 categories) =====
-  virtual_server:
-    description: "Load balancers and application delivery"
-    patterns:
-      - "views\\.http_loadbalancer"
-      - "views\\.tcp_loadbalancer"
-      - "views\\.udp_loadbalancer"
-      - "threat_campaign"
-      - "geo_location_set"
-      - "views\\.origin_pool"
-      - "(?<!dns_lb)\\.healthcheck\\.ves"
-      - "\\.virtual_host\\.ves"
-      - "^[^.]*\\.route\\.ves"
-      - "views\\.rate_limiter_policy"
-      - "views\\.proxy\\.ves"
-      - "views\\.forward_proxy_policy"
-      - "malware_protection"
-
   dns:
     description: "DNS load balancing and domain management"
     patterns:
+      - "dns_compliance"
+      - "dns_domain"
+      - "dns_lb_"
       - "dns_load_balancer"
       - "dns_zone"
-      - "dns_domain"
-      - "dns_compliance"
-      - "dns_lb_"
       - "rrset"
 
-  # ===== E. Connectivity & Networking (2 categories) =====
-  network:
-    description: "BGP routing and network connectivity"
+  virtual_server:
+    description: "Load balancers and application delivery"
     patterns:
-      - "bgp_routing"
+      - "geo_location_set"
+      - "malware_protection"
+      - "service_policy"
+      - "threat_campaign"
+      - "views\\.forward_proxy_policy"
+      - "views\\.http_loadbalancer"
+      - "views\\.origin_pool"
+      - "views\\.proxy\\.ves"
+      - "views\\.rate_limiter_policy"
+      - "views\\.tcp_loadbalancer"
+      - "views\\.udp_loadbalancer"
+      - "(?<!dns_lb)\\.healthcheck\\.ves"
+      - "\\.virtual_host\\.ves"
+      - "^[^.]*\\.route\\.ves"
+
+  # ===== E. Connectivity & Networking (1 category) =====
+  network:
+    description: "Routing, Tunnelling, and Network Connectivity"
+    patterns:
+      - "address_allocator"
+      - "advertise_policy"
       - "bgp"
       - "bgp_asn"
-      - "route"
-      - "tunnel"
-      - "segment_connection"
-      - "network_connector"
-      - "ip_prefix_set"
-      - "advertise_policy"
-      - "subnet"
-      - "srv6"
-      - "address_allocator"
-      - "public_ip"
-      - "forwarding_class"
+      - "bgp_routing"
       - "dc_cluster_group"
-
-  site_to_site:
-    description: "VPN and site-to-site connectivity"
-    patterns:
+      - "forwarding_class"
       - "ike1"
       - "ike2"
       - "ike_phase"
+      - "ip_prefix_set"
+      - "network_connector"
+      - "public_ip"
+      - "route"
+      - "segment_connection"
+      - "srv6"
+      - "subnet"
+      - "tunnel"
 
-  # ===== F. Content & Performance (2 categories) =====
+  # ===== F. Content & Performance (1 category) =====
   cdn:
     description: "Content delivery network services"
     patterns:
-      - "cdn_loadbalancer"
-      - "cdn_cache"
       - "cdn_"
+      - "cdn_cache"
+      - "cdn_loadbalancer"
       - "data_delivery"
 
-  # ===== G. Observability (4 categories) =====
-  observability_and_analytics:
-    description: "Monitoring, alerting, and analytics"
-    patterns:
-      - "synthetic_monitor"
-      - "alert_policy"
-      - "alert_receiver"
-      - "alert"
-      - "log_receiver"
-      - "global_log_receiver"
-      - "log"
-      - "report"
-      - "observability\\."
-      - "brmalerts"
-
-  synthetic_monitoring:
+  # ===== G. Observability (3 categories) =====
+  observability:
     description: "Synthetic monitoring and testing"
     patterns:
+      - "observability\\."
       - "synthetic_monitor"
 
-  telemetry_and_insights:
-    description: "Telemetry, graphs, and flow analysis"
+  statistics:
+    description: "Statistics"
     patterns:
-      - "graph"
-      - "topology"
-      - "flow"
+      - "alert"
+      - "alert_policy"
+      - "alert_receiver"
+      - "brmalerts"
       - "discovered_service"
+      - "flow"
+      - "global_log_receiver"
+      - "graph"
+      - "log"
+      - "log_receiver"
+      - "report"
       - "status_at_site"
+      - "topology"
 
   support:
     description: "Support and ticket tracking"
     patterns:
+      - "customer_support"
       - "operate\\."
       - "ticket_tracking"
-      - "customer_support"
 
-  # ===== H. Enterprise & Administration (3 categories) =====
-  tenant_and_identity_management:
+  # ===== H. Enterprise & Administration (2 categories) =====
+  tenant_and_identity:
     description: "Tenant management and identity"
     patterns:
-      - "tenant_management"
-      - "tenant"
+      - "authentication"
+      - "contact"
       - "namespace"
-      - "user_group"
-      - "user"
+      - "oidc_provider"
       - "rbac_policy"
       - "role"
-      - "authentication"
-      - "oidc_provider"
       - "scim"
       - "signup"
-      - "contact"
+      - "tenant"
+      - "tenant_management"
+      - "user"
+      - "user_group"
 
-  user_and_account_management:
+  users:
     description: "User accounts and settings"
     patterns:
-      - "user_setting"
-      - "user_identification"
       - "implicit_label"
       - "known_label"
       - "token"
+      - "user_identification"
+      - "user_setting"
       - "was\\.user"
 
   # ===== I. Platform & Integrations (3 categories) =====
-  bigip_integration:
+  bigip:
     description: "BigIP and legacy system integration"
     patterns:
-      - "bigip"
       - "bigcne"
-      - "irule"
+      - "bigip"
       - "data_group"
-
-  nginx_one_management:
-    description: "NGINX One management platform"
-    patterns:
-      - "nginx"
+      - "irule"
 
   marketplace:
     description: "Platform marketplace and integrations"
     patterns:
+      - "addon_"
+      - "cminstance"
       - "marketplace"
       - "pbac\\."
-      - "addon_"
       - "tpm_"
-      - "cminstance"
       - "voltshare"
-      - "views\\.third_party"
-      - "views\\.terraform"
       - "views\\.external"
+      - "views\\.terraform"
+      - "views\\.third_party"
       - "views\\.view_internal"
 
-  # ===== J. Advanced & Emerging (4 categories) =====
+  nginx_one:
+    description: "NGINX One management platform"
+    patterns:
+      - "nginx"
+
+  # ===== J. Advanced & Emerging (5 categories) =====
+  certificates:
+    description: "Certificate Management"
+    patterns:
+      - "certificate"
+      - "config"
+      - "crl"
+      - "manifest"
+      - "trusted_ca"
+
   generative_ai:
     description: "AI and machine learning features"
     patterns:
       - "ai_assistant"
       - "ai_data"
       - "flow_anomaly"
-      - "shape\\.recognize"
-      - "shape\\.safe"
-      - "shape\\.safeap"
       - "\\.gia\\."
 
-  rate_limiting_and_quotas:
-    description: "Rate limiting and quota management"
-    patterns:
-      - "rate_limiter"
-      - "policer"
-
-  configuration_and_deployment:
-    description: "Configuration and certificate management"
-    patterns:
-      - "manifest"
-      - "certificate"
-      - "config"
-      - "trusted_ca"
-      - "crl"
-
-  object_store:
+  object_storage:
     description: "Object storage services"
     patterns:
       - "stored_object"
 
-  # ===== K. UI & Platform Infrastructure (2 categories) =====
+  rate_limiting:
+    description: "Rate limiting"
+    patterns:
+      - "policer"
+      - "rate_limiter"
+
+  shape:
+    description: "Shape Security"
+    patterns:
+      - "shape\\.recognize"
+      - "shape\\.safe"
+      - "shape\\.safeap"
+
+  # ===== K. UI & Platform Infrastructure (3 categories) =====
   admin_console_and_ui:
     description: "Administration console and user interface"
     patterns:
-      - "ui_static"
-      - "ui\\."
       - "navigation_tile"
+      - "ui\\."
+      - "ui_static"
 
   billing_and_usage:
     description: "Billing, subscription, and usage"
     patterns:
       - "billing\\."
-      - "usage"
-      - "subscription"
       - "payment_method"
       - "plan_transition"
       - "quota"
+      - "subscription"
+      - "usage"
       - "usage_invoice"
 
-  compliance_and_governance:
+  label:
     description: "Labels and compliance management"
     patterns:
       - "label"
