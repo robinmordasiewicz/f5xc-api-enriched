@@ -12,17 +12,27 @@
 #   - ^[^.]*\.route\.ves: Matches route.ves specs at root namespace level
 #   - api_sec\.: Regex - matches API security specs with dot separator
 #   - \.site\.: Regex - matches site-related specs using dot separators
-#   - Note: k8s_cluster appears in both site_management and
-#     kubernetes_and_orchestration (site_management takes priority)
 #
-version: "1.0.0"
+# ARCHITECTURAL DISTINCTIONS:
+#   - container_services: Virtual Kubernetes (vK8s) - SaaS managed namespaces
+#     * Multi-tenant, simplified, zero-touch deployment
+#     * Optimized for distributed edge deployments (100s-1000s of sites)
+#     * Restricted K8s capabilities: no operators, CRDs, privileged mode
+#   - kubernetes: Enterprise Kubernetes (mK8s) - full cluster management
+#     * Customer-owned infrastructure with centralized F5 management
+#     * Complete Kubernetes API access, operators, CRDs supported
+#     * Comparable to AWS EKS, Azure AKS, GCP GKE
+#
+version: "1.1.0"
 description: >
-  33 functional domains organized in 11 categories, aligned with
-  F5 XC platform services
+  34 functional domains organized in 11 categories, aligned with
+  F5 XC platform services. Split container_services from kubernetes to
+  distinguish Virtual Kubernetes (managed namespace) from enterprise
+  Kubernetes cluster management
 
 domains:
   # ===== A. Infrastructure & Deployment (5 categories) =====
-  ce_management:
+  customer_edge:
     description: "Customer Edge"
     patterns:
       - "registration"
@@ -42,12 +52,21 @@ domains:
       - "cloud_region"
       - "certified_hardware"
 
-  kubernetes_and_orchestration:
-    description: "Kubernetes and container orchestration"
+  container_services:
+    description: "Virtual Kubernetes and simplified container orchestration"
     patterns:
-      - "k8s_cluster"
-      - "k8s_pod_security"
+      - "virtual_kubernetes"
+      - "virtual_site"
+      - "virtual_network"
+      - "virtual_host"
       - "virtual_appliance"
+      - "fleet"
+
+  kubernetes:
+    description: "Enterprise Kubernetes cluster management"
+    patterns:
+      - "k8s_pod_security"
+      - "secret_management"
       - "workload"
       - "container_registry"
       - "\\.cluster\\."
@@ -56,16 +75,13 @@ domains:
     description: "Service mesh and virtual networking"
     patterns:
       - "site_mesh"
-      - "virtual_network"
-      - "virtual_host"
       - "endpoint"
       - "nfv_service"
-      - "fleet"
       - "discovery"
       - "app_setting"
       - "app_type"
 
-  site_management:
+  site:
     description: "Sites"
     patterns:
       - "aws_vpc_site"
@@ -75,8 +91,6 @@ domains:
       - "voltstack_site"
       - "securemesh_site"
       - "k8s_cluster"
-      - "virtual_k8s"
-      - "virtual_site"
       - "\\.site\\."
 
   # ===== B. Security - Core (4 categories) =====
@@ -92,7 +106,7 @@ domains:
       - "api_testing"
       - "code_base_integration"
 
-  app_firewall:
+  application_firewall:
     description: "Web application firewall"
     patterns:
       - "app_firewall"
@@ -131,7 +145,7 @@ domains:
     patterns:
       - "secret_policy"
 
-  data_and_privacy_security:
+  client_side_defense:
     description: "Data privacy and protection"
     patterns:
       - "client_side_defense"
@@ -145,15 +159,8 @@ domains:
     patterns:
       - "infraprotect"
 
-  secops_and_incident_response:
-    description: "Security operations and incident response"
-    patterns:
-      - "malicious_user"
-      - "secret_management"
-
-  # ===== D. Application Delivery (2 categories) =====
   dns:
-    description: "DNS load balancing and domain management"
+    description: "DNS load balancing"
     patterns:
       - "dns_compliance"
       - "dns_domain"
@@ -162,10 +169,11 @@ domains:
       - "dns_zone"
       - "rrset"
 
-  virtual_server:
-    description: "Load balancers and application delivery"
+  virtual:
+    description: "Application Delivery Controller"
     patterns:
       - "geo_location_set"
+      - "malicious_user"
       - "malware_protection"
       - "service_policy"
       - "threat_campaign"
@@ -180,7 +188,6 @@ domains:
       - "\\.virtual_host\\.ves"
       - "^[^.]*\\.route\\.ves"
 
-  # ===== E. Connectivity & Networking (1 category) =====
   network:
     description: "Routing, Tunnelling, and Network Connectivity"
     patterns:
@@ -203,7 +210,6 @@ domains:
       - "subnet"
       - "tunnel"
 
-  # ===== F. Content & Performance (1 category) =====
   cdn:
     description: "Content delivery network services"
     patterns:
@@ -212,7 +218,6 @@ domains:
       - "cdn_loadbalancer"
       - "data_delivery"
 
-  # ===== G. Observability (3 categories) =====
   observability:
     description: "Synthetic monitoring and testing"
     patterns:
@@ -243,8 +248,7 @@ domains:
       - "operate\\."
       - "ticket_tracking"
 
-  # ===== H. Enterprise & Administration (2 categories) =====
-  tenant_and_identity:
+  system:
     description: "Tenant management and identity"
     patterns:
       - "authentication"
@@ -272,7 +276,7 @@ domains:
 
   # ===== I. Platform & Integrations (3 categories) =====
   bigip:
-    description: "BigIP and legacy system integration"
+    description: "BigIP"
     patterns:
       - "bigcne"
       - "bigip"
