@@ -73,10 +73,10 @@ class TestDomainCategorization:
         assert categorize_spec("ves.io.schema.views.virtual_network.json") == "service_mesh"
 
     # B. Security - Core (4 categories)
-    def test_app_firewall(self) -> None:
-        """Test categorization of app firewall specs."""
-        assert categorize_spec("ves.io.schema.views.app_firewall.json") == "app_firewall"
-        assert categorize_spec("ves.io.schema.views.waf.json") == "app_firewall"
+    def test_waf(self) -> None:
+        """Test categorization of web application firewall specs."""
+        assert categorize_spec("ves.io.schema.views.app_firewall.json") == "waf"
+        assert categorize_spec("ves.io.schema.views.waf.json") == "waf"
 
     def test_api(self) -> None:
         """Test categorization of API security specs."""
@@ -260,7 +260,7 @@ class TestFallbackBehavior:
     def test_case_insensitive(self) -> None:
         """Verify that categorization is case-insensitive."""
         assert categorize_spec("VES.IO.SCHEMA.VIEWS.AWS_VPC_SITE.JSON") == "site_management"
-        assert categorize_spec("Ves.Io.Schema.Views.App_Firewall.Json") == "app_firewall"
+        assert categorize_spec("Ves.Io.Schema.Views.App_Firewall.Json") == "waf"
 
 
 class TestBackwardCompatibility:

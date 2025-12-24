@@ -107,8 +107,8 @@ domains:
       - "api_testing"
       - "code_base_integration"
 
-  app_firewall:
-    description: "Web application firewall"
+  waf:
+    description: "Web Application Firewall"
     patterns:
       - "app_firewall"
       - "app_security"
