@@ -304,6 +304,7 @@ domains:
       - "cminstance"
       - "marketplace"
       - "pbac\\."
+      - "stored_object"
       - "tpm_"
       - "voltshare"
       - "views\\.external"
@@ -333,11 +334,6 @@ domains:
       - "ai_data"
       - "flow_anomaly"
       - "\\.gia\\."
-
-  object_storage:
-    description: "Object storage services"
-    patterns:
-      - "stored_object"
 
   rate_limiting:
     description: "Rate limiting"

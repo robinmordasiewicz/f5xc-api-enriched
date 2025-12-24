@@ -854,7 +854,7 @@ def get_api_data_target_domain(path: str) -> str | None:
         (r"/cloud_connects", "cloud_infrastructure"),
         (r"/nfv_services/", "service_mesh"),
         (r"/virtual_network/", "service_mesh"),
-        (r"/dc_cluster_groups/", "network_connectivity"),
+        (r"/dc_cluster_groups/", "network"),
         (r"/upgrade_status", "vpm_and_node_management"),
     ]
 
