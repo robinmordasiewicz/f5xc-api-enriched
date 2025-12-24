@@ -177,14 +177,15 @@ domains:
       - "dns_zone"
       - "rrset"
 
-  virtual_server:
-    description: "Application Delivery Controller and HTTP Load Balancing"
+  virtual:
+    description: "Virtual Services - HTTP, TCP, UDP Load Balancing"
     patterns:
       - "geo_location_set"
       - "http_loadbalancer"
       - "malware_protection"
       - "service_policy"
       - "threat_campaign"
+      - "origin_pool"
       - "views\\.forward_proxy_policy"
       - "views\\.http_loadbalancer"
       - "views\\.origin_pool"

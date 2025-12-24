@@ -127,14 +127,14 @@ class TestDomainCategorization:
         )
 
     # D. Application Delivery (2 categories)
-    def test_virtual_server(self) -> None:
-        """Test categorization of virtual server specs."""
-        assert categorize_spec("ves.io.schema.views.http_loadbalancer.json") == "virtual_server"
-        assert categorize_spec("ves.io.schema.views.tcp_loadbalancer.json") == "virtual_server"
-        assert categorize_spec("ves.io.schema.views.origin_pool.json") == "virtual_server"
-        assert categorize_spec("ves.io.schema.views.threat_campaign.json") == "virtual_server"
-        assert categorize_spec("ves.io.schema.views.geo_location_set.json") == "virtual_server"
-        assert categorize_spec("ves.io.schema.views.malware_protection.json") == "virtual_server"
+    def test_virtual(self) -> None:
+        """Test categorization of virtual service specs (HTTP/TCP/UDP load balancing)."""
+        assert categorize_spec("ves.io.schema.views.http_loadbalancer.json") == "virtual"
+        assert categorize_spec("ves.io.schema.views.tcp_loadbalancer.json") == "virtual"
+        assert categorize_spec("ves.io.schema.views.origin_pool.json") == "virtual"
+        assert categorize_spec("ves.io.schema.views.threat_campaign.json") == "virtual"
+        assert categorize_spec("ves.io.schema.views.geo_location_set.json") == "virtual"
+        assert categorize_spec("ves.io.schema.views.malware_protection.json") == "virtual"
 
     def test_dns(self) -> None:
         """Test categorization of DNS specs."""
@@ -284,7 +284,7 @@ class TestBackwardCompatibility:
             "site_management",
             "ddos",
             "blindfold",
-            "virtual_server",
+            "virtual",
             "dns",
             "network",
             "cdn",
@@ -366,8 +366,8 @@ class TestPatternValidation:
     def test_categorizer_handles_complex_patterns(self) -> None:
         """Verify that categorizer correctly handles complex regex patterns."""
         # Test negative lookbehind pattern for healthcheck
-        # healthcheck.ves without dns_lb prefix should match virtual_server
-        assert categorize_spec("ves.io.schema.views.healthcheck.ves.json") == "virtual_server"
+        # healthcheck.ves without dns_lb prefix should match virtual
+        assert categorize_spec("ves.io.schema.views.healthcheck.ves.json") == "virtual"
 
         # Test dns patterns matching dns_lb
         assert categorize_spec("ves.io.schema.views.dns_lb_healthcheck.json") == "dns"
@@ -376,7 +376,7 @@ class TestPatternValidation:
         # Test route pattern - matches network domain (route pattern)
         assert categorize_spec("ves.io.schema.views.route.json") == "network"
 
-        # Test virtual_host - exists in both service_mesh and virtual_server
+        # Test virtual_host - exists in both service_mesh and virtual
         # service_mesh comes first, so it matches there
         result = categorize_spec("ves.io.schema.views.virtual_host.ves.json")
-        assert result in ["service_mesh", "virtual_server"]
+        assert result in ["service_mesh", "virtual"]

@@ -967,10 +967,6 @@ def merge_specs_by_domain(
         if has_di_paths and domain != "data_intelligence":
             domain_specs["data_intelligence"].append((filename, spec))
 
-        # Also add specs to virtual domain if they contain http_loadbalancers paths
-        has_http_lb_paths = any("/http_loadbalancers" in p for p in paths)
-        if has_http_lb_paths and domain != "virtual":
-            domain_specs["virtual"].append((filename, spec))
         # Also add specs to threat_campaign domain if they contain threat_campaign/threat_mesh paths
         has_threat_campaign_paths = any(
             "/api/waf/threat_campaign" in p or "/threat_mesh" in p for p in paths
