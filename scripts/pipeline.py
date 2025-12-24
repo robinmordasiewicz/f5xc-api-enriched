@@ -828,15 +828,15 @@ def get_api_data_target_domain(path: str) -> str | None:
     # Map resource patterns in /api/data/ paths to their semantic domains
     # Order matters: more specific patterns first
     data_routing = [
-        (r"/app_security/", "app_firewall"),
-        (r"/app_firewall/", "app_firewall"),
-        (r"/dns_", "dns_and_domain_management"),
-        (r"/access_logs", "observability_and_analytics"),
-        (r"/audit_logs", "observability_and_analytics"),
-        (r"/alerts", "observability_and_analytics"),
-        (r"/site/", "site_management"),
-        (r"/virtual_k8s/", "site_management"),
-        (r"/graph/site", "site_management"),
+        (r"/app_security/", "application_firewall"),
+        (r"/app_firewall/", "application_firewall"),
+        (r"/dns_", "dns"),
+        (r"/access_logs", "observability"),
+        (r"/audit_logs", "observability"),
+        (r"/alerts", "observability"),
+        (r"/site/", "site"),
+        (r"/virtual_k8s/", "site"),
+        (r"/graph/site", "site"),
         (r"/graph/connectivity", "telemetry_and_insights"),
         (r"/graph/service", "telemetry_and_insights"),
         (r"/graph/lb_cache", "telemetry_and_insights"),
@@ -849,8 +849,8 @@ def get_api_data_target_domain(path: str) -> str | None:
         (r"/forward_proxy_policy", "network_security"),
         (r"/fast_acl/", "network_security"),
         (r"/segments/", "network_security"),
-        (r"/bigip/", "bigip_integration"),
-        (r"/workloads/", "kubernetes_and_orchestration"),
+        (r"/bigip/", "bigip"),
+        (r"/workloads/", "kubernetes"),
         (r"/cloud_connects", "cloud_infrastructure"),
         (r"/nfv_services/", "service_mesh"),
         (r"/virtual_network/", "service_mesh"),
@@ -886,18 +886,18 @@ def merge_specs_by_domain(
         # Also add specs to CDN domain if they contain CDN-specific paths
         paths = spec.get("paths", {})
         has_cdn_paths = any("/api/cdn/" in p or "/cdn_loadbalancers/" in p for p in paths)
-        if has_cdn_paths and domain != "cdn_and_content_delivery":
-            domain_specs["cdn_and_content_delivery"].append((filename, spec))
+        if has_cdn_paths and domain != "cdn":
+            domain_specs["cdn"].append((filename, spec))
 
         # Also add specs to data_intelligence domain if they contain data-intelligence paths
         has_di_paths = any("/api/data-intelligence/" in p for p in paths)
         if has_di_paths and domain != "data_intelligence":
             domain_specs["data_intelligence"].append((filename, spec))
 
-        # Also add specs to virtual_server domain if they contain http_loadbalancers paths
+        # Also add specs to virtual domain if they contain http_loadbalancers paths
         has_http_lb_paths = any("/http_loadbalancers/" in p for p in paths)
-        if has_http_lb_paths and domain != "virtual_server":
-            domain_specs["virtual_server"].append((filename, spec))
+        if has_http_lb_paths and domain != "virtual":
+            domain_specs["virtual"].append((filename, spec))
 
         # Also add specs to threat_campaign domain if they contain threat_campaign/threat_mesh paths
         has_threat_campaign_paths = any(
@@ -906,15 +906,15 @@ def merge_specs_by_domain(
         if has_threat_campaign_paths and domain != "threat_campaign":
             domain_specs["threat_campaign"].append((filename, spec))
 
-        # Also add specs to user_and_account_management if they contain credential management paths
+        # Also add specs to system domain if they contain credential management paths
         # Pattern-based detection for credential/token management under /api/web/
         has_credential_paths = any(
             "/api/web/" in p
             and ("/api_credentials" in p or "/service_credentials" in p or "/scim_token" in p)
             for p in paths
         )
-        if has_credential_paths and domain != "user_and_account_management":
-            domain_specs["user_and_account_management"].append((filename, spec))
+        if has_credential_paths and domain != "system":
+            domain_specs["system"].append((filename, spec))
 
         # Add specs to appropriate domains based on /api/data/ resource semantics
         # Collect unique target domains for /api/data/ paths in this spec

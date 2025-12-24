@@ -194,11 +194,6 @@ DOMAIN_METADATA = {
         ],
         "related_domains": ["dns", "service_policy", "network"],
     },
-    "virtual_server": {
-        "is_preview": False,
-        "requires_tier": "Professional",
-        "domain_category": "Networking",
-    },
     "network": {
         "is_preview": False,
         "requires_tier": "Professional",
