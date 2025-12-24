@@ -913,8 +913,8 @@ def merge_specs_by_domain(
             and ("/api_credentials" in p or "/service_credentials" in p or "/scim_token" in p)
             for p in paths
         )
-        if has_credential_paths and domain != "system":
-            domain_specs["system"].append((filename, spec))
+        if has_credential_paths and domain != "authentication":
+            domain_specs["authentication"].append((filename, spec))
 
         # Add specs to appropriate domains based on /api/data/ resource semantics
         # Collect unique target domains for /api/data/ paths in this spec
@@ -968,7 +968,7 @@ def merge_specs_by_domain(
             is_cdn_domain = domain == "cdn_and_content_delivery"
             is_data_intelligence_domain = domain == "data_intelligence"
             is_virtual_server_domain = domain == "virtual_server"
-            is_user_mgmt_domain = domain == "user_and_account_management"
+            is_auth_domain = domain == "authentication"
             is_threat_campaign_domain = domain == "threat_campaign"
 
             for path, path_item in deduplicated_paths.items():
@@ -990,14 +990,14 @@ def merge_specs_by_domain(
                 if not is_virtual_server_domain and "/http_loadbalancers/" in path:
                     continue
 
-                # Skip credential management paths if not merging into user_and_account_management
+                # Skip credential management paths if not merging into authentication domain
                 # Pattern-based: /api/web/ + (api_credentials|service_credentials|scim_token)
                 is_credential_path = "/api/web/" in path and (
                     "/api_credentials" in path
                     or "/service_credentials" in path
                     or "/scim_token" in path
                 )
-                if not is_user_mgmt_domain and is_credential_path:
+                if not is_auth_domain and is_credential_path:
                     continue
 
                 # Skip /api/data/ paths if not merging into their semantic target domain
