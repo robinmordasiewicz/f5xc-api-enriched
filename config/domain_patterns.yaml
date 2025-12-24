@@ -96,6 +96,7 @@ domains:
       # customer organization). Supports Mesh only, not AppStack. Different from
       # managed Kubernetes configuration objects accessed via kubernetes domain APIs.
       - "k8s_cluster"
+      - "site_management"
       - "\\.site\\."
 
   # ===== B. Security - Core (4 categories) =====
@@ -169,6 +170,7 @@ domains:
     patterns:
       - "dns_compliance"
       - "dns_domain"
+      - "dns_and_domain_management"
       - "dns_lb_"
       - "dns_load_balancer"
       - "dns_zone"
@@ -233,6 +235,7 @@ domains:
     description: "Synthetic monitoring and testing"
     patterns:
       - "observability\\."
+      - "observability_and_analytics"
       - "synthetic_monitor"
 
   statistics:
