@@ -3,6 +3,7 @@
 This utility provides programmatic assignment of metadata fields to domains
 based on their characteristics and category, ensuring idempotent generation
 suitable for CICD automation.
+
 """
 
 from typing import Any
@@ -13,7 +14,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Infrastructure",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Configure customer edge nodes",
             "Manage edge node registration and lifecycle",
@@ -26,7 +26,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Infrastructure",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Connect to cloud providers (AWS, Azure, GCP)",
             "Manage cloud credentials and authentication",
@@ -39,7 +38,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Professional",
         "domain_category": "Infrastructure",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Deploy Virtual Kubernetes (vK8s) namespaces",
             "Manage container workloads in multi-tenant environments",
@@ -53,7 +51,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Professional",
         "domain_category": "Infrastructure",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Manage enterprise Kubernetes clusters",
             "Configure pod security policies",
@@ -66,7 +63,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Professional",
         "domain_category": "Infrastructure",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Configure service mesh connectivity",
             "Manage endpoint discovery and routing",
@@ -79,7 +75,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Infrastructure",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Deploy F5 XC across cloud providers (AWS, Azure, GCP)",
             "Manage secure mesh sites",
@@ -93,7 +88,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Professional",
         "domain_category": "Security",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Discover and catalog APIs",
             "Test API security and behavior",
@@ -106,7 +100,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Professional",
         "domain_category": "Security",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Configure web application firewall rules",
             "Manage application security policies",
@@ -119,7 +112,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Professional",
         "domain_category": "Security",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Manage bot allowlists and defense policies",
             "Configure bot endpoints and infrastructure",
@@ -132,7 +124,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Professional",
         "domain_category": "Security",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Configure network firewall and ACL policies",
             "Manage NAT policies and port forwarding",
@@ -147,7 +138,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Enterprise",
         "domain_category": "Security",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Configure secret policies for encryption",
             "Manage sensitive data encryption",
@@ -159,7 +149,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Professional",
         "domain_category": "Security",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Protect user data in transit",
             "Define sensitive data policies",
@@ -172,7 +161,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Enterprise",
         "domain_category": "Security",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Configure DDoS protection policies",
             "Monitor and analyze DDoS threats",
@@ -184,7 +172,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Networking",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Configure DNS load balancing",
             "Manage DNS zones and domains",
@@ -197,7 +184,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Professional",
         "domain_category": "Networking",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Configure HTTP/TCP/UDP load balancers",
             "Manage origin pools and services",
@@ -217,7 +203,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Professional",
         "domain_category": "Networking",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Configure BGP routing and ASN management",
             "Manage IPsec tunnels and IKE phases",
@@ -232,7 +217,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Enterprise",
         "domain_category": "Networking",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Configure CDN load balancing",
             "Manage content delivery network services",
@@ -246,7 +230,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Operations",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Configure synthetic monitoring",
             "Define monitoring and testing policies",
@@ -258,7 +241,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Operations",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Access flow statistics and analytics",
             "Manage alerts and alerting policies",
@@ -273,7 +255,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Operations",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Submit and manage support tickets",
             "Track customer support requests",
@@ -286,7 +267,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Platform",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Manage tenant configuration",
             "Configure authentication and OIDC",
@@ -300,7 +280,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Platform",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Manage user accounts and tokens",
             "Configure user identification",
@@ -314,7 +293,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Enterprise",
         "domain_category": "Platform",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Manage BigIP F5 appliances",
             "Configure iRule scripts",
@@ -327,7 +305,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Professional",
         "domain_category": "Platform",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Access third-party integrations and add-ons",
             "Manage marketplace extensions",
@@ -340,7 +317,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Professional",
         "domain_category": "Platform",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Manage NGINX One platform integrations",
             "Configure NGINX Plus instances",
@@ -353,7 +329,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Security",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Manage SSL/TLS certificates",
             "Configure trusted CAs",
@@ -366,7 +341,6 @@ DOMAIN_METADATA = {
         "is_preview": True,
         "requires_tier": "Enterprise",
         "domain_category": "AI",
-        "introduced_version": "1.0.20",
         "use_cases": [
             "Access AI-powered features",
             "Configure AI assistant policies",
@@ -379,7 +353,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Professional",
         "domain_category": "Platform",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Manage object storage services",
             "Configure stored objects and buckets",
@@ -391,7 +364,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Professional",
         "domain_category": "Networking",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Configure rate limiter policies",
             "Manage policer configurations",
@@ -403,7 +375,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Enterprise",
         "domain_category": "Security",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Configure Shape Security policies",
             "Manage bot and threat prevention",
@@ -417,7 +388,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Platform",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Configure administration console",
             "Manage navigation tiles and UI elements",
@@ -429,7 +399,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Platform",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Manage billing and subscription",
             "Configure payment methods",
@@ -443,7 +412,6 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Platform",
-        "introduced_version": "1.0.0",
         "use_cases": [
             "Manage resource labels and tagging",
             "Configure label policies",
@@ -461,9 +429,14 @@ def get_metadata(domain: str) -> dict[str, Any]:
         domain: The domain name
 
     Returns:
-        Dict with is_preview, requires_tier, domain_category, introduced_version,
-        use_cases, and related_domains. Falls back to defaults if domain not
-        explicitly configured.
+        Dict containing:
+        - is_preview: Whether domain is in preview/beta
+        - requires_tier: Minimum subscription tier (Standard, Professional, Enterprise)
+        - domain_category: Functional category (Infrastructure, Security, Networking, etc.)
+        - use_cases: List of primary use cases
+        - related_domains: List of related/complementary domains
+
+        Falls back to defaults if domain not explicitly configured.
     """
     return DOMAIN_METADATA.get(
         domain,
@@ -471,7 +444,6 @@ def get_metadata(domain: str) -> dict[str, Any]:
             "is_preview": False,
             "requires_tier": "Standard",
             "domain_category": "Other",
-            "introduced_version": "1.0.0",
             "use_cases": [],
             "related_domains": [],
         },
