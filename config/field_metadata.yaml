@@ -1,0 +1,211 @@
+enabled: true
+preserve_existing: true
+
+# Consolidated field patterns for all field-level metadata
+# Each pattern defines:
+# - x-ves-description: Brief help text for the field
+# - x-ves-validation: Validation constraints (type, format, ranges, patterns)
+# - x-ves-examples: Array of examples with context descriptions
+# - x-ves-completion: CLI autocomplete hints
+# - x-ves-defaults: Default values with reasoning
+# - x-ves-required-for-operations: Per-operation requirement flags
+
+field_patterns:
+  - pattern: '\bname$'
+    x-ves-description: 'Human-readable resource name'
+    x-ves-validation:
+      minLength: 1
+      maxLength: 63
+      pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+    x-ves-examples:
+      - value: 'example-resource'
+        context: 'Basic alphanumeric name'
+      - value: 'my-app-prod'
+        context: 'Environment-specific naming'
+    x-ves-completion:
+      type: 'string-value'
+      hint: 'Resource name (alphanumeric and hyphens, 1-63 chars)'
+      pattern: '^[a-z0-9-]+$'
+    x-ves-defaults:
+      value: null
+      reasoning: 'Name must be explicitly provided by user'
+    x-ves-required-for-operations:
+      create: true
+      read: true
+      update: true
+      delete: true
+
+  - pattern: '\bemail$'
+    x-ves-description: 'Email address in RFC 5322 format'
+    x-ves-validation:
+      format: 'email'
+      pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    x-ves-examples:
+      - value: 'user@example.com'
+        context: 'Standard email format'
+      - value: 'admin+ops@company.org'
+        context: 'Email with plus addressing'
+    x-ves-completion:
+      type: 'email'
+      hint: 'Valid email address'
+    x-ves-required-for-operations:
+      create: true
+      read: false
+      update: false
+      delete: false
+
+  - pattern: '\bport$'
+    x-ves-description: 'TCP/UDP port number'
+    x-ves-validation:
+      type: 'integer'
+      minimum: 1
+      maximum: 65535
+    x-ves-examples:
+      - value: '8080'
+        context: 'Standard service port'
+      - value: '443'
+        context: 'HTTPS port'
+    x-ves-completion:
+      type: 'port'
+      hint: 'Port number (1-65535)'
+    x-ves-defaults:
+      value: '8080'
+      reasoning: 'Sensible default for development'
+
+  - pattern: '\buuid$'
+    x-ves-description: 'Unique identifier in UUID v4 format'
+    x-ves-validation:
+      format: 'uuid'
+    x-ves-examples:
+      - value: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890'
+        context: 'Valid UUID v4 example'
+    x-ves-completion:
+      type: 'uuid'
+      hint: 'UUID identifier (auto-generated)'
+    x-ves-defaults:
+      value: null
+      reasoning: 'UUIDs typically generated server-side'
+
+  - pattern: '\btimestamp$'
+    x-ves-description: 'Timestamp in ISO 8601 format'
+    x-ves-validation:
+      format: 'date-time'
+    x-ves-examples:
+      - value: '2025-01-15T10:30:00Z'
+        context: 'ISO 8601 UTC timestamp'
+      - value: '2025-01-15T10:30:00+05:30'
+        context: 'ISO 8601 with timezone'
+    x-ves-completion:
+      type: 'timestamp'
+      hint: 'ISO 8601 date-time (auto-set on create)'
+    x-ves-defaults:
+      value: null
+      reasoning: 'Timestamps typically set by server'
+
+  - pattern: '\b(ipv4|ipaddress|ip_addr)$'
+    x-ves-description: 'IPv4 address in dotted decimal notation'
+    x-ves-validation:
+      format: 'ipv4'
+    x-ves-examples:
+      - value: '192.0.2.1'
+        context: 'Documentation IPv4 address'
+      - value: '10.0.0.1'
+        context: 'Private network address'
+    x-ves-completion:
+      type: 'ipv4'
+      hint: 'IPv4 address (e.g., 192.0.2.1)'
+
+  - pattern: '\b(url|uri)$'
+    x-ves-description: 'URL or URI reference'
+    x-ves-validation:
+      format: 'uri'
+    x-ves-examples:
+      - value: 'https://example.com'
+        context: 'Standard HTTPS URL'
+      - value: 'https://api.example.com/v1/resource'
+        context: 'API endpoint URL'
+    x-ves-completion:
+      type: 'url'
+      hint: 'Valid URL (https://...)'
+
+  - pattern: '\b(namespace|project)$'
+    x-ves-description: 'Kubernetes/project namespace identifier'
+    x-ves-validation:
+      minLength: 1
+      maxLength: 63
+      pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+    x-ves-examples:
+      - value: 'default'
+        context: 'Default namespace'
+      - value: 'kube-system'
+        context: 'System namespace'
+    x-ves-completion:
+      type: 'namespace-list'
+      hint: 'Kubernetes namespace'
+
+  - pattern: '\blabels$'
+    x-ves-description: 'Metadata labels as key-value pairs'
+    x-ves-validation:
+      type: 'object'
+    x-ves-examples:
+      - value: 'env=production,tier=api'
+        context: 'Multiple labels'
+    x-ves-completion:
+      type: 'key-value-pairs'
+      hint: 'Key=value pairs'
+      separator: '='
+
+  - pattern: '\btags$'
+    x-ves-description: 'Resource tags for organization and filtering'
+    x-ves-validation:
+      type: 'array'
+    x-ves-examples:
+      - value: 'production,critical'
+        context: 'Multiple tags'
+    x-ves-completion:
+      type: 'key-value-pairs'
+      hint: 'Tag identifiers'
+      separator: ','
+
+  - pattern: '\b(file|path)$'
+    x-ves-description: 'File path reference'
+    x-ves-validation:
+      type: 'string'
+    x-ves-examples:
+      - value: './config.yaml'
+        context: 'Relative file path'
+      - value: '/etc/app/config.yaml'
+        context: 'Absolute file path'
+    x-ves-completion:
+      type: 'file-path'
+      hint: 'File path reference'
+
+# Deprecation database - mark fields as deprecated
+deprecations: []
+
+# Conditional requirements - fields that are conditionally required
+conditions: []
+
+# Reconciliation Strategy:
+# ========================
+#
+# Priority Order:
+# 1. EXISTING: In the original spec (highest trust)
+# 2. DISCOVERY: From x-ves-validation-rules (live API constraints)
+# 3. INFERRED: From field_metadata.yaml (pattern-based)
+#
+# When conflicts exist:
+# - Keep highest priority value
+# - Log detected conflicts for visibility
+# - Merge non-conflicting constraints
+#
+# Example Resolution:
+# ~~~~~~~~~~~~~~~~~~~
+# Field: email
+#
+# Existing (spec):  minLength: 5, maxLength: 254
+# Discovery:        minLength: 3, maxLength: 255
+# Inferred:         minLength: 1, maxLength: 254
+#
+# Result:           minLength: 5 (existing wins)
+#                   maxLength: 254 (existing wins)

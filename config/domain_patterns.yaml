@@ -32,7 +32,7 @@ description: >
 
 domains:
   # ===== A. Infrastructure & Deployment (5 categories) =====
-  customer_edge:
+  ce_management:
     description: "Customer Edge"
     patterns:
       - "registration"
@@ -52,25 +52,15 @@ domains:
       - "cloud_region"
       - "certified_hardware"
 
-  container_services:
-    description: "Virtual Kubernetes and simplified container orchestration"
+  kubernetes_and_orchestration:
+    description: "Kubernetes and container orchestration"
     patterns:
       - "virtual_kubernetes"
       - "virtual_k8s"
-      - "virtual_site"
-      - "virtual_network"
-      - "virtual_host"
-      - "virtual_appliance"
-      - "fleet"
-      - "secret_management"
-      - "workload"
-
-  kubernetes:
-    description: "Enterprise Kubernetes cluster management"
-    patterns:
       - "k8s_pod_security"
       - "container_registry"
       - "\\.cluster\\."
+      - "workload"
 
   service_mesh:
     description: "Service mesh and virtual networking"
@@ -81,8 +71,12 @@ domains:
       - "discovery"
       - "app_setting"
       - "app_type"
+      - "virtual_network"
+      - "virtual_host"
+      - "virtual_appliance"
+      - "fleet"
 
-  site:
+  site_management:
     description: "Sites"
     patterns:
       - "aws_vpc_site"
@@ -91,6 +85,7 @@ domains:
       - "gcp_vpc_site"
       - "voltstack_site"
       - "securemesh_site"
+      - "virtual_site"
       # k8s_cluster represents deployment of F5 Customer Edge as pods within an
       # external Kubernetes cluster (site type for existing K8s clusters owned by
       # customer organization). Supports Mesh only, not AppStack. Different from
@@ -112,7 +107,7 @@ domains:
       - "api_testing"
       - "code_base_integration"
 
-  application_firewall:
+  app_firewall:
     description: "Web application firewall"
     patterns:
       - "app_firewall"
@@ -121,7 +116,7 @@ domains:
       - "protocol_inspection"
       - "waf"
 
-  bot_defense:
+  bot_and_threat_defense:
     description: "Bot defense and threat intelligence"
     patterns:
       - "bot_allowlist"
@@ -151,7 +146,7 @@ domains:
     patterns:
       - "secret_policy"
 
-  client_side_defense:
+  data_and_privacy_security:
     description: "Data privacy and protection"
     patterns:
       - "client_side_defense"
@@ -159,6 +154,12 @@ domains:
       - "data_type"
       - "device_id"
       - "sensitive_data_policy"
+
+  secops_and_incident_response:
+    description: "Security operations and incident response"
+    patterns:
+      - "malicious_user"
+      - "secret_management"
 
   ddos:
     description: "Distributed denial of service protection"
@@ -176,12 +177,11 @@ domains:
       - "dns_zone"
       - "rrset"
 
-  virtual:
+  virtual_server:
     description: "Application Delivery Controller and HTTP Load Balancing"
     patterns:
       - "geo_location_set"
       - "http_loadbalancer"
-      - "malicious_user"
       - "malware_protection"
       - "service_policy"
       - "threat_campaign"
@@ -257,17 +257,8 @@ domains:
       - "operate\\."
       - "ticket_tracking"
 
-  authentication:
-    description: "Authentication and identity providers"
-    patterns:
-      - "authentication"
-      - "oidc_provider"
-      - "scim"
-      - "signup"
-      - "api_credential"
-
-  system:
-    description: "Tenant management and core system"
+  tenant_and_identity:
+    description: "Tenant management, authentication, and core system"
     patterns:
       - "contact"
       - "namespace"
@@ -277,6 +268,11 @@ domains:
       - "tenant_management"
       - "user"
       - "user_group"
+      - "authentication"
+      - "oidc_provider"
+      - "scim"
+      - "signup"
+      - "api_credential"
 
   users:
     description: "User accounts and settings"
@@ -304,13 +300,17 @@ domains:
       - "cminstance"
       - "marketplace"
       - "pbac\\."
-      - "stored_object"
       - "tpm_"
       - "voltshare"
       - "views\\.external"
       - "views\\.terraform"
       - "views\\.third_party"
       - "views\\.view_internal"
+
+  object_storage:
+    description: "Object storage and data persistence"
+    patterns:
+      - "stored_object"
 
   nginx_one:
     description: "NGINX One management platform"
@@ -349,14 +349,14 @@ domains:
       - "shape\\.safeap"
 
   # ===== K. UI & Platform Infrastructure (3 categories) =====
-  admin:
+  admin_console_and_ui:
     description: "Administration console and user interface"
     patterns:
       - "navigation_tile"
       - "ui\\."
       - "ui_static"
 
-  billing:
+  billing_and_usage:
     description: "Billing, subscription, and usage"
     patterns:
       - "billing\\."

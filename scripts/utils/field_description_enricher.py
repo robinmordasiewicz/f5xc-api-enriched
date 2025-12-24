@@ -295,7 +295,9 @@ class FieldDescriptionEnricher:
             # Try to add example based on patterns
             example = self._generate_example(prop_name, prop)
             if example is not None:
-                prop["x-ves-example"] = example
+                # Convert to string to ensure JSON schema compatibility
+                # Examples may be numbers (8080) or booleans that need string representation
+                prop["x-ves-example"] = str(example) if not isinstance(example, str) else example
                 self.stats.examples_added += 1
 
     def _find_description(self, prop_name: str) -> str | None:

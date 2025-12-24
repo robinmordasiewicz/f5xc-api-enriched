@@ -29,6 +29,7 @@ from scripts.utils import (
     DescriptionStructureTransformer,
     DescriptionValidator,
     DiscoveryEnricher,
+    FieldMetadataEnricher,
     GrammarImprover,
     SchemaFixer,
     TagGenerator,
@@ -257,6 +258,7 @@ def enrich_spec_file(
         branding_transformer = BrandingTransformer()
         description_structure_transformer = DescriptionStructureTransformer()
         schema_fixer = SchemaFixer()
+        field_metadata_enricher = FieldMetadataEnricher()
         tag_generator = TagGenerator()
         description_validator = DescriptionValidator()
         consistency_validator = ConsistencyValidator()
@@ -286,19 +288,22 @@ def enrich_spec_file(
         # 3. Schema fixes (add missing type field where format exists)
         spec = schema_fixer.fix_spec(spec)
 
-        # 4. Acronym normalization
+        # 4. Field metadata enrichment (add unified x-ves-* field-level metadata)
+        spec = field_metadata_enricher.enrich_spec(spec)
+
+        # 5. Acronym normalization
         spec = acronym_normalizer.normalize_spec(spec, target_fields)
 
-        # 5. Grammar improvements
+        # 6. Grammar improvements
         spec = grammar_improver.improve_spec(spec, target_fields)
 
-        # 6. Tag generation (assign tags to operations)
+        # 7. Tag generation (assign tags to operations)
         spec = tag_generator.generate_tags(spec)
 
-        # 7. Description validation and generation (auto-generate missing descriptions)
+        # 8. Description validation and generation (auto-generate missing descriptions)
         spec = description_validator.validate_and_generate(spec)
 
-        # 8. Discovery enrichment (add x-discovered-* extensions)
+        # 9. Discovery enrichment (add x-discovered-* extensions)
         discovery_enrichments = 0
         discovery_enricher = load_discovery_enricher(config)
         if discovery_enricher:

@@ -207,6 +207,305 @@ class OperationMetadataEnricher:
             operation[f"{self.extension_prefix}-cli-examples"] = examples
             self.stats.examples_generated += 1
 
+        # NEW: Build and add comprehensive metadata (dual-format approach)
+        comprehensive_metadata = self._build_comprehensive_metadata(
+            method,
+            path,
+            operation,
+            required_fields,
+            danger_level,
+            side_effects,
+        )
+        if comprehensive_metadata:
+            operation[f"{self.extension_prefix}-operation-metadata"] = comprehensive_metadata
+
+    def _build_comprehensive_metadata(
+        self,
+        method: str,
+        path: str,
+        operation: dict[str, Any],
+        required_fields: list[str],
+        danger_level: str,
+        side_effects: dict[str, Any],
+    ) -> dict[str, Any]:
+        """Build comprehensive operation metadata object.
+
+        Creates x-ves-operation-metadata containing all operation context and constraints.
+
+        Args:
+            method: HTTP method
+            path: API path
+            operation: Operation definition
+            required_fields: List of required fields
+            danger_level: Danger level classification
+            side_effects: Side effects dictionary
+
+        Returns:
+            Comprehensive metadata dictionary
+        """
+        resource_type = self._extract_resource_type(path)
+        optional_fields = self._identify_optional_fields(operation, method)
+        field_docs = self._generate_field_docs(operation)
+        prerequisites = self._determine_prerequisites(method, path)
+        postconditions = self._determine_postconditions(method, path)
+        common_errors = self._generate_common_errors(operation)
+        performance_impact = self._assess_performance_impact(method, path, operation)
+
+        return {
+            "purpose": self._generate_purpose(method, path, resource_type),
+            "required_fields": required_fields,
+            "optional_fields": optional_fields,
+            "field_docs": field_docs,
+            "conditions": {
+                "prerequisites": prerequisites,
+                "postconditions": postconditions,
+            },
+            "side_effects": side_effects if side_effects else {},
+            "danger_level": danger_level,
+            "confirmation_required": danger_level == "high",
+            "common_errors": common_errors,
+            "performance_impact": performance_impact,
+            "examples": self._generate_cli_examples(method, path, operation),
+        }
+
+    def _generate_purpose(self, method: str, path: str, resource_type: str) -> str:
+        """Generate purpose description for an operation.
+
+        Args:
+            method: HTTP method
+            path: API path
+            resource_type: Resource type identifier
+
+        Returns:
+            Purpose description
+        """
+        if method == "GET":
+            if "{name}" in path or "{id}" in path:
+                return f"Retrieve specific {resource_type}"
+            return f"List all {resource_type}s"
+        if method == "POST":
+            return f"Create new {resource_type}"
+        if method == "PUT":
+            return f"Replace existing {resource_type}"
+        if method == "PATCH":
+            return f"Update {resource_type}"
+        if method == "DELETE":
+            return f"Delete {resource_type}"
+
+        return f"Perform {resource_type} operation"
+
+    def _identify_optional_fields(
+        self,
+        operation: dict[str, Any],
+        method: str,  # noqa: ARG002
+    ) -> list[str]:
+        """Identify optional fields in request body.
+
+        Args:
+            operation: Operation definition
+            method: HTTP method
+
+        Returns:
+            List of optional field names
+        """
+        optional = []
+
+        # Get request body schema
+        request_body = operation.get("requestBody", {})
+        if request_body:
+            content = request_body.get("content", {})
+            for media_content in content.values():
+                schema = media_content.get("schema", {})
+                if not schema:
+                    continue
+
+                # Optional fields = all properties - required fields
+                all_props = set(schema.get("properties", {}).keys())
+                required = set(schema.get("required", []))
+                optional.extend(list(all_props - required))
+
+        return sorted(set(optional))
+
+    def _generate_field_docs(self, operation: dict[str, Any]) -> dict[str, str]:
+        """Extract documentation for request body fields.
+
+        Args:
+            operation: Operation definition
+
+        Returns:
+            Dictionary mapping field names to their descriptions
+        """
+        field_docs = {}
+
+        request_body = operation.get("requestBody", {})
+        if request_body:
+            content = request_body.get("content", {})
+            for media_content in content.values():
+                schema = media_content.get("schema", {})
+                if not schema:
+                    continue
+
+                # Extract field descriptions from properties
+                for field_name, field_schema in schema.get("properties", {}).items():
+                    if isinstance(field_schema, dict):
+                        description = field_schema.get("description")
+                        if description:
+                            field_docs[field_name] = description
+
+        return field_docs
+
+    def _determine_prerequisites(self, method: str, path: str) -> list[str]:  # noqa: ARG002
+        """Determine prerequisites for successful operation execution.
+
+        Args:
+            method: HTTP method
+            path: API path
+
+        Returns:
+            List of prerequisite descriptions
+        """
+        prerequisites = []
+
+        # Namespace requirement
+        if "namespace" in path:
+            prerequisites.append("Active namespace")
+
+        # Resource-specific prerequisites
+        if "origin_pools" in path or "pool" in path:
+            prerequisites.append("Valid origin targets")
+        if "certificate" in path:
+            prerequisites.append("Certificate file or data")
+        if "policy" in path or "rule" in path:
+            prerequisites.append("Policy parameters defined")
+
+        return prerequisites
+
+    def _determine_postconditions(self, method: str, path: str) -> list[str]:
+        """Determine postconditions after successful operation.
+
+        Args:
+            method: HTTP method
+            path: API path
+
+        Returns:
+            List of postcondition descriptions
+        """
+        postconditions = []
+
+        if method == "POST":
+            resource_type = self._extract_resource_type(path)
+            postconditions.append(f"{resource_type.capitalize()} resource created")
+            postconditions.append("Resource assigned unique identifier")
+
+        elif method in ["PUT", "PATCH"]:
+            postconditions.append("Resource updated with new values")
+
+        elif method == "DELETE":
+            postconditions.append("Resource removed from system")
+            if "namespace" in path:
+                postconditions.append("Associated resources may be affected")
+
+        return postconditions
+
+    def _generate_common_errors(self, operation: dict[str, Any]) -> list[dict[str, str | int]]:
+        """Generate documentation for common error codes.
+
+        Args:
+            operation: Operation definition
+
+        Returns:
+            List of error documentation dictionaries
+        """
+        errors: list[dict[str, str | int]] = []
+
+        # Get response codes from operation
+        responses = operation.get("responses", {})
+
+        # Map common HTTP status codes to user-friendly messages
+        error_mappings = {
+            "400": {
+                "message": "Invalid request parameters",
+                "solution": "Verify request format and required fields",
+            },
+            "401": {
+                "message": "Authentication required",
+                "solution": "Provide valid API credentials",
+            },
+            "403": {
+                "message": "Permission denied",
+                "solution": "Check access permissions for this operation",
+            },
+            "404": {
+                "message": "Resource not found",
+                "solution": "Verify resource name, namespace, and path",
+            },
+            "409": {
+                "message": "Resource already exists",
+                "solution": "Use different name or update existing resource",
+            },
+            "422": {
+                "message": "Validation failed",
+                "solution": "Check field values against constraints",
+            },
+            "429": {
+                "message": "Rate limit exceeded",
+                "solution": "Wait before retrying the operation",
+            },
+            "500": {
+                "message": "Server error",
+                "solution": "Retry operation or contact support",
+            },
+        }
+
+        # Include mappings for response codes in operation
+        errors.extend(
+            [
+                {
+                    "code": int(code) if code.isdigit() else code,
+                    **error_mappings[code],
+                }
+                for code in responses
+                if code in error_mappings
+            ],
+        )
+
+        return errors
+
+    def _assess_performance_impact(
+        self,
+        method: str,
+        path: str,
+        operation: dict[str, Any],  # noqa: ARG002
+    ) -> dict[str, str]:
+        """Assess performance impact of operation.
+
+        Args:
+            method: HTTP method
+            path: API path
+            operation: Operation definition
+
+        Returns:
+            Performance impact dictionary
+        """
+        impact = {"latency": "low", "resource_usage": "low"}
+
+        # Check for bulk operations
+        if "bulk" in path or "batch" in path:
+            impact["latency"] = "high"
+            impact["resource_usage"] = "high"
+
+        # Check for list operations
+        elif method == "GET" and "{" not in path.split("/")[-1]:
+            impact["latency"] = "moderate"
+            impact["resource_usage"] = "moderate"
+
+        # Check for expensive operations
+        elif method == "DELETE" and "namespace" in path:
+            impact["latency"] = "high"
+            impact["resource_usage"] = "moderate"
+
+        return impact
+
     def _extract_required_fields(
         self,
         operation: dict[str, Any],
