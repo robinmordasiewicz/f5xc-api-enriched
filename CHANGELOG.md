@@ -1,14 +1,14 @@
 # Changelog
 
-## Version 1.0.35 (2025-12-24)
+## Version 1.0.36 (2025-12-24)
 
 ### Version Information
 | Field | Value |
 |-------|-------|
-| Full Version | 1.0.35 |
+| Full Version | 1.0.36 |
 | Upstream Timestamp | unknown |
 | Upstream ETag | unknown |
-| Enriched Version | 1.0.35 |
+| Enriched Version | 1.0.36 |
 
 ### Release Type
 - **patch** release
@@ -28,9 +28,9 @@
 
 ### Statistics
 - Original specs: 270
-- Domains: 47
-- Total paths: 1684
-- Total schemas: 11427
+- Domains: 38
+- Total paths: 1588
+- Total schemas: 9745
 
 ### API Discovery Enrichment
 - Discovery timestamp: 2025-12-20T19:39:20.211392+00:00
@@ -47,7 +47,7 @@ docs/specifications/api/
 ```
 
 ### Download
-- ZIP Package: F5xc-api-(unknown-1.0.35).zip
+- ZIP Package: F5xc-api-(unknown-1.0.36).zip
 
 ### Source
 - Source: F5 Distributed Cloud OpenAPI specifications
