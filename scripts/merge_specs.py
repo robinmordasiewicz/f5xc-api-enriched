@@ -180,7 +180,6 @@ def merge_paths(target: dict[str, Any], source: dict[str, Any], domain: str = ""
     paths_added = 0
     is_cdn_domain = domain == "cdn_and_content_delivery"
     is_data_intelligence_domain = domain == "data_intelligence"
-    is_virtual_server_domain = domain == "virtual_server"
     is_user_mgmt_domain = domain == "user_and_account_management"
     is_threat_campaign_domain = domain == "threat_campaign"
 
@@ -197,10 +196,6 @@ def merge_paths(target: dict[str, Any], source: dict[str, Any], domain: str = ""
 
         # Skip data-intelligence paths if not merging into data_intelligence domain
         if not is_data_intelligence_domain and "/api/data-intelligence/" in path:
-            continue
-
-        # Skip http_loadbalancers paths if not merging into virtual_server domain
-        if not is_virtual_server_domain and "/http_loadbalancers/" in path:
             continue
 
         # Skip credential management paths if not merging into user_and_account_management

@@ -177,9 +177,10 @@ domains:
       - "rrset"
 
   virtual:
-    description: "Application Delivery Controller"
+    description: "Application Delivery Controller and HTTP Load Balancing"
     patterns:
       - "geo_location_set"
+      - "http_loadbalancer"
       - "malicious_user"
       - "malware_protection"
       - "service_policy"
@@ -194,12 +195,6 @@ domains:
       - "(?<!dns_lb)\\.healthcheck\\.ves"
       - "\\.virtual_host\\.ves"
       - "^[^.]*\\.route\\.ves"
-
-  virtual_server:
-    description: "Virtual Server and HTTP Load Balancing"
-    patterns:
-      - "http_loadbalancer"
-      - "views\\.http_loadbalancer"
 
   network:
     description: "Routing, Tunnelling, and Network Connectivity"

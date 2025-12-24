@@ -898,7 +898,6 @@ def merge_specs_by_domain(
         has_http_lb_paths = any("/http_loadbalancers" in p for p in paths)
         if has_http_lb_paths and domain != "virtual":
             domain_specs["virtual"].append((filename, spec))
-
         # Also add specs to threat_campaign domain if they contain threat_campaign/threat_mesh paths
         has_threat_campaign_paths = any(
             "/api/waf/threat_campaign" in p or "/threat_mesh" in p for p in paths
@@ -1001,7 +1000,7 @@ def merge_specs_by_domain(
                     continue
 
                 # Skip /api/data/ paths if not merging into their semantic target domain
-                # This prevents app_security data paths from appearing in CDN/virtual_server domains
+                # This prevents app_security data paths from appearing in CDN domain
                 data_target_domain = get_api_data_target_domain(path)
                 if data_target_domain and data_target_domain != domain:
                     continue
@@ -1179,9 +1178,15 @@ def run_pipeline(
 
     console.print(f"[blue]Found {len(spec_files)} specification files[/blue]")
 
-    # Create output directory
+    # Create output directory and clean old files
     if not dry_run:
         output_dir.mkdir(parents=True, exist_ok=True)
+
+        # Remove all existing JSON spec files to ensure clean state
+        # This prevents rogue/stale files from previous runs
+        for json_file in output_dir.glob("*.json"):
+            json_file.unlink()
+            console.print(f"[dim]Cleaned: {json_file.name}[/dim]")
 
     # Load discovery enrichment configuration
     discovery_config_path = Path("config/discovery_enrichment.yaml")
