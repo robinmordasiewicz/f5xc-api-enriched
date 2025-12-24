@@ -916,7 +916,7 @@ def get_api_data_target_domain(path: str) -> str | None:
         (r"/discovered_services/", "telemetry_and_insights"),
         (r"/status_at_site", "telemetry_and_insights"),
         (r"/flow", "telemetry_and_insights"),
-        (r"/infraprotect/", "infrastructure_protection"),
+        (r"/infraprotect/", "ddos"),
         (r"/network_policy", "network_security"),
         (r"/service_policy", "network_security"),
         (r"/forward_proxy_policy", "network_security"),

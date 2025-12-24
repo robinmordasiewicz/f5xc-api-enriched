@@ -439,17 +439,6 @@ DOMAIN_METADATA = {
         ],
         "related_domains": ["statistics", "observability"],
     },
-    "infrastructure_protection": {
-        "is_preview": False,
-        "requires_tier": "Standard",
-        "domain_category": "Security",
-        "use_cases": [
-            "Protect critical infrastructure",
-            "Configure infrastructure defense policies",
-            "Monitor infrastructure security events",
-        ],
-        "related_domains": ["network_security", "ddos"],
-    },
     "telemetry_and_insights": {
         "is_preview": False,
         "requires_tier": "Standard",
