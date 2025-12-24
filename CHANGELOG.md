@@ -3,6 +3,7 @@
 ## Version 1.0.38 (2025-12-24)
 
 ### Version Information
+
 | Field | Value |
 |-------|-------|
 | Full Version | 1.0.38 |
@@ -11,9 +12,11 @@
 | Enriched Version | 1.0.38 |
 
 ### Release Type
+
 - **patch** release
 
 ### Changes
+
 - Updated API specifications from F5 Distributed Cloud
 - Applied enrichment pipeline:
   - Acronym normalization (100+ terms)
@@ -27,18 +30,21 @@
 - Merged specifications by domain
 
 ### Statistics
+
 - Original specs: 270
 - Domains: 37
 - Total paths: 1598
 - Total schemas: 9734
 
 ### API Discovery Enrichment
+
 - Discovery timestamp: 2025-12-20T19:39:20.211392+00:00
 - Endpoints explored: 300 / 1000
 - Applied x-discovered-* extensions from live API exploration
 - See `reports/constraint-analysis.md` for detailed comparison
 
 ### Output Structure
+
 ```text
 docs/specifications/api/
 ├── [domain].json        # Domain-specific specs
@@ -47,8 +53,10 @@ docs/specifications/api/
 ```
 
 ### Download
+
 - ZIP Package: F5xc-api-(unknown-1.0.38).zip
 
 ### Source
+
 - Source: F5 Distributed Cloud OpenAPI specifications
 - Upstream: unknown (ETag: unknown)
