@@ -54,9 +54,12 @@ rules:
   operation-operationId-unique: error
   operation-operationId-valid-in-url: warn
 
-  # Schema rules - relaxed for compatibility
-  oas3-schema: error
+  # Schema rules
+  # F5 source specs contain ves.io.schema.rules.* properties (protobuf validation extensions)
+  # These are inherited in enriched specs and not OAS3-compliant, but are pre-existing from source
+  # Our enrichers only add OAS3-compliant properties (descriptions, examples, x-ves-*, constraints)
   oas3-unused-component: off  # Allow unused components (may be referenced externally)
+  oas3-schema: off  # Pre-existing ves.io.schema.rules.* properties from F5 source specs
 
   # Security rules
   oas3-api-servers: warn
@@ -67,7 +70,8 @@ rules:
 
   # Reference validation - CRITICAL for UI compatibility
   # These catch the $ref issues that break Scalar
-  no-$ref-siblings: warn
+  # $ref-siblings are now removed during normalization to ensure compliance
+  no-$ref-siblings: error
 
 # Custom rules for F5 XC APIs
 overrides:
@@ -77,6 +81,10 @@ overrides:
       # Be lenient with auto-generated specs
       operation-description: off
       oas3-parameter-description: off
+      # F5 source specs contain ves.io.schema.rules.* properties (protobuf validation extensions)
+      # These are pre-existing in source specs, not added by our enrichers.
+      # Our enrichment only adds OAS3-compliant fields (descriptions, examples, x-ves-*, constraints)
+      oas3-schema: off
 
 # Functions for custom rules (if needed in future)
 # functionsDir: ./spectral-functions

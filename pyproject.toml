@@ -253,6 +253,20 @@ ignore = [
     "ARG",     # Unused arguments allowed in fixtures
 ]
 
+# Enricher unit tests need private method access to test internal implementation
+"tests/test_field_description_enricher.py" = [
+    "SLF001",  # Private member access (testing internal methods)
+]
+"tests/test_validation_enricher.py" = [
+    "SLF001",  # Private member access (testing internal methods)
+]
+"tests/test_cli_metadata_enricher.py" = [
+    "SLF001",  # Private member access (testing internal methods)
+]
+"tests/test_operation_metadata_enricher.py" = [
+    "SLF001",  # Private member access (testing internal methods)
+]
+
 # __init__.py files can have unused imports (re-exports)
 "**/__init__.py" = [
     "F401",    # Unused imports (used for re-exports)

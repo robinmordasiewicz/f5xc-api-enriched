@@ -68,17 +68,21 @@ from rich.table import Table
 from scripts.utils import (
     AcronymNormalizer,
     BrandingTransformer,
+    CLIMetadataEnricher,
     ConsistencyValidator,
     ConstraintReconciler,
     DescriptionStructureTransformer,
     DescriptionValidator,
     DiscoveryEnricher,
+    FieldDescriptionEnricher,
     GrammarImprover,
+    OperationMetadataEnricher,
     SchemaFixer,
     TagGenerator,
+    ValidationEnricher,
     categorize_spec,
 )
-from scripts.utils.domain_metadata import get_metadata
+from scripts.utils.domain_metadata import calculate_complexity, get_metadata
 
 console = Console()
 
@@ -247,6 +251,26 @@ def enrich_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], dic
     consistency_validator.validate(spec)
     consistency_stats = consistency_validator.get_stats()
 
+    # 11. Field-level description enrichment (add realistic descriptions and examples)
+    field_description_enricher = FieldDescriptionEnricher()
+    spec = field_description_enricher.enrich_spec(spec)
+    field_desc_stats = field_description_enricher.get_stats()
+
+    # 12. Field-level validation rule enrichment (add min/max, patterns, formats)
+    validation_enricher = ValidationEnricher()
+    spec = validation_enricher.enrich_spec(spec)
+    validation_stats = validation_enricher.get_stats()
+
+    # 13. Field-level CLI metadata enrichment (add help text and completion hints)
+    cli_metadata_enricher = CLIMetadataEnricher()
+    spec = cli_metadata_enricher.enrich_spec(spec)
+    cli_stats = cli_metadata_enricher.get_stats()
+
+    # 14. Operation metadata enrichment (add danger levels, required fields, side effects, CLI examples)
+    operation_metadata_enricher = OperationMetadataEnricher()
+    spec = operation_metadata_enricher.enrich_spec(spec)
+    op_stats = operation_metadata_enricher.get_stats()
+
     # Close grammar improver resources
     grammar_improver.close()
 
@@ -258,6 +282,17 @@ def enrich_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], dic
         + desc_stats.get("schemas_generated", 0),
         "consistency_issues": consistency_stats.get("total_issues", 0),
         "domains_normalized": domain_normalize_count,
+        "field_descriptions_added": field_desc_stats.get("descriptions_added", 0),
+        "field_examples_added": field_desc_stats.get("examples_added", 0),
+        "validation_rules_added": validation_stats.get("patterns_added", 0),
+        "validation_constraints_added": validation_stats.get("constraints_added", 0),
+        "cli_help_added": cli_stats.get("help_added", 0),
+        "cli_completions_added": cli_stats.get("completions_added", 0),
+        "operations_enriched": op_stats.get("operations_enriched", 0),
+        "required_fields_added": op_stats.get("required_fields_added", 0),
+        "danger_levels_assigned": op_stats.get("danger_levels_assigned", 0),
+        "cli_examples_generated": op_stats.get("examples_generated", 0),
+        "side_effects_documented": op_stats.get("side_effects_documented", 0),
     }
 
 
@@ -286,6 +321,40 @@ def _count_text_fields(spec: dict[str, Any], target_fields: list[str]) -> int:
 # =============================================================================
 
 
+def _remove_ref_siblings(spec: dict[str, Any]) -> tuple[dict[str, Any], int]:
+    """Remove properties that are siblings to $ref (violates OpenAPI spec).
+
+    OpenAPI spec requires that $ref MUST NOT have siblings.
+    This function removes all properties next to $ref to comply.
+
+    Returns (modified_spec, count_of_properties_removed).
+    """
+    removed_count = 0
+
+    def clean_recursive(obj: Any) -> Any:
+        nonlocal removed_count
+
+        if isinstance(obj, dict):
+            # If this dict has a $ref, remove all other properties
+            if "$ref" in obj:
+                removed_count += len(obj) - 1
+                return {"$ref": obj["$ref"]}
+
+            # Otherwise, recursively clean all values
+            result = {}
+            for key, value in obj.items():
+                result[key] = clean_recursive(value)
+            return result
+
+        if isinstance(obj, list):
+            return [clean_recursive(item) for item in obj]
+
+        return obj
+
+    cleaned_spec = clean_recursive(spec)
+    return cleaned_spec, removed_count
+
+
 def normalize_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], int]:
     """Apply normalization to fix structural issues.
 
@@ -293,6 +362,10 @@ def normalize_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], 
     """
     norm_config = config.get("normalization", {})
     total_changes = 0
+
+    # 0. Remove properties that are siblings to $ref (OpenAPI compliance)
+    spec, count = _remove_ref_siblings(spec)
+    total_changes += count
 
     # 1. Fix orphan $refs
     if norm_config.get("fix_orphan_refs", True):
@@ -1116,21 +1189,34 @@ def create_spec_index(domain_specs: dict[str, dict[str, Any]], version: str) -> 
     for domain, spec in sorted(domain_specs.items()):
         info = spec.get("info", {})
         metadata = get_metadata(domain)
-        index["specifications"].append(
-            {
-                "domain": domain,
-                "title": info.get("title", ""),
-                "description": info.get("description", ""),
-                "file": f"{domain}.json",
-                "path_count": len(spec.get("paths", {})),
-                "schema_count": len(spec.get("components", {}).get("schemas", {})),
-                "is_preview": metadata.get("is_preview", False),
-                "requires_tier": metadata.get("requires_tier", "Standard"),
-                "domain_category": metadata.get("domain_category", "Other"),
-                "use_cases": metadata.get("use_cases", []),
-                "related_domains": metadata.get("related_domains", []),
-            },
-        )
+
+        # Calculate path and schema counts
+        path_count = len(spec.get("paths", {}))
+        schema_count = len(spec.get("components", {}).get("schemas", {}))
+        complexity = calculate_complexity(path_count, schema_count)
+
+        # Build spec entry
+        spec_entry = {
+            "domain": domain,
+            "title": info.get("title", ""),
+            "description": info.get("description", ""),
+            "file": f"{domain}.json",
+            "path_count": path_count,
+            "schema_count": schema_count,
+            "complexity": complexity,
+            "is_preview": metadata.get("is_preview", False),
+            "requires_tier": metadata.get("requires_tier", "Standard"),
+            "domain_category": metadata.get("domain_category", "Other"),
+            "use_cases": metadata.get("use_cases", []),
+            "related_domains": metadata.get("related_domains", []),
+        }
+
+        # Add CLI metadata if available
+        cli_metadata = metadata.get("cli_metadata")
+        if cli_metadata:
+            spec_entry["cli_metadata"] = cli_metadata
+
+        index["specifications"].append(spec_entry)
 
     return index
 

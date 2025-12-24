@@ -418,6 +418,40 @@ def detect_and_break_circular_refs(spec: dict[str, Any]) -> tuple[dict[str, Any]
     return spec, 0
 
 
+def remove_ref_siblings(spec: dict[str, Any]) -> tuple[dict[str, Any], int]:
+    """Remove properties that are siblings to $ref (violates OpenAPI spec).
+
+    OpenAPI spec requires that $ref MUST NOT have siblings.
+    This function removes all properties next to $ref to comply.
+
+    Returns (modified_spec, count_of_properties_removed).
+    """
+    removed_count = 0
+
+    def clean_recursive(obj: Any) -> Any:
+        nonlocal removed_count
+
+        if isinstance(obj, dict):
+            # If this dict has a $ref, remove all other properties
+            if "$ref" in obj:
+                removed_count += len(obj) - 1  # Count all keys except $ref
+                return {"$ref": obj["$ref"]}
+
+            # Otherwise, recursively clean all values
+            result = {}
+            for key, value in obj.items():
+                result[key] = clean_recursive(value)
+            return result
+
+        if isinstance(obj, list):
+            return [clean_recursive(item) for item in obj]
+
+        return obj
+
+    cleaned_spec = clean_recursive(spec)
+    return cleaned_spec, removed_count
+
+
 def normalize_spec_file(
     spec_path: Path,
     output_path: Path,
@@ -442,6 +476,10 @@ def normalize_spec_file(
         norm_config = config.get("normalization", {})
 
         # Apply normalizations in order
+
+        # 0. Remove properties that are siblings to $ref (OpenAPI compliance)
+        spec, count = remove_ref_siblings(spec)
+        changes["ref_siblings_removed"] = count
 
         # 1. Fix orphan $refs by creating missing components
         if norm_config.get("fix_orphan_refs", True):

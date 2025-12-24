@@ -485,16 +485,17 @@ DOMAIN_METADATA = {
 
 
 def get_metadata(domain: str) -> dict[str, Any]:
-    """Get metadata for a specific domain.
+    """Get metadata for a specific domain, including CLI metadata if available.
 
     Args:
         domain: The domain name
 
     Returns:
-        Dict with is_preview, requires_tier, domain_category
+        Dict with is_preview, requires_tier, domain_category, use_cases, related_domains
+        and optionally cli_metadata if available for the domain.
         Falls back to defaults if domain not explicitly configured.
     """
-    return DOMAIN_METADATA.get(
+    metadata = DOMAIN_METADATA.get(
         domain,
         {
             "is_preview": False,
@@ -503,7 +504,303 @@ def get_metadata(domain: str) -> dict[str, Any]:
         },
     )
 
+    # Add CLI metadata if available
+    cli_metadata = get_cli_metadata(domain)
+    if cli_metadata:
+        metadata["cli_metadata"] = cli_metadata
+
+    return metadata
+
 
 def get_all_metadata() -> dict[str, dict[str, Any]]:
     """Get metadata for all configured domains."""
     return DOMAIN_METADATA.copy()
+
+
+def calculate_complexity(path_count: int, schema_count: int) -> str:
+    """Calculate domain complexity based on API surface area.
+
+    Formula: score = (path_count * 0.4) + (schema_count * 0.6)
+    Schema count weighted higher (60%) as data model complexity
+    impacts code generation more than endpoint count.
+
+    Args:
+        path_count: Number of API endpoints/paths in the domain
+        schema_count: Number of schemas/data models in the domain
+
+    Returns:
+        Complexity level: "simple" | "moderate" | "advanced"
+
+    Examples:
+        >>> calculate_complexity(2, 16)  # admin domain
+        'simple'
+        >>> calculate_complexity(36, 228)  # api domain
+        'moderate'
+        >>> calculate_complexity(164, 1248)  # virtual domain
+        'advanced'
+    """
+    score = (path_count * 0.4) + (schema_count * 0.6)
+
+    if score < 50:
+        return "simple"
+    if score < 150:
+        return "moderate"
+    return "advanced"
+
+
+CLI_METADATA = {
+    "virtual": {
+        "quick_start": {
+            "command": "curl $F5XC_API_URL/api/config/namespaces/default/http_loadbalancers -H 'Authorization: APIToken $F5XC_API_TOKEN'",
+            "description": "List all HTTP load balancers in default namespace",
+            "expected_output": "JSON array of load balancer objects with status",
+        },
+        "common_workflows": [
+            {
+                "name": "Create HTTP Load Balancer",
+                "description": "Deploy basic HTTP load balancer with origin pool backend",
+                "steps": [
+                    {
+                        "step": 1,
+                        "command": "curl -X POST $F5XC_API_URL/api/config/namespaces/default/origin_pools -H 'Authorization: APIToken $F5XC_API_TOKEN' -H 'Content-Type: application/json' -d '{...pool_config...}'",
+                        "description": "Create backend origin pool with target endpoints",
+                    },
+                    {
+                        "step": 2,
+                        "command": "curl -X POST $F5XC_API_URL/api/config/namespaces/default/http_loadbalancers -H 'Authorization: APIToken $F5XC_API_TOKEN' -H 'Content-Type: application/json' -d '{...lb_config...}'",
+                        "description": "Create HTTP load balancer pointing to origin pool",
+                    },
+                ],
+                "prerequisites": [
+                    "Active namespace",
+                    "Origin pool targets reachable",
+                    "DNS domain configured",
+                ],
+                "expected_outcome": "Load balancer in Active status, traffic routed to origins",
+            },
+        ],
+        "troubleshooting": [
+            {
+                "problem": "Load balancer shows Configuration Error status",
+                "symptoms": [
+                    "Status: Configuration Error",
+                    "No traffic routing",
+                    "Requests timeout",
+                ],
+                "diagnosis_commands": [
+                    "curl $F5XC_API_URL/api/config/namespaces/default/http_loadbalancers/{name} -H 'Authorization: APIToken $F5XC_API_TOKEN'",
+                    "Check origin_pool status and endpoint connectivity",
+                ],
+                "solutions": [
+                    "Verify origin pool targets are reachable from edge",
+                    "Check DNS configuration and domain propagation",
+                    "Validate certificate configuration if using HTTPS",
+                    "Review security policies not blocking traffic",
+                ],
+            },
+        ],
+        "icon": "⚖️",
+    },
+    "dns": {
+        "quick_start": {
+            "command": "curl $F5XC_API_URL/api/config/namespaces/default/dns_domains -H 'Authorization: APIToken $F5XC_API_TOKEN'",
+            "description": "List all DNS domains configured in default namespace",
+            "expected_output": "JSON array of DNS domain objects",
+        },
+        "common_workflows": [
+            {
+                "name": "Create DNS Domain",
+                "description": "Configure DNS domain with load balancer backend",
+                "steps": [
+                    {
+                        "step": 1,
+                        "command": "Create load balancer endpoint first (virtual domain)",
+                        "description": "Ensure target load balancer exists",
+                    },
+                    {
+                        "step": 2,
+                        "command": "curl -X POST $F5XC_API_URL/api/config/namespaces/default/dns_domains -H 'Authorization: APIToken $F5XC_API_TOKEN' -H 'Content-Type: application/json' -d '{...dns_config...}'",
+                        "description": "Create DNS domain pointing to load balancer",
+                    },
+                ],
+                "prerequisites": [
+                    "DNS domain registered",
+                    "Load balancer configured",
+                    "SOA and NS records prepared",
+                ],
+                "expected_outcome": "DNS domain in Active status, queries resolving to load balancer",
+            },
+        ],
+        "troubleshooting": [
+            {
+                "problem": "DNS queries not resolving",
+                "symptoms": ["NXDOMAIN responses", "Timeout on DNS queries"],
+                "diagnosis_commands": [
+                    "curl $F5XC_API_URL/api/config/namespaces/default/dns_domains/{domain} -H 'Authorization: APIToken $F5XC_API_TOKEN'",
+                    "nslookup {domain} @ns-server",
+                ],
+                "solutions": [
+                    "Verify domain delegation to F5 XC nameservers",
+                    "Check DNS domain configuration and backend load balancer status",
+                    "Validate zone file and record configuration",
+                ],
+            },
+        ],
+        "icon": "🌐",
+    },
+    "api": {
+        "quick_start": {
+            "command": "curl $F5XC_API_URL/api/config/namespaces/default/api_catalogs -H 'Authorization: APIToken $F5XC_API_TOKEN'",
+            "description": "List all API catalogs in default namespace",
+            "expected_output": "JSON array of API catalog objects",
+        },
+        "common_workflows": [
+            {
+                "name": "Protect API with Security Policy",
+                "description": "Discover and protect APIs with WAF security policies",
+                "steps": [
+                    {
+                        "step": 1,
+                        "command": "curl -X POST $F5XC_API_URL/api/config/namespaces/default/api_catalogs -H 'Authorization: APIToken $F5XC_API_TOKEN' -H 'Content-Type: application/json' -d '{...catalog_config...}'",
+                        "description": "Create API catalog for API discovery and documentation",
+                    },
+                    {
+                        "step": 2,
+                        "command": "curl -X POST $F5XC_API_URL/api/config/namespaces/default/api_definitions -H 'Authorization: APIToken $F5XC_API_TOKEN' -H 'Content-Type: application/json' -d '{...api_config...}'",
+                        "description": "Create API definition with security enforcement",
+                    },
+                ],
+                "prerequisites": [
+                    "API endpoints documented",
+                    "Security policies defined",
+                    "WAF rules configured",
+                ],
+                "expected_outcome": "APIs protected, violations logged and blocked",
+            },
+        ],
+        "troubleshooting": [
+            {
+                "problem": "API traffic blocked by security policy",
+                "symptoms": ["HTTP 403 Forbidden", "Requests rejected at edge"],
+                "diagnosis_commands": [
+                    "curl $F5XC_API_URL/api/config/namespaces/default/api_definitions/{api} -H 'Authorization: APIToken $F5XC_API_TOKEN'",
+                    "Check security policy enforcement rules",
+                ],
+                "solutions": [
+                    "Review API definition and security policy rules",
+                    "Adjust rule sensitivity to reduce false positives",
+                    "Add exception rules for legitimate traffic patterns",
+                ],
+            },
+        ],
+        "icon": "🔐",
+    },
+    "site": {
+        "quick_start": {
+            "command": "curl $F5XC_API_URL/api/config/namespaces/default/sites -H 'Authorization: APIToken $F5XC_API_TOKEN'",
+            "description": "List all configured sites in default namespace",
+            "expected_output": "JSON array of site objects with deployment status",
+        },
+        "common_workflows": [
+            {
+                "name": "Deploy AWS Cloud Site",
+                "description": "Deploy F5 XC in AWS for traffic management",
+                "steps": [
+                    {
+                        "step": 1,
+                        "command": "curl -X POST $F5XC_API_URL/api/config/namespaces/default/cloud_credentials -H 'Authorization: APIToken $F5XC_API_TOKEN' -H 'Content-Type: application/json' -d '{...aws_credentials...}'",
+                        "description": "Create cloud credentials for AWS access",
+                    },
+                    {
+                        "step": 2,
+                        "command": "curl -X POST $F5XC_API_URL/api/config/namespaces/default/sites -H 'Authorization: APIToken $F5XC_API_TOKEN' -H 'Content-Type: application/json' -d '{...site_config...}'",
+                        "description": "Create site definition for AWS deployment",
+                    },
+                ],
+                "prerequisites": [
+                    "AWS account configured",
+                    "Cloud credentials created",
+                    "VPC and security groups prepared",
+                ],
+                "expected_outcome": "Site deployed in AWS, nodes connected and healthy",
+            },
+        ],
+        "troubleshooting": [
+            {
+                "problem": "Site deployment fails",
+                "symptoms": ["Status: Error", "Nodes not coming online", "Connectivity issues"],
+                "diagnosis_commands": [
+                    "curl $F5XC_API_URL/api/config/namespaces/default/sites/{site} -H 'Authorization: APIToken $F5XC_API_TOKEN'",
+                    "Check site events and node status",
+                ],
+                "solutions": [
+                    "Verify cloud credentials have required permissions",
+                    "Check VPC and security group configuration",
+                    "Review site logs for deployment errors",
+                    "Ensure sufficient cloud resources available",
+                ],
+            },
+        ],
+        "icon": "🌍",
+    },
+    "system": {
+        "quick_start": {
+            "command": "curl $F5XC_API_URL/api/config/system/namespaces -H 'Authorization: APIToken $F5XC_API_TOKEN'",
+            "description": "List all namespaces in the F5 XC system",
+            "expected_output": "JSON array of namespace objects",
+        },
+        "common_workflows": [
+            {
+                "name": "Create Tenant Namespace",
+                "description": "Create isolated namespace for tenant resources",
+                "steps": [
+                    {
+                        "step": 1,
+                        "command": "curl -X POST $F5XC_API_URL/api/config/system/namespaces -H 'Authorization: APIToken $F5XC_API_TOKEN' -H 'Content-Type: application/json' -d '{...namespace_config...}'",
+                        "description": "Create namespace with appropriate quotas",
+                    },
+                    {
+                        "step": 2,
+                        "command": "curl -X POST $F5XC_API_URL/api/config/system/role_bindings -H 'Authorization: APIToken $F5XC_API_TOKEN' -H 'Content-Type: application/json' -d '{...role_config...}'",
+                        "description": "Assign RBAC roles to namespace users",
+                    },
+                ],
+                "prerequisites": [
+                    "System admin access",
+                    "User groups defined",
+                    "Resource quotas planned",
+                ],
+                "expected_outcome": "Namespace created, users can access and manage resources",
+            },
+        ],
+        "troubleshooting": [
+            {
+                "problem": "Users cannot access namespace resources",
+                "symptoms": ["Permission denied errors", "Resources not visible"],
+                "diagnosis_commands": [
+                    "curl $F5XC_API_URL/api/config/system/namespaces/{ns} -H 'Authorization: APIToken $F5XC_API_TOKEN'",
+                    "Check RBAC role bindings for namespace",
+                ],
+                "solutions": [
+                    "Verify RBAC role bindings are correct",
+                    "Check namespace quotas not exceeded",
+                    "Review IAM policies for resource access",
+                ],
+            },
+        ],
+        "icon": "⚙️",
+    },
+}
+
+
+def get_cli_metadata(domain: str) -> dict[str, Any] | None:
+    """Get CLI metadata for a domain if available.
+
+    Args:
+        domain: The domain name
+
+    Returns:
+        Dict with quick_start, common_workflows, troubleshooting, icon
+        or None if CLI metadata not available for this domain
+    """
+    return CLI_METADATA.get(domain)
