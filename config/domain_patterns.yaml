@@ -120,7 +120,7 @@ domains:
       - "protocol_inspection"
       - "waf"
 
-  bot_and_threat_defense:
+  bot_defense:
     description: "Bot defense and threat intelligence"
     patterns:
       - "bot_allowlist"
@@ -350,14 +350,14 @@ domains:
       - "shape\\.safeap"
 
   # ===== K. UI & Platform Infrastructure (3 categories) =====
-  admin_console_and_ui:
+  admin:
     description: "Administration console and user interface"
     patterns:
       - "navigation_tile"
       - "ui\\."
       - "ui_static"
 
-  billing_and_usage:
+  billing:
     description: "Billing, subscription, and usage"
     patterns:
       - "billing\\."

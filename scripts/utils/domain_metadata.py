@@ -50,7 +50,7 @@ DOMAIN_METADATA = {
         "requires_tier": "Professional",
         "domain_category": "Security",
     },
-    "bot_and_threat_defense": {
+    "bot_defense": {
         "is_preview": False,
         "requires_tier": "Professional",
         "domain_category": "Security",
@@ -171,12 +171,12 @@ DOMAIN_METADATA = {
         "domain_category": "Security",
     },
     # UI & Platform Infrastructure
-    "admin_console_and_ui": {
+    "admin": {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Platform",
     },
-    "billing_and_usage": {
+    "billing": {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Platform",
