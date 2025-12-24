@@ -1,0 +1,102 @@
+enabled: true
+merge_discovery_constraints: true  # Merge with x-ves-validation-rules from discovery
+reconciliation_strategy: "existing > discovery > inferred"  # Priority order for conflicts
+
+type_defaults:
+  string:
+    minLength: 0
+    maxLength: 1024
+    comment: "Conservative default for string fields"
+
+  integer:
+    minimum: 0
+    maximum: 2147483647  # int32 max
+    comment: "Conservative default for integer fields"
+
+# Note: number, boolean, array, object intentionally omitted (too type-dependent)
+
+validation_patterns:
+  # High-confidence validation patterns (95%+ confidence)
+  # Each pattern applies to field names matching the regex
+
+  - pattern: '\bemail$'
+    format: 'email'
+    regex_pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    confidence: 0.99
+    comment: 'RFC 5322 compliant email validation'
+
+  - pattern: '\bport$'
+    minimum: 1
+    maximum: 65535
+    confidence: 0.99
+    comment: 'Valid TCP/UDP port range'
+
+  - pattern: '\b(vlan)?_?id$'
+    minimum: 1
+    maximum: 4094
+    confidence: 0.95
+    comment: 'Valid VLAN ID range (802.1Q)'
+
+  - pattern: '\burl$'
+    format: 'uri'
+    confidence: 0.95
+    comment: 'URL must be valid URI format'
+
+  - pattern: '\buuid$'
+    format: 'uuid'
+    confidence: 0.99
+    comment: 'UUID format validation (RFC 4122)'
+
+  - pattern: '\btimestamp$'
+    format: 'date-time'
+    confidence: 0.95
+    comment: 'ISO 8601 date-time format'
+
+  - pattern: '\b(ipv4|ipaddress|ip_addr)$'
+    format: 'ipv4'
+    confidence: 0.95
+    comment: 'IPv4 address format validation'
+
+# Reconciliation Strategy Rules:
+# =============================
+#
+# 1. "existing > discovery > inferred"
+#    - Existing spec constraints take highest priority
+#    - Discovery constraints override inferred patterns
+#    - Inferred patterns have lowest priority
+#
+# 2. Conflict Resolution:
+#    - If same constraint exists at multiple levels, keep highest priority
+#    - Log detected conflicts for visibility
+#
+# 3. Constraint Merging:
+#    - Non-conflicting constraints from all levels are combined
+#    - Example: minLength from type_defaults + pattern from pattern rules
+#
+# Constraint Sources (by priority):
+# =================================
+#
+# 1. EXISTING (in spec)
+#    - From original OpenAPI spec
+#    - Manually curated or tool-generated
+#    - Highest trust level
+#
+# 2. DISCOVERY (x-ves-validation-rules)
+#    - From live API discovery
+#    - Based on actual API behavior
+#    - Real-world validation patterns
+#    - Added by DiscoveryEnricher
+#
+# 3. INFERRED (from this enricher)
+#    - From type_defaults and validation_patterns
+#    - Pattern-based matching
+#    - Most conservative approach
+#    - Lowest trust level
+
+# Future Enhancement Opportunities:
+# ==================================
+# - Add domain name validation (RFC 1123)
+# - Add IPv6 address validation
+# - Add regex patterns for common formats (phone, postal codes, etc.)
+# - Add conditional constraints (apply only if field is required)
+# - Add per-domain validation overrides

@@ -20,7 +20,7 @@ from rich.table import Table
 from scripts.utils.domain_categorizer import (
     categorize_spec as categorize_spec_util,
 )
-from scripts.utils.domain_metadata import get_metadata
+from scripts.utils.domain_metadata import calculate_complexity, get_metadata
 
 console = Console()
 
@@ -423,23 +423,32 @@ def create_spec_index(
     for domain, spec in sorted(merged_specs.items()):
         info = spec.get("info", {})
         paths = spec.get("paths", {})
+        path_count = len(paths)
+        schema_count = len(spec.get("components", {}).get("schemas", {}))
         metadata = get_metadata(domain)
 
-        index["specifications"].append(
-            {
-                "domain": domain,
-                "title": info.get("title", ""),
-                "description": info.get("description", ""),
-                "file": f"{domain}.json",
-                "path_count": len(paths),
-                "schema_count": len(spec.get("components", {}).get("schemas", {})),
-                "is_preview": metadata.get("is_preview", False),
-                "requires_tier": metadata.get("requires_tier", "Standard"),
-                "domain_category": metadata.get("domain_category", "Other"),
-                "use_cases": metadata.get("use_cases", []),
-                "related_domains": metadata.get("related_domains", []),
-            },
-        )
+        # Build specification entry
+        spec_entry = {
+            "domain": domain,
+            "title": info.get("title", ""),
+            "description": info.get("description", ""),
+            "file": f"{domain}.json",
+            "path_count": path_count,
+            "schema_count": schema_count,
+            "complexity": calculate_complexity(path_count, schema_count),
+            "is_preview": metadata.get("is_preview", False),
+            "requires_tier": metadata.get("requires_tier", "Standard"),
+            "domain_category": metadata.get("domain_category", "Other"),
+            "use_cases": metadata.get("use_cases", []),
+            "related_domains": metadata.get("related_domains", []),
+        }
+
+        # Add CLI metadata if available
+        cli_metadata = metadata.get("cli_metadata")
+        if cli_metadata:
+            spec_entry["cli_metadata"] = cli_metadata
+
+        index["specifications"].append(spec_entry)
 
     with output_path.open("w") as f:
         json.dump(index, f, indent=2)

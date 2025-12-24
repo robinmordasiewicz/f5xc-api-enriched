@@ -1,0 +1,68 @@
+enabled: true
+
+completion_patterns:
+  # High-confidence CLI completion patterns
+  # Used to provide shell completion hints and help text
+
+  - pattern: '\bnamespace$'
+    completion_type: 'namespace-list'
+    help: 'Kubernetes namespace or F5 XC tenant namespace'
+    comment: 'Apply to any field ending with "namespace"'
+
+  - pattern: '\blabels$'
+    completion_type: 'key-value-pairs'
+    help: 'Metadata labels for organization and selection'
+    separator: '='
+    example: 'environment=prod,team=platform'
+    comment: 'Labels are key=value pairs separated by commas'
+
+  - pattern: '\btags$'
+    completion_type: 'key-value-pairs'
+    help: 'Resource tags for identification and tracking'
+    separator: '='
+    comment: 'Tags are key=value pairs, similar to labels'
+
+  - pattern: '\b(file|path)$'
+    completion_type: 'file-path'
+    help: 'File path reference (use relative or absolute path)'
+    comment: 'For fields referencing files or file paths'
+
+  - pattern: '\bname$'
+    completion_type: 'string-value'
+    help: 'Resource name (alphanumeric and hyphens)'
+    comment: 'Generic completion for name fields'
+
+# CLI Metadata Extensions:
+# ========================
+#
+# x-ves-cli-help (string)
+# - Brief help text displayed when user requests help
+# - Should be concise (1-2 sentences max)
+# - Explains what value is needed and why
+#
+# x-ves-cli-example (string|number|object)
+# - Example value that user can reference
+# - For key-value fields, shows key=value format
+# - For enums, shows first valid value
+# - For files, shows suggested filename pattern
+#
+# x-ves-cli-completion (string)
+# - Hints to shell completion providers
+# - Types:
+#   - namespace-list: Complete from available namespaces
+#   - key-value-pairs: Complete as key=value pairs
+#   - file-path: Complete as filesystem paths
+#   - enum-values: Complete from enum options
+#   - string-value: Free-form string input
+#
+# x-ves-cli-required (boolean)
+# - Indicates field is required for CLI operations
+# - Set by operation enricher, not field enricher
+#
+# Future Enhancement Opportunities:
+# ==================================
+# - Add pattern completion hints (regex descriptions)
+# - Add enum value completion
+# - Add domain name completion
+# - Add environment variable completion
+# - Add multi-value completion (comma-separated)
