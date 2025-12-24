@@ -1,0 +1,126 @@
+# Server Variables Configuration for F5 Distributed Cloud API
+# Single source of truth for multi-environment server variables
+#
+# This configuration defines the extensible framework for OpenAPI server variables,
+# supporting production and development deployments with GitHub-aware branch mapping.
+
+version: "1.0.0"
+
+# Server configuration
+server:
+  url_template: "https://{tenant}.console.ves.volterra.io/namespaces/{namespace}"
+  description: "F5 Distributed Cloud Console"
+
+# Variable definitions
+variables:
+  # Tenant variable: F5 Distributed Cloud tenant name
+  tenant:
+    default: "console"
+    description: "Your F5 XC tenant name"
+    enum:
+      - "console"
+      - "example"
+
+  # Namespace variable: Kubernetes-style environment separation
+  namespace:
+    default: "default"
+    description: "Kubernetes-style namespace for environment separation"
+    enum_values_from_git_branch: true  # Future: auto-populate from GitHub branches
+    examples:
+      - "default"        # Default/fallback namespace
+      - "production"     # Explicit production namespace
+      - "main"           # Production namespace (main branch)
+      - "feature-123"    # Feature branch namespace
+      - "bugfix-456"     # Bugfix branch namespace
+      - "staging"        # Staging environment namespace
+    naming_pattern: "[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?"  # RFC 1123 compliant
+
+# Future variables (placeholders for extensibility)
+future_variables:
+  # Region variable: Geographic region for multi-region deployments
+  region:
+    default: "us-west"
+    description: "Geographic region for API deployment"
+    examples:
+      - "us-west"
+      - "us-east"
+      - "eu-central"
+      - "eu-west"
+      - "ap-northeast"
+    placeholder: true
+
+  # Environment variable: Explicit environment designation
+  environment:
+    default: "development"
+    description: "Environment type (production, staging, development)"
+    examples:
+      - "production"
+      - "staging"
+      - "development"
+    placeholder: true
+
+  # Domain prefix variable: Industry-standard naming conventions
+  domain_prefix:
+    default: "example"
+    description: "Domain naming prefix for consistent branding across deployments"
+    examples:
+      - "example"     # Industry-standard convention
+      - "acme"
+      - "corp"
+    placeholder: true
+
+# GitHub branch mapping (for future CI/CD integration)
+github_branch_mapping:
+  enabled: true  # Set to true when CI/CD integration is implemented
+  patterns:
+    main: "main"                          # Production namespace
+    master: "main"                        # Alternate main branch
+    "feature/*": "feature-*"              # Feature branches: extract issue number
+    "bugfix/*": "bugfix-*"                # Bugfix branches: extract issue number
+    "hotfix/*": "hotfix-*"                # Hotfix branches: extract issue number
+    staging: "staging"                    # Staging branch
+    develop: "dev"                        # Development branch
+    default: "default"                    # Fallback for unmatched branches
+
+# Documentation and guidelines
+documentation:
+  multi_environment_strategy: |
+    The API supports multi-environment deployments through OpenAPI server variables:
+
+    - **Tenant**: Your F5 XC tenant account (default: "console")
+    - **Namespace**: Kubernetes-style environment separation (default: "default")
+
+    GitHub-based deployment strategy:
+    - main branch → production namespace "main"
+    - feature/issue-{num} → feature namespace "feature-{num}"
+    - bugfix/issue-{num} → bugfix namespace "bugfix-{num}"
+    - staging branch → staging namespace "staging"
+    - Other branches → default namespace "default"
+
+    This enables zero-downtime deployments with namespace-based isolation
+    and prevents accidental production conflicts.
+
+  extensibility_notes: |
+    This configuration is designed for future expansion:
+
+    Phase 1 (Current): Namespace support for environment separation
+    - Multi-environment separation (prod vs dev)
+    - GitHub branch awareness (branch → namespace mapping)
+    - Framework for future expansion
+
+    Phase 2 (Future): Region & Environment Variables
+    - Add `region` variable for multi-region deployments
+    - Add `environment` variable for explicit prod/staging/dev designation
+    - Combine with namespace for comprehensive multi-environment control
+
+    Phase 3 (Future): Domain Naming Support
+    - Add `domain_prefix` variable for industry-standard conventions
+    - Support consistent branding across deployments
+    - Enable reusable deployment patterns with "example-" prefixes
+
+    To extend this framework:
+    1. Define new variables in the future_variables section
+    2. Move to variables section when implementation starts
+    3. Update server URL template if the variable is used in URL paths
+    4. Add GitHub branch mapping patterns if CI/CD integration is planned
+    5. Update CLAUDE.md with usage documentation
