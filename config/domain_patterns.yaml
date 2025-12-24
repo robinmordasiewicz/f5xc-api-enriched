@@ -262,17 +262,22 @@ domains:
       - "operate\\."
       - "ticket_tracking"
 
-  system:
-    description: "Tenant management and identity"
+  authentication:
+    description: "Authentication and identity providers"
     patterns:
       - "authentication"
-      - "contact"
-      - "namespace"
       - "oidc_provider"
-      - "rbac_policy"
-      - "role"
       - "scim"
       - "signup"
+      - "api_credential"
+
+  system:
+    description: "Tenant management and core system"
+    patterns:
+      - "contact"
+      - "namespace"
+      - "rbac_policy"
+      - "role"
       - "tenant"
       - "tenant_management"
       - "user"

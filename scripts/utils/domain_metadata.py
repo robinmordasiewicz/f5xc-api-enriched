@@ -258,18 +258,31 @@ DOMAIN_METADATA = {
         "related_domains": ["statistics", "observability"],
     },
     # System & Management
+    "authentication": {
+        "is_preview": False,
+        "requires_tier": "Standard",
+        "domain_category": "Platform",
+        "use_cases": [
+            "Configure authentication mechanisms",
+            "Manage OIDC and OAuth providers",
+            "Configure SCIM user provisioning",
+            "Manage API credentials and access",
+            "Configure account signup policies",
+        ],
+        "related_domains": ["system", "users"],
+    },
     "system": {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Platform",
         "use_cases": [
             "Manage tenant configuration",
-            "Configure authentication and OIDC",
             "Define RBAC policies and roles",
             "Manage namespaces and contacts",
-            "Configure SCIM integration",
+            "Manage user accounts and groups",
+            "Configure core system settings",
         ],
-        "related_domains": ["users", "admin"],
+        "related_domains": ["authentication", "users", "admin"],
     },
     "users": {
         "is_preview": False,
