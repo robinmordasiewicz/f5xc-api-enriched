@@ -901,8 +901,8 @@ def get_api_data_target_domain(path: str) -> str | None:
     # Map resource patterns in /api/data/ paths to their semantic domains
     # Order matters: more specific patterns first
     data_routing = [
-        (r"/app_security/", "application_firewall"),
-        (r"/app_firewall/", "application_firewall"),
+        (r"/app_security/", "waf"),
+        (r"/app_firewall/", "waf"),
         (r"/dns_", "dns"),
         (r"/access_logs", "observability"),
         (r"/audit_logs", "observability"),

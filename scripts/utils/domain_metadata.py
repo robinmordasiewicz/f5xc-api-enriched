@@ -93,9 +93,9 @@ DOMAIN_METADATA = {
             "Manage API credentials",
             "Define API groups and testing policies",
         ],
-        "related_domains": ["application_firewall", "network_security"],
+        "related_domains": ["waf", "network_security"],
     },
-    "application_firewall": {
+    "waf": {
         "is_preview": False,
         "requires_tier": "Professional",
         "domain_category": "Security",
@@ -117,7 +117,7 @@ DOMAIN_METADATA = {
             "Integrate threat intelligence",
             "Manage mobile SDK for app protection",
         ],
-        "related_domains": ["application_firewall", "network_security"],
+        "related_domains": ["waf", "network_security"],
     },
     "network_security": {
         "is_preview": False,
@@ -130,7 +130,7 @@ DOMAIN_METADATA = {
             "Define network segments and policies",
             "Configure forward proxy policies",
         ],
-        "related_domains": ["application_firewall", "api", "network"],
+        "related_domains": ["waf", "api", "network"],
     },
     # Security - Advanced
     "blindfold": {
@@ -154,7 +154,7 @@ DOMAIN_METADATA = {
             "Manage device identification",
             "Configure data privacy controls",
         ],
-        "related_domains": ["blindfold", "application_firewall"],
+        "related_domains": ["blindfold", "waf"],
     },
     "ddos": {
         "is_preview": False,
@@ -390,7 +390,7 @@ DOMAIN_METADATA = {
             "Configure SafeAP policies",
             "Enable threat recognition",
         ],
-        "related_domains": ["bot_defense", "application_firewall"],
+        "related_domains": ["bot_defense", "waf"],
     },
     # UI & Platform Infrastructure
     "admin": {
