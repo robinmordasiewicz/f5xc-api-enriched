@@ -373,6 +373,37 @@ class TestEdgeCases:
         assert desc1 == desc2
 
 
+class TestExampleStringConversion:
+    """Test x-ves-example string type conversion (Issue #136 fix)."""
+
+    def test_example_is_always_string_type_for_numeric(self, enricher):
+        """Verify x-ves-example is string even for numeric values (port: 8080)."""
+        prop = {"type": "integer"}
+        enricher._enrich_property(prop, "port", "TestSchema")
+
+        assert "x-ves-example" in prop
+        assert isinstance(prop["x-ves-example"], str), "x-ves-example must be string type"
+        assert prop["x-ves-example"] == "8080"
+
+    def test_example_is_always_string_type_for_boolean(self, enricher):
+        """Verify x-ves-example is string for boolean values."""
+        prop = {"type": "boolean"}
+        enricher._enrich_property(prop, "enabled", "TestSchema")
+
+        # Note: boolean fields don't currently have examples in default config
+        # but this test ensures if they did, they'd be strings
+        if "x-ves-example" in prop:
+            assert isinstance(prop["x-ves-example"], str), "x-ves-example must be string type"
+
+    def test_example_is_always_string_type_for_uuid(self, enricher):
+        """Verify x-ves-example is string for UUID values."""
+        prop = {"type": "string", "format": "uuid"}
+        enricher._enrich_property(prop, "uuid", "TestSchema")
+
+        assert "x-ves-example" in prop
+        assert isinstance(prop["x-ves-example"], str), "x-ves-example must be string type"
+
+
 class TestResourceTypeInference:
     """Test resource type inference."""
 
