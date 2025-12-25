@@ -7,6 +7,7 @@ Fully automated - no manual intervention required.
 
 import argparse
 import json
+import os
 import sys
 from collections import defaultdict
 from datetime import datetime, timezone
@@ -86,15 +87,18 @@ def create_base_spec(
         "info": info,
         "servers": [
             {
-                "url": "https://{tenant}.console.ves.volterra.io/namespaces/{namespace}",
+                "url": "{api_url}/namespaces/{namespace}",
                 "description": "F5 Distributed Cloud Console",
                 "variables": {
-                    "tenant": {
-                        "default": "example-corp",
-                        "description": "Your F5 XC tenant name",
+                    "api_url": {
+                        "default": os.getenv(
+                            "F5XC_API_URL",
+                            "https://example-corp.console.ves.volterra.io",
+                        ),
+                        "description": "F5 Distributed Cloud API URL (e.g., https://tenant.console.ves.volterra.io or https://tenant.staging.volterra.us)",
                     },
                     "namespace": {
-                        "default": "default",
+                        "default": os.getenv("F5XC_DEFAULT_NAMESPACE", "default"),
                         "description": "Kubernetes-style namespace (e.g., 'default', 'production', 'staging', 'feature-123')",
                     },
                 },
