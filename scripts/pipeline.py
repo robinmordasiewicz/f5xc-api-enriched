@@ -957,6 +957,26 @@ def get_api_data_target_domain(path: str) -> str | None:
     return None
 
 
+def add_domain_metadata_to_spec(spec: dict[str, Any], domain: str) -> None:
+    """Add domain classification metadata to spec (idempotent).
+
+    Adds x-ves-cli-domain extension to the spec's info section.
+    Preserves existing values if already present (idempotent behavior).
+
+    Args:
+        spec: OpenAPI specification to enhance
+        domain: Domain classification (e.g., "virtual", "cdn")
+    """
+    if "info" not in spec:
+        spec["info"] = {}
+
+    info = spec["info"]
+
+    # Idempotent: preserve existing x-ves-cli-domain
+    if "x-ves-cli-domain" not in info:
+        info["x-ves-cli-domain"] = domain
+
+
 def merge_specs_by_domain(
     specs: dict[str, dict[str, Any]],
     version: str,
@@ -1129,6 +1149,9 @@ def merge_specs_by_domain(
                 unique_tags.append(tag if isinstance(tag, dict) else {"name": tag})
                 seen.add(name)
         merged_spec["tags"] = sorted(unique_tags, key=lambda t: t.get("name", ""))
+
+        # Add spec-level domain metadata (idempotent)
+        add_domain_metadata_to_spec(merged_spec, domain)
 
         merged[domain] = merged_spec
         stats["domains"] += 1

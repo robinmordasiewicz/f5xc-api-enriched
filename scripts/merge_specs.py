@@ -227,6 +227,26 @@ def merge_paths(target: dict[str, Any], source: dict[str, Any], domain: str = ""
     return paths_added
 
 
+def add_domain_metadata_to_spec(spec: dict[str, Any], domain: str) -> None:
+    """Add domain classification metadata to spec (idempotent).
+
+    Adds x-ves-cli-domain extension to the spec's info section.
+    Preserves existing values if already present (idempotent behavior).
+
+    Args:
+        spec: OpenAPI specification to enhance
+        domain: Domain classification (e.g., "virtual", "cdn_and_content_delivery")
+    """
+    if "info" not in spec:
+        spec["info"] = {}
+
+    info = spec["info"]
+
+    # Idempotent: preserve existing x-ves-cli-domain
+    if "x-ves-cli-domain" not in info:
+        info["x-ves-cli-domain"] = domain
+
+
 def extract_tags(spec: dict[str, Any]) -> list[dict[str, str]]:
     """Extract unique tags from a specification."""
     tags = []
@@ -344,6 +364,9 @@ def merge_specs_by_domain(
                     seen_tag_names.add(tag["name"])
             merged["tags"] = sorted(unique_tags, key=lambda t: t.get("name", ""))
 
+            # Add spec-level domain metadata (idempotent)
+            add_domain_metadata_to_spec(merged, domain)
+
             # Save domain-specific merged spec
             output_path = output_dir / f"{domain}.json"
             save_spec(merged, output_path)
@@ -450,6 +473,11 @@ def create_spec_index(
             "use_cases": metadata.get("use_cases", []),
             "related_domains": metadata.get("related_domains", []),
         }
+
+        # Add spec-level CLI domain metadata if available
+        spec_cli_domain = info.get("x-ves-cli-domain")
+        if spec_cli_domain:
+            spec_entry["x-ves-cli-domain"] = spec_cli_domain
 
         # Add CLI metadata if available
         cli_metadata = metadata.get("cli_metadata")

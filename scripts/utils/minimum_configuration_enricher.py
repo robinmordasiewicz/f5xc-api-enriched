@@ -28,12 +28,15 @@ class MinimumConfigurationStats:
     """Statistics for minimum configuration enrichment."""
 
     schemas_enriched: int = 0
+    schemas_auto_generated: int = 0
     minimum_configs_added: int = 0
+    minimum_configs_auto_generated: int = 0
     required_fields_added: int = 0
     field_requirements_added: int = 0
     example_yamls_generated: int = 0
     example_commands_generated: int = 0
     cli_domains_added: int = 0
+    cli_domains_preserved: int = 0
     cli_aliases_added: int = 0
     errors: list[dict[str, Any]] = field(default_factory=list)
 
@@ -41,12 +44,15 @@ class MinimumConfigurationStats:
         """Convert stats to dictionary."""
         return {
             "schemas_enriched": self.schemas_enriched,
+            "schemas_auto_generated": self.schemas_auto_generated,
             "minimum_configs_added": self.minimum_configs_added,
+            "minimum_configs_auto_generated": self.minimum_configs_auto_generated,
             "required_fields_added": self.required_fields_added,
             "field_requirements_added": self.field_requirements_added,
             "example_yamls_generated": self.example_yamls_generated,
             "example_commands_generated": self.example_commands_generated,
             "cli_domains_added": self.cli_domains_added,
+            "cli_domains_preserved": self.cli_domains_preserved,
             "cli_aliases_added": self.cli_aliases_added,
             "error_count": len(self.errors),
             "errors": self.errors,
@@ -128,40 +134,36 @@ class MinimumConfigurationEnricher:
     ) -> None:
         """Enrich individual schema with minimum configuration metadata.
 
+        Handles both configured resources (from config/minimum_configs.yaml) and
+        unconfigured resources (via auto-generation). x-ves-cli-domain is idempotent
+        and will preserve existing values.
+
         Args:
             schema_name: Name of the schema
             schema: Schema definition
         """
         resource_type = self._detect_resource_type(schema_name)
-        if not resource_type or resource_type not in self.resources:
-            return
-
-        resource_config = self.resources[resource_type]
 
         try:
-            # Add x-ves-minimum-configuration at schema level
-            minimum_config = {
-                "description": resource_config.get("description", ""),
-                "required_fields": self._extract_required_fields(resource_type, schema),
-                "mutually_exclusive_groups": resource_config.get("mutually_exclusive_groups", []),
-                "example_yaml": resource_config.get("example_yaml", ""),
-                "example_command": resource_config.get("example_command", ""),
-            }
+            # Check if x-ves-cli-domain already exists (idempotent behavior)
+            has_existing_cli_domain = "x-ves-cli-domain" in schema
 
-            schema["x-ves-minimum-configuration"] = minimum_config
-            self.stats.minimum_configs_added += 1
+            if resource_type and resource_type in self.resources:
+                # Explicit configuration exists
+                resource_config = self.resources[resource_type]
+                self._enrich_from_config(schema, schema_name, resource_type, resource_config)
+            else:
+                # Auto-generate for unconfigured resources
+                self._enrich_with_auto_generation(schema, schema_name, resource_type)
+                self.stats.schemas_auto_generated += 1
 
-            # Add x-ves-required-for to schema properties
-            self._add_field_requirements(schema, resource_config)
-
-            # Add x-ves-cli-domain and x-ves-cli-aliases
-            domain = self._get_domain_for_resource(resource_type, schema_name)
-            schema["x-ves-cli-domain"] = domain
-            self.stats.cli_domains_added += 1
-
-            if "cli" in resource_config and "aliases" in resource_config["cli"]:
-                schema["x-ves-cli-aliases"] = resource_config["cli"]["aliases"]
-                self.stats.cli_aliases_added += 1
+            # Preserve existing x-ves-cli-domain or add domain via categorizer
+            if not has_existing_cli_domain or "x-ves-cli-domain" not in schema:
+                domain = self._get_domain_for_resource(resource_type or "", schema_name)
+                schema["x-ves-cli-domain"] = domain
+                self.stats.cli_domains_added += 1
+            else:
+                self.stats.cli_domains_preserved += 1
 
             self.stats.schemas_enriched += 1
 
@@ -174,6 +176,187 @@ class MinimumConfigurationEnricher:
                     "resource_type": resource_type,
                 },
             )
+
+    def _enrich_from_config(
+        self,
+        schema: dict[str, Any],
+        _schema_name: str,
+        resource_type: str | None,
+        resource_config: dict[str, Any],
+    ) -> None:
+        """Enrich schema using explicit configuration.
+
+        Args:
+            schema: Schema to enrich
+            _schema_name: Schema name
+            resource_type: Detected resource type
+            resource_config: Configuration from config file
+        """
+        # Add x-ves-minimum-configuration at schema level
+        minimum_config = {
+            "description": resource_config.get("description", ""),
+            "required_fields": self._extract_required_fields(resource_type, schema),
+            "mutually_exclusive_groups": resource_config.get("mutually_exclusive_groups", []),
+            "example_yaml": resource_config.get("example_yaml", ""),
+            "example_command": resource_config.get("example_command", ""),
+        }
+
+        schema["x-ves-minimum-configuration"] = minimum_config
+        self.stats.minimum_configs_added += 1
+
+        # Add x-ves-required-for to schema properties
+        self._add_field_requirements(schema, resource_config)
+
+        # Add x-ves-cli-aliases if configured
+        if "cli" in resource_config and "aliases" in resource_config["cli"]:
+            schema["x-ves-cli-aliases"] = resource_config["cli"]["aliases"]
+            self.stats.cli_aliases_added += 1
+
+    def _enrich_with_auto_generation(
+        self,
+        schema: dict[str, Any],
+        schema_name: str,
+        _resource_type: str | None,
+    ) -> None:
+        """Auto-generate minimum configuration for unconfigured resources.
+
+        Args:
+            schema: Schema to enrich
+            schema_name: Schema name
+            _resource_type: Detected or inferred resource type
+        """
+        # Generate sensible defaults
+        auto_config = self._auto_generate_minimum_config(schema, schema_name)
+
+        schema["x-ves-minimum-configuration"] = auto_config
+        self.stats.minimum_configs_auto_generated += 1
+
+        # Add basic field requirements
+        self._add_auto_generated_field_requirements(schema)
+
+    def _auto_generate_minimum_config(
+        self,
+        schema: dict[str, Any],
+        schema_name: str,
+    ) -> dict[str, Any]:
+        """Auto-generate minimum configuration from schema inspection.
+
+        Args:
+            schema: OpenAPI schema
+            schema_name: Schema name
+
+        Returns:
+            Generated minimum configuration dictionary
+        """
+        required_fields = self._extract_required_fields_from_schema(schema)
+        example_yaml = self._generate_example_yaml(schema_name, required_fields)
+        example_command = self._generate_example_command(schema_name)
+
+        return {
+            "description": f"Minimum configuration for {schema_name}",
+            "required_fields": required_fields,
+            "mutually_exclusive_groups": [],
+            "example_yaml": example_yaml,
+            "example_command": example_command,
+        }
+
+    def _extract_required_fields_from_schema(self, schema: dict[str, Any]) -> list[str]:
+        """Extract required fields directly from schema.
+
+        Args:
+            schema: OpenAPI schema
+
+        Returns:
+            List of required field names
+        """
+        # Get required array from schema if present
+        required = schema.get("required", [])
+
+        # If no required fields, use all properties as fallback
+        if not required:
+            properties = schema.get("properties", {})
+            if properties:
+                required = list(properties.keys())
+
+        return required
+
+    def _generate_example_yaml(self, schema_name: str, required_fields: list[str]) -> str:
+        """Generate example YAML from schema information.
+
+        Args:
+            schema_name: Schema name
+            required_fields: List of required field names
+
+        Returns:
+            Generated example YAML string
+        """
+        lines = [
+            "# Minimal example for " + schema_name,
+            "metadata:",
+            "  name: example",
+            "  namespace: default",
+        ]
+
+        if required_fields:
+            lines.append("spec:")
+            spec_fields = [
+                f"  {field}: value"
+                for field in required_fields[:5]
+                if field not in ["metadata", "apiVersion", "kind"]
+            ]
+            lines.extend(spec_fields)
+
+        return "\n".join(lines)
+
+    def _generate_example_command(self, schema_name: str) -> str:
+        """Generate example xcsh CLI command.
+
+        Args:
+            schema_name: Schema name
+
+        Returns:
+            Example CLI command
+        """
+        # Infer resource type from schema name
+        resource_name = (
+            schema_name.split("Create")[0].split("Update")[0].split("Get")[0].split("Delete")[0]
+        )
+        resource_name = re.sub(r"(?<!^)(?=[A-Z])", "_", resource_name).lower()
+
+        # Infer domain (default to "virtual")
+        domain = "virtual"
+        if "waf" in resource_name or "firewall" in resource_name:
+            domain = "waf"
+        elif "cdn" in resource_name:
+            domain = "cdn"
+
+        return f"xcsh {domain} create {resource_name} -n default -f example.yaml"
+
+    def _add_auto_generated_field_requirements(self, schema: dict[str, Any]) -> None:
+        """Add basic x-ves-required-for to schema properties (auto-generated).
+
+        Args:
+            schema: Schema definition
+        """
+        properties = schema.get("properties", {})
+        if not properties:
+            return
+
+        required_list = schema.get("required", [])
+
+        for field_name, field_schema in properties.items():
+            if not isinstance(field_schema, dict):
+                continue
+
+            is_required = field_name in required_list
+            field_requirements = {
+                "minimum_config": is_required,
+                "create": is_required,
+                "update": False,
+                "read": False,
+            }
+            field_schema["x-ves-required-for"] = field_requirements
+            self.stats.field_requirements_added += 1
 
     def _detect_resource_type(self, schema_name: str) -> str | None:
         """Detect resource type from schema name.
@@ -229,7 +412,11 @@ class MinimumConfigurationEnricher:
 
         return None
 
-    def _extract_required_fields(self, resource_type: str, schema: dict[str, Any]) -> list[str]:
+    def _extract_required_fields(
+        self,
+        resource_type: str | None,
+        schema: dict[str, Any],
+    ) -> list[str]:
         """Extract minimum required fields for resource.
 
         Uses config-defined required fields if present.
@@ -243,10 +430,11 @@ class MinimumConfigurationEnricher:
             List of required field names
         """
         # Use config-defined required fields if present
-        config_required = self.resources.get(resource_type, {}).get("required_fields", [])
-        if config_required:
-            self.stats.required_fields_added += 1
-            return config_required
+        if resource_type:
+            config_required = self.resources.get(resource_type, {}).get("required_fields", [])
+            if config_required:
+                self.stats.required_fields_added += 1
+                return config_required
 
         # Fallback to schema required array
         return schema.get("required", [])
