@@ -389,5 +389,224 @@ class TestAllFiveResources:
         assert schema["x-ves-cli-domain"] is not None
 
 
+class TestAutoGenerationForUnconfiguredResources:
+    """Test auto-generation for resources without explicit configuration."""
+
+    def test_auto_generate_unconfigured_schema(self):
+        """Test auto-generation for a schema without explicit configuration."""
+        enricher = MinimumConfigurationEnricher()
+
+        # Create a spec with an unconfigured schema
+        spec = {
+            "components": {
+                "schemas": {
+                    "RandomUnknownSchema": {
+                        "type": "object",
+                        "properties": {
+                            "name": {"type": "string"},
+                            "description": {"type": "string"},
+                            "status": {"type": "string"},
+                        },
+                    },
+                },
+            },
+        }
+
+        enriched = enricher.enrich_spec(spec)
+        schema = enriched["components"]["schemas"]["RandomUnknownSchema"]
+
+        # Verify auto-generated minimum configuration was added
+        assert "x-ves-minimum-configuration" in schema
+        min_config = schema["x-ves-minimum-configuration"]
+        assert "description" in min_config
+        assert "Minimum configuration for" in min_config["description"]
+        assert min_config["required_fields"] is not None
+        assert min_config["example_yaml"] is not None
+
+        # Verify auto-generated CLI domain
+        assert "x-ves-cli-domain" in schema
+        # Should have been auto-categorized or fallback
+        assert schema["x-ves-cli-domain"] is not None
+
+    def test_auto_generation_stats_tracked(self):
+        """Test that auto-generation statistics are properly tracked."""
+        enricher = MinimumConfigurationEnricher()
+
+        spec = {
+            "components": {
+                "schemas": {
+                    "UnknownResource1": {"type": "object"},
+                    "UnknownResource2": {"type": "object"},
+                    "http_loadbalancerCreateRequest": {
+                        "type": "object",
+                        "properties": {"name": {"type": "string"}},
+                    },
+                },
+            },
+        }
+
+        enricher.enrich_spec(spec)
+        stats = enricher.get_stats()
+
+        # Should have auto-generated 2 resources
+        assert stats["schemas_auto_generated"] >= 2
+        # Configured resource should be counted separately
+        assert stats["minimum_configs_added"] >= 1
+
+    def test_multiple_unconfigured_resources(self):
+        """Test auto-generation for multiple unconfigured resources."""
+        enricher = MinimumConfigurationEnricher()
+
+        # Create specs with various unconfigured resource patterns
+        spec = {
+            "components": {
+                "schemas": {
+                    "customTypeA": {"type": "object", "properties": {}},
+                    "customTypeB": {"type": "string"},
+                    "customTypeC": {"type": "object", "properties": {"id": {"type": "string"}}},
+                    "customTypeD": {"type": "array"},
+                },
+            },
+        }
+
+        enriched = enricher.enrich_spec(spec)
+        schemas = enriched["components"]["schemas"]
+
+        # All should have been enriched
+        for schema_name in ["customTypeA", "customTypeB", "customTypeC", "customTypeD"]:
+            schema = schemas[schema_name]
+            assert "x-ves-cli-domain" in schema
+            assert schema["x-ves-cli-domain"] is not None
+
+
+class TestIdempotency:
+    """Test idempotent behavior - running enrichment multiple times produces consistent results."""
+
+    def test_preserve_existing_cli_domain(self):
+        """Test that existing x-ves-cli-domain is preserved (idempotent)."""
+        enricher = MinimumConfigurationEnricher()
+
+        # Create a spec with manually-set x-ves-cli-domain
+        spec = {
+            "components": {
+                "schemas": {
+                    "custom_resource": {
+                        "type": "object",
+                        "x-ves-cli-domain": "my_custom_domain",
+                    },
+                },
+            },
+        }
+
+        enriched = enricher.enrich_spec(spec)
+        schema = enriched["components"]["schemas"]["custom_resource"]
+
+        # Should preserve the existing value
+        assert schema["x-ves-cli-domain"] == "my_custom_domain"
+        # Should have recorded that it was preserved
+        assert enricher.stats.cli_domains_preserved > 0
+
+    def test_multiple_enrichment_passes_idempotent(self):
+        """Test that running enrichment twice produces identical results."""
+        spec_original = {
+            "components": {
+                "schemas": {
+                    "http_loadbalancerCreateRequest": {
+                        "type": "object",
+                        "properties": {"name": {"type": "string"}},
+                    },
+                },
+            },
+        }
+
+        # First pass
+        enricher1 = MinimumConfigurationEnricher()
+        result1 = enricher1.enrich_spec(spec_original.copy())
+
+        # Second pass - use the enriched result as input
+        enricher2 = MinimumConfigurationEnricher()
+        result2 = enricher2.enrich_spec(result1)
+
+        # Results should be identical
+        schema1 = result1["components"]["schemas"]["http_loadbalancerCreateRequest"]
+        schema2 = result2["components"]["schemas"]["http_loadbalancerCreateRequest"]
+
+        assert schema1.get("x-ves-cli-domain") == schema2.get("x-ves-cli-domain")
+        assert schema1.get("x-ves-minimum-configuration") == schema2.get(
+            "x-ves-minimum-configuration",
+        )
+
+    def test_idempotent_stats_tracking(self):
+        """Test that idempotent behavior is properly tracked in stats."""
+        enricher = MinimumConfigurationEnricher()
+
+        spec = {
+            "components": {
+                "schemas": {
+                    "http_loadbalancerCreateRequest": {
+                        "type": "object",
+                        "properties": {},
+                    },
+                    "origin_poolCreateRequest": {"type": "object", "properties": {}},
+                },
+            },
+        }
+
+        enricher.enrich_spec(spec)
+        stats = enricher.get_stats()
+
+        # Both resources should have been enriched
+        assert stats["schemas_enriched"] >= 2
+        # At least some CLI domains should have been added
+        assert stats["cli_domains_added"] >= 2
+        # No domains should have been preserved initially
+        assert stats["cli_domains_preserved"] == 0
+
+
+class TestAllResourcePatterns:
+    """Test enrichment across various resource naming patterns."""
+
+    @pytest.mark.parametrize(
+        "schema_name",
+        [
+            "http_loadbalancerCreateRequest",
+            "origin_poolGetResponse",
+            "tcp_loadbalancerUpdateRequest",
+            "healthcheckDeleteResponse",
+            "app_firewallCreateSpecType",
+            "unknownResourceType",
+            "anotherRandomResource",
+        ],
+    )
+    def test_enrich_various_resource_patterns(self, schema_name):
+        """Test enrichment for various resource naming patterns."""
+        enricher = MinimumConfigurationEnricher()
+
+        spec = {
+            "components": {
+                "schemas": {
+                    schema_name: {
+                        "type": "object",
+                        "properties": {"id": {"type": "string"}},
+                    },
+                },
+            },
+        }
+
+        enriched = enricher.enrich_spec(spec)
+        schema = enriched["components"]["schemas"][schema_name]
+
+        # All schemas should be enriched with minimum configuration
+        assert "x-ves-minimum-configuration" in schema
+        min_config = schema["x-ves-minimum-configuration"]
+        assert min_config.get("description") is not None
+        assert min_config.get("example_yaml") is not None
+        assert min_config.get("required_fields") is not None
+
+        # All should have CLI domain
+        assert "x-ves-cli-domain" in schema
+        assert schema["x-ves-cli-domain"] is not None
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

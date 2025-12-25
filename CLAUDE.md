@@ -40,10 +40,12 @@ f5xc-api-enriched/
 │   ├── validate.py         # Live API validation
 │   └── analyze_constraints.py  # Discovery constraint analysis
 ├── config/
-│   ├── enrichment.yaml     # Enrichment rules
-│   ├── normalization.yaml  # Normalization rules
-│   ├── discovery.yaml      # Discovery configuration
-│   └── spectral.yaml       # Spectral linting ruleset
+│   ├── enrichment.yaml          # Enrichment rules
+│   ├── normalization.yaml       # Normalization rules
+│   ├── discovery.yaml           # Discovery configuration
+│   ├── minimum_configs.yaml     # CLI metadata for 5 priority resources (Issue #152)
+│   ├── default_minimum_configs.yaml  # Default templates for auto-generation
+│   └── spectral.yaml            # Spectral linting ruleset
 ├── .github/workflows/
 │   └── sync-and-enrich.yml # Main CI/CD workflow
 ├── reports/                # Generated reports (gitignored)
@@ -191,6 +193,61 @@ make pre-commit-run      # Run all hooks manually
 3. Security checks (gitleaks, detect-private-key)
 4. Code quality (ruff, mypy, yamllint)
 5. File hygiene (trailing whitespace, line endings)
+
+## CLI Metadata Enrichment (Issue #152+)
+
+**Purpose**: Enable AI assistants and CLI tools to generate working resource configurations.
+
+**Features**:
+
+Four OpenAPI extensions are added to schemas and specs:
+
+1. **x-ves-minimum-configuration** (schema-level)
+   - Description of minimum viable configuration
+   - Required fields list
+   - Example YAML configuration
+   - Example xcsh CLI command
+   - Applied to ALL resource schemas (5 configured + auto-generated for others)
+
+2. **x-ves-cli-domain** (both schema and spec-level)
+   - Domain classification (e.g., "virtual", "waf", "cdn")
+   - At schema level: Resource classification
+   - At spec level: Domain grouping metadata
+   - Idempotent: Preserves existing values if present
+
+3. **x-ves-required-for** (field-level)
+   - Context-specific field requirements
+   - Flags: minimum_config, create, update, read
+   - Enables intelligent configuration generation
+
+4. **x-ves-cli-aliases** (schema-level)
+   - Alternative names for resources
+   - Supports CLI command flexibility
+   - Explicitly configured per resource
+
+**Architecture**:
+
+- **Stage 1 (Enrichment)**: MinimumConfigurationEnricher adds metadata to schemas
+  - Configured resources use explicit config from `config/minimum_configs.yaml`
+  - Unconfigured resources auto-generate from schema inspection
+  - Uses DomainCategorizer for domain classification
+
+- **Stage 2 (Merge)**: add_domain_metadata_to_spec() adds spec-level metadata
+  - Spec info section gets x-ves-cli-domain from domain categorization
+  - Spec index includes CLI domain metadata
+  - Idempotent: Never overwrites existing values
+
+**Configuration**:
+
+- `config/minimum_configs.yaml`: Explicit configs for 5 priority resources
+- `config/default_minimum_configs.yaml`: Default templates and patterns for auto-generation
+- Pattern matching for resource type detection (e.g., "http_loadbalancerCreateRequest" → "http_loadbalancer")
+
+**Testing**:
+
+- 30 tests for explicit configurations (5 resources × parametrized patterns)
+- 13 new tests for auto-generation and idempotency
+- Total: 43 comprehensive tests with 82% code coverage
 
 ## Key Gotchas
 

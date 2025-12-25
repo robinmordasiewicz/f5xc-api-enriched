@@ -1,0 +1,210 @@
+version: "1.0.0"
+description: "Default minimum configuration templates for auto-generated resources"
+
+# Global defaults for all resources
+defaults:
+  description_template: "Minimum configuration for {resource_type}"
+  required_fields_fallback:
+    - "metadata.name"
+    - "metadata.namespace"
+
+  # Example YAML template with placeholders
+  example_yaml_template: |
+    apiVersion: v1
+    kind: {resource_type}
+    metadata:
+      name: example-{resource_slug}
+      namespace: default
+    spec:
+      # Add required fields here
+
+  # Example CLI command template
+  example_command_template: "xcsh {domain} {resource_slug} create -f {resource_slug}.yaml -n default"
+
+# Default values by resource type pattern
+resource_type_defaults:
+  # Load balancer resources
+  "*_loadbalancer":
+    domain_fallback: "virtual"
+    required_fields_hint: ["spec.listener", "spec.routes", "spec.origins"]
+    example_yaml: |
+      apiVersion: v1
+      kind: {resource_type}
+      metadata:
+        name: example-lb
+        namespace: default
+      spec:
+        listener:
+          port: 8080
+
+  "*_pool":
+    domain_fallback: "virtual"
+    required_fields_hint: ["spec.origins"]
+    example_yaml: |
+      apiVersion: v1
+      kind: {resource_type}
+      metadata:
+        name: example-pool
+        namespace: default
+      spec:
+        origins:
+          - origin_server:
+              hostname: backend.example.com
+              port: 8080
+
+  # WAF/Security resources
+  "*_firewall":
+    domain_fallback: "waf"
+    required_fields_hint: ["spec.detection_settings"]
+    example_yaml: |
+      apiVersion: v1
+      kind: {resource_type}
+      metadata:
+        name: example-waf
+        namespace: default
+      spec:
+        detection_settings:
+          enabled: true
+
+  "*_policy":
+    domain_fallback: "waf"
+    required_fields_hint: ["spec.rules"]
+    example_yaml: |
+      apiVersion: v1
+      kind: {resource_type}
+      metadata:
+        name: example-policy
+        namespace: default
+      spec:
+        rules: []
+
+  # DNS/Routing resources
+  "*_dns":
+    domain_fallback: "cdn"
+    required_fields_hint: ["spec.zone", "spec.records"]
+
+  # Health check resources
+  "*health*":
+    domain_fallback: "virtual"
+    required_fields_hint: ["spec"]
+    example_yaml: |
+      apiVersion: v1
+      kind: {resource_type}
+      metadata:
+        name: example-health
+        namespace: default
+      spec:
+        interval_seconds: 10
+        timeout_seconds: 3
+
+  # Configuration/Settings resources
+  "*config*":
+    domain_fallback: "infrastructure"
+    required_fields_hint: ["metadata.name"]
+
+  "*settings*":
+    domain_fallback: "infrastructure"
+    required_fields_hint: ["metadata.name"]
+
+  # Default fallback for unmatched resources
+  "*":
+    domain_fallback: "other"
+    required_fields_hint: ["metadata.name", "metadata.namespace"]
+    example_yaml: |
+      apiVersion: v1
+      kind: {resource_type}
+      metadata:
+        name: example
+        namespace: default
+      spec: {}
+
+# Operation-type specific templates
+operation_templates:
+  POST:
+    description_hint: "Create a new {resource_type}"
+    command_template: "xcsh {domain} {resource_slug} create -f {resource_slug}.yaml -n default"
+    example_context: "creation with required fields"
+
+  GET:
+    description_hint: "Retrieve {resource_type} details"
+    command_template: "xcsh {domain} {resource_slug} get -n default"
+    example_context: "read-only configuration"
+
+  PUT:
+    description_hint: "Update existing {resource_type}"
+    command_template: "xcsh {domain} {resource_slug} update -f {resource_slug}.yaml -n default"
+    example_context: "updates to existing resources"
+
+  DELETE:
+    description_hint: "Delete {resource_type}"
+    command_template: "xcsh {domain} {resource_slug} delete -n default"
+    example_context: "deletion with confirmation"
+
+# Common field patterns
+common_fields:
+  - pattern: "metadata.name"
+    description: "Resource name"
+    required: true
+    contexts: ["all"]
+
+  - pattern: "metadata.namespace"
+    description: "Kubernetes-style namespace"
+    required: true
+    contexts: ["all"]
+
+  - pattern: "spec"
+    description: "Resource specification"
+    required: true
+    contexts: ["all"]
+
+  - pattern: "labels"
+    description: "Kubernetes-style labels"
+    required: false
+    contexts: ["optional"]
+
+  - pattern: "annotations"
+    description: "Resource annotations"
+    required: false
+    contexts: ["optional"]
+
+# Domain patterns for auto-categorization
+domain_patterns:
+  virtual:
+    keywords: ["loadbalancer", "pool", "origin", "listener", "route"]
+    fallback_domain: "virtual"
+
+  waf:
+    keywords: ["firewall", "waf", "security", "attack", "signature"]
+    fallback_domain: "waf"
+
+  cdn:
+    keywords: ["cdn", "cache", "delivery", "edge"]
+    fallback_domain: "cdn"
+
+  networking:
+    keywords: ["network", "vpc", "subnet", "route", "interface"]
+    fallback_domain: "networking"
+
+  infrastructure:
+    keywords: ["infrastructure", "site", "node", "cluster"]
+    fallback_domain: "infrastructure"
+
+  authentication:
+    keywords: ["auth", "identity", "user", "permission", "credential"]
+    fallback_domain: "authentication"
+
+  service_mesh:
+    keywords: ["mesh", "service", "sidecar", "traffic"]
+    fallback_domain: "service_mesh"
+
+  observability:
+    keywords: ["observ", "metric", "log", "trace", "monitor"]
+    fallback_domain: "observability"
+
+# Validation rules for auto-generated configs
+validation:
+  ensure_description: true
+  ensure_required_fields: true
+  ensure_example_yaml: true
+  ensure_example_command: true
+  ensure_domain: true
