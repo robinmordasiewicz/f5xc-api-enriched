@@ -43,6 +43,7 @@ f5xc-api-enriched/
 │   ├── enrichment.yaml          # Enrichment rules
 │   ├── normalization.yaml       # Normalization rules
 │   ├── discovery.yaml           # Discovery configuration
+│   ├── server_variables.yaml    # 6 OpenAPI server variables (multi-env support)
 │   ├── minimum_configs.yaml     # CLI metadata for 5 priority resources (Issue #152)
 │   ├── default_minimum_configs.yaml  # Default templates for auto-generation
 │   └── spectral.yaml            # Spectral linting ruleset
@@ -356,66 +357,157 @@ Four OpenAPI extensions are added to schemas and specs:
 
 | Variable | Purpose | Required For |
 |----------|---------|--------------|
-| `F5XC_API_URL` | F5 XC API endpoint URL (multi-environment support) | Pipeline defaults, Discovery, Validation |
+| `F5XC_TENANT` | Tenant identifier for OpenAPI server variables | Pipeline defaults, Swagger UI defaults |
+| `F5XC_CONSOLE_URL` | Console URL base for OpenAPI server variables | Pipeline defaults, Swagger UI defaults |
+| `F5XC_DEFAULT_NAMESPACE` | Default namespace for OpenAPI server variables | Pipeline defaults, Swagger UI defaults |
+| `F5XC_ENVIRONMENT` | Environment designation for OpenAPI server variables | Pipeline defaults, Swagger UI defaults |
+| `F5XC_REGION` | Geographic region for OpenAPI server variables | Pipeline defaults, Swagger UI defaults |
+| `F5XC_DOMAIN_PREFIX` | Domain naming prefix for OpenAPI server variables | Pipeline defaults, Swagger UI defaults |
+| `F5XC_API_URL` | F5 XC API endpoint URL (legacy, for discovery) | Discovery, Validation |
 | `F5XC_API_TOKEN` | API authentication token | Discovery, Validation |
-| `F5XC_DEFAULT_NAMESPACE` | Default namespace for API requests | Pipeline defaults |
 | `GITHUB_TOKEN` | GitHub API access (in workflows) | Releases, Issues |
 | `DISCOVERY_ENRICHMENT_ENABLED` | Enable discovery enrichment | Pipeline (auto-set) |
 
 ## Multi-Environment Server Variables
 
-The OpenAPI specifications support multi-environment deployments through server variables. This enables selecting different API endpoints and namespaces for production and development deployments directly in Swagger UI.
+The OpenAPI specifications support multi-environment, multi-tenant, and multi-region deployments through 6 server variables. This enables selecting different API endpoints, environments, and deployment regions directly in Swagger UI without manual URL construction.
 
 ### Server Variable Configuration
 
-**Current Variables** (in Swagger UI "Server variables" section):
+**Active Variables** (in Swagger UI "Server variables" section):
 
-- `api_url`: F5 Distributed Cloud API endpoint (default: `https://example-corp.console.ves.volterra.io`)
+**URL Components** (part of computed URL):
+
+- `tenant`: F5 Distributed Cloud tenant identifier (default: `example-corp`)
+- `console_url`: Console URL base - encodes environment and hosting (default: `console.ves.volterra.io`)
 - `namespace`: Kubernetes-style namespace for environment separation (default: `default`)
+
+**Configuration Variables** (available for API clients and tooling):
+
+- `environment`: Explicit environment designation (default: `production`) - Options: production, staging, development
+- `region`: Geographic region for multi-region deployments (default: `us-east-1`) - Examples: us-east-1, eu-west-1, ap-northeast-1
+- `domain_prefix`: Industry-standard naming conventions (default: `api`) - Examples: api, api-edge, internal
 
 **Server URL Template**:
 
 ```text
-{api_url}/namespaces/{namespace}
+https://{tenant}.{console_url}/api/v1/{domain_prefix}/{environment}/{region}/namespaces/{namespace}
 ```
 
-### API URL Variable
+### Tenant Variable
 
-The `api_url` variable allows you to specify different F5 XC API endpoints for different environments.
+The `tenant` variable specifies your F5 Distributed Cloud tenant identifier - the corporate account you're working with.
 
 **Default Behavior**:
 
-- Reads from `F5XC_API_URL` environment variable if available
-- Falls back to: `https://example-corp.console.ves.volterra.io`
+- Reads from `F5XC_TENANT` environment variable if available
+- Falls back to: `example-corp`
 
-**Environment Examples**:
+**Examples**:
 
-| Environment | API URL | Use Case |
-|-------------|---------|----------|
-| Production | `https://your-tenant.console.ves.volterra.io` | Production API calls |
-| Staging | `https://your-tenant.staging.volterra.us` | Staging/Testing configurations |
-| Custom | `https://your-tenant.custom-api.f5xc.io` | Custom F5 XC deployments |
+- `example-corp`: Example corporation tenant
+- `acme-inc`: ACME Inc. tenant
+- `my-company`: Your company tenant
 
-**Generated URLs by Example**:
-
-- API URL: `https://example-corp.console.ves.volterra.io`, Namespace: `production`
-  → `https://example-corp.console.ves.volterra.io/namespaces/production`
-
-- API URL: `https://example-corp.staging.volterra.us`, Namespace: `staging`
-  → `https://example-corp.staging.volterra.us/namespaces/staging`
-
-**Setting API URL**:
+**Setting Tenant**:
 
 ```bash
 # Option 1: Environment variable
-export F5XC_API_URL="https://your-tenant.staging.volterra.us"
-# API spec will use this URL automatically
+export F5XC_TENANT="your-company"
+# Swagger UI will default to this tenant
 
-# Option 2: Override in API client/tool
-# Use the Swagger UI or your API client to select a different api_url value
+# Option 2: Override in Swagger UI
+# Select your tenant from the "Server variables" section
 ```
 
-**Pattern**: Full HTTPS URL with protocol and domain (no trailing slash)
+**Pattern**: Lowercase alphanumeric with hyphens (RFC 1123 compliant)
+
+### Console URL Variable
+
+The `console_url` variable specifies the console URL base, encoding both the environment and hosting region.
+
+**Default Behavior**:
+
+- Reads from `F5XC_CONSOLE_URL` environment variable if available
+- Falls back to: `console.ves.volterra.io`
+
+**Examples**:
+
+| Environment | Console URL | Use Case |
+|-------------|------------|----------|
+| Production | `console.ves.volterra.io` | Production API calls |
+| Staging | `staging.volterra.us` | Staging/Testing configurations |
+| Custom | `custom-api.f5xc.io` | Custom F5 XC deployments |
+
+**Generated URLs by Example**:
+
+- Tenant: `example-corp`, Console URL: `console.ves.volterra.io`, Namespace: `production`
+  → `https://example-corp.console.ves.volterra.io/api/v1/namespaces/production`
+
+- Tenant: `example-corp`, Console URL: `staging.volterra.us`, Namespace: `staging`
+  → `https://example-corp.staging.volterra.us/api/v1/namespaces/staging`
+
+**Setting Console URL**:
+
+```bash
+# Option 1: Environment variable
+export F5XC_CONSOLE_URL="staging.volterra.us"
+# Swagger UI will default to this console URL
+
+# Option 2: Override in Swagger UI
+# Select your console URL from the "Server variables" section
+```
+
+### Environment Variable
+
+The `environment` variable specifies the environment designation (production, staging, development) and is available for API clients and tooling to use.
+
+**Default Behavior**:
+
+- Reads from `F5XC_ENVIRONMENT` environment variable if available
+- Falls back to: `production`
+
+**Options**: `production`, `staging`, `development`
+
+**Setting Environment**:
+
+```bash
+export F5XC_ENVIRONMENT="staging"
+```
+
+### Region Variable
+
+The `region` variable specifies the geographic region for multi-region deployments and is available for clients to use for region-aware routing.
+
+**Default Behavior**:
+
+- Reads from `F5XC_REGION` environment variable if available
+- Falls back to: `us-east-1`
+
+**Examples**: `us-east-1`, `us-west-1`, `eu-west-1`, `eu-central-1`, `ap-northeast-1`
+
+**Setting Region**:
+
+```bash
+export F5XC_REGION="eu-west-1"
+```
+
+### Domain Prefix Variable
+
+The `domain_prefix` variable specifies naming conventions and is available for advanced API client configurations.
+
+**Default Behavior**:
+
+- Reads from `F5XC_DOMAIN_PREFIX` environment variable if available
+- Falls back to: `api`
+
+**Examples**: `api`, `api-edge`, `internal`
+
+**Setting Domain Prefix**:
+
+```bash
+export F5XC_DOMAIN_PREFIX="api-edge"
+```
 
 ### Namespace Variable with Environment Support
 
@@ -471,43 +563,47 @@ This enables:
 ### Using in Swagger UI
 
 1. Open [Swagger UI documentation](https://robinmordasiewicz.github.io/f5xc-api-enriched/swagger-ui/)
-2. Look for "Server variables" section
-3. Select your deployment environment:
-   - Tenant: `console` (or your tenant name)
-   - Namespace: `main` (production) or your feature namespace
+2. Look for "Server variables" section at the top
+3. Select your deployment configuration:
+   - **Tenant**: Your F5 XC tenant identifier (e.g., `example-corp`, `acme-inc`)
+   - **Console URL**: Console base URL (e.g., `console.ves.volterra.io` for production, `staging.volterra.us` for staging)
+   - **Namespace**: Environment namespace (e.g., `main` for production, `staging`, `default`)
+   - **Environment**: Environment designation (e.g., `production`, `staging`, `development`)
+   - **Region**: Geographic region (e.g., `us-east-1`, `eu-west-1`)
+   - **Domain Prefix**: Domain naming convention (e.g., `api`, `api-edge`)
 4. The computed URL updates automatically to reflect your selection
-5. All API calls use the selected namespace
+5. All API calls use the selected variables
 
-### Tenant Naming Convention
+**Example Configuration in Swagger UI**:
 
-The `tenant` variable should use your **corporate identifier** rather than the service name ("console"). This prevents URL duplication in the computed server URL.
+```yaml
+tenant: my-company
+console_url: console.ves.volterra.io
+namespace: production
+environment: production
+region: us-east-1
+domain_prefix: api
 
-**Pattern**: `https://{tenant}.console.ves.volterra.io/namespaces/{namespace}`
+# Computed URL: https://my-company.console.ves.volterra.io/api/v1/namespaces/production
+```
 
-**Examples**:
+### Configuration Framework
 
-- Tenant: `example-corp`, Namespace: `main` → `https://example-corp.console.ves.volterra.io/namespaces/main`
-- Tenant: `acme-inc`, Namespace: `staging` → `https://acme-inc.console.ves.volterra.io/namespaces/staging`
-- Tenant: `your-company`, Namespace: `default` → `https://your-company.console.ves.volterra.io/namespaces/default`
+The server variable framework supports comprehensive multi-environment deployments. Current configuration file: `config/server_variables.yaml`
 
-**Naming Rules**:
+**All 6 Variables Now Active**:
 
-- Lowercase alphanumeric characters with hyphens (RFC 1123 compliant)
-- Use your organization or project identifier
-- Avoid reusing "console" or other service names
-- Examples: `example-corp`, `acme-inc`, `mycompany`, `project-name`
+Version 2.0.0 of the configuration includes all 6 variables:
 
-This convention makes it clear that the tenant value should be customized for your specific F5 XC account.
+- **URL Components**: `tenant`, `console_url`, `namespace` (used in computed URL)
+- **Configuration Variables**: `environment`, `region`, `domain_prefix` (available for API clients and tooling)
 
-### Extensible Framework
+Each variable:
 
-The server variable framework is designed for future expansion. Current configuration file: `config/server_variables.yaml`
-
-**Planned Future Variables**:
-
-- `region`: Geographic region for multi-region deployments (Phase 2)
-- `environment`: Explicit environment designation (Phase 2)
-- `domain_prefix`: Industry-standard naming conventions like "example-" (Phase 3)
+- Has environment variable mapping (F5XC_* pattern)
+- Supports enumerated values where applicable
+- Includes sensible defaults
+- Is documented with examples and use cases
 
 ## Common Operations
 

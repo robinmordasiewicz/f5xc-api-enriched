@@ -1,42 +1,102 @@
 # Server Variables Configuration for F5 Distributed Cloud API
-# Single source of truth for multi-environment server variables
+# Single source of truth for multi-environment, multi-tenant, and multi-region deployments
 #
-# This configuration defines the extensible framework for OpenAPI server variables,
-# supporting production and development deployments with GitHub-aware branch mapping.
+# Defines 6 OpenAPI server variables supporting comprehensive API configuration:
+# - URL components: tenant, console_url, namespace
+# - Configuration variables: environment, region, domain_prefix
 
-version: "1.0.0"
+version: "2.0.0"
 
 # Server configuration
 server:
-  url_template: "{api_url}/namespaces/{namespace}"
+  url_template: "https://{tenant}.{console_url}/api/v1/{domain_prefix}/{environment}/{region}/namespaces/{namespace}"
   description: "F5 Distributed Cloud Console"
 
-# Variable definitions
+# Variable definitions (all 6 active variables)
 variables:
-  # API URL variable: F5 Distributed Cloud API endpoint
-  api_url:
-    default: "https://example-corp.console.ves.volterra.io"
-    description: "F5 Distributed Cloud API URL (supports multiple environments)"
-    enum:
-      - "https://example-corp.console.ves.volterra.io"
-      - "https://example-corp.staging.volterra.us"
-      - "https://acme-inc.console.ves.volterra.io"
+  # Tenant variable: Explicit tenant identifier
+  tenant:
+    default: "example-corp"
+    description: "F5 Distributed Cloud tenant identifier (e.g., my-company, acme-inc)"
     examples:
-      - "https://your-tenant.console.ves.volterra.io"      # Production
-      - "https://your-tenant.staging.volterra.us"          # Staging
-      - "https://your-tenant.custom-api.f5xc.io"           # Custom environment
-    env_var: "F5XC_API_URL"
+      - "example-corp"
+      - "acme-inc"
+      - "my-company"
+    env_var: "F5XC_TENANT"
     notes: |
-      Default comes from F5XC_API_URL environment variable if set.
-      The api_url encapsulates both tenant and environment information.
-      Different F5 XC deployments may have different API endpoints.
-      Tenant information can be controlled via F5XC_TENANT env var to construct default api_url.
+      Default comes from F5XC_TENANT environment variable if set.
+      Extracted from the api_url subdomain (e.g., tenant.console.ves.volterra.io).
+      Required for multi-tenant deployments.
+
+  # Console URL variable: Console base URL
+  console_url:
+    default: "console.ves.volterra.io"
+    description: "Console URL base (e.g., console.ves.volterra.io for production, staging.volterra.us for staging)"
+    examples:
+      - "console.ves.volterra.io"    # Production
+      - "staging.volterra.us"         # Staging
+      - "custom-api.f5xc.io"          # Custom environment
+    enum:
+      - "console.ves.volterra.io"
+      - "staging.volterra.us"
+    env_var: "F5XC_CONSOLE_URL"
+    notes: |
+      Default comes from F5XC_CONSOLE_URL environment variable if set.
+      Encodes both environment (production/staging/custom) and hosting region.
+      Part of the hostname structure: https://[tenant].[console_url]/...
+
+  # Environment variable: Explicit environment designation
+  environment:
+    default: "production"
+    description: "Environment designation (production, staging, development)"
+    examples:
+      - "production"
+      - "staging"
+      - "development"
+    enum:
+      - "production"
+      - "staging"
+      - "development"
+    env_var: "F5XC_ENVIRONMENT"
+    notes: |
+      Default comes from F5XC_ENVIRONMENT environment variable if set.
+      Used for explicit environment selection and configuration.
+      Can be combined with console_url for additional environment control.
+
+  # Domain prefix variable: Industry-standard naming conventions
+  domain_prefix:
+    default: "api"
+    description: "Domain naming prefix for consistent naming conventions"
+    examples:
+      - "api"        # Standard API subdomain
+      - "api-edge"   # Edge API variant
+      - "internal"   # Internal API
+    env_var: "F5XC_DOMAIN_PREFIX"
+    notes: |
+      Default comes from F5XC_DOMAIN_PREFIX environment variable if set.
+      Supports industry-standard naming conventions (api, api-edge, etc).
+      Available for advanced use cases and custom deployments.
+
+  # Region variable: Geographic region for multi-region deployments
+  region:
+    default: "us-east-1"
+    description: "Geographic region for API deployment (e.g., us-east-1, eu-west-1)"
+    examples:
+      - "us-east-1"
+      - "us-west-1"
+      - "eu-west-1"
+      - "eu-central-1"
+      - "ap-northeast-1"
+    env_var: "F5XC_REGION"
+    notes: |
+      Default comes from F5XC_REGION environment variable if set.
+      Enables multi-region deployment patterns with geographic routing.
+      Used for region-aware API configuration and failover strategies.
 
   # Namespace variable: Kubernetes-style environment separation
   namespace:
     default: "default"
-    description: "Kubernetes-style namespace for environment separation"
-    enum_values_from_git_branch: true  # Future: auto-populate from GitHub branches
+    description: "Kubernetes-style namespace for environment separation (e.g., 'default', 'production', 'staging')"
     examples:
       - "default"        # Default/fallback namespace
       - "production"     # Explicit production namespace
@@ -49,40 +109,7 @@ variables:
     notes: |
       Default comes from F5XC_DEFAULT_NAMESPACE environment variable if set.
       Supports Kubernetes-style namespace naming for environment separation.
-
-# Future variables (placeholders for extensibility)
-future_variables:
-  # Region variable: Geographic region for multi-region deployments
-  region:
-    default: "us-west"
-    description: "Geographic region for API deployment"
-    examples:
-      - "us-west"
-      - "us-east"
-      - "eu-central"
-      - "eu-west"
-      - "ap-northeast"
-    placeholder: true
-
-  # Environment variable: Explicit environment designation
-  environment:
-    default: "development"
-    description: "Environment type (production, staging, development)"
-    examples:
-      - "production"
-      - "staging"
-      - "development"
-    placeholder: true
-
-  # Domain prefix variable: Industry-standard naming conventions
-  domain_prefix:
-    default: "example"
-    description: "Domain naming prefix for consistent branding across deployments"
-    examples:
-      - "example"     # Industry-standard convention
-      - "acme"
-      - "corp"
-    placeholder: true
+      Enables zero-downtime deployments with namespace-based isolation.
 
 # GitHub branch mapping (for future CI/CD integration)
 github_branch_mapping:
