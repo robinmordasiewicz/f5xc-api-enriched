@@ -11,7 +11,6 @@ import json
 import os
 import re
 import sys
-from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -22,6 +21,16 @@ import yaml
 from rich.console import Console
 from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
 from rich.table import Table
+
+# Import reporter infrastructure
+sys.path.insert(0, str(Path(__file__).parent / "utils"))
+from path_config import PathConfig
+from validation_reporter import (
+    EndpointResult,
+    SpecValidationResult,
+    ValidationReporter,
+    ValidationStats,
+)
 
 console = Console()
 
@@ -70,50 +79,6 @@ DEFAULT_CONFIG = {
         "pool_size": 20,
     },
 }
-
-
-@dataclass
-class EndpointResult:
-    """Result of validating a single endpoint."""
-
-    path: str
-    method: str
-    status: str  # available, unavailable, error, skipped
-    status_code: int | None = None
-    schema_match: bool | None = None
-    response_time_ms: float | None = None
-    error: str | None = None
-    discrepancies: list[str] = field(default_factory=list)
-
-
-@dataclass
-class SpecValidationResult:
-    """Result of validating a specification file."""
-
-    filename: str
-    endpoints_total: int = 0
-    endpoints_validated: int = 0
-    endpoints_available: int = 0
-    endpoints_unavailable: int = 0
-    endpoints_skipped: int = 0
-    schema_matches: int = 0
-    schema_mismatches: int = 0
-    errors: list[str] = field(default_factory=list)
-    endpoint_results: list[EndpointResult] = field(default_factory=list)
-
-
-@dataclass
-class ValidationStats:
-    """Overall validation statistics."""
-
-    specs_processed: int = 0
-    total_endpoints: int = 0
-    endpoints_validated: int = 0
-    endpoints_available: int = 0
-    endpoints_unavailable: int = 0
-    schema_matches: int = 0
-    discrepancies: list[dict[str, Any]] = field(default_factory=list)
-    spec_results: list[SpecValidationResult] = field(default_factory=list)
 
 
 def load_config(config_path: Path | None = None) -> dict:
@@ -659,10 +624,19 @@ def main() -> int:
     # Run validation
     stats = asyncio.run(validate_all_specs(args.specs_dir, config))
 
-    # Generate report
-    generate_report(stats, args.output)
+    # Generate reports using ValidationReporter (both JSON and markdown)
+    path_config = PathConfig()
+    reporter = ValidationReporter(stats, path_config)
 
-    # Print summary
+    json_report_path = args.output
+    markdown_report_path = path_config.validation_report
+
+    reporter.generate_all(markdown_report_path, json_report_path)
+    console.print("[green]Reports generated:[/green]")
+    console.print(f"  Markdown: {markdown_report_path}")
+    console.print(f"  JSON:     {json_report_path}")
+
+    # Print summary (keep existing console output)
     print_summary(stats, config)
 
     # Check if validation passed thresholds

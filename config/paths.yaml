@@ -1,0 +1,78 @@
+# Path Configuration for F5 XC API Enriched Pipeline
+# Single source of truth for all directory and file paths across the project
+
+version: "1.0.0"
+
+# Report output directory and file names
+reports:
+  directory: "reports"
+  discovery_report: "discovery-report.md"
+  discovery_json: "discovery-session.json"
+  constraint_analysis: "constraint-analysis.md"
+  constraint_analysis_json: "constraint-analysis.json"
+  lint_report: "lint-report.md"
+  lint_report_json: "lint-report.json"
+  validation_report: "validation-report.md"
+  validation_report_json: "validation-report.json"
+  pipeline_report: "pipeline-report.json"
+
+# Source specifications directories
+specs:
+  original_dir: "specs/original"
+  discovered_dir: "specs/discovered"
+  discovered_openapi: "specs/discovered/openapi.json"
+  discovered_session: "specs/discovered/session.json"
+
+# Generated specifications and documentation
+output:
+  docs_api_dir: "docs/specifications/api"
+  openapi_spec: "docs/specifications/api/openapi.json"
+  index_file: "docs/specifications/api/index.json"
+  scalar_ui: "docs/scalar"
+  swagger_ui: "docs/swagger-ui"
+
+# Configuration files
+config:
+  directory: "config"
+  enrichment: "config/enrichment.yaml"
+  normalization: "config/normalization.yaml"
+  discovery: "config/discovery.yaml"
+  spectral: "config/spectral.yaml"
+  server_variables: "config/server_variables.yaml"
+  minimum_configs: "config/minimum_configs.yaml"
+  paths: "config/paths.yaml"
+
+# Scripts and utilities
+scripts:
+  utils_dir: "scripts/utils"
+  discovery_dir: "scripts/discovery"
+  pipeline: "scripts/pipeline.py"
+  download: "scripts/download.py"
+  enrich: "scripts/enrich.py"
+  normalize: "scripts/normalize.py"
+  merge_specs: "scripts/merge_specs.py"
+  discover: "scripts/discover.py"
+  lint: "scripts/lint.py"
+  validate: "scripts/validate.py"
+
+# Test directories
+tests:
+  directory: "tests"
+  utils_dir: "tests/utils"
+  fixtures_dir: "tests/fixtures"
+
+# Documentation and version info
+project:
+  version_file: ".version"
+  etag_file: ".etag"
+  changelog: "CHANGELOG.md"
+  readme: "README.md"
+  claude_md: "CLAUDE.md"
+
+# Environment and fallback settings
+defaults:
+  # Use these if config file not found
+  reports_dir: "reports"
+  docs_api_dir: "docs/specifications/api"
+  specs_original_dir: "specs/original"
+  specs_discovered_dir: "specs/discovered"

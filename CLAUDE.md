@@ -353,6 +353,111 @@ Four OpenAPI extensions are added to schemas and specs:
 3. **Lint Issues**: Run `make lint` and check `reports/lint-report.json`.
 4. **Verbose**: Add `--verbose` to pipeline commands for debug output.
 
+## Documentation Generators (v1.0.52+)
+
+**Major Refactoring**: All documentation generators now inherit from a shared `BaseReporter` class, use centralized `PathConfig` for path management, and integrate server variables into all markdown output.
+
+### Shared Reporting Infrastructure
+
+**Files Created**:
+
+- `scripts/utils/report_base.py` - Abstract base class for all reporters with unified markdown/JSON generation
+- `scripts/utils/path_config.py` - Singleton for centralized path management (respects `config/paths.yaml`)
+- `scripts/utils/server_variables_markdown.py` - Server variables rendering utilities for consistent documentation
+- `scripts/utils/lint_reporter.py` - Extracted from lint.py, now generates both JSON and markdown
+- `scripts/utils/validation_reporter.py` - Extracted from validate.py, now generates both JSON and markdown
+
+**Benefits**:
+
+- **Code Deduplication**: Eliminated 40-50% duplication across generators
+- **Consistent Paths**: All generators use `PathConfig`, no hardcoded paths
+- **Server Variables**: All markdown reports include multi-environment server variable documentation
+- **Dual Format**: Linting and validation now generate markdown reports in addition to JSON
+
+### Four Documentation Generators
+
+All generators now:
+
+1. Use `PathConfig` for output path management
+2. Generate both Markdown (human-readable) and JSON (machine-parseable) reports
+3. Include server variables section in markdown output
+4. Follow consistent naming and structure
+
+#### 1. Discovery Report Generator (`scripts/discovery/report_generator.py`)
+
+**Outputs**:
+
+- `reports/discovery-report.md` - Human-readable discovery summary with server variables
+- `specs/discovered/openapi.json` - Full discovered API specification
+- `specs/discovered/session.json` - Discovery session metadata
+- `specs/discovered/diffs/summary.json` - Schema differences found
+
+**Key Sections**:
+
+- Endpoint exploration summary
+- Rate limiting statistics
+- Schema differences (tighter constraints, new constraints)
+- Notable discoveries
+- Server variable configuration section
+
+#### 2. Constraint Analysis Generator (`scripts/utils/constraint_analyzer.py`)
+
+**Outputs**:
+
+- `reports/constraint-analysis.md` - Tighter/new constraints with recommendations
+- `reports/constraint-analysis.json` - Machine-parseable constraint analysis
+
+**Key Sections**:
+
+- Tighter constraints discovered in live API
+- New constraints found but undocumented
+- Undocumented fields in API responses
+- Server variable constraints section
+
+#### 3. Linting Report Generator (`scripts/lint.py` with `scripts/utils/lint_reporter.py`)
+
+**Outputs**:
+
+- `reports/lint-report.md` - OpenAPI specification validation results
+- `reports/lint-report.json` - JSON format for CI/CD integration
+
+**Key Sections**:
+
+- Summary table (files processed, passed, failed, errors, warnings)
+- Server configuration section (required for lint validation workflows)
+- Files with most issues
+- Errors, warnings, and info sections
+
+#### 4. Validation Report Generator (`scripts/validate.py` with `scripts/utils/validation_reporter.py`)
+
+**Outputs**:
+
+- `reports/validation-report.md` - Live API endpoint validation results
+- `reports/validation-report.json` - JSON format for CI/CD integration
+
+**Key Sections**:
+
+- Executive summary
+- Validation metrics (availability %, schema match %)
+- Server configuration validation section
+- Specification-by-specification results
+- Endpoint coverage analysis
+- Schema discrepancies
+
+### Server Variables in Documentation
+
+All markdown reports now include a **Server Configuration** section documenting:
+
+- **URL Template**: How variables are combined to form the API URL
+- **Variable Definitions**: Each variable with default, description, environment variable name, and examples
+- **GitHub Branch Mapping**: How Git branches map to namespaces in CI/CD pipelines
+
+This enables users to:
+
+- Understand multi-environment, multi-tenant deployments
+- Configure Swagger UI with correct server variables
+- Set up CI/CD pipelines with proper environment/tenant/region targeting
+
 ## Environment Variables
 
 | Variable | Purpose | Required For |

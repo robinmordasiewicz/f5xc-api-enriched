@@ -7,6 +7,7 @@ Generates:
 """
 
 import json
+import sys
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -14,6 +15,12 @@ from typing import Any
 
 from .diff_analyzer import DiffReport, DiffSeverity
 from .schema_inferrer import InferredSchema
+
+# Add utils to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent / "utils"))
+from path_config import PathConfig
+from report_base import BaseReporter
+from server_variables_markdown import ServerVariablesMarkdownHelper
 
 
 @dataclass
@@ -57,13 +64,14 @@ class DiscoverySession:
         return successful / len(self.endpoints) * 100
 
 
-class ReportGenerator:
+class ReportGenerator(BaseReporter):
     """Generate reports from discovery results.
 
     Provides:
     - OpenAPI spec generation from discovered schemas
     - Diff report generation
     - Markdown summary generation
+    - Server variables documentation integration
     """
 
     def __init__(
@@ -71,6 +79,7 @@ class ReportGenerator:
         output_dir: Path | str = "specs/discovered",
         include_examples: bool = True,
         pretty_print: bool = True,
+        path_config: PathConfig | None = None,
     ) -> None:
         """Initialize report generator.
 
@@ -78,10 +87,17 @@ class ReportGenerator:
             output_dir: Directory for output files
             include_examples: Include example responses in schemas
             pretty_print: Pretty print JSON output
+            path_config: Optional PathConfig instance
         """
+        super().__init__(
+            title="API Discovery Report",
+            description="API specification discovered from live API exploration",
+            path_config=path_config,
+        )
         self.output_dir = Path(output_dir)
         self.include_examples = include_examples
         self.pretty_print = pretty_print
+        self.sv_helper = ServerVariablesMarkdownHelper()
 
     def generate_all(self, session: DiscoverySession) -> dict[str, Path]:
         """Generate all reports from discovery session.
@@ -228,8 +244,8 @@ class ReportGenerator:
         Returns:
             Path to markdown report file
         """
-        reports_dir = Path("reports")
-        reports_dir.mkdir(exist_ok=True)
+        reports_dir = self.path_config.reports_dir
+        reports_dir.mkdir(parents=True, exist_ok=True)
 
         lines = [
             "# F5 XC API Discovery Report",
@@ -249,6 +265,12 @@ class ReportGenerator:
             f"| Namespaces | {', '.join(session.namespaces)} |",
             "",
         ]
+
+        # Server variables section
+        sv_section = self.sv_helper.render_server_configuration_section()
+        if sv_section:
+            lines.extend(sv_section.split("\n"))
+            lines.append("")
 
         # Rate limiter stats
         if session.rate_limiter_stats:
@@ -330,7 +352,8 @@ class ReportGenerator:
         lines.append("")
 
         # Write report
-        report_path = reports_dir / "discovery-report.md"
+        report_path = self.path_config.discovery_report
+        report_path.parent.mkdir(parents=True, exist_ok=True)
         report_path.write_text("\n".join(lines))
 
         return report_path

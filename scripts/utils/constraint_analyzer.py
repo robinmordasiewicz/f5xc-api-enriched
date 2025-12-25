@@ -5,9 +5,18 @@ generating reports and recommendations for specification improvements.
 """
 
 import json
+import sys
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+# Add utils to path for imports
+sys.path.insert(0, str(Path(__file__).parent))
+
+from path_config import PathConfig
+from report_base import BaseReporter
+from server_variables_markdown import ServerVariablesMarkdownHelper
 
 
 @dataclass
@@ -74,21 +83,28 @@ class AnalysisReport:
         }
 
 
-class ConstraintAnalyzer:
+class ConstraintAnalyzer(BaseReporter):
     """Analyze constraints between published and discovered specs.
 
     Provides detailed comparison and recommendations for improving
     API specifications based on real-world API behavior.
     """
 
-    def __init__(self, config: dict | None = None) -> None:
+    def __init__(self, config: dict | None = None, path_config: PathConfig | None = None) -> None:
         """Initialize the constraint analyzer.
 
         Args:
             config: Optional configuration dictionary
+            path_config: Optional PathConfig instance
         """
+        super().__init__(
+            title="Constraint Analysis Report",
+            description="Comparison of published and discovered API constraints",
+            path_config=path_config,
+        )
         self.config = config or {}
         self.report = AnalysisReport()
+        self.sv_helper = ServerVariablesMarkdownHelper()
 
     def analyze(
         self,
@@ -453,22 +469,25 @@ class ConstraintAnalyzer:
         self.report.undocumented_fields = sorted(undocumented)
         self.report.undocumented_fields_found = len(undocumented)
 
-    def generate_markdown_report(self, output_path: Path | str) -> Path:
+    def generate_markdown_report(self, output_path: Path | str | None = None) -> Path:
         """Generate a markdown report from the analysis.
 
         Args:
-            output_path: Path for the output file
+            output_path: Path for the output file (uses PathConfig if not provided)
 
         Returns:
             Path to the generated report
         """
+        if output_path is None:
+            output_path = self.path_config.constraint_analysis
+
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
         lines = [
             "# Constraint Analysis Report",
             "",
-            f"**Generated**: {self._timestamp()}",
+            f"**Generated**: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}",
             "",
             "---",
             "",
@@ -483,6 +502,12 @@ class ConstraintAnalyzer:
             f"| Undocumented Fields | {self.report.undocumented_fields_found} |",
             "",
         ]
+
+        # Server variables section
+        sv_section = self.sv_helper.render_variable_constraints_section()
+        if sv_section:
+            lines.extend(sv_section.split("\n"))
+            lines.append("")
 
         # Tighter constraints section
         if self.report.tighter_constraints:
@@ -557,20 +582,23 @@ class ConstraintAnalyzer:
         output_path.write_text("\n".join(lines))
         return output_path
 
-    def generate_json_report(self, output_path: Path | str) -> Path:
+    def generate_json_report(self, output_path: Path | str | None = None) -> Path:
         """Generate a JSON report from the analysis.
 
         Args:
-            output_path: Path for the output file
+            output_path: Path for the output file (uses PathConfig if not provided)
 
         Returns:
             Path to the generated report
         """
+        if output_path is None:
+            output_path = self.path_config.constraint_analysis_json
+
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
         data = {
-            "generated_at": self._timestamp(),
+            "generated_at": datetime.now(timezone.utc).isoformat(),
             **self.report.to_dict(),
         }
 
@@ -579,9 +607,3 @@ class ConstraintAnalyzer:
             f.write("\n")
 
         return output_path
-
-    def _timestamp(self) -> str:
-        """Get current timestamp string."""
-        from datetime import datetime, timezone
-
-        return datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
