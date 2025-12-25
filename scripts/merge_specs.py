@@ -90,7 +90,7 @@ def create_base_spec(
                 "description": "F5 Distributed Cloud Console",
                 "variables": {
                     "tenant": {
-                        "default": "console",
+                        "default": "example-corp",
                         "description": "Your F5 XC tenant name",
                     },
                     "namespace": {
