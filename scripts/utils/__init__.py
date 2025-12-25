@@ -13,6 +13,7 @@ from .domain_categorizer import DOMAIN_PATTERNS, DomainCategorizer, categorize_s
 from .field_description_enricher import FieldDescriptionEnricher
 from .field_metadata_enricher import FieldMetadataEnricher
 from .grammar import GrammarImprover
+from .minimum_configuration_enricher import MinimumConfigurationEnricher
 from .operation_metadata_enricher import OperationMetadataEnricher
 from .schema_fixer import SchemaFixer
 from .tag_generator import TagGenerator
@@ -34,6 +35,7 @@ __all__ = [
     "FieldDescriptionEnricher",
     "FieldMetadataEnricher",
     "GrammarImprover",
+    "MinimumConfigurationEnricher",
     "OperationMetadataEnricher",
     "SchemaFixer",
     "TagGenerator",

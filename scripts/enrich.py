@@ -31,6 +31,7 @@ from scripts.utils import (
     DiscoveryEnricher,
     FieldMetadataEnricher,
     GrammarImprover,
+    MinimumConfigurationEnricher,
     SchemaFixer,
     TagGenerator,
 )
@@ -259,6 +260,7 @@ def enrich_spec_file(
         description_structure_transformer = DescriptionStructureTransformer()
         schema_fixer = SchemaFixer()
         field_metadata_enricher = FieldMetadataEnricher()
+        minimum_configuration_enricher = MinimumConfigurationEnricher()
         tag_generator = TagGenerator()
         description_validator = DescriptionValidator()
         consistency_validator = ConsistencyValidator()
@@ -290,6 +292,9 @@ def enrich_spec_file(
 
         # 4. Field metadata enrichment (add unified x-ves-* field-level metadata)
         spec = field_metadata_enricher.enrich_spec(spec)
+
+        # 4.5. Minimum configuration enrichment (add x-ves-minimum-configuration)
+        spec = minimum_configuration_enricher.enrich_spec(spec)
 
         # 5. Acronym normalization
         spec = acronym_normalizer.normalize_spec(spec, target_fields)
@@ -343,6 +348,7 @@ def enrich_spec_file(
         tag_stats = tag_generator.get_stats()
         desc_stats = description_validator.get_stats()
         consistency_stats = consistency_validator.get_stats()
+        minimum_config_stats = minimum_configuration_enricher.get_stats()
 
         return EnrichmentResult(
             filename=filename,
@@ -355,6 +361,7 @@ def enrich_spec_file(
                 "tags_generated": tag_stats.get("tags_generated", 0),
                 "descriptions_generated": desc_stats.get("operations_generated", 0),
                 "consistency_issues": consistency_stats.get("total_issues", 0),
+                "minimum_configs_added": minimum_config_stats.get("minimum_configs_added", 0),
                 "discovery_enrichments": discovery_enrichments,
             },
             validation_passed=validation_passed,
