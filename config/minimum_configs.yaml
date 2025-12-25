@@ -1,0 +1,318 @@
+version: "1.0.0"
+description: "Minimum configuration definitions for F5 XC resources"
+
+# Global settings for enrichment
+global:
+  extension_prefix: "x-ves"
+  preserve_existing: true
+  auto_detect_domain: true
+
+# Target resource definitions (5 priority resources for Issue #152)
+resources:
+  # ============================================================================
+  # Virtual Services - Load Balancers & Pools
+  # ============================================================================
+
+  http_loadbalancer:
+    description: "HTTP/HTTPS load balancer for distributing traffic across origin pools"
+    domain: "virtual"
+    resource_type: "loadbalancer"
+
+    # Minimum required fields for creating a functional HTTP load balancer
+    required_fields:
+      - "metadata.name"
+      - "metadata.namespace"
+      - "spec.domains"  # At least one domain to serve
+      - "spec.routes"   # At least one route to backend
+      - "spec.origin_pools"  # At least one origin pool reference
+
+    # Mutually exclusive field groups - only one from each group allowed
+    mutually_exclusive_groups:
+      - fields: ["spec.dns_name", "spec.advertise"]
+        reason: "Choose either DNS-based or advertised traffic routing"
+      - fields: ["spec.certificate_chain", "spec.tls_config.vault_secret"]
+        reason: "Certificate source: inline or vault"
+
+    # Context-specific field requirements
+    context_requirements:
+      - field: "spec.https"
+        contexts: ["tls", "secure-traffic"]
+        reason: "Required when HTTPS is needed"
+
+      - field: "spec.certificate"
+        depends_on: "spec.https"
+        reason: "Required for TLS termination"
+
+      - field: "spec.rate_limiter"
+        contexts: ["rate-limiting", "protection"]
+        reason: "Recommended for production environments"
+
+    # Example minimal YAML configuration
+    example_yaml: |
+      apiVersion: v1
+      kind: http_loadbalancer
+      metadata:
+        name: example-app
+        namespace: default
+      spec:
+        domains:
+          - example.com
+        https:
+          - port: 443
+            certificate:
+              cert_chain: |
+                -----BEGIN CERTIFICATE-----
+                MIIBkTCB+wIJAKHHCgVPwKWXMA0GCSqGSIb3DQEBBQUAMBExDzANBg...
+                -----END CERTIFICATE-----
+              key: "<example_key_base64_encoded_content_replace_with_actual_key>"
+        http:
+          - port: 80
+            redirect_https: true
+        routes:
+          - prefix: "/"
+            origin_pool:
+              pool_name: backend-pool
+        origin_pools:
+          - name: backend-pool
+            origins:
+              - origin_server:
+                  hostname: backend.example.com
+                  port: 8080
+
+    # Example xcsh CLI command
+    example_command: "xcsh virtual http_loadbalancer create -f http-lb.yaml -n default"
+
+    # CLI metadata
+    cli:
+      domain: "virtual"
+      resource_name: "http_loadbalancer"
+      # Explicit aliases only (no auto-generation)
+      aliases:
+        - "http-lb"
+        - "virtual-service"
+        - "api-endpoint"
+      supported_operations:
+        - create
+        - get
+        - update
+        - delete
+        - list
+
+  # ============================================================================
+
+  origin_pool:
+    description: "Backend origin servers or load balancing pool for distributing traffic"
+    domain: "virtual"
+    resource_type: "pool"
+
+    required_fields:
+      - "metadata.name"
+      - "metadata.namespace"
+      - "spec.origins"  # At least one origin server
+
+    context_requirements:
+      - field: "spec.health_checks"
+        contexts: ["monitoring", "availability"]
+        reason: "Recommended for health monitoring"
+
+    example_yaml: |
+      apiVersion: v1
+      kind: origin_pool
+      metadata:
+        name: backend-pool
+        namespace: default
+      spec:
+        origins:
+          - origin_server:
+              hostname: backend1.example.com
+              port: 8080
+          - origin_server:
+              hostname: backend2.example.com
+              port: 8080
+        health_checks:
+          - health_check_name: http-health-check
+        connection_timeout_ms: 3600
+        idle_timeout_ms: 900000
+
+    example_command: "xcsh virtual origin_pool create -f origin-pool.yaml -n default"
+
+    cli:
+      domain: "virtual"
+      resource_name: "origin_pool"
+      aliases:
+        - "pool"
+        - "backend-pool"
+        - "server-group"
+
+  # ============================================================================
+
+  tcp_loadbalancer:
+    description: "TCP/UDP load balancer for non-HTTP protocols like databases"
+    domain: "virtual"
+    resource_type: "loadbalancer"
+
+    required_fields:
+      - "metadata.name"
+      - "metadata.namespace"
+      - "spec.listener"  # TCP/UDP listener definition
+      - "spec.origin_pools"  # Backend pool reference
+
+    mutually_exclusive_groups:
+      - fields: ["spec.listener.tcp_port", "spec.listener.udp_port"]
+        reason: "Specify either TCP or UDP protocol"
+
+    context_requirements:
+      - field: "spec.listener.tls"
+        contexts: ["tls", "secure"]
+        reason: "Required for encrypted TCP traffic"
+
+    example_yaml: |
+      apiVersion: v1
+      kind: tcp_loadbalancer
+      metadata:
+        name: database-lb
+        namespace: default
+      spec:
+        listener:
+          port: 5432
+          protocol: "TCP"
+        origin_pools:
+          - pool_name: postgres-cluster
+        advertise:
+          - public_ip: true
+
+    example_command: "xcsh virtual tcp_loadbalancer create -f tcp-lb.yaml -n default"
+
+    cli:
+      domain: "virtual"
+      resource_name: "tcp_loadbalancer"
+      aliases:
+        - "tcp-lb"
+        - "database-lb"
+        - "tcp-service"
+
+  # ============================================================================
+
+  healthcheck:
+    description: "Health check configuration for monitoring origin servers"
+    domain: "virtual"
+    resource_type: "monitor"
+
+    required_fields:
+      - "metadata.name"
+      - "metadata.namespace"
+      # One of: spec.http, spec.tcp, spec.dns must be present
+      - "spec"  # Will contain one health check type
+
+    mutually_exclusive_groups:
+      - fields: ["spec.http", "spec.tcp", "spec.dns"]
+        reason: "Choose exactly one health check type"
+
+    example_yaml: |
+      apiVersion: v1
+      kind: healthcheck
+      metadata:
+        name: http-health
+        namespace: default
+      spec:
+        http:
+          path: /health
+          use_origin_server_hostname: true
+        interval_seconds: 10
+        timeout_seconds: 3
+        unhealthy_threshold: 3
+        healthy_threshold: 2
+
+    example_command: "xcsh virtual healthcheck create -f healthcheck.yaml -n default"
+
+    cli:
+      domain: "virtual"
+      resource_name: "healthcheck"
+      aliases:
+        - "health-check"
+        - "monitor"
+        - "probe"
+
+  # ============================================================================
+  # WAF - Web Application Firewall
+  # ============================================================================
+
+  app_firewall:
+    description: "Web Application Firewall (WAF) policy for protecting HTTP applications"
+    domain: "waf"
+    resource_type: "policy"
+
+    required_fields:
+      - "metadata.name"
+      - "metadata.namespace"
+      - "spec.detection_settings"  # Core WAF detection configuration
+
+    context_requirements:
+      - field: "spec.signature_set"
+        contexts: ["signature-protection", "owasp"]
+        reason: "Enables signature-based attack detection"
+
+      - field: "spec.bot_defense"
+        contexts: ["bot-protection"]
+        reason: "Enables bot detection and mitigation"
+
+      - field: "spec.data_guard"
+        contexts: ["sensitive-data"]
+        reason: "Protects sensitive data in responses"
+
+    example_yaml: |
+      apiVersion: v1
+      kind: app_firewall
+      metadata:
+        name: default-waf
+        namespace: default
+      spec:
+        detection_settings:
+          signature_detection: true
+        signature_set:
+          signature_set_name: default_waf_signature_set
+        bot_defense:
+          disabled: false
+        data_guard:
+          disabled: false
+        blocking:
+          disabled: false
+
+    example_command: "xcsh waf app_firewall create -f waf-policy.yaml -n default"
+
+    cli:
+      domain: "waf"
+      resource_name: "app_firewall"
+      aliases:
+        - "firewall"
+        - "waf-policy"
+        - "attack-protection"
+
+# Field-level requirements for cross-resource patterns
+field_requirements:
+  # These patterns apply across all resources
+  - pattern: '\bnamespace$'
+    contexts: ["all"]
+    required: true
+    reason: "F5 XC mandatory namespace for multi-tenancy"
+
+  - pattern: '\bname$'
+    contexts: ["all"]
+    required: true
+    reason: "F5 XC mandatory resource naming"
+
+  - pattern: '\bport$'
+    contexts: ["networking"]
+    required: false
+    reason: "Optional unless protocol specified"
+
+  - pattern: '\bpool'
+    contexts: ["loadbalancing"]
+    required: true
+    reason: "Required for load balancer backend"
+
+# Validation rules
+validation:
+  ensure_config_complete: true
+  ensure_no_duplicates: true
+  ensure_domains_valid: true

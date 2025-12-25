@@ -76,6 +76,7 @@ from scripts.utils import (
     DiscoveryEnricher,
     FieldDescriptionEnricher,
     GrammarImprover,
+    MinimumConfigurationEnricher,
     OperationMetadataEnricher,
     SchemaFixer,
     TagGenerator,
@@ -134,6 +135,7 @@ class PipelineStats:
     operations_tagged: int = 0
     descriptions_generated: int = 0
     consistency_issues: int = 0
+    minimum_configs_added: int = 0
     domains_created: int = 0
     paths_merged: int = 0
     schemas_merged: int = 0
@@ -271,6 +273,11 @@ def enrich_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], dic
     spec = operation_metadata_enricher.enrich_spec(spec)
     op_stats = operation_metadata_enricher.get_stats()
 
+    # 15. Minimum configuration enrichment (add x-ves-minimum-configuration extensions)
+    minimum_config_enricher = MinimumConfigurationEnricher()
+    spec = minimum_config_enricher.enrich_spec(spec)
+    min_config_stats = minimum_config_enricher.get_stats()
+
     # Close grammar improver resources
     grammar_improver.close()
 
@@ -293,6 +300,7 @@ def enrich_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], dic
         "danger_levels_assigned": op_stats.get("danger_levels_assigned", 0),
         "cli_examples_generated": op_stats.get("examples_generated", 0),
         "side_effects_documented": op_stats.get("side_effects_documented", 0),
+        "minimum_configs_added": min_config_stats.get("minimum_configs_added", 0),
     }
 
 
@@ -1347,6 +1355,7 @@ def run_pipeline(
                 stats.operations_tagged += enrich_stats.get("operations_tagged", 0)
                 stats.descriptions_generated += enrich_stats.get("descriptions_generated", 0)
                 stats.consistency_issues += enrich_stats.get("consistency_issues", 0)
+                stats.minimum_configs_added += enrich_stats.get("minimum_configs_added", 0)
 
                 # Step 2: Normalize (in memory)
                 spec, norm_count = normalize_spec(spec, config)
@@ -1420,6 +1429,7 @@ def print_summary(stats: PipelineStats) -> None:
     table.add_row("Operations Tagged", str(stats.operations_tagged))
     table.add_row("Descriptions Generated", str(stats.descriptions_generated))
     table.add_row("Consistency Issues", str(stats.consistency_issues))
+    table.add_row("Minimum Configs Added", str(stats.minimum_configs_added))
     table.add_row("Domains Created", str(stats.domains_created))
     table.add_row("Paths Merged", str(stats.paths_merged))
     table.add_row("Schemas Merged", str(stats.schemas_merged))
@@ -1456,6 +1466,7 @@ def generate_report(stats: PipelineStats, output_path: Path) -> None:
             "operations_tagged": stats.operations_tagged,
             "descriptions_generated": stats.descriptions_generated,
             "consistency_issues": stats.consistency_issues,
+            "minimum_configs_added": stats.minimum_configs_added,
             "domains_created": stats.domains_created,
             "paths_merged": stats.paths_merged,
             "schemas_merged": stats.schemas_merged,
