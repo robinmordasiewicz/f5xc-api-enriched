@@ -7,7 +7,6 @@ generating reports and recommendations for specification improvements.
 import json
 import sys
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -469,6 +468,128 @@ class ConstraintAnalyzer(BaseReporter):
         self.report.undocumented_fields = sorted(undocumented)
         self.report.undocumented_fields_found = len(undocumented)
 
+    def to_dict(self) -> dict[str, Any]:
+        """Convert constraint analysis report to dictionary."""
+        return {
+            "timestamp": self.generated_at,
+            "summary": {
+                "total_fields_analyzed": self.report.total_fields_analyzed,
+                "fields_with_diffs": self.report.fields_with_diffs,
+                "tighter_constraints_found": self.report.tighter_constraints_found,
+                "new_constraints_found": self.report.new_constraints_found,
+                "undocumented_fields_found": self.report.undocumented_fields_found,
+            },
+            "tighter_constraints": [
+                {
+                    "field": c.field_name,
+                    "constraint": c.constraint_type,
+                    "published": c.published_value,
+                    "discovered": c.discovered_value,
+                    "recommendation": c.recommendation,
+                }
+                for c in self.report.tighter_constraints[:100]
+            ],
+            "new_constraints": [
+                {
+                    "field": c.field_name,
+                    "constraint": c.constraint_type,
+                    "value": c.discovered_value,
+                    "confidence": c.confidence,
+                }
+                for c in self.report.new_constraints[:100]
+            ],
+            "undocumented_fields": self.report.undocumented_fields[:50],
+        }
+
+    def to_markdown(self) -> str:
+        """Convert constraint analysis report to markdown."""
+        md = self.markdown_report_header()
+
+        # Summary section
+        md += self.markdown_section(
+            "Summary",
+            self._markdown_summary_table(),
+            level=2,
+        )
+
+        # Server variables section
+        sv_section = self.sv_helper.render_variable_constraints_section()
+        if sv_section:
+            md += sv_section
+
+        # Tighter constraints section
+        if self.report.tighter_constraints:
+            headers = ["Field", "Constraint", "Published", "Discovered", "Recommendation"]
+            rows = [
+                [
+                    c.field_name,
+                    c.constraint_type,
+                    str(c.published_value) if c.published_value is not None else "-",
+                    str(c.discovered_value) if c.discovered_value is not None else "-",
+                    c.recommendation,
+                ]
+                for c in self.report.tighter_constraints[:50]
+            ]
+            md += self.markdown_section(
+                "Tighter Constraints Discovered",
+                self.markdown_table(headers, rows),
+                level=2,
+            )
+
+        # New constraints section
+        if self.report.new_constraints:
+            headers = ["Field", "Constraint", "Value", "Confidence"]
+            rows = [
+                [
+                    c.field_name,
+                    c.constraint_type,
+                    self._format_constraint_value(c.discovered_value),
+                    f"{c.confidence * 100:.0f}%",
+                ]
+                for c in self.report.new_constraints[:50]
+            ]
+            md += self.markdown_section(
+                "New Constraints Found",
+                self.markdown_table(headers, rows),
+                level=2,
+            )
+
+        # Undocumented fields section
+        if self.report.undocumented_fields:
+            fields_content = "\n".join(
+                f"- `{field}`" for field in self.report.undocumented_fields[:30]
+            )
+            if len(self.report.undocumented_fields) > 30:
+                remaining = len(self.report.undocumented_fields) - 30
+                fields_content += f"\n- ... and {remaining} more"
+            md += self.markdown_section(
+                "Undocumented Fields Discovered",
+                fields_content,
+                level=2,
+            )
+
+        return md
+
+    def _markdown_summary_table(self) -> str:
+        """Create markdown summary table."""
+        headers = ["Metric", "Value"]
+        rows = [
+            ["Total Fields Analyzed", str(self.report.total_fields_analyzed)],
+            ["Fields with Differences", str(self.report.fields_with_diffs)],
+            ["Tighter Constraints Found", str(self.report.tighter_constraints_found)],
+            ["New Constraints Found", str(self.report.new_constraints_found)],
+            ["Undocumented Fields", str(self.report.undocumented_fields_found)],
+        ]
+        return self.markdown_table(headers, rows)
+
+    def _format_constraint_value(self, value: Any) -> str:
+        """Format constraint value for display."""
+        if isinstance(value, list):
+            return f"[{len(value)} values]"
+        if isinstance(value, str) and len(value) > 40:
+            return value[:40] + "..."
+        return str(value)
+
     def generate_markdown_report(self, output_path: Path | str | None = None) -> Path:
         """Generate a markdown report from the analysis.
 
@@ -483,103 +604,7 @@ class ConstraintAnalyzer(BaseReporter):
 
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
-
-        lines = [
-            "# Constraint Analysis Report",
-            "",
-            f"**Generated**: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}",
-            "",
-            "---",
-            "",
-            "## Summary",
-            "",
-            "| Metric | Value |",
-            "|--------|-------|",
-            f"| Total Fields Analyzed | {self.report.total_fields_analyzed} |",
-            f"| Fields with Differences | {self.report.fields_with_diffs} |",
-            f"| Tighter Constraints Found | {self.report.tighter_constraints_found} |",
-            f"| New Constraints Found | {self.report.new_constraints_found} |",
-            f"| Undocumented Fields | {self.report.undocumented_fields_found} |",
-            "",
-        ]
-
-        # Server variables section
-        sv_section = self.sv_helper.render_variable_constraints_section()
-        if sv_section:
-            lines.extend(sv_section.split("\n"))
-            lines.append("")
-
-        # Tighter constraints section
-        if self.report.tighter_constraints:
-            lines.extend(
-                [
-                    "## Tighter Constraints Discovered",
-                    "",
-                    "These constraints are more restrictive in the live API than documented:",
-                    "",
-                    "| Field | Constraint | Published | Discovered | Recommendation |",
-                    "|-------|------------|-----------|------------|----------------|",
-                ],
-            )
-
-            for c in self.report.tighter_constraints[:50]:
-                pub_val = c.published_value if c.published_value is not None else "-"
-                disc_val = c.discovered_value if c.discovered_value is not None else "-"
-                lines.append(
-                    f"| {c.field_name} | {c.constraint_type} | {pub_val} | "
-                    f"{disc_val} | {c.recommendation} |",
-                )
-
-            lines.append("")
-
-        # New constraints section
-        if self.report.new_constraints:
-            lines.extend(
-                [
-                    "## New Constraints Found",
-                    "",
-                    "These constraints exist in the live API but aren't documented:",
-                    "",
-                    "| Field | Constraint | Value | Confidence |",
-                    "|-------|------------|-------|------------|",
-                ],
-            )
-
-            for c in self.report.new_constraints[:50]:
-                value = c.discovered_value
-                if isinstance(value, list):
-                    value = f"[{len(value)} values]"
-                elif isinstance(value, str) and len(value) > 40:
-                    value = value[:40] + "..."
-                lines.append(
-                    f"| {c.field_name} | {c.constraint_type} | {value} | "
-                    f"{c.confidence * 100:.0f}% |",
-                )
-
-            lines.append("")
-
-        # Undocumented fields section
-        if self.report.undocumented_fields:
-            lines.extend(
-                [
-                    "## Undocumented Fields Discovered",
-                    "",
-                    "These fields appear in API responses but aren't in published specs:",
-                    "",
-                ],
-            )
-
-            for field_name in self.report.undocumented_fields[:30]:
-                lines.append(f"- `{field_name}`")
-
-            if len(self.report.undocumented_fields) > 30:
-                remaining = len(self.report.undocumented_fields) - 30
-                lines.append(f"- ... and {remaining} more")
-
-            lines.append("")
-
-        # Write report
-        output_path.write_text("\n".join(lines))
+        output_path.write_text(self.to_markdown())
         return output_path
 
     def generate_json_report(self, output_path: Path | str | None = None) -> Path:
@@ -597,13 +622,8 @@ class ConstraintAnalyzer(BaseReporter):
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
-        data = {
-            "generated_at": datetime.now(timezone.utc).isoformat(),
-            **self.report.to_dict(),
-        }
-
         with output_path.open("w") as f:
-            json.dump(data, f, indent=2, default=str)
+            json.dump(self.to_dict(), f, indent=2, default=str)
             f.write("\n")
 
         return output_path
