@@ -8,19 +8,29 @@ version: "1.0.0"
 
 # Server configuration
 server:
-  url_template: "https://{tenant}.console.ves.volterra.io/namespaces/{namespace}"
+  url_template: "{api_url}/namespaces/{namespace}"
   description: "F5 Distributed Cloud Console"
 
 # Variable definitions
 variables:
-  # Tenant variable: F5 Distributed Cloud tenant name
-  tenant:
-    default: "example-corp"
-    description: "Your F5 XC tenant name"
+  # API URL variable: F5 Distributed Cloud API endpoint
+  api_url:
+    default: "https://example-corp.console.ves.volterra.io"
+    description: "F5 Distributed Cloud API URL (supports multiple environments)"
     enum:
-      - "example-corp"
-      - "acme-inc"
-      - "your-company"
+      - "https://example-corp.console.ves.volterra.io"
+      - "https://example-corp.staging.volterra.us"
+      - "https://acme-inc.console.ves.volterra.io"
+    examples:
+      - "https://your-tenant.console.ves.volterra.io"      # Production
+      - "https://your-tenant.staging.volterra.us"          # Staging
+      - "https://your-tenant.custom-api.f5xc.io"           # Custom environment
+    env_var: "F5XC_API_URL"
+    notes: |
+      Default comes from F5XC_API_URL environment variable if set.
+      The api_url encapsulates both tenant and environment information.
+      Different F5 XC deployments may have different API endpoints.
+      Tenant information can be controlled via F5XC_TENANT env var to construct default api_url.
 
   # Namespace variable: Kubernetes-style environment separation
   namespace:
@@ -34,7 +44,11 @@ variables:
       - "feature-123"    # Feature branch namespace
       - "bugfix-456"     # Bugfix branch namespace
       - "staging"        # Staging environment namespace
+    env_var: "F5XC_DEFAULT_NAMESPACE"
     naming_pattern: "[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?"  # RFC 1123 compliant
+    notes: |
+      Default comes from F5XC_DEFAULT_NAMESPACE environment variable if set.
+      Supports Kubernetes-style namespace naming for environment separation.
 
 # Future variables (placeholders for extensibility)
 future_variables:

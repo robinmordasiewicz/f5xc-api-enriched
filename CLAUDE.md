@@ -299,27 +299,100 @@ make pre-commit-run      # Run all hooks manually
 
 | Variable | Purpose | Required For |
 |----------|---------|--------------|
-| `F5XC_API_URL` | F5 XC tenant API URL | Discovery, Validation |
+| `F5XC_API_URL` | F5 XC API endpoint URL (multi-environment support) | Pipeline defaults, Discovery, Validation |
 | `F5XC_API_TOKEN` | API authentication token | Discovery, Validation |
+| `F5XC_DEFAULT_NAMESPACE` | Default namespace for API requests | Pipeline defaults |
 | `GITHUB_TOKEN` | GitHub API access (in workflows) | Releases, Issues |
 | `DISCOVERY_ENRICHMENT_ENABLED` | Enable discovery enrichment | Pipeline (auto-set) |
 
 ## Multi-Environment Server Variables
 
-The OpenAPI specifications support multi-environment deployments through server variables. This enables selecting different namespaces for production and development deployments directly in Swagger UI.
+The OpenAPI specifications support multi-environment deployments through server variables. This enables selecting different API endpoints and namespaces for production and development deployments directly in Swagger UI.
 
 ### Server Variable Configuration
 
 **Current Variables** (in Swagger UI "Server variables" section):
 
-- `tenant`: Your F5 XC tenant name (default: "console")
-- `namespace`: Kubernetes-style namespace for environment separation (default: "default")
+- `api_url`: F5 Distributed Cloud API endpoint (default: `https://example-corp.console.ves.volterra.io`)
+- `namespace`: Kubernetes-style namespace for environment separation (default: `default`)
 
 **Server URL Template**:
 
 ```text
-https://{tenant}.console.ves.volterra.io/namespaces/{namespace}
+{api_url}/namespaces/{namespace}
 ```
+
+### API URL Variable
+
+The `api_url` variable allows you to specify different F5 XC API endpoints for different environments.
+
+**Default Behavior**:
+
+- Reads from `F5XC_API_URL` environment variable if available
+- Falls back to: `https://example-corp.console.ves.volterra.io`
+
+**Environment Examples**:
+
+| Environment | API URL | Use Case |
+|-------------|---------|----------|
+| Production | `https://your-tenant.console.ves.volterra.io` | Production API calls |
+| Staging | `https://your-tenant.staging.volterra.us` | Staging/Testing configurations |
+| Custom | `https://your-tenant.custom-api.f5xc.io` | Custom F5 XC deployments |
+
+**Generated URLs by Example**:
+
+- API URL: `https://example-corp.console.ves.volterra.io`, Namespace: `production`
+  → `https://example-corp.console.ves.volterra.io/namespaces/production`
+
+- API URL: `https://example-corp.staging.volterra.us`, Namespace: `staging`
+  → `https://example-corp.staging.volterra.us/namespaces/staging`
+
+**Setting API URL**:
+
+```bash
+# Option 1: Environment variable
+export F5XC_API_URL="https://your-tenant.staging.volterra.us"
+# API spec will use this URL automatically
+
+# Option 2: Override in API client/tool
+# Use the Swagger UI or your API client to select a different api_url value
+```
+
+**Pattern**: Full HTTPS URL with protocol and domain (no trailing slash)
+
+### Namespace Variable with Environment Support
+
+The `namespace` variable now supports the `F5XC_DEFAULT_NAMESPACE` environment variable for consistent environment selection.
+
+**Default Behavior**:
+
+- Reads from `F5XC_DEFAULT_NAMESPACE` environment variable if available
+- Falls back to: `default`
+
+**Setting Namespace Defaults**:
+
+```bash
+# Option 1: Environment variable
+export F5XC_DEFAULT_NAMESPACE="production"
+# All generated specs will default to production namespace
+
+# Option 2: Override in API client/tool
+# Use the Swagger UI or your API client to select a different namespace value
+
+# Option 3: GitHub branch aware (with CI/CD integration)
+# Automatically maps branches to namespaces:
+# - main → main
+# - staging → staging
+# - feature/issue-123 → feature-123
+```
+
+**Environment Examples**:
+
+| Scenario | Environment Setup | Result |
+|----------|-------------------|--------|
+| Local development | `export F5XC_DEFAULT_NAMESPACE="default"` | All requests to default namespace |
+| Staging environment | `export F5XC_DEFAULT_NAMESPACE="staging"` | All requests to staging namespace |
+| Production deployment | `export F5XC_DEFAULT_NAMESPACE="production"` | All requests to production namespace |
 
 ### GitHub-Based Deployment Strategy
 
