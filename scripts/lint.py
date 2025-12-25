@@ -12,7 +12,6 @@ import json
 import shutil
 import subprocess
 import sys
-from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -21,6 +20,11 @@ import yaml
 from rich.console import Console
 from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
 from rich.table import Table
+
+# Import reporter infrastructure
+sys.path.insert(0, str(Path(__file__).parent / "utils"))
+from lint_reporter import LintIssue, LintReporter, LintResult, LintStats
+from path_config import PathConfig
 
 console = Console()
 
@@ -43,51 +47,6 @@ DEFAULT_CONFIG = {
         "verbose": False,
     },
 }
-
-
-@dataclass
-class LintIssue:
-    """A single linting issue."""
-
-    code: str
-    message: str
-    path: list[str]
-    severity: int  # 0=error, 1=warn, 2=info, 3=hint
-    range_start: dict[str, int] | None = None
-    range_end: dict[str, int] | None = None
-
-    @property
-    def severity_name(self) -> str:
-        """Return human-readable severity name."""
-        return {0: "error", 1: "warning", 2: "info", 3: "hint"}.get(self.severity, "unknown")
-
-
-@dataclass
-class LintResult:
-    """Result of linting a single specification file."""
-
-    filename: str
-    success: bool
-    errors: int = 0
-    warnings: int = 0
-    infos: int = 0
-    hints: int = 0
-    issues: list[LintIssue] = field(default_factory=list)
-    error_message: str | None = None
-
-
-@dataclass
-class LintStats:
-    """Aggregate linting statistics."""
-
-    files_processed: int = 0
-    files_passed: int = 0
-    files_failed: int = 0
-    total_errors: int = 0
-    total_warnings: int = 0
-    total_infos: int = 0
-    total_hints: int = 0
-    results: list[LintResult] = field(default_factory=list)
 
 
 def load_config(config_path: Path | None = None) -> dict:
@@ -452,7 +411,6 @@ def main() -> int:
     # Determine paths
     input_dir = args.input_dir or Path(config["paths"]["normalized"])
     ruleset_path = args.ruleset or Path(config["paths"]["ruleset"])
-    report_dir = args.report_dir or Path(config["paths"]["reports"])
 
     console.print("[bold blue]F5 XC API Specification Linting[/bold blue]")
     console.print(f"  Input:   {input_dir}")
@@ -474,11 +432,19 @@ def main() -> int:
     # Run linting
     stats = lint_all_specs(input_dir, ruleset_path, config)
 
-    # Generate report
-    report_path = report_dir / "lint-report.json"
-    generate_report(stats, report_path)
+    # Generate reports using LintReporter (both JSON and markdown)
+    path_config = PathConfig()
+    reporter = LintReporter(stats, path_config)
 
-    # Print summary
+    json_report_path = path_config.lint_report_json
+    markdown_report_path = path_config.lint_report
+
+    reporter.generate_all(markdown_report_path, json_report_path)
+    console.print("[green]Reports generated:[/green]")
+    console.print(f"  Markdown: {markdown_report_path}")
+    console.print(f"  JSON:     {json_report_path}")
+
+    # Print summary (keep existing console output)
     print_summary(stats)
 
     # Determine exit code
