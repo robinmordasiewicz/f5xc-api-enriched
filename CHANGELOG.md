@@ -1,14 +1,14 @@
 # Changelog
 
-## Version 1.0.52 (2025-12-25)
+## Version 1.0.53 (2025-12-25)
 
 ### Version Information
 | Field | Value |
 |-------|-------|
-| Full Version | 1.0.52 |
+| Full Version | 1.0.53 |
 | Upstream Timestamp | unknown |
 | Upstream ETag | unknown |
-| Enriched Version | 1.0.52 |
+| Enriched Version | 1.0.53 |
 
 ### Release Type
 - **patch** release
@@ -47,7 +47,7 @@ docs/specifications/api/
 ```
 
 ### Download
-- ZIP Package: F5xc-api-(unknown-1.0.52).zip
+- ZIP Package: F5xc-api-(unknown-1.0.53).zip
 
 ### Source
 - Source: F5 Distributed Cloud OpenAPI specifications
