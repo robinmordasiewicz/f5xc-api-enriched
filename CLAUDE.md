@@ -348,6 +348,27 @@ This enables:
 4. The computed URL updates automatically to reflect your selection
 5. All API calls use the selected namespace
 
+### Tenant Naming Convention
+
+The `tenant` variable should use your **corporate identifier** rather than the service name ("console"). This prevents URL duplication in the computed server URL.
+
+**Pattern**: `https://{tenant}.console.ves.volterra.io/namespaces/{namespace}`
+
+**Examples**:
+
+- Tenant: `example-corp`, Namespace: `main` → `https://example-corp.console.ves.volterra.io/namespaces/main`
+- Tenant: `acme-inc`, Namespace: `staging` → `https://acme-inc.console.ves.volterra.io/namespaces/staging`
+- Tenant: `your-company`, Namespace: `default` → `https://your-company.console.ves.volterra.io/namespaces/default`
+
+**Naming Rules**:
+
+- Lowercase alphanumeric characters with hyphens (RFC 1123 compliant)
+- Use your organization or project identifier
+- Avoid reusing "console" or other service names
+- Examples: `example-corp`, `acme-inc`, `mycompany`, `project-name`
+
+This convention makes it clear that the tenant value should be customized for your specific F5 XC account.
+
 ### Extensible Framework
 
 The server variable framework is designed for future expansion. Current configuration file: `config/server_variables.yaml`

@@ -15,11 +15,12 @@ server:
 variables:
   # Tenant variable: F5 Distributed Cloud tenant name
   tenant:
-    default: "console"
+    default: "example-corp"
     description: "Your F5 XC tenant name"
     enum:
-      - "console"
-      - "example"
+      - "example-corp"
+      - "acme-inc"
+      - "your-company"
 
   # Namespace variable: Kubernetes-style environment separation
   namespace:
