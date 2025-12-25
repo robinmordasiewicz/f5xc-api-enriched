@@ -86,12 +86,16 @@ def create_base_spec(
         "info": info,
         "servers": [
             {
-                "url": "https://{tenant}.console.ves.volterra.io",
+                "url": "https://{tenant}.console.ves.volterra.io/namespaces/{namespace}",
                 "description": "F5 Distributed Cloud Console",
                 "variables": {
                     "tenant": {
                         "default": "console",
                         "description": "Your F5 XC tenant name",
+                    },
+                    "namespace": {
+                        "default": "default",
+                        "description": "Kubernetes-style namespace (e.g., 'default', 'production', 'staging', 'feature-123')",
                     },
                 },
             },

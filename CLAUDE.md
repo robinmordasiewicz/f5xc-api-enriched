@@ -304,6 +304,60 @@ make pre-commit-run      # Run all hooks manually
 | `GITHUB_TOKEN` | GitHub API access (in workflows) | Releases, Issues |
 | `DISCOVERY_ENRICHMENT_ENABLED` | Enable discovery enrichment | Pipeline (auto-set) |
 
+## Multi-Environment Server Variables
+
+The OpenAPI specifications support multi-environment deployments through server variables. This enables selecting different namespaces for production and development deployments directly in Swagger UI.
+
+### Server Variable Configuration
+
+**Current Variables** (in Swagger UI "Server variables" section):
+
+- `tenant`: Your F5 XC tenant name (default: "console")
+- `namespace`: Kubernetes-style namespace for environment separation (default: "default")
+
+**Server URL Template**:
+
+```text
+https://{tenant}.console.ves.volterra.io/namespaces/{namespace}
+```
+
+### GitHub-Based Deployment Strategy
+
+Map GitHub branches to namespaces automatically for multi-environment CI/CD:
+
+- `main` branch → production namespace "main"
+- `feature/issue-{num}` → feature namespace "feature-{num}" (development)
+- `bugfix/issue-{num}` → bugfix namespace "bugfix-{num}" (development)
+- `staging` branch → staging namespace "staging"
+- Other branches → default namespace "default"
+
+This enables:
+
+- Separate production deployments (main namespace) from feature/bugfix work
+- Independent namespace isolation prevents naming conflicts
+- Zero-downtime deployments with namespace-based environment selection
+- Automatic deployment targeting based on GitHub branch
+
+### Using in Swagger UI
+
+1. Open [Swagger UI documentation](https://robinmordasiewicz.github.io/f5xc-api-enriched/swagger-ui/)
+2. Look for "Server variables" section
+3. Select your deployment environment:
+   - Tenant: `console` (or your tenant name)
+   - Namespace: `main` (production) or your feature namespace
+4. The computed URL updates automatically to reflect your selection
+5. All API calls use the selected namespace
+
+### Extensible Framework
+
+The server variable framework is designed for future expansion. Current configuration file: `config/server_variables.yaml`
+
+**Planned Future Variables**:
+
+- `region`: Geographic region for multi-region deployments (Phase 2)
+- `environment`: Explicit environment designation (Phase 2)
+- `domain_prefix`: Industry-standard naming conventions like "example-" (Phase 3)
+
 ## Common Operations
 
 ### Add New Enrichment Rule
