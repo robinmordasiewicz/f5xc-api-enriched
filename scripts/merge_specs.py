@@ -7,7 +7,6 @@ Fully automated - no manual intervention required.
 
 import argparse
 import json
-import os
 import sys
 from collections import defaultdict
 from datetime import datetime, timezone
@@ -22,6 +21,7 @@ from scripts.utils.domain_categorizer import (
     categorize_spec as categorize_spec_util,
 )
 from scripts.utils.domain_metadata import calculate_complexity, get_metadata
+from scripts.utils.server_variables import ServerVariableHelper
 
 console = Console()
 
@@ -61,69 +61,11 @@ def create_base_spec(
         description: API description
         version: Full version string (upstream-enriched format)
         upstream_info: Optional dict with upstream_timestamp, upstream_etag, enriched_version
+
+    Delegates to ServerVariableHelper for centralized server variable management.
     """
-    info: dict[str, Any] = {
-        "title": title,
-        "description": description,
-        "version": version,
-        "contact": {
-            "name": "F5 Distributed Cloud",
-            "url": "https://docs.cloud.f5.com",
-        },
-        "license": {
-            "name": "Proprietary",
-            "url": "https://www.f5.com/company/policies/eula",
-        },
-    }
-
-    # Add upstream tracking fields if available
-    if upstream_info:
-        info["x-upstream-timestamp"] = upstream_info.get("upstream_timestamp", "unknown")
-        info["x-upstream-etag"] = upstream_info.get("upstream_etag", "unknown")
-        info["x-enriched-version"] = upstream_info.get("enriched_version", version)
-
-    return {
-        "openapi": "3.0.3",
-        "info": info,
-        "servers": [
-            {
-                "url": "{api_url}/namespaces/{namespace}",
-                "description": "F5 Distributed Cloud Console",
-                "variables": {
-                    "api_url": {
-                        "default": os.getenv(
-                            "F5XC_API_URL",
-                            "https://example-corp.console.ves.volterra.io",
-                        ),
-                        "description": "F5 Distributed Cloud API URL (e.g., https://tenant.console.ves.volterra.io or https://tenant.staging.volterra.us)",
-                    },
-                    "namespace": {
-                        "default": os.getenv("F5XC_DEFAULT_NAMESPACE", "default"),
-                        "description": "Kubernetes-style namespace (e.g., 'default', 'production', 'staging', 'feature-123')",
-                    },
-                },
-            },
-        ],
-        "security": [
-            {"ApiToken": []},
-        ],
-        "tags": [],
-        "paths": {},
-        "components": {
-            "securitySchemes": {
-                "ApiToken": {
-                    "type": "apiKey",
-                    "name": "Authorization",
-                    "in": "header",
-                    "description": "API Token authentication. Format: 'APIToken <your-token>'",
-                },
-            },
-            "schemas": {},
-            "responses": {},
-            "parameters": {},
-            "requestBodies": {},
-        },
-    }
+    helper = ServerVariableHelper()
+    return helper.create_base_spec(title, description, version, upstream_info)
 
 
 def merge_components(
