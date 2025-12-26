@@ -26,6 +26,7 @@ from scripts.utils import (
     BrandingTransformer,
     BrandingValidator,
     ConsistencyValidator,
+    DeprecatedTierEnricher,
     DescriptionStructureTransformer,
     DescriptionValidator,
     DiscoveryEnricher,
@@ -257,6 +258,7 @@ def enrich_spec_file(
         # Initialize enrichment utilities
         acronym_normalizer = AcronymNormalizer()
         branding_transformer = BrandingTransformer()
+        deprecated_tier_enricher = DeprecatedTierEnricher()
         description_structure_transformer = DescriptionStructureTransformer()
         schema_fixer = SchemaFixer()
         field_metadata_enricher = FieldMetadataEnricher()
@@ -281,6 +283,9 @@ def enrich_spec_file(
         )
 
         # Apply enrichments in order
+        # 0. Deprecated tier transformation (BASIC→STANDARD, PREMIUM→ADVANCED)
+        spec = deprecated_tier_enricher.enrich(spec)
+
         # 1. Branding transformations first (most specific)
         spec = branding_transformer.transform_spec(spec, target_fields)
 
@@ -344,6 +349,7 @@ def enrich_spec_file(
         )
 
         # Collect stats from all transformers
+        deprecated_tier_stats = deprecated_tier_enricher.get_stats()
         schema_stats = schema_fixer.get_stats()
         tag_stats = tag_generator.get_stats()
         desc_stats = description_validator.get_stats()
@@ -356,6 +362,10 @@ def enrich_spec_file(
             changes={
                 "text_fields_processed": original_field_count,
                 "legacy_branding_remaining": len(legacy_findings),
+                "deprecated_tiers_transformed": deprecated_tier_stats.get(
+                    "values_transformed",
+                    0,
+                ),
                 "schemas_fixed": schema_stats.get("fixes_applied", 0),
                 "operations_tagged": tag_stats.get("operations_tagged", 0),
                 "tags_generated": tag_stats.get("tags_generated", 0),

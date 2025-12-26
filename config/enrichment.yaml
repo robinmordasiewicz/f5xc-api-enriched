@@ -323,3 +323,28 @@ discovery_enrichment:
   discovered_specs_dir: "specs/discovered"
 
   # See config/discovery_enrichment.yaml for detailed configuration
+
+# Deprecated tier transformation settings
+# Pre-release cleanup: transforms deprecated subscription tier values to current equivalents
+deprecated_tiers:
+  # Enable deprecated tier transformation
+  enabled: true
+
+  # Schema patterns to match tier enum definitions
+  # These patterns identify schemas containing AddonServiceTierType enums
+  patterns:
+    - ".*AddonServiceTierType$"
+    - ".*TierType$"
+
+  # Tier value transformations (deprecated → current)
+  # BASIC and PREMIUM are legacy values that should be transformed
+  transformations:
+    BASIC: "STANDARD"
+    PREMIUM: "ADVANCED"
+
+  # Valid tier values after transformation
+  # These are the only values that should remain in published specs
+  valid_tiers:
+    - "NO_TIER"      # Foundational/not applicable
+    - "STANDARD"     # Base subscription tier
+    - "ADVANCED"     # Premium subscription tier
