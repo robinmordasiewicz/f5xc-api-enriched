@@ -142,6 +142,21 @@ Pattern: `f5xc_{feature}_{tier}`
 | `FREEMIUM` | Free tenant (no custom domain) |
 | `ENTERPRISE` | Enterprise tenant (has custom domain) |
 
+#### TenantType to Subscription Tier Mapping
+
+The `tenant_type` field in the API response maps to subscription tier access:
+
+| TenantType | Subscription Tier | Feature Access |
+|------------|-------------------|----------------|
+| `FREEMIUM` | **Standard** | Base tier features only |
+| `ENTERPRISE` | **Advanced** | Full feature access including advanced capabilities |
+
+**API Endpoint**: `GET /api/web/namespaces/system/usage_plans/current`
+
+**Response field**: `plans[].tenant_type`
+
+> **Implementation Note**: When determining subscription tier from API responses, map `ENTERPRISE` → "Advanced" and `FREEMIUM` → "Standard". For unknown values, default to "Standard" for fail-safe behavior. See [xcsh implementation](https://github.com/robinmordasiewicz/xcsh/blob/main/pkg/subscription/client.go#L411-L422) for reference.
+
 ### Activation Types
 
 | Type | Description |
