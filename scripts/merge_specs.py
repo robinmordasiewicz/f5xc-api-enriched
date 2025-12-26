@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+import yaml
 from rich.console import Console
 from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
 from rich.table import Table
@@ -24,6 +25,45 @@ from scripts.utils.domain_metadata import calculate_complexity, get_metadata
 from scripts.utils.server_variables import ServerVariableHelper
 
 console = Console()
+
+# Default critical resources list (fallback if config not found)
+DEFAULT_CRITICAL_RESOURCES = [
+    "http_loadbalancer",
+    "tcp_loadbalancer",
+    "origin_pool",
+    "healthcheck",
+    "app_firewall",
+    "service_policy",
+    "network_policy",
+    "dns_zone",
+    "dns_load_balancer",
+    "certificate",
+    "namespace",
+    "virtual_site",
+    "aws_vpc_site",
+    "azure_vnet_site",
+    "gcp_vpc_site",
+]
+
+
+def load_critical_resources() -> list[str]:
+    """Load critical resources list from configuration.
+
+    Returns list of resource names that downstream tooling relies on
+    for schema generation and validation.
+    """
+    config_path = Path(__file__).parent.parent / "config" / "critical_resources.yaml"
+
+    if not config_path.exists():
+        return DEFAULT_CRITICAL_RESOURCES
+
+    try:
+        with config_path.open() as f:
+            config = yaml.safe_load(f) or {}
+        return config.get("resources", DEFAULT_CRITICAL_RESOURCES)
+    except Exception as e:
+        console.print(f"[yellow]Warning: Failed to load critical resources config: {e}[/yellow]")
+        return DEFAULT_CRITICAL_RESOURCES
 
 
 def load_spec(spec_path: Path) -> dict[str, Any]:
@@ -392,6 +432,9 @@ def create_spec_index(
         index["x-upstream-timestamp"] = upstream_info.get("upstream_timestamp", "unknown")
         index["x-upstream-etag"] = upstream_info.get("upstream_etag", "unknown")
         index["x-enriched-version"] = upstream_info.get("enriched_version", version)
+
+    # Add critical resources list for downstream tooling (e.g., xcsh CLI)
+    index["x-ves-critical-resources"] = load_critical_resources()
 
     for domain, spec in sorted(merged_specs.items()):
         info = spec.get("info", {})
