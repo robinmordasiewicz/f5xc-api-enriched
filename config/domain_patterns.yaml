@@ -18,15 +18,23 @@
 #     * Multi-tenant, simplified, zero-touch deployment
 #     * Optimized for distributed edge deployments (100s-1000s of sites)
 #     * Restricted K8s capabilities: no operators, CRDs, privileged mode
-#   - kubernetes: Enterprise Kubernetes (mK8s) - full cluster management
+#   - managed_kubernetes: Enterprise Kubernetes (mK8s) - full cluster management
 #     * Customer-owned infrastructure with centralized F5 management
 #     * Complete Kubernetes API access, operators, CRDs supported
-#     * Comparable to AWS EKS, Azure AKS, GCP GKE
+#     * Comparable to AWS EKS, Azure AKS, GCP GKE management APIs
+#   - sites: Customer Edge deployments (AppStack and Mesh)
+#     * voltstack_site: AppStack deployments (on-premises, certified hardware)
+#     * securemesh_site: Secure Mesh deployments (networking focused)
+#     * k8s_cluster: CE deployed as pods in existing K8s clusters
 #
-version: "1.3.0"
+version: "1.4.0"
 description: >
-  34 functional domains organized in 11 categories, aligned with
-  F5 XC platform services. Pattern fixes from natural identifier validation:
+  35 functional domains organized in 11 categories, aligned with
+  F5 XC platform services. Kubernetes domains reorganized:
+  - kubernetes_and_orchestration split into container_services (vK8s) and managed_kubernetes (cluster management)
+  - container_services: Virtual Kubernetes SaaS managed namespaces
+  - managed_kubernetes: Enterprise K8s cluster management (RBAC, security, registry)
+  Pattern fixes from natural identifier validation:
   - Shape Security domain in Security - Core section (pattern priority)
   - TPM patterns moved to bot_and_threat_defense (threat management)
   - VoltShare/secret_management moved to blindfold (secrets domain)
@@ -58,15 +66,30 @@ domains:
       - "cloud_region"
       - "certified_hardware"
 
-  kubernetes_and_orchestration:
-    description: "Kubernetes and container orchestration"
+  container_services:
+    description: "XCCS (XC Container Services) - Multi-tenant SaaS managed container namespaces"
+    # F5 XC Container Services (XCCS) - comparable to AWS ECS, Azure Container Services
+    # Optimized for distributed edge deployments (100s-1000s of sites)
+    # Restricted K8s capabilities: no operators, CRDs, privileged mode
+    # Formerly known as "Virtual Kubernetes" (vK8s)
     patterns:
       - "virtual_kubernetes"
       - "virtual_k8s"
+      - "workload"
+      - "workload_flavor"
+
+  managed_kubernetes:
+    description: "XCKS (XC Kubernetes Service) - Enterprise cluster management"
+    # F5 XC Managed Kubernetes (XCKS) - comparable to AWS EKS, Azure AKS, Google GKE
+    # Full cluster management for customer-owned infrastructure
+    # RBAC, pod security, container registry management
+    # Formerly known as "AppStack"
+    # Note: k8s_cluster (site type) stays in sites domain
+    patterns:
+      - "k8s_cluster_role"
+      - "k8s_cluster_role_binding"
       - "k8s_pod_security"
       - "container_registry"
-      - "\\.cluster\\."
-      - "workload"
 
   service_mesh:
     description: "Service mesh and networking services"
@@ -84,7 +107,9 @@ domains:
       # NOTE: discovery matched by api domain (.discovery.ves pattern)
 
   sites:
-    description: "Site deployment and management across cloud providers"
+    description: "Customer Edge Sites - Cloud, XCKS (Managed Kubernetes), and Mesh deployments"
+    # Site deployment and management across cloud providers (AWS VPC, Azure VNET, GCP VPC),
+    # F5 XC Managed Kubernetes (XCKS, formerly AppStack), and Secure Mesh deployments.
     patterns:
       - "aws_vpc_site"
       - "aws_tgw_site"
@@ -218,6 +243,8 @@ domains:
       - "(?<!dns_lb)\\.healthcheck\\.ves"
       - "\\.virtual_host\\.ves"
       - "^[^.]*\\.route\\.ves"
+      # Load balancing clusters (backend endpoint groups) - NOT Kubernetes clusters
+      - "\\.cluster\\."
 
   network:
     description: "Routing, Tunnelling, and Network Connectivity"

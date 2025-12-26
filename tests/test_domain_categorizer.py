@@ -57,14 +57,18 @@ class TestDomainCategorization:
         assert categorize_spec("ves.io.schema.views.registration.json") == "ce_management"
         assert categorize_spec("ves.io.schema.views.module_management.json") == "ce_management"
 
-    def test_kubernetes_and_orchestration(self) -> None:
-        """Test categorization of Kubernetes specs."""
+    def test_container_services(self) -> None:
+        """Test categorization of Virtual Kubernetes (vK8s) specs."""
+        assert categorize_spec("ves.io.schema.views.virtual_k8s.json") == "container_services"
+        assert categorize_spec("ves.io.schema.views.workload.json") == "container_services"
+        assert categorize_spec("ves.io.schema.views.workload_flavor.json") == "container_services"
+
+    def test_managed_kubernetes(self) -> None:
+        """Test categorization of managed Kubernetes cluster specs."""
+        assert categorize_spec("ves.io.schema.views.k8s_pod_security.json") == "managed_kubernetes"
+        assert categorize_spec("ves.io.schema.views.k8s_cluster_role.json") == "managed_kubernetes"
         assert (
-            categorize_spec("ves.io.schema.views.k8s_pod_security.json")
-            == "kubernetes_and_orchestration"
-        )
-        assert (
-            categorize_spec("ves.io.schema.views.workload.json") == "kubernetes_and_orchestration"
+            categorize_spec("ves.io.schema.views.container_registry.json") == "managed_kubernetes"
         )
 
     def test_service_mesh(self) -> None:

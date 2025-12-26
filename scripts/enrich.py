@@ -23,6 +23,7 @@ from rich.table import Table
 
 from scripts.utils import (
     AcronymNormalizer,
+    BrandingNormalizer,
     BrandingTransformer,
     BrandingValidator,
     ConsistencyValidator,
@@ -282,12 +283,18 @@ def enrich_spec_file(
             ["description", "summary", "title", "x-displayname"],
         )
 
+        # Initialize XKS/XCS branding normalizer
+        branding_normalizer = BrandingNormalizer()
+
         # Apply enrichments in order
         # 0. Deprecated tier transformation (BASIC→STANDARD, PREMIUM→ADVANCED)
         spec = deprecated_tier_enricher.enrich(spec)
 
         # 1. Branding transformations first (most specific)
+        # 1a. Legacy Volterra→F5 branding
         spec = branding_transformer.transform_spec(spec, target_fields)
+        # 1b. Industry-standard XKS/XCS terminology normalization
+        spec = branding_normalizer.normalize_spec(spec, target_fields)
 
         # 2. Description structure normalization (extract examples, validation rules, X-required)
         spec = description_structure_transformer.transform_spec(spec, target_fields)
@@ -350,6 +357,7 @@ def enrich_spec_file(
 
         # Collect stats from all transformers
         deprecated_tier_stats = deprecated_tier_enricher.get_stats()
+        branding_normalizer_stats = branding_normalizer.get_stats()
         schema_stats = schema_fixer.get_stats()
         tag_stats = tag_generator.get_stats()
         desc_stats = description_validator.get_stats()
@@ -366,6 +374,9 @@ def enrich_spec_file(
                     "values_transformed",
                     0,
                 ),
+                "xks_transformations": branding_normalizer_stats.get("xks_transformations", 0),
+                "xcs_transformations": branding_normalizer_stats.get("xcs_transformations", 0),
+                "glossary_terms_added": branding_normalizer_stats.get("glossary_terms_added", 0),
                 "schemas_fixed": schema_stats.get("fixes_applied", 0),
                 "operations_tagged": tag_stats.get("operations_tagged", 0),
                 "tags_generated": tag_stats.get("tags_generated", 0),
