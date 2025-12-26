@@ -42,7 +42,7 @@
 #       ├── openapi.json    (master combined spec)
 #       └── index.json      (spec metadata)
 
-.PHONY: all build clean install download download-force pipeline enrich normalize merge lint validate serve help check-deps venv pre-commit-install pre-commit-run pre-commit-uninstall discover discover-namespace discover-dry-run discover-cli enrich-with-discovery constraint-report build-enriched pipeline-enriched push-discovery discover-and-push
+.PHONY: all build clean install download download-force pipeline enrich normalize merge lint validate validate-domains serve help check-deps venv pre-commit-install pre-commit-run pre-commit-uninstall discover discover-namespace discover-dry-run discover-cli enrich-with-discovery constraint-report build-enriched pipeline-enriched push-discovery discover-and-push
 
 # Virtual environment
 VENV := .venv
@@ -110,6 +110,10 @@ validate:
 	else \
 		$(PYTHON) -m scripts.validate --dry-run; \
 	fi
+
+# Validate domain categorization against natural identifiers in original specs
+validate-domains:
+	$(PYTHON) scripts/validate_domain_categorization.py
 
 # API Discovery - explore live API to find undocumented behavior
 discover:
@@ -247,6 +251,7 @@ help:
 	@echo "  merge          Combine specs by domain"
 	@echo "  lint           Validate specs with Spectral OpenAPI linter"
 	@echo "  validate       Test with live API (needs credentials)"
+	@echo "  validate-domains  Validate domain patterns against natural identifiers"
 	@echo ""
 	@echo "API Discovery (explore live API for undocumented behavior):"
 	@echo "  discover           Full API discovery (needs F5XC_API_TOKEN)"

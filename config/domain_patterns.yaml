@@ -23,12 +23,16 @@
 #     * Complete Kubernetes API access, operators, CRDs supported
 #     * Comparable to AWS EKS, Azure AKS, GCP GKE
 #
-version: "1.1.0"
+version: "1.3.0"
 description: >
   34 functional domains organized in 11 categories, aligned with
-  F5 XC platform services. Split container_services from kubernetes to
-  distinguish Virtual Kubernetes (managed namespace) from enterprise
-  Kubernetes cluster management
+  F5 XC platform services. Pattern fixes from natural identifier validation:
+  - Shape Security domain in Security - Core section (pattern priority)
+  - TPM patterns moved to bot_and_threat_defense (threat management)
+  - VoltShare/secret_management moved to blindfold (secrets domain)
+  - Fleet moved to ce_management (edge site fleet)
+  - Virtual_network moved to network (L3 overlay)
+  - Discovery pattern removed from service_mesh (caught by api domain)
 
 domains:
   # ===== A. Infrastructure & Deployment (5 categories) =====
@@ -41,6 +45,8 @@ domains:
       - "maintenance_status"
       - "usb_policy"
       - "network_interface"
+      # Fleet - edge site fleet management (moved from service_mesh)
+      - "fleet"
 
   cloud_infrastructure:
     description: "Cloud connectivity and credentials"
@@ -63,18 +69,19 @@ domains:
       - "workload"
 
   service_mesh:
-    description: "Service mesh and virtual networking"
+    description: "Service mesh and networking services"
     patterns:
       - "site_mesh"
-      - "endpoint"
+      # Specific endpoint pattern - requires dot-ves suffix
+      - "schema\\.endpoint\\.ves"
       - "nfv_service"
-      - "discovery"
       - "app_setting"
       - "app_type"
-      - "virtual_network"
-      - "virtual_host"
       - "virtual_appliance"
-      - "fleet"
+      # NOTE: fleet moved to ce_management domain
+      # NOTE: virtual_network moved to network domain
+      # NOTE: virtual_host matched by virtual domain (.virtual_host.ves pattern)
+      # NOTE: discovery matched by api domain (.discovery.ves pattern)
 
   site_management:
     description: "Sites"
@@ -94,7 +101,14 @@ domains:
       - "site_management"
       - "\\.site\\."
 
-  # ===== B. Security - Core (4 categories) =====
+  # ===== B. Security - Core (5 categories) =====
+  # Shape Security must be matched FIRST to prevent shape.* specs from being
+  # caught by other patterns (subscription, data_delivery, client_side_defense, etc.)
+  shape:
+    description: "Shape Security - Bot detection, client-side defense, data delivery"
+    patterns:
+      - "shape\\."
+
   api:
     description: "API security, discovery, and testing"
     patterns:
@@ -106,6 +120,8 @@ domains:
       - "api_group"
       - "api_testing"
       - "code_base_integration"
+      # Discovery - API discovery and exploration (moved from service_mesh)
+      - "\\.discovery\\.ves"
 
   waf:
     description: "Web Application Firewall"
@@ -127,6 +143,8 @@ domains:
       - "mobile_base"
       - "mobile_sdk"
       - "threat_intelligence"
+      # TPM (Trusted Platform Module) patterns for bot/threat management
+      - "tpm_"
 
   network_security:
     description: "Network firewall and policies"
@@ -142,9 +160,13 @@ domains:
 
   # ===== C. Security - Advanced (4 categories) =====
   blindfold:
-    description: "Secret policy and encryption"
+    description: "Secret policy, encryption, and secret management"
     patterns:
       - "secret_policy"
+      # VoltShare - secure data sharing (moved from marketplace)
+      - "voltshare"
+      # Secret management - key/credential management (moved from secops)
+      - "secret_management"
 
   data_and_privacy_security:
     description: "Data privacy and protection"
@@ -159,7 +181,7 @@ domains:
     description: "Security operations and incident response"
     patterns:
       - "malicious_user"
-      - "secret_management"
+      # NOTE: secret_management moved to blindfold domain
 
   ddos:
     description: "Distributed denial of service protection"
@@ -218,6 +240,8 @@ domains:
       - "srv6"
       - "subnet"
       - "tunnel"
+      # Virtual network - L3 network overlay (moved from service_mesh)
+      - "virtual_network"
 
   cdn:
     description: "Content delivery network services"
@@ -301,8 +325,8 @@ domains:
       - "cminstance"
       - "marketplace"
       - "pbac\\."
-      - "tpm_"
-      - "voltshare"
+      # NOTE: tpm_ moved to bot_and_threat_defense domain
+      # NOTE: voltshare moved to blindfold domain
       - "views\\.external"
       - "views\\.terraform"
       - "views\\.third_party"
@@ -342,12 +366,7 @@ domains:
       - "policer"
       - "rate_limiter"
 
-  shape:
-    description: "Shape Security"
-    patterns:
-      - "shape\\.recognize"
-      - "shape\\.safe"
-      - "shape\\.safeap"
+  # NOTE: shape domain moved to Security - Core section (must match before other patterns)
 
   # ===== K. UI & Platform Infrastructure (3 categories) =====
   admin_console_and_ui:
