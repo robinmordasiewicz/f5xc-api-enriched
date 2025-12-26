@@ -1,0 +1,77 @@
+# Read-Only Fields Configuration
+# Fields that are computed by the F5 XC API and should not be set by clients
+#
+# These fields get `readOnly: true` added to their schema definitions,
+# following the OpenAPI 3.0 standard for marking server-computed fields.
+
+version: "1.0.0"
+description: >
+  API-computed fields that should be marked as readOnly in OpenAPI schemas.
+  Downstream tooling (e.g., xcsh CLI) can use this to automatically exclude
+  these fields from create/update request payloads.
+
+# Metadata fields found in most resource schemas
+# These are set by the API server, not by clients
+metadata_fields:
+  tenant:
+    description: "Set by API from authentication context"
+    reason: "Determined by the authenticated user's tenant"
+
+  uid:
+    description: "Generated unique identifier by API"
+    reason: "Server-generated UUID for the resource"
+
+  kind:
+    description: "Set by API based on object type"
+    reason: "Automatically set based on resource type"
+
+  creation_timestamp:
+    description: "Set by server on object creation"
+    reason: "Server timestamp when resource was created"
+
+  modification_timestamp:
+    description: "Updated by server on each modification"
+    reason: "Server timestamp of last modification"
+
+  creator_id:
+    description: "Set by API from authentication context"
+    reason: "ID of the user who created the resource"
+
+  creator_class:
+    description: "Set by API from authentication context"
+    reason: "Classification of the creator (user, service, etc.)"
+
+  object_index:
+    description: "Internal index maintained by API"
+    reason: "Server-maintained ordering index"
+
+  owner_view:
+    description: "Set by API based on permissions"
+    reason: "Determined by resource ownership hierarchy"
+
+# ObjectRef types have these computed fields
+# These are auto-populated when referencing other objects
+object_ref_fields:
+  tenant:
+    description: "Auto-populated for object references from context"
+    reason: "Inherited from referencing resource's tenant"
+
+  uid:
+    description: "Auto-populated for object references by API"
+    reason: "Resolved from the referenced object"
+
+  kind:
+    description: "Auto-populated for object references based on target type"
+    reason: "Set based on the type of referenced object"
+
+# Schema name patterns that indicate ObjectRef types
+object_ref_patterns:
+  - "ObjectRefType"
+  - ".*ObjectRef$"
+  - ".*Ref$"
+
+# Schema name patterns that indicate metadata containers
+metadata_patterns:
+  - "ObjectMetaType"
+  - ".*MetadataType$"
+  - "SystemMetadata"
