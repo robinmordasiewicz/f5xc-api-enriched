@@ -83,8 +83,8 @@ domains:
       # NOTE: virtual_host matched by virtual domain (.virtual_host.ves pattern)
       # NOTE: discovery matched by api domain (.discovery.ves pattern)
 
-  site_management:
-    description: "Sites"
+  sites:
+    description: "Site deployment and management across cloud providers"
     patterns:
       - "aws_vpc_site"
       - "aws_tgw_site"
