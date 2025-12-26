@@ -35,7 +35,7 @@ DOMAIN_METADATA = {
     },
     "container_services": {
         "is_preview": False,
-        "requires_tier": "Professional",
+        "requires_tier": "Advanced",
         "domain_category": "Infrastructure",
         "use_cases": [
             "Deploy Virtual Kubernetes (vK8s) namespaces",
@@ -48,7 +48,7 @@ DOMAIN_METADATA = {
     },
     "kubernetes": {
         "is_preview": False,
-        "requires_tier": "Professional",
+        "requires_tier": "Advanced",
         "domain_category": "Infrastructure",
         "use_cases": [
             "Manage enterprise Kubernetes clusters",
@@ -60,7 +60,7 @@ DOMAIN_METADATA = {
     },
     "service_mesh": {
         "is_preview": False,
-        "requires_tier": "Professional",
+        "requires_tier": "Advanced",
         "domain_category": "Infrastructure",
         "use_cases": [
             "Configure service mesh connectivity",
@@ -85,7 +85,7 @@ DOMAIN_METADATA = {
     # Security - Core
     "api": {
         "is_preview": False,
-        "requires_tier": "Professional",
+        "requires_tier": "Advanced",
         "domain_category": "Security",
         "use_cases": [
             "Discover and catalog APIs",
@@ -97,7 +97,7 @@ DOMAIN_METADATA = {
     },
     "waf": {
         "is_preview": False,
-        "requires_tier": "Professional",
+        "requires_tier": "Advanced",
         "domain_category": "Security",
         "use_cases": [
             "Configure web application firewall rules",
@@ -109,7 +109,7 @@ DOMAIN_METADATA = {
     },
     "bot_defense": {
         "is_preview": False,
-        "requires_tier": "Professional",
+        "requires_tier": "Advanced",
         "domain_category": "Security",
         "use_cases": [
             "Manage bot allowlists and defense policies",
@@ -121,7 +121,7 @@ DOMAIN_METADATA = {
     },
     "network_security": {
         "is_preview": False,
-        "requires_tier": "Professional",
+        "requires_tier": "Advanced",
         "domain_category": "Security",
         "use_cases": [
             "Configure network firewall and ACL policies",
@@ -135,7 +135,7 @@ DOMAIN_METADATA = {
     # Security - Advanced
     "blindfold": {
         "is_preview": False,
-        "requires_tier": "Enterprise",
+        "requires_tier": "Advanced",
         "domain_category": "Security",
         "use_cases": [
             "Configure secret policies for encryption",
@@ -146,7 +146,7 @@ DOMAIN_METADATA = {
     },
     "client_side_defense": {
         "is_preview": False,
-        "requires_tier": "Professional",
+        "requires_tier": "Advanced",
         "domain_category": "Security",
         "use_cases": [
             "Protect user data in transit",
@@ -158,7 +158,7 @@ DOMAIN_METADATA = {
     },
     "ddos": {
         "is_preview": False,
-        "requires_tier": "Enterprise",
+        "requires_tier": "Advanced",
         "domain_category": "Security",
         "use_cases": [
             "Configure DDoS protection policies",
@@ -181,7 +181,7 @@ DOMAIN_METADATA = {
     },
     "virtual": {
         "is_preview": False,
-        "requires_tier": "Professional",
+        "requires_tier": "Advanced",
         "domain_category": "Networking",
         "use_cases": [
             "Configure HTTP/TCP/UDP load balancers",
@@ -197,7 +197,7 @@ DOMAIN_METADATA = {
     },
     "network": {
         "is_preview": False,
-        "requires_tier": "Professional",
+        "requires_tier": "Advanced",
         "domain_category": "Networking",
         "use_cases": [
             "Configure BGP routing and ASN management",
@@ -211,7 +211,7 @@ DOMAIN_METADATA = {
     },
     "cdn": {
         "is_preview": False,
-        "requires_tier": "Enterprise",
+        "requires_tier": "Advanced",
         "domain_category": "Networking",
         "use_cases": [
             "Configure CDN load balancing",
@@ -300,7 +300,7 @@ DOMAIN_METADATA = {
     # Platform & Integrations
     "bigip": {
         "is_preview": False,
-        "requires_tier": "Enterprise",
+        "requires_tier": "Advanced",
         "domain_category": "Platform",
         "use_cases": [
             "Manage BigIP F5 appliances",
@@ -312,7 +312,7 @@ DOMAIN_METADATA = {
     },
     "marketplace": {
         "is_preview": False,
-        "requires_tier": "Professional",
+        "requires_tier": "Advanced",
         "domain_category": "Platform",
         "use_cases": [
             "Access third-party integrations and add-ons",
@@ -324,7 +324,7 @@ DOMAIN_METADATA = {
     },
     "nginx_one": {
         "is_preview": False,
-        "requires_tier": "Professional",
+        "requires_tier": "Advanced",
         "domain_category": "Platform",
         "use_cases": [
             "Manage NGINX One platform integrations",
@@ -348,7 +348,7 @@ DOMAIN_METADATA = {
     },
     "generative_ai": {
         "is_preview": True,
-        "requires_tier": "Enterprise",
+        "requires_tier": "Advanced",
         "domain_category": "AI",
         "use_cases": [
             "Access AI-powered features",
@@ -360,7 +360,7 @@ DOMAIN_METADATA = {
     },
     "object_storage": {
         "is_preview": False,
-        "requires_tier": "Professional",
+        "requires_tier": "Advanced",
         "domain_category": "Platform",
         "use_cases": [
             "Manage object storage services",
@@ -371,7 +371,7 @@ DOMAIN_METADATA = {
     },
     "rate_limiting": {
         "is_preview": False,
-        "requires_tier": "Professional",
+        "requires_tier": "Advanced",
         "domain_category": "Networking",
         "use_cases": [
             "Configure rate limiter policies",
@@ -382,7 +382,7 @@ DOMAIN_METADATA = {
     },
     "shape": {
         "is_preview": False,
-        "requires_tier": "Enterprise",
+        "requires_tier": "Advanced",
         "domain_category": "Security",
         "use_cases": [
             "Configure Shape Security policies",

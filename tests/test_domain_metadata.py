@@ -76,7 +76,7 @@ class TestMetadataRetrieval:
         """Test retrieving metadata for known domain."""
         metadata = get_metadata("virtual")
         assert metadata["domain_category"] == "Networking"
-        assert metadata["requires_tier"] == "Professional"
+        assert metadata["requires_tier"] == "Advanced"
         assert metadata["is_preview"] is False
         assert len(metadata["use_cases"]) > 0
         assert len(metadata["related_domains"]) > 0
@@ -243,8 +243,8 @@ class TestMetadataConsistency:
             assert category in valid_categories
 
     def test_metadata_tiers_valid(self):
-        """Test that requires_tier values are valid."""
-        valid_tiers = {"Standard", "Professional", "Enterprise"}
+        """Test that requires_tier values are valid (Standard or Advanced only)."""
+        valid_tiers = {"Standard", "Advanced"}
         for metadata in DOMAIN_METADATA.values():
             tier = metadata.get("requires_tier", "Standard")
             assert tier in valid_tiers
