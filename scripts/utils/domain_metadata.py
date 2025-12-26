@@ -19,7 +19,7 @@ DOMAIN_METADATA = {
             "Control module management and upgrades",
             "Configure network interfaces and USB policies",
         ],
-        "related_domains": ["site", "cloud_infrastructure"],
+        "related_domains": ["sites", "cloud_infrastructure"],
     },
     "cloud_infrastructure": {
         "is_preview": False,
@@ -31,7 +31,7 @@ DOMAIN_METADATA = {
             "Configure cloud connectivity and elastic provisioning",
             "Link and manage cloud regions",
         ],
-        "related_domains": ["site", "customer_edge"],
+        "related_domains": ["sites", "customer_edge"],
     },
     "container_services": {
         "is_preview": False,
@@ -70,15 +70,17 @@ DOMAIN_METADATA = {
         ],
         "related_domains": ["kubernetes", "container_services", "virtual"],
     },
-    "site": {
+    "sites": {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Infrastructure",
         "use_cases": [
             "Deploy F5 XC across cloud providers (AWS, Azure, GCP)",
-            "Manage secure mesh sites",
+            "Manage secure mesh sites and site deployments",
             "Deploy voltstack sites for on-premises",
             "Integrate external Kubernetes clusters",
+            "Configure AWS VPC, Azure VNet, and GCP VPC sites",
+            "Manage virtual sites and site policies",
         ],
         "related_domains": ["cloud_infrastructure", "customer_edge"],
     },
@@ -470,7 +472,7 @@ DOMAIN_METADATA = {
             "Configure node lifecycle and management",
             "Monitor VPM and node status",
         ],
-        "related_domains": ["site", "system"],
+        "related_domains": ["sites", "system"],
     },
 }
 
@@ -686,7 +688,7 @@ CLI_METADATA = {
         ],
         "icon": "🔐",
     },
-    "site": {
+    "sites": {
         "quick_start": {
             "command": "curl $F5XC_API_URL/api/config/namespaces/default/sites -H 'Authorization: APIToken $F5XC_API_TOKEN'",
             "description": "List all configured sites in default namespace",

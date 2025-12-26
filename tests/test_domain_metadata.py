@@ -99,7 +99,7 @@ class TestMetadataRetrieval:
 
     def test_metadata_includes_all_required_fields(self):
         """Test that metadata includes required fields."""
-        for domain in ["virtual", "dns", "api", "site"]:
+        for domain in ["virtual", "dns", "api", "sites"]:
             metadata = get_metadata(domain)
             assert "is_preview" in metadata
             assert "requires_tier" in metadata
@@ -166,7 +166,7 @@ class TestCLIMetadata:
 
     def test_cli_metadata_icon_present(self):
         """Test that icon field is present and non-empty."""
-        for domain in ["virtual", "dns", "api", "site", "system"]:
+        for domain in ["virtual", "dns", "api", "sites", "system"]:
             cli_meta = get_cli_metadata(domain)
             assert cli_meta is not None
             assert "icon" in cli_meta
@@ -175,7 +175,7 @@ class TestCLIMetadata:
 
     def test_all_initial_domains_have_cli_metadata(self):
         """Test that all 5 initial domains have CLI metadata."""
-        initial_domains = ["virtual", "dns", "api", "site", "system"]
+        initial_domains = ["virtual", "dns", "api", "sites", "system"]
         for domain in initial_domains:
             cli_meta = get_cli_metadata(domain)
             assert cli_meta is not None, f"{domain} should have CLI metadata"
@@ -201,7 +201,7 @@ class TestMetadataConsistency:
     def test_cli_metadata_dict_not_empty(self):
         """Test that CLI_METADATA dict has expected domains."""
         assert len(CLI_METADATA) >= 5
-        expected_domains = {"virtual", "dns", "api", "site", "system"}
+        expected_domains = {"virtual", "dns", "api", "sites", "system"}
         for domain in expected_domains:
             assert domain in CLI_METADATA
 
