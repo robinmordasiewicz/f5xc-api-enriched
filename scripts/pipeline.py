@@ -68,6 +68,7 @@ from rich.table import Table
 from scripts.merge_specs import load_critical_resources
 from scripts.utils import (
     AcronymNormalizer,
+    AliasValidator,
     BrandingTransformer,
     CLIMetadataEnricher,
     ConsistencyValidator,
@@ -85,7 +86,7 @@ from scripts.utils import (
     ValidationEnricher,
     categorize_spec,
 )
-from scripts.utils.domain_metadata import calculate_complexity, get_metadata
+from scripts.utils.domain_metadata import DOMAIN_METADATA, calculate_complexity, get_metadata
 from scripts.utils.server_variables import ServerVariableHelper
 
 console = Console()
@@ -1570,6 +1571,22 @@ Output (merged domain specs only):
         console.print(f"[red]Input directory not found: {input_dir}[/red]")
         console.print("[yellow]Run 'make download' or 'python -m scripts.download' first[/yellow]")
         return 1
+
+    # Validate domain aliases before running pipeline
+    console.print("\n[blue]Validating domain aliases...[/blue]")
+    alias_validator = AliasValidator(DOMAIN_METADATA)
+    alias_stats = alias_validator.validate_all()
+
+    if alias_stats.errors:
+        console.print("[red]Alias validation failed:[/red]")
+        for error in alias_stats.errors:
+            console.print(f"  [red]✗[/red] {error}")
+        return 1
+
+    console.print(
+        f"  [green]✓[/green] Validated {alias_stats.total_aliases} aliases "
+        f"across {alias_stats.domains_validated} domains",
+    )
 
     # Run pipeline
     stats = run_pipeline(
