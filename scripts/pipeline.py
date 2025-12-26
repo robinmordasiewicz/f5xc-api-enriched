@@ -65,6 +65,7 @@ from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn, TimeEl
 from rich.table import Table
 
 # Import processing modules
+from scripts.merge_specs import load_critical_resources
 from scripts.utils import (
     AcronymNormalizer,
     BrandingTransformer,
@@ -1182,6 +1183,9 @@ def create_spec_index(domain_specs: dict[str, dict[str, Any]], version: str) -> 
         "timestamp": datetime.now(tz=timezone.utc).isoformat(),
         "specifications": [],
     }
+
+    # Add critical resources list for downstream tooling (e.g., xcsh CLI)
+    index["x-ves-critical-resources"] = load_critical_resources()
 
     for domain, spec in sorted(domain_specs.items()):
         info = spec.get("info", {})

@@ -1,0 +1,44 @@
+# Critical Resources Configuration
+# Resources that downstream tooling relies on for schema generation and validation
+#
+# These resources are considered "critical" - meaning they must have valid schemas
+# for CLI tools like xcsh to function properly.
+#
+# Criteria for inclusion:
+# - Core load balancing and traffic management resources
+# - Security and protection resources
+# - Infrastructure and site deployment resources
+# - Identity and access management resources
+
+version: "1.0.0"
+description: >
+  Core F5 XC resources that downstream tooling relies on for schema generation
+  and validation. Exposed via x-ves-critical-resources extension in index.json.
+
+# Critical resources list - order matters for documentation purposes
+# Grouped by functional area
+resources:
+  # Load Balancing & Traffic Management
+  - http_loadbalancer
+  - tcp_loadbalancer
+  - origin_pool
+  - healthcheck
+
+  # Security & Protection
+  - app_firewall
+  - service_policy
+  - network_policy
+
+  # DNS Services
+  - dns_zone
+  - dns_load_balancer
+
+  # Certificates & Identity
+  - certificate
+  - namespace
+  - virtual_site
+
+  # Cloud Site Infrastructure
+  - aws_vpc_site
+  - azure_vnet_site
+  - gcp_vpc_site
