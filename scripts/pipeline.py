@@ -79,6 +79,7 @@ from scripts.utils import (
     GrammarImprover,
     MinimumConfigurationEnricher,
     OperationMetadataEnricher,
+    ReadOnlyEnricher,
     SchemaFixer,
     TagGenerator,
     ValidationEnricher,
@@ -280,6 +281,11 @@ def enrich_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], dic
     spec = minimum_config_enricher.enrich_spec(spec)
     min_config_stats = minimum_config_enricher.get_stats()
 
+    # 16. ReadOnly field enrichment (mark API-computed fields as readOnly)
+    readonly_enricher = ReadOnlyEnricher()
+    spec = readonly_enricher.enrich_spec(spec)
+    readonly_stats = readonly_enricher.get_stats()
+
     # Close grammar improver resources
     grammar_improver.close()
 
@@ -303,6 +309,9 @@ def enrich_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], dic
         "cli_examples_generated": op_stats.get("examples_generated", 0),
         "side_effects_documented": op_stats.get("side_effects_documented", 0),
         "minimum_configs_added": min_config_stats.get("minimum_configs_added", 0),
+        "readonly_fields_marked": readonly_stats.get("total_fields_marked", 0),
+        "readonly_metadata_schemas": readonly_stats.get("metadata_schemas_matched", 0),
+        "readonly_objectref_schemas": readonly_stats.get("object_ref_schemas_matched", 0),
     }
 
 

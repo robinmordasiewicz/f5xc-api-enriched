@@ -16,6 +16,7 @@ from .field_metadata_enricher import FieldMetadataEnricher
 from .grammar import GrammarImprover
 from .minimum_configuration_enricher import MinimumConfigurationEnricher
 from .operation_metadata_enricher import OperationMetadataEnricher
+from .readonly_enricher import ReadOnlyEnricher
 from .schema_fixer import SchemaFixer
 from .tag_generator import TagGenerator
 from .validation_enricher import ValidationEnricher
@@ -41,6 +42,7 @@ __all__ = [
     "GrammarImprover",
     "MinimumConfigurationEnricher",
     "OperationMetadataEnricher",
+    "ReadOnlyEnricher",
     "SchemaFixer",
     "TagGenerator",
     "ValidationEnricher",
