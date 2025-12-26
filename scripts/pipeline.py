@@ -1218,6 +1218,7 @@ def create_spec_index(domain_specs: dict[str, dict[str, Any]], version: str) -> 
             "is_preview": metadata.get("is_preview", False),
             "requires_tier": metadata.get("requires_tier", "Standard"),
             "domain_category": metadata.get("domain_category", "Other"),
+            "aliases": metadata.get("aliases", []),
             "use_cases": metadata.get("use_cases", []),
             "related_domains": metadata.get("related_domains", []),
         }
