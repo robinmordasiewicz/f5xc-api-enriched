@@ -901,7 +901,7 @@ def get_api_data_target_domain(path: str) -> str | None:
         (r"/fast_acl/", "network_security"),
         (r"/segments/", "network_security"),
         (r"/bigip/", "bigip"),
-        (r"/workloads/", "kubernetes"),
+        (r"/workloads/", "container_services"),
         (r"/cloud_connects", "cloud_infrastructure"),
         (r"/nfv_services/", "service_mesh"),
         (r"/virtual_network/", "service_mesh"),

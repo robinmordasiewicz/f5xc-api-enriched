@@ -1,7 +1,7 @@
 """Utility modules for F5 XC API enrichment."""
 
 from .acronyms import AcronymNormalizer
-from .branding import BrandingTransformer, BrandingValidator
+from .branding import BrandingNormalizer, BrandingStats, BrandingTransformer, BrandingValidator
 from .cli_metadata_enricher import CLIMetadataEnricher
 from .consistency_validator import ConsistencyValidator
 from .constraint_analyzer import ConstraintAnalyzer
@@ -23,6 +23,8 @@ from .validation_enricher import ValidationEnricher
 __all__ = [
     "DOMAIN_PATTERNS",
     "AcronymNormalizer",
+    "BrandingNormalizer",
+    "BrandingStats",
     "BrandingTransformer",
     "BrandingValidator",
     "CLIMetadataEnricher",
