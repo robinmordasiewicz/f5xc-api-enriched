@@ -90,8 +90,8 @@ resources:
           "domains": ["example.com"],
           "https": [{"port": 443}],
           "http": [{"port": 80, "redirect_https": true}],
-          "routes": [{"prefix": "/", "origin_pool": {"pool_name": "backend-pool"}}],
-          "origin_pools": [{"name": "backend-pool", "origins": [{"origin_server": {"hostname": "backend.example.com", "port": 8080}}]}]
+          "routes": [{"prefix": "/", "origin_pool": {"pool_name": "pool"}}],
+          "origin_pools": [{"name": "pool", "origins": [{"hostname": "backend.example.com"}]}]
         }
       }
 

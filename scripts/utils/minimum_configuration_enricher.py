@@ -10,6 +10,7 @@ Adds four OpenAPI extensions:
 - x-ves-cli-aliases: Alternative names for resources
 """
 
+import json
 import logging
 import re
 from dataclasses import dataclass, field
@@ -317,18 +318,16 @@ class MinimumConfigurationEnricher:
 
         return "\n".join(lines)
 
-    def _generate_example_json(self, schema_name: str, required_fields: list[str]) -> str:
+    def _generate_example_json(self, _schema_name: str, required_fields: list[str]) -> str:
         """Generate example JSON from schema information.
 
         Args:
-            schema_name: Schema name
+            _schema_name: Schema name (reserved for future type-specific generation)
             required_fields: List of required field names
 
         Returns:
             Generated example JSON string
         """
-        import json
-
         example = {
             "metadata": {
                 "name": "example",

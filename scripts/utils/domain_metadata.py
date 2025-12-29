@@ -523,6 +523,98 @@ DOMAIN_METADATA = {
         ],
         "related_domains": ["sites", "system"],
     },
+    # Additional Domains (Issue #182)
+    "admin_console_and_ui": {
+        "is_preview": False,
+        "requires_tier": "Standard",
+        "domain_category": "Platform",
+        "aliases": ["console-ui", "ui-assets", "static-components"],
+        "use_cases": [
+            "Manage static UI components for admin console",
+            "Deploy and retrieve UI assets within namespaces",
+            "Configure console interface elements",
+            "Manage custom UI component metadata",
+        ],
+        "related_domains": ["admin", "system"],
+    },
+    "billing_and_usage": {
+        "is_preview": False,
+        "requires_tier": "Standard",
+        "domain_category": "Platform",
+        "aliases": ["billing-usage", "quotas", "usage-tracking"],
+        "use_cases": [
+            "Manage subscription plans and billing transitions",
+            "Configure payment methods and invoices",
+            "Track resource quota usage across namespaces",
+            "Monitor usage limits and capacity",
+        ],
+        "related_domains": ["system", "users"],
+    },
+    "bot_and_threat_defense": {
+        "is_preview": False,
+        "requires_tier": "Advanced",
+        "domain_category": "Security",
+        "aliases": ["threat-defense", "tpm", "shape-bot"],
+        "use_cases": [
+            "Configure bot defense instances per namespace",
+            "Manage TPM threat categories for classification",
+            "Provision API keys for automated defense systems",
+            "Integrate threat intelligence services",
+        ],
+        "related_domains": ["bot_defense", "shape", "waf"],
+    },
+    "ce_management": {
+        "is_preview": False,
+        "requires_tier": "Standard",
+        "domain_category": "Infrastructure",
+        "aliases": ["ce-mgmt", "edge-management", "ce-lifecycle"],
+        "use_cases": [
+            "Manage Customer Edge site lifecycle",
+            "Configure network interfaces and fleet settings",
+            "Handle site registration and token workflows",
+            "Execute site upgrades with pre-upgrade checks",
+        ],
+        "related_domains": ["customer_edge", "sites"],
+    },
+    "data_and_privacy_security": {
+        "is_preview": False,
+        "requires_tier": "Advanced",
+        "domain_category": "Security",
+        "aliases": ["data-privacy", "pii", "sensitive-data", "lma"],
+        "use_cases": [
+            "Configure sensitive data detection policies",
+            "Define custom data types for PII classification",
+            "Manage LMA region configurations",
+            "Integrate geo-configurations for compliance",
+        ],
+        "related_domains": ["blindfold", "client_side_defense"],
+    },
+    "secops_and_incident_response": {
+        "is_preview": False,
+        "requires_tier": "Advanced",
+        "domain_category": "Security",
+        "aliases": ["secops", "incident-response", "mitigation"],
+        "use_cases": [
+            "Configure automated threat mitigation policies",
+            "Define rules for malicious user detection",
+            "Manage incident response workflows",
+            "Apply blocking or rate limiting to threats",
+        ],
+        "related_domains": ["bot_defense", "waf", "network_security"],
+    },
+    "tenant_and_identity": {
+        "is_preview": False,
+        "requires_tier": "Standard",
+        "domain_category": "Platform",
+        "aliases": ["tenant-identity", "idm", "user-settings"],
+        "use_cases": [
+            "Manage user profiles and notification preferences",
+            "Configure session controls and OTP settings",
+            "Handle identity management operations",
+            "Process initial user access requests",
+        ],
+        "related_domains": ["users", "authentication", "system"],
+    },
 }
 
 
