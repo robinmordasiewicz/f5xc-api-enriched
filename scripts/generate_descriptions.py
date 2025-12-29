@@ -231,36 +231,63 @@ STRICT RULES - Violations cause output rejection:
    Each tier reveals NEW information only.
 
 ═══════════════════════════════════════════════════════════════════════════════
-CHARACTER LIMITS - STRICT, ABSOLUTE LIMITS (count every character!):
+COMPRESSION TECHNIQUES - Apply these to stay under limits:
 
-SHORT (MAXIMUM {MAX_SHORT} characters - HARD LIMIT):
-  • Format: [Verb] [object] [qualifier]
-  • No articles (a, an, the)
-  • Single action phrase, typically 40-55 chars
-  • Example (46 chars): "Configure HTTP load balancers and origin pools"
-  • STOP and count before finalizing!
+• Remove articles: "the load balancers" → "load balancers"
+• Remove qualifiers: "global distribution" → "distribution"
+• Shorten phrases: "for domain resolution" → (remove entirely)
+• Remove redundant words: "authoritative name services" → "name services"
 
-MEDIUM (MAXIMUM {MAX_MEDIUM} characters - HARD LIMIT):
-  • Exactly 2 complete sentences
-  • Target 120-140 chars total
-  • Example (124 chars): "Define routing rules and health checks for traffic distribution. Enable automatic failover with geo-location-based steering."
+NEGATIVE EXAMPLES (from actual failures - DO NOT repeat these patterns):
+❌ "Configure content delivery and caching policies for global distribution" (71 chars)
+   → Remove "policies for global": "Configure caching and content delivery" (38 chars) ✓
 
-LONG (MAXIMUM {MAX_LONG} characters - HARD LIMIT, most common failure):
-  • Target 400-480 chars (leave buffer!)
-  • 3-4 sentences covering purpose, mechanism, features
-  • AVOID verbose phrasing - every word must earn its place
-  • NEVER exceed 500 chars - this is the most commonly violated limit
+❌ "Manage zones, records, and load balancing for domain resolution" (63 chars)
+   → Remove "for domain resolution": "Manage zones, records, and load balancing" (42 chars) ✓
+
+═══════════════════════════════════════════════════════════════════════════════
+CHARACTER LIMITS - WRITE TO FIT, NEVER TRUNCATE:
+
+⚠️ CRITICAL: Write descriptions that NATURALLY fit within limits.
+   NEVER write long text and truncate it. No "..." endings. No partial sentences.
+   If your draft is too long, REWRITE it shorter - do not cut it off.
+
+SHORT (TARGET: 35-50 chars, HARD MAX: {MAX_SHORT}):
+  • Format: [Verb] [object]
+  • Remove ALL unnecessary words
+  • If over 50 chars, REMOVE WORDS (don't truncate!)
+  • Examples:
+    ✓ "Configure HTTP load balancers" (30 chars)
+    ✓ "Manage WAF rules and bot protection" (35 chars)
+    ✗ TOO LONG (71 chars): "Configure content delivery and caching..."
+
+MEDIUM (TARGET: 100-130 chars, HARD MAX: {MAX_MEDIUM}):
+  • Two short sentences
+  • If over 130 chars, REWRITE with fewer words (don't truncate!)
+  • Example (82 chars): "Define routing rules and health checks. Enable failover."
+  • AVOID long phrases like "with support for BIND and AXFR transfer protocols"
+
+LONG (TARGET: 350-450 chars, HARD MAX: {MAX_LONG}):
+  • 3-4 sentences, stay under 450 to be safe
+  • If over 450 chars, SIMPLIFY sentences (don't truncate!)
+  • Remove verbose qualifiers ("authoritative", "global", "comprehensive")
 
 ═══════════════════════════════════════════════════════════════════════════════
 OUTPUT FORMAT:
 
 Respond with JSON only: {{"short": "...", "medium": "...", "long": "..."}}
 
-BEFORE RESPONDING:
-□ Count characters for each tier
-□ Verify no banned terms
-□ Confirm each tier has unique content (no repetition)
-□ Check all tiers start with action verbs
+BEFORE RESPONDING - MANDATORY VERIFICATION:
+
+⚠️ NEVER TRUNCATE - If any tier exceeds its target, REWRITE IT SHORTER.
+   Truncated text with "..." is REJECTED. Incomplete sentences are REJECTED.
+
+□ Count SHORT chars: Must be ≤50 (if >50, REWRITE SHORTER - do not cut off!)
+□ Count MEDIUM chars: Must be ≤130 (if >130, REWRITE SHORTER - do not cut off!)
+□ Count LONG chars: Must be ≤450 (if >450, REWRITE SHORTER - do not cut off!)
+□ Verify no banned terms (F5, XC, comprehensive, etc.)
+□ Confirm each tier starts with action verb
+□ Verify no ellipsis ("...") or incomplete sentences
 
 Do not use any tools. Generate based on context provided."""
 
