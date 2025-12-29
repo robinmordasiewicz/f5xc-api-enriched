@@ -1,28 +1,28 @@
 version: 1.0.0
-generated_at: '2025-12-29T14:46:03.585444+00:00'
+generated_at: '2025-12-29T16:02:52.282734+00:00'
 domains:
   virtual:
     source_patterns_hash: sha256:1eead315c8572a28f35b7d560a4b36b65c970cef1e8ba428dca3e6dc9bdca5e1
-    short: Configure HTTP load balancers and origin pools
-    medium: Define routing rules and health checks for traffic distribution. Enable
-      automatic failover with geo-location-based steering.
-    long: Manage application delivery through protocol-aware proxies supporting HTTP,
-      TCP, and UDP workloads. Set up origin servers with weighted distribution, session
-      persistence, and connection pooling parameters. Deploy rate limiting policies,
-      malware protection addons, and threat campaign detection to secure inbound requests.
-      Integrate service policies with namespace-scoped enforcement for granular access
-      control across multi-tenant environments.
+    short: Configure HTTP and TCP load balancers
+    medium: Manage origin pools and routing rules. Define rate limiting, service policies,
+      and health checks for traffic distribution.
+    long: Set up load balancing for HTTP, TCP, and UDP protocols with origin pool
+      configuration and weighted routing. Create service policies to control access
+      patterns and enforce rate limits on incoming requests. Deploy geo-location routing
+      for region-aware traffic steering. Configure health checks to monitor backend
+      availability and trigger automatic failover. Manage proxy forwarding rules and
+      threat protection including malware scanning and campaign blocking.
   dns:
     source_patterns_hash: sha256:306a1760a46dfcd1c8f28725174199d2304125dfb3a94bfb0eb3c898baf71a0b
-    short: DNS zone management, load balancing, and record...
-    medium: Manage DNS zones, configure DNS load balancing with health checks, and
-      control resource record sets. Supports zone imports, BIND file handling,...
-    long: Comprehensive DNS management for zones, domains, and resource records. Configure
-      DNS load balancing with health checks for high availability. Import and export
-      zone files via BIND format or AXFR transfers. Manage resource record sets including
-      A, AAAA, CNAME, CAA, CERT, AFSDB, and DLV records. Monitor DNS performance through
-      metrics and request logs. Clone zones from existing domains and enforce DNS
-      compliance policies across namespaces.
+    short: Manage zones, records, and resolution policies
+    medium: Configure zone imports from BIND files or AXFR transfers. Set up health
+      checks for load-balanced records and monitor query metrics.
+    long: Create and manage authoritative zones with support for standard record types
+      including A, AAAA, CNAME, CAA, CERT, and AFSDB. Import existing configurations
+      through BIND file uploads or zone transfers. Define health check policies that
+      monitor backend availability and automatically adjust record responses. Export
+      zone files for backup or migration. Access request logs and performance metrics
+      to analyze query patterns and troubleshoot resolution issues across namespaces.
   admin_console_and_ui:
     source_patterns_hash: sha256:6ee5f3e2c8ceadb8aeab99f8d4a7d4cf4711ad7c9cb241539f300bc2f26968f9
     short: Static UI component and console asset management
@@ -95,15 +95,14 @@ domains:
       intelligence services with...
   cdn:
     source_patterns_hash: sha256:64e84bbe1afe9d9b4cd4a584c6c2a0e2ecada7da648db15304662f827529795f
-    short: CDN load balancing, caching rules, and content delivery
-    medium: Configure CDN load balancers and caching rules for content delivery. Manage
-      cache policies, purge operations, and access logs for optimized...
-    long: Content Delivery Network services for global content distribution and edge
-      caching. Configure CDN load balancers with custom caching rules based on paths,
-      headers, cookies, and query parameters. Define cache TTL policies, eligibility
-      options, and cache-control behaviors. Monitor CDN performance through access
-      logs and metrics aggregation. Perform cache purge operations for content invalidation.
-      Manage addon subscriptions and track service operation status for CDN deployments.
+    short: Configure content delivery and caching rules
+    medium: Define cache rules and load balancers for content distribution. Set TTL
+      policies, path matching, and header-based caching decisions.
+    long: Create cache rules with expression-based matching for paths, headers, cookies,
+      and query parameters. Deploy load balancers optimized for content distribution
+      with configurable TTL settings and cache eligibility options. Monitor access
+      logs and metrics for delivery performance. Purge cached content on demand and
+      track service operation status across namespaces.
   ce_management:
     source_patterns_hash: sha256:eb8432bbb50b565e1820d9cadeba76e2d088d0fe7091e24c5e4371fd0a73c6a0
     short: Customer Edge site lifecycle and network configuration
