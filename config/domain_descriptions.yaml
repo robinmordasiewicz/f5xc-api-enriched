@@ -1,17 +1,17 @@
 version: 1.0.0
-generated_at: '2025-12-29T06:06:12.009165+00:00'
+generated_at: '2025-12-29T14:46:03.585444+00:00'
 domains:
   virtual:
     source_patterns_hash: sha256:1eead315c8572a28f35b7d560a4b36b65c970cef1e8ba428dca3e6dc9bdca5e1
-    short: HTTP/HTTPS load balancing and traffic management
-    medium: Configure HTTP, TCP, and UDP load balancers with origin pools, virtual
-      hosts, routing rules, rate limiting, and service policies for application...
-    long: Comprehensive application delivery and traffic management capabilities including
-      HTTP/HTTPS/TCP/UDP load balancers, origin pool configuration, virtual host management,
-      and advanced routing rules. Supports rate limiting policies, service policy
-      enforcement, geo-location-based routing, and proxy forwarding configurations.
-      Integrates with security features including malware protection, threat campaign
-      detection, and WAF policy attachment. Provides health check configuration, endpoint...
+    short: Configure HTTP load balancers and origin pools
+    medium: Define routing rules and health checks for traffic distribution. Enable
+      automatic failover with geo-location-based steering.
+    long: Manage application delivery through protocol-aware proxies supporting HTTP,
+      TCP, and UDP workloads. Set up origin servers with weighted distribution, session
+      persistence, and connection pooling parameters. Deploy rate limiting policies,
+      malware protection addons, and threat campaign detection to secure inbound requests.
+      Integrate service policies with namespace-scoped enforcement for granular access
+      control across multi-tenant environments.
   dns:
     source_patterns_hash: sha256:306a1760a46dfcd1c8f28725174199d2304125dfb3a94bfb0eb3c898baf71a0b
     short: DNS zone management, load balancing, and record...
@@ -392,13 +392,12 @@ domains:
       monitoring for...
   waf:
     source_patterns_hash: sha256:ec99ff4e45bc12a3d6547c62e2fea083507792c5ec35f7ec1589fc5e5975738c
-    short: Web application firewall rules and security policies
-    medium: Configure web application firewall rules, manage security policies, and
-      enable attack detection with customizable blocking actions and signature...
-    long: Web Application Firewall (WAF) configuration and management for protecting
-      applications against common attacks and vulnerabilities. Define application
-      firewall policies with attack type detection, bot protection settings, and custom
-      blocking pages. Manage WAF exclusion policies for legitimate traffic patterns,
-      configure signature staging and release workflows, and monitor security events
-      with detailed rule hit metrics. Supports AI-powered risk-based blocking, anonymization
-      settings for...
+    short: Configure web application firewall rules and policies
+    medium: Manage application security through attack detection and blocking settings.
+      Define custom response codes and signature-based threat mitigation.
+    long: Deploy protection against common web attacks including injection, cross-site
+      scripting, and protocol violations. Set up bot detection with configurable actions
+      for automated traffic handling. Create exclusion policies to whitelist trusted
+      requests and reduce false positives. Monitor security events and rule hits through
+      metrics collection to analyze threat patterns and refine defensive configurations
+      for virtual hosts.

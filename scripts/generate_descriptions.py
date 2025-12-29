@@ -180,41 +180,89 @@ def get_domain_context(domain: str) -> dict[str, Any]:
 
 
 def build_prompt(domain: str, context: dict[str, Any]) -> str:
-    """Build the prompt for Claude to generate descriptions."""
+    """Build the prompt for Claude to generate descriptions.
+
+    Uses research-based technical writing guidelines (Google, Microsoft, Apple)
+    for consistent, DRY-compliant descriptions that fit character limits naturally.
+    """
     use_cases_str = "\n".join(f"  - {uc}" for uc in context.get("use_cases", []))
     paths_str = "\n".join(f"  - {p}" for p in context.get("paths", [])[:15])
     schemas_str = ", ".join(context.get("schemas", [])[:20])
 
-    prompt = f"""Generate 3-tier API descriptions for the "{context["domain_title"]}" domain.
+    # Domain name variants to ban (the domain and common transforms)
+    domain_variants = domain.replace("_", " ")
+
+    prompt = f"""Generate 3-tier descriptions for the "{context["domain_title"]}" domain.
 
 CONTEXT:
 Domain: {domain}
 Category: {context.get("domain_category", "Other")}
-Related domains: {", ".join(context.get("related_domains", []))}
-Spec count: {context.get("spec_count", 0)} source specifications
+Related: {", ".join(context.get("related_domains", []))}
+Specs: {context.get("spec_count", 0)} source specifications
 
 Use cases:
 {use_cases_str or "  - (none specified)"}
 
-Sample API paths:
+Sample paths:
 {paths_str or "  - (none)"}
 
-Key schemas: {schemas_str or "(none)"}
+Schemas: {schemas_str or "(none)"}
 
-REQUIREMENTS:
-1. short (max {MAX_SHORT} chars): For CLI columns and badges. Be extremely concise.
-2. medium (max {MAX_MEDIUM} chars): For tooltips. 1-2 complete sentences.
-3. long (max {MAX_LONG} chars): For documentation. Comprehensive paragraph.
+═══════════════════════════════════════════════════════════════════════════════
+STRICT RULES - Violations cause output rejection:
 
-RULES:
-- NO "F5 Distributed Cloud" prefix (redundant in context)
-- NO "API specifications" suffix (implied)
-- Focus on PURPOSE and CAPABILITIES
-- Use active voice
-- Be specific to this domain's functionality
+1. BANNED TERMS (never use these):
+   ✗ "F5", "F5 XC", "F5 Distributed Cloud", "Distributed Cloud", "XC"
+   ✗ "API", "specifications", "spec", "endpoint"
+   ✗ "comprehensive", "complete", "full", "various", "extensive"
+   ✗ "{domain_variants}" (the domain name itself)
 
-Respond ONLY with a JSON object containing exactly three keys: "short", "medium", and "long".
-Do not use any tools. Do not search the web. Just generate the descriptions based on the context provided."""
+2. STYLE REQUIREMENTS:
+   ✓ Start EVERY tier with action verb: Configure, Create, Manage, Define, Deploy, Set up
+   ✓ Use present tense and active voice exclusively
+   ✓ NEVER start with: "This", "The", "A", "An", "Provides", "Enables"
+
+3. PROGRESSIVE INFORMATION (no repetition across tiers):
+   - SHORT: Primary capability only (the core "what")
+   - MEDIUM: Add secondary features + benefit (the "what else" + "why")
+   - LONG: Add mechanics, options, usage context (the "how" + "when")
+
+   CRITICAL: If a concept appears in SHORT, it MUST NOT appear in MEDIUM or LONG.
+   Each tier reveals NEW information only.
+
+═══════════════════════════════════════════════════════════════════════════════
+CHARACTER LIMITS - STRICT, ABSOLUTE LIMITS (count every character!):
+
+SHORT (MAXIMUM {MAX_SHORT} characters - HARD LIMIT):
+  • Format: [Verb] [object] [qualifier]
+  • No articles (a, an, the)
+  • Single action phrase, typically 40-55 chars
+  • Example (46 chars): "Configure HTTP load balancers and origin pools"
+  • STOP and count before finalizing!
+
+MEDIUM (MAXIMUM {MAX_MEDIUM} characters - HARD LIMIT):
+  • Exactly 2 complete sentences
+  • Target 120-140 chars total
+  • Example (124 chars): "Define routing rules and health checks for traffic distribution. Enable automatic failover with geo-location-based steering."
+
+LONG (MAXIMUM {MAX_LONG} characters - HARD LIMIT, most common failure):
+  • Target 400-480 chars (leave buffer!)
+  • 3-4 sentences covering purpose, mechanism, features
+  • AVOID verbose phrasing - every word must earn its place
+  • NEVER exceed 500 chars - this is the most commonly violated limit
+
+═══════════════════════════════════════════════════════════════════════════════
+OUTPUT FORMAT:
+
+Respond with JSON only: {{"short": "...", "medium": "...", "long": "..."}}
+
+BEFORE RESPONDING:
+□ Count characters for each tier
+□ Verify no banned terms
+□ Confirm each tier has unique content (no repetition)
+□ Check all tiers start with action verbs
+
+Do not use any tools. Generate based on context provided."""
 
     return prompt  # noqa: RET504
 
@@ -368,6 +416,471 @@ def validate_descriptions(descriptions: dict[str, str]) -> dict[str, str]:
     return validated
 
 
+# Validation constants
+BANNED_TERMS = [
+    "f5",
+    "f5 xc",
+    "f5xc",
+    "distributed cloud",
+    "xc ",
+    " xc",
+    " api",
+    "api ",
+    "specifications",
+    " spec",
+    "spec ",
+    "endpoint",
+    "comprehensive",
+    "complete",
+    "full ",
+    " full",
+    "various",
+    "extensive",
+]
+
+BAD_STARTERS = [
+    "this",
+    "the ",
+    "a ",
+    "an ",
+    "provides",
+    "enables",
+    "allows",
+    "offers",
+]
+
+MAX_RETRIES = 3
+
+
+def check_dry_compliance(domain: str, descriptions: dict[str, str]) -> list[str]:
+    """Check for DRY violations in descriptions.
+
+    Args:
+        domain: Domain name to check against
+        descriptions: Dictionary with short/medium/long descriptions
+
+    Returns:
+        List of violation messages (empty if compliant)
+    """
+    violations: list[str] = []
+
+    # Domain name variants to check
+    domain_lower = domain.lower()
+    domain_spaced = domain_lower.replace("_", " ")
+
+    for tier, text in descriptions.items():
+        text_lower = text.lower()
+
+        # Check banned terms (use extend for performance)
+        violations.extend(
+            f"{tier}: Contains banned term '{term}'" for term in BANNED_TERMS if term in text_lower
+        )
+
+        # Check domain name (avoid self-reference)
+        if domain_lower in text_lower or domain_spaced in text_lower:
+            violations.append(f"{tier}: Contains domain name '{domain}'")
+
+    # Check cross-tier repetition (significant words)
+    # Only flag if there are more than 2 overlapping significant words
+    # (some overlap is acceptable for coherence)
+    short_words = set(_extract_significant_words(descriptions.get("short", "")))
+    medium_words = set(_extract_significant_words(descriptions.get("medium", "")))
+    long_words = set(_extract_significant_words(descriptions.get("long", "")))
+
+    # Short words should not appear in medium/long (threshold: >2 overlapping)
+    short_in_medium = short_words & medium_words
+    short_in_long = short_words & long_words
+    medium_in_long = medium_words & long_words
+
+    min_overlap_threshold = 4  # Only flag if >=4 significant words overlap
+    if len(short_in_medium) >= min_overlap_threshold:
+        violations.append(
+            f"Repetition: short→medium overlap ({len(short_in_medium)} words): {short_in_medium}",
+        )
+    if len(short_in_long) >= min_overlap_threshold:
+        violations.append(
+            f"Repetition: short→long overlap ({len(short_in_long)} words): {short_in_long}",
+        )
+    if len(medium_in_long) >= min_overlap_threshold:
+        violations.append(
+            f"Repetition: medium→long overlap ({len(medium_in_long)} words): {medium_in_long}",
+        )
+
+    return violations
+
+
+def _extract_significant_words(text: str) -> list[str]:
+    """Extract significant words from text (excluding common stop words).
+
+    Returns words that are meaningful for repetition detection.
+    Excludes common technical terms that naturally appear across tiers.
+    """
+    stop_words = {
+        # Common English stop words
+        "a",
+        "an",
+        "the",
+        "and",
+        "or",
+        "but",
+        "in",
+        "on",
+        "at",
+        "to",
+        "for",
+        "of",
+        "with",
+        "by",
+        "from",
+        "up",
+        "about",
+        "into",
+        "through",
+        "during",
+        "is",
+        "are",
+        "was",
+        "were",
+        "be",
+        "been",
+        "being",
+        "have",
+        "has",
+        "had",
+        "do",
+        "does",
+        "did",
+        "will",
+        "would",
+        "could",
+        "should",
+        "may",
+        "might",
+        "must",
+        "shall",
+        "can",
+        "need",
+        "dare",
+        "ought",
+        "used",
+        "as",
+        "if",
+        "when",
+        "than",
+        "because",
+        "while",
+        "although",
+        "where",
+        "after",
+        "so",
+        "though",
+        "since",
+        "until",
+        "unless",
+        "that",
+        "which",
+        "who",
+        "whom",
+        "this",
+        "these",
+        "those",
+        "it",
+        "its",
+        "their",
+        "your",
+        "our",
+        "my",
+        # Common action verbs (expected in all tiers)
+        "configure",
+        "create",
+        "manage",
+        "define",
+        "deploy",
+        "set",
+        "use",
+        "enable",
+        "support",
+        "include",
+        "provide",
+        "specify",
+        "implement",
+        "apply",
+        "establish",
+        "monitor",
+        "control",
+        "handle",
+        "process",
+        # Common technical terms (acceptable in multiple tiers)
+        "rules",
+        "policies",
+        "settings",
+        "options",
+        "parameters",
+        "values",
+        "security",
+        "protection",
+        "traffic",
+        "requests",
+        "responses",
+        "load",
+        "balancer",
+        "balancers",
+        "balancing",
+        "origin",
+        "origins",
+        "pool",
+        "pools",
+        "server",
+        "servers",
+        "service",
+        "services",
+        "application",
+        "applications",
+        "network",
+        "networks",
+        "cloud",
+        "configuration",
+        "configurations",
+        "management",
+        "routing",
+        "health",
+        "checks",
+        "monitoring",
+        "logging",
+        "analytics",
+        "authentication",
+        "authorization",
+        "access",
+        "certificate",
+        "certificates",
+        "dns",
+        "domain",
+        "domains",
+        "zone",
+        "zones",
+        "record",
+        "records",
+        "waf",
+        "firewall",
+        "bot",
+        "rate",
+        "limiting",
+        "ddos",
+        "mitigation",
+        "api",
+        "apis",
+        "endpoint",
+        "endpoints",
+        "gateway",
+        "gateways",
+        "http",
+        "https",
+        "tcp",
+        "tls",
+        "ssl",
+        "web",
+        "data",
+        "based",
+        "multiple",
+        "custom",
+        "advanced",
+        "automated",
+        "automatic",
+        # CDN-specific terms
+        "content",
+        "delivery",
+        "caching",
+        "cache",
+        "cached",
+        "edge",
+        "edges",
+        "distribution",
+        "distributed",
+        "latency",
+        "performance",
+        # DNS-specific terms
+        "resolver",
+        "resolvers",
+        "lookup",
+        "lookups",
+        "query",
+        "queries",
+        "nameserver",
+        "nameservers",
+        "delegation",
+        "propagation",
+        # Attack/security-specific terms
+        "attack",
+        "attacks",
+        "signature",
+        "signatures",
+        "detection",
+        "threat",
+        "threats",
+        "malicious",
+        "injection",
+        "blocking",
+    }
+
+    words = text.lower().split()
+    return [w.strip(".,;:!?()[]{}\"'") for w in words if len(w) > 4 and w.lower() not in stop_words]
+
+
+def check_character_limits(descriptions: dict[str, str]) -> list[str]:
+    """Check character limits without truncation.
+
+    Args:
+        descriptions: Dictionary with short/medium/long descriptions
+
+    Returns:
+        List of violation messages (empty if compliant)
+    """
+    violations = []
+    limits = {"short": MAX_SHORT, "medium": MAX_MEDIUM, "long": MAX_LONG}
+
+    for tier, limit in limits.items():
+        text = descriptions.get(tier, "")
+        if len(text) > limit:
+            violations.append(f"{tier}: Exceeds {limit} chars ({len(text)} chars)")
+
+    return violations
+
+
+def check_style_compliance(descriptions: dict[str, str]) -> list[str]:
+    """Check style compliance (active voice, verb-first, no bad starters).
+
+    Args:
+        descriptions: Dictionary with short/medium/long descriptions
+
+    Returns:
+        List of violation messages (empty if compliant)
+    """
+    violations = []
+
+    for tier, text in descriptions.items():
+        text_lower = text.lower().strip()
+
+        # Check bad starters
+        for starter in BAD_STARTERS:
+            if text_lower.startswith(starter):
+                violations.append(
+                    f"{tier}: Starts with '{starter}' - should start with action verb",
+                )
+                break
+
+    return violations
+
+
+def run_all_validations(domain: str, descriptions: dict[str, str]) -> list[str]:
+    """Run all validation checks on descriptions.
+
+    Args:
+        domain: Domain name
+        descriptions: Dictionary with short/medium/long descriptions
+
+    Returns:
+        Combined list of all violations
+    """
+    violations = []
+    violations.extend(check_dry_compliance(domain, descriptions))
+    violations.extend(check_character_limits(descriptions))
+    violations.extend(check_style_compliance(descriptions))
+    return violations
+
+
+def create_violation_issue(
+    domain: str,
+    violations: list[str],
+    prompt: str,
+    response: str,
+) -> bool:
+    """Create GitHub issue when generation fails validation after retries.
+
+    Args:
+        domain: Domain that failed validation
+        violations: List of violation messages
+        prompt: The prompt that was used
+        response: The response that was generated
+
+    Returns:
+        True if issue was created successfully
+    """
+    timestamp = datetime.now(tz=timezone.utc).isoformat()
+    violations_list = "\n".join(f"- {v}" for v in violations)
+
+    # Truncate prompt for readability (keep first 2000 chars)
+    prompt_truncated = prompt[:2000] + "..." if len(prompt) > 2000 else prompt
+
+    title = f"Description generation violation: {domain}"
+    body = f"""## Violation Report
+
+**Domain**: `{domain}`
+**Timestamp**: {timestamp}
+**Retry Attempts**: {MAX_RETRIES}
+
+### Violations Detected
+
+{violations_list}
+
+### Prompt Used
+
+```
+{prompt_truncated}
+```
+
+### Generated Response
+
+```json
+{response}
+```
+
+### Expected Behavior
+
+Descriptions should:
+- Not contain F5/XC/Distributed Cloud references
+- Not mention domain name in own description
+- Fit within character limits without truncation (60/150/500)
+- Start with action verbs (Configure, Create, Manage, etc.)
+- Have no cross-tier repetition
+
+### Next Steps
+
+1. Analyze why the prompt failed to produce compliant output
+2. Update `build_prompt()` in `scripts/generate_descriptions.py` with refined instructions
+3. Re-test with this domain: `python -m scripts.generate_descriptions --domain {domain} --force`
+
+---
+🤖 Generated automatically by description generation script
+"""
+
+    try:
+        # Create issue without labels (labels may not exist in repo)
+        result = subprocess.run(
+            [
+                "gh",
+                "issue",
+                "create",
+                "--title",
+                title,
+                "--body",
+                body,
+            ],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+
+        if result.returncode == 0:
+            print(f"  ✓ Created GitHub issue: {result.stdout.strip()}")
+            return True
+        print(f"  Warning: Failed to create GitHub issue: {result.stderr}")
+        return False
+
+    except FileNotFoundError:
+        print("  Warning: 'gh' CLI not found. Cannot create GitHub issue.")
+        return False
+
+
 def generate_for_domain(
     domain: str,
     config: dict[str, Any],
@@ -375,7 +888,11 @@ def generate_for_domain(
     dry_run: bool = False,
     verbose: bool = False,
 ) -> bool:
-    """Generate descriptions for a single domain.
+    """Generate descriptions for a single domain with validation and retry.
+
+    Uses a retry loop (up to MAX_RETRIES attempts) to ensure descriptions
+    meet all DRY, character limit, and style requirements. Creates a GitHub
+    issue for prompt refinement if all retries are exhausted.
 
     Args:
         domain: Domain name to generate descriptions for
@@ -418,19 +935,58 @@ def generate_for_domain(
         f"  Context gathered: {context.get('spec_count', 0)} specs, {len(context.get('paths', []))} paths",
     )
 
-    # Call Claude (returns parsed dict directly)
-    print("  Calling Claude Code CLI...")
-    descriptions = call_claude(prompt, dry_run=dry_run, verbose=verbose)
-
     if dry_run:
+        print(f"\n{'=' * 60}")
+        print("DRY RUN: Would call claude -p with the following:")
+        print(f"{'=' * 60}")
+        print(f"\n[PROMPT]\n{prompt}\n")
         return True
 
-    if not descriptions:
-        print("  Error: No descriptions returned from Claude")
+    # Retry loop with validation
+    last_descriptions = None
+    last_response = ""
+    violations = []
+
+    for attempt in range(1, MAX_RETRIES + 1):
+        print(f"  Attempt {attempt}/{MAX_RETRIES}: Calling Claude Code CLI...")
+        descriptions = call_claude(prompt, dry_run=False, verbose=verbose)
+
+        if not descriptions:
+            print(f"  Attempt {attempt}: No descriptions returned from Claude")
+            continue
+
+        last_descriptions = descriptions
+        last_response = json.dumps(descriptions, indent=2)
+
+        # Run all validations
+        violations = run_all_validations(domain, descriptions)
+
+        if not violations:
+            print(f"  ✓ Attempt {attempt}: All validations passed")
+            break
+
+        # Print violations and retry
+        print(f"  Attempt {attempt}: {len(violations)} violation(s) detected:")
+        for v in violations[:5]:  # Show first 5 violations
+            print(f"    - {v}")
+        if len(violations) > 5:
+            print(f"    ... and {len(violations) - 5} more")
+
+        if attempt < MAX_RETRIES:
+            print("  Retrying with same prompt...")
+
+    # Check if we succeeded
+    if violations:
+        print(f"\n  ✗ All {MAX_RETRIES} attempts failed validation. Creating GitHub issue...")
+        create_violation_issue(domain, violations, prompt, last_response)
         return False
 
-    # Validate lengths
-    descriptions = validate_descriptions(descriptions)
+    if not last_descriptions:
+        print("  Error: No valid descriptions generated after all attempts")
+        return False
+
+    # Validate lengths (truncate if needed, but this shouldn't happen with good prompts)
+    descriptions = validate_descriptions(last_descriptions)
 
     # Update config with descriptions and source hash for change detection
     if "domains" not in config:
@@ -445,13 +1001,13 @@ def generate_for_domain(
 
     print("  Generated descriptions:")
     print(
-        f"    short ({len(descriptions.get('short', ''))} chars): {descriptions.get('short', '')[:60]}...",
+        f"    short ({len(descriptions.get('short', ''))} chars): {descriptions.get('short', '')}",
     )
     print(
-        f"    medium ({len(descriptions.get('medium', ''))} chars): {descriptions.get('medium', '')[:80]}...",
+        f"    medium ({len(descriptions.get('medium', ''))} chars): {descriptions.get('medium', '')}",
     )
     print(
-        f"    long ({len(descriptions.get('long', ''))} chars): {descriptions.get('long', '')[:100]}...",
+        f"    long ({len(descriptions.get('long', ''))} chars): {descriptions.get('long', '')[:150]}...",
     )
 
     return True
