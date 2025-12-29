@@ -3,10 +3,10 @@
 from .acronyms import AcronymNormalizer
 from .alias_validator import AliasValidationStats, AliasValidator
 from .branding import BrandingNormalizer, BrandingStats, BrandingTransformer, BrandingValidator
-from .cli_metadata_enricher import CLIMetadataEnricher
 from .consistency_validator import ConsistencyValidator
 from .constraint_analyzer import ConstraintAnalyzer
 from .constraint_reconciler import ConstraintReconciler
+from .curl_validator import CurlExampleValidator
 from .deprecated_tier_enricher import DeprecatedTierEnricher
 from .description_enricher import DescriptionEnricher
 from .description_structure import DescriptionStructureTransformer
@@ -32,10 +32,10 @@ __all__ = [
     "BrandingStats",
     "BrandingTransformer",
     "BrandingValidator",
-    "CLIMetadataEnricher",
     "ConsistencyValidator",
     "ConstraintAnalyzer",
     "ConstraintReconciler",
+    "CurlExampleValidator",
     "DeprecatedTierEnricher",
     "DescriptionEnricher",
     "DescriptionStructureTransformer",

@@ -34,7 +34,8 @@ class MinimumConfigurationStats:
     required_fields_added: int = 0
     field_requirements_added: int = 0
     example_yamls_generated: int = 0
-    example_commands_generated: int = 0
+    example_jsons_generated: int = 0
+    example_curls_generated: int = 0
     cli_domains_added: int = 0
     cli_domains_preserved: int = 0
     cli_aliases_added: int = 0
@@ -50,7 +51,8 @@ class MinimumConfigurationStats:
             "required_fields_added": self.required_fields_added,
             "field_requirements_added": self.field_requirements_added,
             "example_yamls_generated": self.example_yamls_generated,
-            "example_commands_generated": self.example_commands_generated,
+            "example_jsons_generated": self.example_jsons_generated,
+            "example_curls_generated": self.example_curls_generated,
             "cli_domains_added": self.cli_domains_added,
             "cli_domains_preserved": self.cli_domains_preserved,
             "cli_aliases_added": self.cli_aliases_added,
@@ -63,9 +65,9 @@ class MinimumConfigurationEnricher:
     """Enrich OpenAPI specs with minimum configuration metadata.
 
     Configuration-driven enricher that adds:
-    - Minimum viable configuration examples for each resource
+    - Minimum viable configuration examples for each resource (YAML and JSON)
     - Required fields for functional configurations
-    - CLI metadata for xcsh integration
+    - curl command examples for API interaction
     - Domain and resource type classification
 
     Uses config/minimum_configs.yaml for all definitions.
@@ -198,7 +200,8 @@ class MinimumConfigurationEnricher:
             "required_fields": self._extract_required_fields(resource_type, schema),
             "mutually_exclusive_groups": resource_config.get("mutually_exclusive_groups", []),
             "example_yaml": resource_config.get("example_yaml", ""),
-            "example_command": resource_config.get("example_command", ""),
+            "example_json": resource_config.get("example_json", ""),
+            "example_curl": resource_config.get("example_curl", ""),
         }
 
         schema["x-ves-minimum-configuration"] = minimum_config
@@ -250,14 +253,20 @@ class MinimumConfigurationEnricher:
         """
         required_fields = self._extract_required_fields_from_schema(schema)
         example_yaml = self._generate_example_yaml(schema_name, required_fields)
-        example_command = self._generate_example_command(schema_name)
+        example_json = self._generate_example_json(schema_name, required_fields)
+        example_curl = self._generate_example_curl(schema_name)
+
+        self.stats.example_yamls_generated += 1
+        self.stats.example_jsons_generated += 1
+        self.stats.example_curls_generated += 1
 
         return {
             "description": f"Minimum configuration for {schema_name}",
             "required_fields": required_fields,
             "mutually_exclusive_groups": [],
             "example_yaml": example_yaml,
-            "example_command": example_command,
+            "example_json": example_json,
+            "example_curl": example_curl,
         }
 
     def _extract_required_fields_from_schema(self, schema: dict[str, Any]) -> list[str]:
@@ -308,14 +317,44 @@ class MinimumConfigurationEnricher:
 
         return "\n".join(lines)
 
-    def _generate_example_command(self, schema_name: str) -> str:
-        """Generate example xcsh CLI command.
+    def _generate_example_json(self, schema_name: str, required_fields: list[str]) -> str:
+        """Generate example JSON from schema information.
+
+        Args:
+            schema_name: Schema name
+            required_fields: List of required field names
+
+        Returns:
+            Generated example JSON string
+        """
+        import json
+
+        example = {
+            "metadata": {
+                "name": "example",
+                "namespace": "default",
+            },
+        }
+
+        if required_fields:
+            spec_fields = {
+                field: "value"
+                for field in required_fields[:5]
+                if field not in ["metadata", "apiVersion", "kind"]
+            }
+            if spec_fields:
+                example["spec"] = spec_fields
+
+        return json.dumps(example, indent=2)
+
+    def _generate_example_curl(self, schema_name: str) -> str:
+        """Generate example curl command for API interaction.
 
         Args:
             schema_name: Schema name
 
         Returns:
-            Example CLI command
+            Example curl command
         """
         # Infer resource type from schema name
         resource_name = (
@@ -323,14 +362,20 @@ class MinimumConfigurationEnricher:
         )
         resource_name = re.sub(r"(?<!^)(?=[A-Z])", "_", resource_name).lower()
 
-        # Infer domain (default to "virtual")
-        domain = "virtual"
-        if "waf" in resource_name or "firewall" in resource_name:
-            domain = "waf"
-        elif "cdn" in resource_name:
-            domain = "cdn"
+        # Convert to plural form for API endpoint (simple heuristic)
+        if resource_name.endswith("y"):
+            resource_plural = resource_name[:-1] + "ies"
+        elif resource_name.endswith("s"):
+            resource_plural = resource_name + "es"
+        else:
+            resource_plural = resource_name + "s"
 
-        return f"xcsh {domain} create {resource_name} -n default -f example.yaml"
+        return (
+            f'curl -X POST "$F5XC_API_URL/api/config/namespaces/default/{resource_plural}" \\\n'
+            f'  -H "Authorization: APIToken $F5XC_API_TOKEN" \\\n'
+            f'  -H "Content-Type: application/json" \\\n'
+            f"  -d @example.json"
+        )
 
     def _add_auto_generated_field_requirements(self, schema: dict[str, Any]) -> None:
         """Add basic x-ves-required-for to schema properties (auto-generated).

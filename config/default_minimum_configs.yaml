@@ -18,8 +18,22 @@ defaults:
     spec:
       # Add required fields here
 
-  # Example CLI command template
-  example_command_template: "xcsh {domain} {resource_slug} create -f {resource_slug}.yaml -n default"
+  # Example JSON template with placeholders (preferred format)
+  example_json_template: |
+    {
+      "metadata": {
+        "name": "example-{resource_slug}",
+        "namespace": "default"
+      },
+      "spec": {}
+    }
+
+  # Example curl command template (industry standard API interaction)
+  example_curl_template: |
+    curl -X POST "$F5XC_API_URL/api/config/namespaces/default/{resource_plural}" \
+      -H "Authorization: APIToken $F5XC_API_TOKEN" \
+      -H "Content-Type: application/json" \
+      -d @{resource_slug}.json
 
 # Default values by resource type pattern
 resource_type_defaults:
@@ -122,22 +136,34 @@ resource_type_defaults:
 operation_templates:
   POST:
     description_hint: "Create a new {resource_type}"
-    command_template: "xcsh {domain} {resource_slug} create -f {resource_slug}.yaml -n default"
+    curl_template: |
+      curl -X POST "$F5XC_API_URL/api/config/namespaces/default/{resource_plural}" \
+        -H "Authorization: APIToken $F5XC_API_TOKEN" \
+        -H "Content-Type: application/json" \
+        -d @{resource_slug}.json
     example_context: "creation with required fields"
 
   GET:
     description_hint: "Retrieve {resource_type} details"
-    command_template: "xcsh {domain} {resource_slug} get -n default"
+    curl_template: |
+      curl -X GET "$F5XC_API_URL/api/config/namespaces/default/{resource_plural}/{name}" \
+        -H "Authorization: APIToken $F5XC_API_TOKEN"
     example_context: "read-only configuration"
 
   PUT:
     description_hint: "Update existing {resource_type}"
-    command_template: "xcsh {domain} {resource_slug} update -f {resource_slug}.yaml -n default"
+    curl_template: |
+      curl -X PUT "$F5XC_API_URL/api/config/namespaces/default/{resource_plural}/{name}" \
+        -H "Authorization: APIToken $F5XC_API_TOKEN" \
+        -H "Content-Type: application/json" \
+        -d @{resource_slug}.json
     example_context: "updates to existing resources"
 
   DELETE:
     description_hint: "Delete {resource_type}"
-    command_template: "xcsh {domain} {resource_slug} delete -n default"
+    curl_template: |
+      curl -X DELETE "$F5XC_API_URL/api/config/namespaces/default/{resource_plural}/{name}" \
+        -H "Authorization: APIToken $F5XC_API_TOKEN"
     example_context: "deletion with confirmation"
 
 # Common field patterns
@@ -206,5 +232,6 @@ validation:
   ensure_description: true
   ensure_required_fields: true
   ensure_example_yaml: true
-  ensure_example_command: true
+  ensure_example_json: true
+  ensure_example_curl: true
   ensure_domain: true

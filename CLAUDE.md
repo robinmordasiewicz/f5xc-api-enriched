@@ -122,7 +122,7 @@ make discover-and-push
 1. **Check Updates**: ETag comparison against F5 source
 2. **Download**: Fetch new specs if changed
 3. **Discovery Detection**: Check for committed discovery data
-4. **Pipeline**: Enrich → Normalize → Merge → Lint
+4. **Pipeline**: Enrich → Normalize → Merge → Lint → Validate curl examples
 5. **Version Bump**: Auto-increment based on change type (see below)
 6. **Release**: Create GitHub release with changelog
 7. **Deploy**: Publish to GitHub Pages

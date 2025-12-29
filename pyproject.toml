@@ -247,10 +247,15 @@ ignore = [
 # Tests can use assert, magic values, and don't need docstrings
 "tests/**/*.py" = [
     "S101",    # assert allowed in tests
+    "S105",    # Hardcoded test tokens (string assignment) allowed in tests
+    "S106",    # Hardcoded test tokens (argument) allowed in tests
     "PLR2004", # Magic values allowed in tests
     "D",       # Docstrings not required in tests
     "ANN",     # Type annotations not required in tests
     "ARG",     # Unused arguments allowed in fixtures
+    "SIM117",  # Nested with statements allowed in tests (mocking patterns)
+    "RET504",  # Unnecessary assignment before return allowed in tests (fixture clarity)
+    "RUF059",  # Unused unpacked variable allowed in tests (tuple unpacking patterns)
 ]
 
 # Enricher unit tests need private method access to test internal implementation
@@ -260,10 +265,10 @@ ignore = [
 "tests/test_validation_enricher.py" = [
     "SLF001",  # Private member access (testing internal methods)
 ]
-"tests/test_cli_metadata_enricher.py" = [
+"tests/test_operation_metadata_enricher.py" = [
     "SLF001",  # Private member access (testing internal methods)
 ]
-"tests/test_operation_metadata_enricher.py" = [
+"tests/test_curl_validator.py" = [
     "SLF001",  # Private member access (testing internal methods)
 ]
 

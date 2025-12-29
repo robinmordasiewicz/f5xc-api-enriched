@@ -25,7 +25,6 @@ class OperationEnrichmentStats:
     operations_enriched: int = 0
     required_fields_added: int = 0
     danger_levels_assigned: int = 0
-    examples_generated: int = 0
     side_effects_documented: int = 0
 
     def to_dict(self) -> dict[str, int]:
@@ -34,20 +33,18 @@ class OperationEnrichmentStats:
             "operations_enriched": self.operations_enriched,
             "required_fields_added": self.required_fields_added,
             "danger_levels_assigned": self.danger_levels_assigned,
-            "examples_generated": self.examples_generated,
             "side_effects_documented": self.side_effects_documented,
         }
 
 
 class OperationMetadataEnricher:
-    """Add operation-level metadata for CLI tools.
+    """Add operation-level metadata for API operations.
 
     Enriches operations with:
     - x-ves-required-fields: List of required field paths
     - x-ves-danger-level: low/medium/high risk classification
     - x-ves-confirmation-required: Boolean for dangerous operations
     - x-ves-side-effects: Create/modify/delete effects
-    - x-ves-cli-examples: CLI usage examples
 
     Configuration-driven from operation_metadata.yaml.
     """
@@ -201,13 +198,7 @@ class OperationMetadataEnricher:
             operation[f"{self.extension_prefix}-side-effects"] = side_effects
             self.stats.side_effects_documented += 1
 
-        # Generate and add CLI examples
-        examples = self._generate_cli_examples(method, path, operation)
-        if examples:
-            operation[f"{self.extension_prefix}-cli-examples"] = examples
-            self.stats.examples_generated += 1
-
-        # NEW: Build and add comprehensive metadata (dual-format approach)
+        # Build and add comprehensive metadata (dual-format approach)
         comprehensive_metadata = self._build_comprehensive_metadata(
             method,
             path,
@@ -265,7 +256,6 @@ class OperationMetadataEnricher:
             "confirmation_required": danger_level == "high",
             "common_errors": common_errors,
             "performance_impact": performance_impact,
-            "examples": self._generate_cli_examples(method, path, operation),
         }
 
     def _generate_purpose(self, method: str, path: str, resource_type: str) -> str:
@@ -646,83 +636,6 @@ class OperationMetadataEnricher:
 
         # Remove empty arrays
         return {k: v for k, v in side_effects.items() if v}
-
-    def _generate_cli_examples(
-        self,
-        method: str,
-        path: str,
-        _operation: dict[str, Any],
-    ) -> list[dict[str, str]]:
-        """Generate CLI usage examples for an operation.
-
-        Args:
-            method: HTTP method
-            path: API path
-            operation: Operation definition
-
-        Returns:
-            List of example objects with description and command
-        """
-        examples = []
-        resource_type = self._extract_resource_type(path)
-        domain = self._extract_domain(path)
-
-        if method == "GET":
-            if "{name}" in path or "{id}" in path:
-                # Get specific resource
-                examples.append(
-                    {
-                        "description": f"Get specific {resource_type}",
-                        "command": f"f5xcctl {domain} {resource_type} get {{name}} --namespace {{namespace}}",
-                        "use_case": "get_specific",
-                    },
-                )
-            else:
-                # List operation
-                examples.append(
-                    {
-                        "description": f"List all {resource_type}s",
-                        "command": f"f5xcctl {domain} {resource_type} list --namespace {{namespace}}",
-                        "use_case": "list_all",
-                    },
-                )
-
-        elif method == "POST":
-            examples.append(
-                {
-                    "description": f"Create {resource_type}",
-                    "command": f"f5xcctl {domain} {resource_type} create {{name}} --namespace {{namespace}}",
-                    "use_case": "basic_create",
-                },
-            )
-            examples.append(
-                {
-                    "description": "Create from YAML file",
-                    "command": f"f5xcctl {domain} {resource_type} create -f {{file}}.yaml",
-                    "use_case": "file_based",
-                },
-            )
-
-        elif method == "PUT":
-            examples.append(
-                {
-                    "description": f"Update {resource_type}",
-                    "command": f"f5xcctl {domain} {resource_type} update {{name}} --namespace {{namespace}} -f {{file}}.yaml",
-                    "use_case": "update",
-                },
-            )
-
-        elif method == "DELETE":
-            examples.append(
-                {
-                    "description": f"Delete {resource_type}",
-                    "command": f"f5xcctl {domain} {resource_type} delete {{name}} --namespace {{namespace}}",
-                    "use_case": "delete",
-                    "warning": "Permanent operation - cannot be undone",
-                },
-            )
-
-        return examples[:3]  # Limit to 3 examples per operation
 
     @staticmethod
     def _extract_resource_type(path: str) -> str:

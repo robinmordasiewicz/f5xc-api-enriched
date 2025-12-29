@@ -23,7 +23,8 @@ class TestMinimumConfigurationStats:
         assert stats.required_fields_added == 0
         assert stats.field_requirements_added == 0
         assert stats.example_yamls_generated == 0
-        assert stats.example_commands_generated == 0
+        assert stats.example_jsons_generated == 0
+        assert stats.example_curls_generated == 0
         assert stats.cli_domains_added == 0
         assert stats.cli_aliases_added == 0
         assert stats.errors == []
@@ -180,8 +181,8 @@ class TestExampleGeneration:
                 f"Invalid YAML structure for {resource}"
             )
 
-    def test_example_command_generation(self):
-        """Test that example CLI commands are configured for resources."""
+    def test_example_curl_generation(self):
+        """Test that example curl commands are configured for resources."""
         enricher = MinimumConfigurationEnricher()
         for resource in [
             "http_loadbalancer",
@@ -191,9 +192,26 @@ class TestExampleGeneration:
             "app_firewall",
         ]:
             resource_config = enricher.resources.get(resource, {})
-            example_command = resource_config.get("example_command", "")
-            assert example_command, f"No example_command for {resource}"
-            assert "xcsh" in example_command, f"Invalid xcsh command for {resource}"
+            example_curl = resource_config.get("example_curl", "")
+            assert example_curl, f"No example_curl for {resource}"
+            assert "curl" in example_curl, f"Invalid curl command for {resource}"
+            assert "F5XC_API_URL" in example_curl, f"Missing API URL var for {resource}"
+            assert "F5XC_API_TOKEN" in example_curl, f"Missing token var for {resource}"
+
+    def test_example_json_configured(self):
+        """Test that example JSON is configured for resources."""
+        enricher = MinimumConfigurationEnricher()
+        for resource in [
+            "http_loadbalancer",
+            "origin_pool",
+            "tcp_loadbalancer",
+            "healthcheck",
+            "app_firewall",
+        ]:
+            resource_config = enricher.resources.get(resource, {})
+            example_json = resource_config.get("example_json", "")
+            assert example_json, f"No example_json for {resource}"
+            assert "metadata" in example_json, f"Invalid JSON structure for {resource}"
 
     def test_cli_aliases_configured(self):
         """Test that CLI aliases are explicitly configured."""
@@ -382,7 +400,8 @@ class TestAllFiveResources:
         assert "required_fields" in min_config
         assert "description" in min_config
         assert "example_yaml" in min_config
-        assert "example_command" in min_config
+        assert "example_json" in min_config
+        assert "example_curl" in min_config
 
         # Verify CLI metadata was added
         assert "x-ves-cli-domain" in schema

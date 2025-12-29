@@ -70,7 +70,6 @@ from scripts.utils import (
     AcronymNormalizer,
     AliasValidator,
     BrandingTransformer,
-    CLIMetadataEnricher,
     ConsistencyValidator,
     ConstraintReconciler,
     DescriptionEnricher,
@@ -268,12 +267,7 @@ def enrich_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], dic
     spec = validation_enricher.enrich_spec(spec)
     validation_stats = validation_enricher.get_stats()
 
-    # 13. Field-level CLI metadata enrichment (add help text and completion hints)
-    cli_metadata_enricher = CLIMetadataEnricher()
-    spec = cli_metadata_enricher.enrich_spec(spec)
-    cli_stats = cli_metadata_enricher.get_stats()
-
-    # 14. Operation metadata enrichment (add danger levels, required fields, side effects, CLI examples)
+    # 13. Operation metadata enrichment (add danger levels, required fields, side effects)
     operation_metadata_enricher = OperationMetadataEnricher()
     spec = operation_metadata_enricher.enrich_spec(spec)
     op_stats = operation_metadata_enricher.get_stats()
@@ -303,12 +297,9 @@ def enrich_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], dic
         "field_examples_added": field_desc_stats.get("examples_added", 0),
         "validation_rules_added": validation_stats.get("patterns_added", 0),
         "validation_constraints_added": validation_stats.get("constraints_added", 0),
-        "cli_help_added": cli_stats.get("help_added", 0),
-        "cli_completions_added": cli_stats.get("completions_added", 0),
         "operations_enriched": op_stats.get("operations_enriched", 0),
         "required_fields_added": op_stats.get("required_fields_added", 0),
         "danger_levels_assigned": op_stats.get("danger_levels_assigned", 0),
-        "cli_examples_generated": op_stats.get("examples_generated", 0),
         "side_effects_documented": op_stats.get("side_effects_documented", 0),
         "minimum_configs_added": min_config_stats.get("minimum_configs_added", 0),
         "readonly_fields_marked": readonly_stats.get("total_fields_marked", 0),

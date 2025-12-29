@@ -266,7 +266,7 @@ class DeprecatedTierEnricher:
         if not min_config:
             return
 
-        example_cmd = min_config.get("example_command", "")
+        example_cmd = min_config.get("example_curl", "")
         if not example_cmd:
             return
 
@@ -278,7 +278,7 @@ class DeprecatedTierEnricher:
                 self.stats.cli_examples_fixed += 1
 
         if new_cmd != example_cmd:
-            min_config["example_command"] = new_cmd
+            min_config["example_curl"] = new_cmd
 
     def get_stats(self) -> dict[str, Any]:
         """Get enrichment statistics.

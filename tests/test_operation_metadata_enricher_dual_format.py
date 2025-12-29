@@ -84,7 +84,6 @@ class TestDualFormatSupport:
 
         # Old format fields should be present
         assert "x-ves-danger-level" in get_op
-        assert "x-ves-cli-examples" in get_op
         assert "x-ves-required-fields" in get_op or "x-ves-danger-level" in get_op
 
     def test_new_format_comprehensive_metadata(self, enricher, simple_spec):
@@ -107,7 +106,6 @@ class TestDualFormatSupport:
         assert "confirmation_required" in metadata
         assert "common_errors" in metadata
         assert "performance_impact" in metadata
-        assert "examples" in metadata
 
     def test_purpose_generation_get_list(self, enricher, simple_spec):
         """Test purpose generation for GET list operation."""
@@ -225,17 +223,6 @@ class TestDualFormatSupport:
         assert "side_effects" in metadata
         side_effects = metadata["side_effects"]
         assert isinstance(side_effects, dict)
-
-    def test_examples_included_in_metadata(self, enricher, simple_spec):
-        """Test that examples are included in comprehensive metadata."""
-        result = enricher.enrich_spec(simple_spec)
-        get_op = result["paths"]["/api/resources"]["get"]
-        metadata = get_op["x-ves-operation-metadata"]
-
-        # Examples should be present
-        assert "examples" in metadata
-        examples = metadata["examples"]
-        assert isinstance(examples, list)
 
     def test_prerequisites_identification(self, enricher):
         """Test identification of operation prerequisites."""

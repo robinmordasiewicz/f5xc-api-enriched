@@ -244,64 +244,6 @@ class TestSideEffectDetermination:
         assert "contained_resources" in side_effects["deletes"]
 
 
-class TestCLIExampleGeneration:
-    """Test CLI example generation."""
-
-    def test_get_list_example(self, enricher):
-        """Test GET list operations get list example."""
-        examples = enricher._generate_cli_examples(
-            "GET",
-            "/api/config/namespaces/{namespace}/http_loadbalancers",
-            {},
-        )
-
-        assert len(examples) > 0
-        assert "list" in examples[0]["use_case"].lower()
-
-    def test_get_specific_example(self, enricher):
-        """Test GET specific operations get get example."""
-        examples = enricher._generate_cli_examples(
-            "GET",
-            "/api/config/namespaces/{namespace}/http_loadbalancers/{name}",
-            {},
-        )
-
-        assert len(examples) > 0
-        assert "get_specific" in examples[0]["use_case"]
-
-    def test_post_create_example(self, enricher):
-        """Test POST operations get create example."""
-        examples = enricher._generate_cli_examples(
-            "POST",
-            "/api/config/namespaces/{namespace}/http_loadbalancers",
-            {},
-        )
-
-        assert len(examples) > 0
-        assert any("create" in e["use_case"].lower() for e in examples)
-
-    def test_delete_example_with_warning(self, enricher):
-        """Test DELETE operations get warning in example."""
-        examples = enricher._generate_cli_examples(
-            "DELETE",
-            "/api/config/namespaces/{namespace}/http_loadbalancers/{name}",
-            {},
-        )
-
-        assert len(examples) > 0
-        assert "warning" in examples[0]
-
-    def test_max_examples_limit(self, enricher):
-        """Test that only 3 examples max are generated."""
-        examples = enricher._generate_cli_examples(
-            "POST",
-            "/api/config/namespaces/{namespace}/items",
-            {},
-        )
-
-        assert len(examples) <= 3
-
-
 class TestResourceTypeExtraction:
     """Test resource type extraction from paths."""
 

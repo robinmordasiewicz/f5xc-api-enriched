@@ -65,7 +65,7 @@ def spec_with_cli_examples():
                 "TestSchema": {
                     "type": "object",
                     "x-ves-minimum-configuration": {
-                        "example_command": "xcsh set subscription_basic_tier --name test",
+                        "example_curl": 'curl -X POST "$F5XC_API_URL/api/subscription_basic_tier" -d @test.json',
                     },
                 },
             },
@@ -225,7 +225,7 @@ class TestCLIExampleTransformation:
         """Test CLI examples are updated from basic to standard."""
         result = enricher.enrich(spec_with_cli_examples)
         example_cmd = result["components"]["schemas"]["TestSchema"]["x-ves-minimum-configuration"][
-            "example_command"
+            "example_curl"
         ]
 
         assert "subscription_basic_tier" not in example_cmd
@@ -246,7 +246,7 @@ class TestCLIExampleTransformation:
                     "TestSchema": {
                         "type": "object",
                         "x-ves-minimum-configuration": {
-                            "example_command": "xcsh set subscription_premium_tier --name test",
+                            "example_curl": 'curl -X POST "$F5XC_API_URL/api/subscription_premium_tier" -d @test.json',
                         },
                     },
                 },
@@ -255,7 +255,7 @@ class TestCLIExampleTransformation:
 
         result = enricher.enrich(spec)
         example_cmd = result["components"]["schemas"]["TestSchema"]["x-ves-minimum-configuration"][
-            "example_command"
+            "example_curl"
         ]
 
         assert "subscription_premium_tier" not in example_cmd
