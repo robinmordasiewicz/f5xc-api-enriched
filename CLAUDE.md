@@ -250,6 +250,89 @@ Four OpenAPI extensions are added to schemas and specs:
 - 13 new tests for auto-generation and idempotency
 - Total: 43 comprehensive tests with 82% code coverage
 
+## Domain Description Enrichment (Issue #183)
+
+**Purpose**: Apply DRY principle to domain descriptions with 3-tier descriptions for different use cases.
+
+**Features**:
+
+Three description tiers are generated and applied:
+
+| Tier | Max Length | Use Case | Example |
+|------|-----------|----------|---------|
+| `short` | 60 chars | CLI columns, badges | "HTTP/HTTPS load balancing and traffic management" |
+| `medium` | 150 chars | Tooltips, summaries | "Configure HTTP and HTTPS load balancers with origin pools, routing rules, and security integration." |
+| `long` | 500 chars | Documentation, AI context | Full paragraph with capabilities and typical workflows |
+
+**Architecture**:
+
+```text
+GENERATION (one-time per domain):
+  scripts/generate_descriptions.py
+    ├── Reads: specs/original/*.json (extract context)
+    ├── Reads: scripts/utils/domain_metadata.py (use_cases)
+    ├── Uses: Claude Code CLI (claude -p) for generation
+    └── Writes: config/domain_descriptions.yaml
+
+APPLICATION (every build):
+  scripts/utils/description_enricher.py
+    ├── Reads: config/domain_descriptions.yaml
+    ├── Applies: info.description in domain specs (long tier)
+    └── Integrated into: scripts/pipeline.py
+
+  scripts/pipeline.py (create_spec_index)
+    └── Applies: description_short, description_medium to index.json
+```
+
+**Configuration**:
+
+- `config/domain_descriptions.yaml`: Central store for all domain descriptions
+
+**Generating Descriptions**:
+
+```bash
+# Generate for a specific domain
+python -m scripts.generate_descriptions --domain dns
+
+# Generate for all domains without descriptions
+python -m scripts.generate_descriptions --all
+
+# Force regeneration even if descriptions exist
+python -m scripts.generate_descriptions --domain virtual --force
+
+# Dry run (show prompts without calling Claude)
+python -m scripts.generate_descriptions --all --dry-run
+
+# List domain description status
+python -m scripts.generate_descriptions --list
+```
+
+**Key Classes**:
+
+- `DescriptionEnricher`: Loads config and applies long description to `info.description`
+- `DescriptionEnrichmentStats`: Tracks specs processed, descriptions applied/skipped
+
+**Output Schema** (index.json):
+
+```json
+{
+  "specifications": [
+    {
+      "domain": "virtual",
+      "description": "Full long description...",
+      "description_short": "HTTP/HTTPS load balancing...",
+      "description_medium": "Configure HTTP and HTTPS load balancers..."
+    }
+  ]
+}
+```
+
+**Testing**:
+
+- 26 tests covering enricher basics, retrieval, spec enrichment, statistics
+- Description length validation for all configured domains
+- Run: `pytest tests/test_description_enricher.py -v`
+
 ## Key Gotchas
 
 ### 1. Pre-commit Pipeline Always Runs

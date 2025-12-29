@@ -8,6 +8,7 @@ from .consistency_validator import ConsistencyValidator
 from .constraint_analyzer import ConstraintAnalyzer
 from .constraint_reconciler import ConstraintReconciler
 from .deprecated_tier_enricher import DeprecatedTierEnricher
+from .description_enricher import DescriptionEnricher
 from .description_structure import DescriptionStructureTransformer
 from .description_validator import DescriptionValidator
 from .discovery_enricher import DiscoveryEnricher
@@ -36,6 +37,7 @@ __all__ = [
     "ConstraintAnalyzer",
     "ConstraintReconciler",
     "DeprecatedTierEnricher",
+    "DescriptionEnricher",
     "DescriptionStructureTransformer",
     "DescriptionValidator",
     "DiscoveryEnricher",

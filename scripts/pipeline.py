@@ -73,6 +73,7 @@ from scripts.utils import (
     CLIMetadataEnricher,
     ConsistencyValidator,
     ConstraintReconciler,
+    DescriptionEnricher,
     DescriptionStructureTransformer,
     DescriptionValidator,
     DiscoveryEnricher,
@@ -1014,11 +1015,23 @@ def merge_specs_by_domain(
         "operationIds_deduplicated": 0,
     }
 
+    # Load description enricher for domain-specific descriptions
+    description_enricher = DescriptionEnricher()
+
     for domain, spec_list in sorted(domain_specs.items()):
         domain_title = domain.replace("_", " ").title()
+
+        # Use enriched description if available, otherwise fallback to generic
+        enriched_desc = description_enricher.get_description(domain, tier="long")
+        description = (
+            enriched_desc
+            if enriched_desc
+            else f"F5 Distributed Cloud {domain_title} API specifications"
+        )
+
         merged_spec = create_base_spec(
             title=f"F5 XC {domain_title} API",
-            description=f"F5 Distributed Cloud {domain_title} API specifications",
+            description=description,
             version=version,
         )
 
@@ -1197,6 +1210,9 @@ def create_spec_index(domain_specs: dict[str, dict[str, Any]], version: str) -> 
     # Add critical resources list for downstream tooling (e.g., xcsh CLI)
     index["x-ves-critical-resources"] = load_critical_resources()
 
+    # Load description enricher for multi-tier descriptions
+    description_enricher = DescriptionEnricher()
+
     for domain, spec in sorted(domain_specs.items()):
         info = spec.get("info", {})
         metadata = get_metadata(domain)
@@ -1206,11 +1222,19 @@ def create_spec_index(domain_specs: dict[str, dict[str, Any]], version: str) -> 
         schema_count = len(spec.get("components", {}).get("schemas", {}))
         complexity = calculate_complexity(path_count, schema_count)
 
+        # Get multi-tier descriptions (short/medium for index, long already in spec)
+        domain_title = domain.replace("_", " ").title()
+        description_short = description_enricher.get_description(domain, tier="short")
+        description_medium = description_enricher.get_description(domain, tier="medium")
+
         # Build spec entry
         spec_entry = {
             "domain": domain,
             "title": info.get("title", ""),
             "description": info.get("description", ""),
+            "description_short": description_short or f"{domain_title} API",
+            "description_medium": description_medium
+            or f"F5 Distributed Cloud {domain_title} API specifications",
             "file": f"{domain}.json",
             "path_count": path_count,
             "schema_count": schema_count,
