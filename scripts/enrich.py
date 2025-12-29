@@ -28,6 +28,7 @@ from scripts.utils import (
     BrandingValidator,
     ConsistencyValidator,
     DeprecatedTierEnricher,
+    DescriptionEnricher,
     DescriptionStructureTransformer,
     DescriptionValidator,
     DiscoveryEnricher,
@@ -307,6 +308,10 @@ def enrich_spec_file(
 
         # 4.5. Minimum configuration enrichment (add x-ves-minimum-configuration)
         spec = minimum_configuration_enricher.enrich_spec(spec)
+
+        # 4.6. Domain description enrichment (apply DRY descriptions from config)
+        description_enricher = DescriptionEnricher()
+        spec = description_enricher.enrich_spec(spec)
 
         # 5. Acronym normalization
         spec = acronym_normalizer.normalize_spec(spec, target_fields)
