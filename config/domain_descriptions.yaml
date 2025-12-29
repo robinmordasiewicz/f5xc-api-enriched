@@ -1,5 +1,5 @@
 version: 1.0.0
-generated_at: '2025-12-29T16:02:52.282734+00:00'
+generated_at: '2025-12-29T22:52:44.106124+00:00'
 domains:
   virtual:
     source_patterns_hash: sha256:1eead315c8572a28f35b7d560a4b36b65c970cef1e8ba428dca3e6dc9bdca5e1
@@ -96,13 +96,13 @@ domains:
   cdn:
     source_patterns_hash: sha256:64e84bbe1afe9d9b4cd4a584c6c2a0e2ecada7da648db15304662f827529795f
     short: Configure content delivery and caching rules
-    medium: Define cache rules and load balancers for content distribution. Set TTL
-      policies, path matching, and header-based caching decisions.
-    long: Create cache rules with expression-based matching for paths, headers, cookies,
-      and query parameters. Deploy load balancers optimized for content distribution
-      with configurable TTL settings and cache eligibility options. Monitor access
-      logs and metrics for delivery performance. Purge cached content on demand and
-      track service operation status across namespaces.
+    medium: Set up cache rules with path matching and TTL controls. Define load balancers
+      for optimized content distribution across edge locations.
+    long: Create cache rules using path matchers, cookie matching, header conditions,
+      and query parameter filters. Configure TTL settings and cache eligibility options
+      for fine-grained control over cached content. Deploy load balancers with access
+      logging, metrics collection, and cache purge capabilities. Manage subscription
+      services and monitor service operation status for active deployments.
   ce_management:
     source_patterns_hash: sha256:eb8432bbb50b565e1820d9cadeba76e2d088d0fe7091e24c5e4371fd0a73c6a0
     short: Customer Edge site lifecycle and network configuration
@@ -391,12 +391,11 @@ domains:
       monitoring for...
   waf:
     source_patterns_hash: sha256:ec99ff4e45bc12a3d6547c62e2fea083507792c5ec35f7ec1589fc5e5975738c
-    short: Configure web application firewall rules and policies
-    medium: Manage application security through attack detection and blocking settings.
-      Define custom response codes and signature-based threat mitigation.
-    long: Deploy protection against common web attacks including injection, cross-site
-      scripting, and protocol violations. Set up bot detection with configurable actions
-      for automated traffic handling. Create exclusion policies to whitelist trusted
-      requests and reduce false positives. Monitor security events and rule hits through
-      metrics collection to analyze threat patterns and refine defensive configurations
-      for virtual hosts.
+    short: Configure application firewall rules and bot protection
+    medium: Define security policies for web applications. Manage attack signatures,
+      exclusion rules, and threat detection settings.
+    long: Set up firewall configurations with attack type settings and violation detection.
+      Create exclusion policies to tune false positives and customize blocking responses.
+      Deploy staged signatures before production release and monitor rule hits through
+      security event metrics. Integrate with virtual hosts for layered protection
+      using AI-based risk blocking and anonymization settings for sensitive data handling.
