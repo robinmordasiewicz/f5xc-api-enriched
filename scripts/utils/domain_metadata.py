@@ -211,6 +211,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Infrastructure",
+        "ui_category": "Sites",
         "aliases": ["ce", "edge", "node"],
         "use_cases": [
             "Configure customer edge nodes",
@@ -224,6 +225,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Infrastructure",
+        "ui_category": "Cloud Connect",
         "aliases": ["cloud", "infra", "provider"],
         "use_cases": [
             "Connect to cloud providers (AWS, Azure, GCP)",
@@ -237,6 +239,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Advanced",
         "domain_category": "Infrastructure",
+        "ui_category": "Edge Stack",
         "aliases": ["vk8s", "containers", "workloads"],
         # Industry-standard naming (XCCS = XC Container Services)
         "short_name": "XCCS",
@@ -255,6 +258,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Advanced",
         "domain_category": "Infrastructure",
+        "ui_category": "Kubernetes",
         "aliases": ["mk8s", "appstack", "k8s-mgmt"],
         # Industry-standard naming (XCKS = XC Kubernetes Service)
         "short_name": "XCKS",
@@ -273,6 +277,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Advanced",
         "domain_category": "Infrastructure",
+        "ui_category": "Service Mesh",
         "aliases": ["mesh", "svc-mesh"],
         "use_cases": [
             "Configure service mesh connectivity",
@@ -286,6 +291,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Infrastructure",
+        "ui_category": "Sites",
         "aliases": ["site", "deployment"],
         # Customer Edge deployments: Cloud sites, XCKS (Managed Kubernetes), Mesh
         "deployment_types": ["Cloud Sites", "XCKS (Managed Kubernetes)", "Secure Mesh"],
@@ -304,6 +310,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Advanced",
         "domain_category": "Security",
+        "ui_category": "API Protection",
         "aliases": ["apisec", "api-discovery"],
         "use_cases": [
             "Discover and catalog APIs",
@@ -317,6 +324,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Advanced",
         "domain_category": "Security",
+        "ui_category": "Security",
         "aliases": ["firewall", "appfw"],
         "use_cases": [
             "Configure web application firewall rules",
@@ -343,6 +351,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Advanced",
         "domain_category": "Security",
+        "ui_category": "Security",
         "aliases": ["netsec", "nfw"],
         "use_cases": [
             "Configure network firewall and ACL policies",
@@ -358,6 +367,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Advanced",
         "domain_category": "Security",
+        "ui_category": "Security",
         "aliases": ["bf", "encrypt", "secrets"],
         "use_cases": [
             "Configure secret policies for encryption",
@@ -383,6 +393,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Advanced",
         "domain_category": "Security",
+        "ui_category": "Infrastructure Protection",
         "aliases": ["dos", "ddos-protect"],
         "use_cases": [
             "Configure DDoS protection policies",
@@ -395,6 +406,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Networking",
+        "ui_category": "DNS",
         "aliases": ["dns-zone", "zones"],
         "use_cases": [
             "Configure DNS load balancing",
@@ -408,6 +420,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Advanced",
         "domain_category": "Networking",
+        "ui_category": "Load Balancing",
         "aliases": ["lb", "loadbalancer", "vhost"],
         "use_cases": [
             "Configure HTTP/TCP/UDP load balancers",
@@ -425,6 +438,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Advanced",
         "domain_category": "Networking",
+        "ui_category": "Networking",
         "aliases": ["net", "routing", "bgp"],
         "use_cases": [
             "Configure BGP routing and ASN management",
@@ -440,6 +454,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Advanced",
         "domain_category": "Networking",
+        "ui_category": "Load Balancing",
         "aliases": ["cache", "content"],
         "use_cases": [
             "Configure CDN load balancing",
@@ -454,6 +469,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Operations",
+        "ui_category": "Observability",
         "aliases": ["obs", "monitoring", "synth"],
         "use_cases": [
             "Configure synthetic monitoring",
@@ -466,6 +482,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Operations",
+        "ui_category": "Observability",
         "aliases": ["stats", "metrics", "logs"],
         "use_cases": [
             "Access flow statistics and analytics",
@@ -481,6 +498,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Operations",
+        "ui_category": "Configuration",
         "aliases": ["tickets", "help-desk"],
         "use_cases": [
             "Submit and manage support tickets",
@@ -494,6 +512,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Platform",
+        "ui_category": "Identity & Access",
         "aliases": ["authn", "oidc", "sso"],
         "use_cases": [
             "Configure authentication mechanisms",
@@ -522,6 +541,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Platform",
+        "ui_category": "Identity & Access",
         "aliases": ["user", "accounts", "iam"],
         "use_cases": [
             "Manage user accounts and tokens",
@@ -536,6 +556,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Advanced",
         "domain_category": "Platform",
+        "ui_category": "BIG-IP Connector",
         "aliases": ["f5-bigip", "irule", "ltm"],
         "use_cases": [
             "Manage BigIP F5 appliances",
@@ -549,6 +570,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Advanced",
         "domain_category": "Platform",
+        "ui_category": "Configuration",
         "aliases": ["market", "addons", "extensions"],
         "use_cases": [
             "Access third-party integrations and add-ons",
@@ -562,6 +584,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Advanced",
         "domain_category": "Platform",
+        "ui_category": "NGINX One",
         "aliases": ["nginx", "nms", "nginx-plus"],
         "use_cases": [
             "Manage NGINX One platform integrations",
@@ -575,6 +598,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Security",
+        "ui_category": "Security",
         "aliases": ["cert", "certs", "ssl", "tls"],
         "use_cases": [
             "Manage SSL/TLS certificates",
@@ -588,6 +612,7 @@ DOMAIN_METADATA = {
         "is_preview": True,
         "requires_tier": "Advanced",
         "domain_category": "AI",
+        "ui_category": "AI & Automation",
         "aliases": ["ai", "genai", "assistant"],
         "use_cases": [
             "Access AI-powered features",
@@ -601,6 +626,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Advanced",
         "domain_category": "Platform",
+        "ui_category": "Configuration",
         "aliases": ["storage", "s3", "buckets"],
         "use_cases": [
             "Manage object storage services",
@@ -613,6 +639,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Advanced",
         "domain_category": "Networking",
+        "ui_category": "Networking",
         "aliases": ["ratelimit", "throttle", "policer"],
         "use_cases": [
             "Configure rate limiter policies",
@@ -625,6 +652,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Advanced",
         "domain_category": "Security",
+        "ui_category": "Client-Side Defense",
         "aliases": ["shape-sec", "safeap"],
         "use_cases": [
             "Configure Shape Security policies",
@@ -677,6 +705,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Operations",
+        "ui_category": "Discovery",
         "aliases": ["di", "intelligence", "insights"],
         "use_cases": [
             "Analyze security and traffic data",
@@ -689,6 +718,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Operations",
+        "ui_category": "Observability",
         "aliases": ["telemetry", "ti"],
         "use_cases": [
             "Collect and analyze telemetry data",
@@ -701,6 +731,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Security",
+        "ui_category": "Security",
         "aliases": ["threats", "campaigns", "threat-intel"],
         "use_cases": [
             "Track and analyze threat campaigns",
@@ -713,6 +744,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Platform",
+        "ui_category": "Configuration",
         "aliases": ["vpm", "nodes", "node-mgmt"],
         "use_cases": [
             "Manage Virtual Private Mesh (VPM) configuration",
@@ -726,6 +758,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Platform",
+        "ui_category": "Configuration",
         "aliases": ["console-ui", "ui-assets", "static-components"],
         "use_cases": [
             "Manage static UI components for admin console",
@@ -739,6 +772,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Platform",
+        "ui_category": "Configuration",
         "aliases": ["billing-usage", "quotas", "usage-tracking"],
         "use_cases": [
             "Manage subscription plans and billing transitions",
@@ -752,6 +786,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Advanced",
         "domain_category": "Security",
+        "ui_category": "Bot Defense",
         "aliases": ["threat-defense", "tpm", "shape-bot"],
         "use_cases": [
             "Configure bot defense instances per namespace",
@@ -765,6 +800,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Infrastructure",
+        "ui_category": "Sites",
         "aliases": ["ce-mgmt", "edge-management", "ce-lifecycle"],
         "use_cases": [
             "Manage Customer Edge site lifecycle",
@@ -778,6 +814,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Advanced",
         "domain_category": "Security",
+        "ui_category": "Data Protection",
         "aliases": ["data-privacy", "pii", "sensitive-data", "lma"],
         "use_cases": [
             "Configure sensitive data detection policies",
@@ -791,6 +828,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Advanced",
         "domain_category": "Security",
+        "ui_category": "Security",
         "aliases": ["secops", "incident-response", "mitigation"],
         "use_cases": [
             "Configure automated threat mitigation policies",
@@ -804,6 +842,7 @@ DOMAIN_METADATA = {
         "is_preview": False,
         "requires_tier": "Standard",
         "domain_category": "Platform",
+        "ui_category": "Identity & Access",
         "aliases": ["tenant-identity", "idm", "user-settings"],
         "use_cases": [
             "Manage user profiles and notification preferences",
