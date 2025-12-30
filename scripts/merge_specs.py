@@ -21,7 +21,12 @@ from rich.table import Table
 from scripts.utils.domain_categorizer import (
     categorize_spec as categorize_spec_util,
 )
-from scripts.utils.domain_metadata import calculate_complexity, get_metadata
+from scripts.utils.domain_metadata import (
+    calculate_complexity,
+    get_domain_icon,
+    get_metadata,
+    get_primary_resources,
+)
 from scripts.utils.server_variables import ServerVariableHelper
 
 console = Console()
@@ -443,6 +448,10 @@ def create_spec_index(
         schema_count = len(spec.get("components", {}).get("schemas", {}))
         metadata = get_metadata(domain)
 
+        # Get icon and primary resources for the domain
+        icon_info = get_domain_icon(domain)
+        primary_resources = get_primary_resources(domain)
+
         # Build specification entry
         spec_entry = {
             "domain": domain,
@@ -458,6 +467,10 @@ def create_spec_index(
             "aliases": metadata.get("aliases", []),
             "use_cases": metadata.get("use_cases", []),
             "related_domains": metadata.get("related_domains", []),
+            # Visual identity and resource metadata (Issue #184)
+            "icon": icon_info["icon"],
+            "logo_svg": icon_info["logo_svg"],
+            "primary_resources": primary_resources,
         }
 
         # Add spec-level CLI domain metadata if available
