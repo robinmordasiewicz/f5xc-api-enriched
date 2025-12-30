@@ -1,5 +1,5 @@
 version: 1.0.0
-generated_at: '2025-12-30T05:03:18.300088+00:00'
+generated_at: '2025-12-30T15:36:10.770806+00:00'
 domains:
   virtual:
     source_patterns_hash: sha256:1eead315c8572a28f35b7d560a4b36b65c970cef1e8ba428dca3e6dc9bdca5e1
@@ -24,16 +24,14 @@ domains:
       Track query metrics and request logs to analyze resolution patterns across namespaces.
   admin_console_and_ui:
     source_patterns_hash: sha256:6ee5f3e2c8ceadb8aeab99f8d4a7d4cf4711ad7c9cb241539f300bc2f26968f9
-    short: Manage static UI assets for admin console
-    medium: Deploy and list dashboard widgets within namespaces. Create named visual
-      resources with initialization parameters and structured configuration data.
-    long: Set up static resource definitions that control administrative dashboard
-      appearance. Register named entries using object references, status tracking
-      fields, and view settings. Fetch individual records through dedicated get operations
-      or enumerate available entries with pagination and sorting. Handle request validation
-      through typed error responses and support multiple output codes for success
-      states. Define custom initialization blocks and namespace-scoped boundaries
-      for organization.
+    short: Manage static UI components for admin console
+    medium: Deploy and retrieve graphical elements within namespaces. Configure custom
+      startup parameters and view references for display composition.
+    long: Create administrative dashboard building blocks with tailored setup data
+      and view bindings. Organize presentational materials by namespace and fetch
+      them by name or list all available items. Define display parameters, track system
+      object relationships, and maintain consistent portal appearance through centralized
+      resource management workflows.
   api:
     source_patterns_hash: sha256:24863cca564a39884cbab4c3d5dd5874587fde0b5f8da846524ef2081e70459e
     short: Discover, catalog, and test service interfaces
@@ -51,8 +49,8 @@ domains:
     medium: Configure traffic logic scripts and structured list entries. Establish
       appliance bindings and access module integrations.
     long: Define custom rule-based policies governing routing decisions and request
-      handling. Build organized collections for network ranges, string patterns,
-      and key-value entries. Map cloud services to physical appliances through connector
+      handling. Build organized collections for network ranges, string patterns, and
+      key-value entries. Map cloud services to physical appliances through connector
       setups. Link identity workflows using access modules. Track performance metrics
       and coordinate synchronization between components.
   billing_and_usage:
@@ -77,26 +75,25 @@ domains:
       decryption workflows.
   bot_and_threat_defense:
     source_patterns_hash: sha256:d6bacc6b4b4255883fe78b065484c3727b94bcc3baa2216d3994396b36c6377d
-    short: Configure bot protection and threat categories
-    medium: Manage bot defense instances and threat classification per namespace.
-      Provision automated defense keys for security integration.
-    long: Deploy Shape bot defense instances with namespace-scoped configuration for
-      automated threat detection. Create TPM categories to classify and organize threat
-      types across your security infrastructure. Generate and manage provisioning
-      keys for programmatic access to defense systems. Set up threat managers to coordinate
-      detection rules, integrate with WAF policies, and enable real-time protection
-      against malicious traffic patterns.
+    short: Detect and block automated attacks
+    medium: Create bot defense instances with Shape integration. Set up traffic classification
+      rules and automated response policies for malicious actors.
+    long: Deploy namespace-scoped protection using behavioral analysis and machine
+      learning. Provision dedicated keys for system automation and real-time intelligence
+      feeds. Coordinate detection across protected applications through centralized
+      managers. Configure pre-authentication checks to identify suspicious patterns
+      before they reach backends. Enable adaptive blocking decisions based on risk
+      scoring and historical activity profiles.
   cdn:
     source_patterns_hash: sha256:64e84bbe1afe9d9b4cd4a584c6c2a0e2ecada7da648db15304662f827529795f
-    short: Configure caching rules and load balancers
-    medium: Define cache TTL policies and path matching rules. Set up load balancers
-      with origin pools and purge controls for content delivery.
-    long: Create cache rules with cookie, header, and query parameter matching to
-      control content eligibility. Configure load balancers with origin pool routing,
-      access logging, and metrics collection. Manage cache purge operations for immediate
-      content invalidation. Monitor service operation status and aggregate access
-      logs for performance analysis. Define path matchers and expressions for granular
-      cache behavior control across namespaces.
+    short: Configure caching rules and load balancing
+    medium: Define cache rules, TTLs, and path matching. Manage load balancers with
+      origin pools and purge operations.
+    long: Set up cache eligibility based on headers, cookies, and query parameters.
+      Create expression-based rules with custom TTL settings and path matchers. Deploy
+      load balancers that handle content distribution across origin pools. Monitor
+      access logs and metrics, aggregate performance data, and execute cache purge
+      operations when content updates require immediate invalidation.
   ce_management:
     source_patterns_hash: sha256:eb8432bbb50b565e1820d9cadeba76e2d088d0fe7091e24c5e4371fd0a73c6a0
     short: Manage Customer Edge sites and network interfaces
@@ -136,10 +133,10 @@ domains:
     medium: Run services with simplified orchestration. Define blueprints governing
       processor and storage allocation.
     long: Create definitions for applications running on distributed infrastructure.
-      Establish standardized templates controlling resource consumption and disk
-      limits. Set up partitioned execution contexts supporting namespace separation
-      and multi-tenant isolation. Track persistent volume claims and usage metrics.
-      Connect with mesh networking for traffic routing.
+      Establish standardized templates controlling resource consumption and disk limits.
+      Set up partitioned execution contexts supporting namespace separation and multi-tenant
+      isolation. Track persistent volume claims and usage metrics. Connect with mesh
+      networking for traffic routing.
   data_and_privacy_security:
     source_patterns_hash: sha256:f938dc3d51783b2dac8667061995ce0904c191c9c676df48072251cecab16dc3
     short: Configure sensitive data detection and privacy policies
