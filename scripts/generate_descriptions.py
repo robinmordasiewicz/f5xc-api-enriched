@@ -913,8 +913,7 @@ def build_refinement_prompt(
 
     # Current character counts for reference
     char_counts = {
-        tier: len(previous_response.get(tier, ""))
-        for tier in ["short", "medium", "long"]
+        tier: len(previous_response.get(tier, "")) for tier in ["short", "medium", "long"]
     }
     counts_str = ", ".join(f"{t}: {c}" for t, c in char_counts.items())
 
@@ -1139,8 +1138,7 @@ def generate_for_domain(
 
         # Print violations with character counts for transparency
         char_info = ", ".join(
-            f"{t}: {len(descriptions.get(t, ''))}"
-            for t in ["short", "medium", "long"]
+            f"{t}: {len(descriptions.get(t, ''))}" for t in ["short", "medium", "long"]
         )
         print(f"  Attempt {attempt}: {len(violations)} violation(s) detected (chars: {char_info}):")
         for v in violations[:5]:  # Show first 5 violations

@@ -240,13 +240,13 @@ Examples:
     # Exit code based on results
     if report.failed > 0:
         console.print(
-            f"\n[bold red]Validation failed: {report.failed} resource(s) failed[/bold red]"
+            f"\n[bold red]Validation failed: {report.failed} resource(s) failed[/bold red]",
         )
         return 1
 
     if report.passed == 0 and report.total_resources > 0:
         console.print(
-            "\n[bold yellow]Warning: No resources were successfully validated[/bold yellow]"
+            "\n[bold yellow]Warning: No resources were successfully validated[/bold yellow]",
         )
         return 1
 

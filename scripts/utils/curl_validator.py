@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 
 # Add parent to path for imports
 import sys
@@ -22,6 +23,8 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "discovery"))
 from rate_limiter import RateLimitConfig, RateLimiter
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -286,7 +289,7 @@ class CurlExampleValidator:
         try:
             data = json.loads(example_json)
         except json.JSONDecodeError as e:
-            raise ValueError(f"Invalid example_json: {e}")
+            raise ValueError(f"Invalid example_json: {e}") from e
 
         # Inject test name into metadata
         if "metadata" not in data:
@@ -682,8 +685,8 @@ class CurlExampleValidator:
                             cleaned += 1
 
                 except Exception:
-                    # Continue with other resource types
-                    pass
+                    # Continue with other resource types - cleanup is best-effort
+                    logger.debug("Cleanup failed for resource type, continuing")
 
         return cleaned
 
@@ -726,22 +729,20 @@ def generate_markdown_report(report: ValidationReport, output_path: Path) -> Non
                 op_emoji = "✅" if op.success else "❌"
                 status = str(op.status_code) if op.status_code else "-"
                 lines.append(
-                    f"| {op.operation.upper()} | {status} | {op_emoji} {'Pass' if op.success else 'Fail'} |"
+                    f"| {op.operation.upper()} | {status} | {op_emoji} {'Pass' if op.success else 'Fail'} |",
                 )
 
             lines.append("")
 
         if result.errors:
             lines.append("**Errors**:")
-            for error in result.errors:
-                lines.append(f"- {error}")
+            lines.extend(f"- {error}" for error in result.errors)
             lines.append("")
 
     if report.errors:
         lines.append("## Global Errors")
         lines.append("")
-        for error in report.errors:
-            lines.append(f"- {error}")
+        lines.extend(f"- {error}" for error in report.errors)
         lines.append("")
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
