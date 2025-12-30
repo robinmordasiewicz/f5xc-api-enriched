@@ -86,7 +86,13 @@ from scripts.utils import (
     ValidationEnricher,
     categorize_spec,
 )
-from scripts.utils.domain_metadata import DOMAIN_METADATA, calculate_complexity, get_metadata
+from scripts.utils.domain_metadata import (
+    DOMAIN_METADATA,
+    calculate_complexity,
+    get_domain_icon,
+    get_metadata,
+    get_primary_resources,
+)
 from scripts.utils.server_variables import ServerVariableHelper
 
 console = Console()
@@ -1218,6 +1224,10 @@ def create_spec_index(domain_specs: dict[str, dict[str, Any]], version: str) -> 
         description_short = description_enricher.get_description(domain, tier="short")
         description_medium = description_enricher.get_description(domain, tier="medium")
 
+        # Get icon and primary resources for the domain
+        icon_info = get_domain_icon(domain)
+        primary_resources = get_primary_resources(domain)
+
         # Build spec entry
         spec_entry = {
             "domain": domain,
@@ -1236,6 +1246,10 @@ def create_spec_index(domain_specs: dict[str, dict[str, Any]], version: str) -> 
             "aliases": metadata.get("aliases", []),
             "use_cases": metadata.get("use_cases", []),
             "related_domains": metadata.get("related_domains", []),
+            # Visual identity and resource metadata (Issue #184)
+            "icon": icon_info["icon"],
+            "logo_svg": icon_info["logo_svg"],
+            "primary_resources": primary_resources,
         }
 
         # Add CLI metadata if available
