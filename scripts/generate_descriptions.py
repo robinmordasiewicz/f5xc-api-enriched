@@ -21,6 +21,7 @@ Usage:
 import argparse
 import hashlib
 import json
+import re
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -209,20 +210,43 @@ Sample paths:
 Schemas: {schemas_str or "(none)"}
 
 ═══════════════════════════════════════════════════════════════════════════════
-STRICT RULES - Violations cause output rejection:
+STRICT RULES - Violations cause INSTANT REJECTION:
 
-1. BANNED TERMS (never use these):
-   ✗ "F5", "F5 XC", "F5 Distributed Cloud", "Distributed Cloud", "XC"
-   ✗ "API", "specifications", "spec", "endpoint"
-   ✗ "comprehensive", "complete", "full", "various", "extensive"
+1. BANNED TERMS BY CATEGORY:
+
+   REDUNDANT (these ARE API specs - never state the obvious):
+   ✗ "API", "REST API", "endpoint", "specifications", "spec"
+
+   BRAND NAMES (never reference products):
+   ✗ "F5", "F5 XC", "XC", "Distributed Cloud", "Volterra"
+
+   FILLER WORDS (use simpler alternatives):
+   ✗ "utilize" → use "use"
+   ✗ "leverage" → use "use"
+   ✗ "facilitate" → use "enable"
+   ✗ "in order to" → use "to"
+
+   VAGUE DESCRIPTORS (be specific or omit):
+   ✗ "various", "multiple", "several", "etc.", "and more", "diverse"
+
+   MARKETING HYPE (state facts, not opinions):
+   ✗ "seamless", "robust", "powerful", "cutting-edge", "innovative"
+   ✗ "enterprise-grade", "world-class", "best-in-class", "superior"
+
+   SELF-REFERENCE (domain name in description is redundant):
    ✗ "{domain_variants}" (the domain name itself)
 
-2. STYLE REQUIREMENTS:
-   ✓ Start EVERY tier with action verb: Configure, Create, Manage, Define, Deploy, Set up
-   ✓ Use present tense and active voice exclusively
-   ✓ NEVER start with: "This", "The", "A", "An", "Provides", "Enables"
+2. ACTIVE VOICE REQUIRED (passive voice = instant rejection):
+   ✗ "Data is returned" → ✓ "Returns data"
+   ✗ "Connections are managed" → ✓ "Manages connections"
+   ✗ "Security is handled" → ✓ "Handles security"
 
-3. PROGRESSIVE INFORMATION (no repetition across tiers):
+3. ACTION-VERB-FIRST MANDATORY:
+   ✓ Start EVERY tier with: Configure, Create, Manage, Define, Deploy, Set up,
+     Route, Balance, Distribute, Cache, Filter, Detect, Block, Enforce, Validate
+   ✗ NEVER start with: "This", "The", "A", "An", "Provides", "Enables", "Offers"
+
+4. PROGRESSIVE INFORMATION (no repetition across tiers):
    - SHORT: Primary capability only (the core "what")
    - MEDIUM: Add secondary features + benefit (the "what else" + "why")
    - LONG: Add mechanics, options, usage context (the "how" + "when")
@@ -277,17 +301,29 @@ OUTPUT FORMAT:
 
 Respond with JSON only: {{"short": "...", "medium": "...", "long": "..."}}
 
-BEFORE RESPONDING - MANDATORY VERIFICATION:
+BEFORE RESPONDING - MANDATORY VERIFICATION CHECKLIST:
 
 ⚠️ NEVER TRUNCATE - If any tier exceeds its target, REWRITE IT SHORTER.
    Truncated text with "..." is REJECTED. Incomplete sentences are REJECTED.
 
-□ Count SHORT chars: Must be ≤50 (if >50, REWRITE SHORTER - do not cut off!)
-□ Count MEDIUM chars: Must be ≤130 (if >130, REWRITE SHORTER - do not cut off!)
-□ Count LONG chars: Must be ≤450 (if >450, REWRITE SHORTER - do not cut off!)
-□ Verify no banned terms (F5, XC, comprehensive, etc.)
-□ Confirm each tier starts with action verb
-□ Verify no ellipsis ("...") or incomplete sentences
+CHARACTER LIMITS:
+□ SHORT ≤50 chars (if over, REWRITE - never cut off!)
+□ MEDIUM ≤130 chars (if over, REWRITE - never cut off!)
+□ LONG ≤450 chars (if over, REWRITE - never cut off!)
+
+BANNED PATTERNS (instant rejection):
+□ No "API", "endpoint", "specifications" (redundant)
+□ No "F5", "XC", "Volterra" (brand names)
+□ No "utilize", "leverage", "facilitate" (filler words)
+□ No "various", "multiple", "etc." (vague descriptors)
+□ No "seamless", "robust", "powerful" (marketing hype)
+□ No passive voice ("is returned", "are handled")
+
+STYLE REQUIREMENTS:
+□ Each tier starts with action verb (Configure, Manage, Deploy...)
+□ No tier starts with "This", "The", "A", "Provides", "Enables"
+□ Active voice throughout (no "is/are + past participle")
+□ No ellipsis "..." or incomplete sentences
 
 Do not use any tools. Generate based on context provided."""
 
@@ -443,30 +479,91 @@ def validate_descriptions(descriptions: dict[str, str]) -> dict[str, str]:
     return validated
 
 
-# Validation constants
-BANNED_TERMS = [
-    "f5",
-    "f5 xc",
-    "f5xc",
-    "distributed cloud",
-    "xc ",
-    " xc",
-    " api",
-    "api ",
-    "specifications",
-    " spec",
-    "spec ",
-    "endpoint",
-    "comprehensive",
-    "complete",
-    "full ",
-    " full",
-    "various",
-    "extensive",
-    "...",  # Truncation indicator
-    "…",  # Unicode ellipsis
+# =============================================================================
+# 5-LAYER VALIDATION SYSTEM
+# Based on research from Google, Microsoft, and OpenAPI best practices
+# =============================================================================
+
+# Layer 1: Regex-based Banned Patterns (word boundary matching)
+BANNED_PATTERNS: list[tuple[str, str]] = [
+    # Category 1: Redundant Terms (self-referential in API docs)
+    (r"\bapi\b", "REDUNDANT: 'API' is self-referential in API specifications"),
+    (r"\brest\s+api\b", "REDUNDANT: REST context is implicit"),
+    (r"\bendpoint\b", "REDUNDANT: Endpoint context is implicit"),
+    (r"\bspec(ification)?s?\b", "REDUNDANT: Meta-reference not allowed"),
+    # Category 2: Brand/Product Terms (never allowed)
+    (r"\bf5\b", "BRAND: F5 brand name not allowed"),
+    (r"\b(f5[\s-]?)?xc\b", "BRAND: XC/F5 XC not allowed"),
+    (r"\bdistributed\s+cloud\b", "BRAND: Product name not allowed"),
+    (r"\bvolterra\b", "BRAND: Legacy brand not allowed"),
+    # Category 3: Filler Words (add no meaning)
+    (r"\butilize[sd]?\b", "FILLER: Use 'use' instead of 'utilize'"),
+    (r"\bleverage[sd]?\b", "FILLER: Use 'use' instead of 'leverage'"),
+    (r"\bfacilitate[sd]?\b", "FILLER: Use 'enable' instead of 'facilitate'"),
+    (r"\bin order to\b", "FILLER: Use 'to' instead of 'in order to'"),
+    (r"\bfor the purpose of\b", "FILLER: Use 'to' instead"),
+    # Category 4: Vague Descriptors (be specific instead)
+    (r"\bvarious\b", "VAGUE: Specify what types/items"),
+    (r"\bmultiple\b", "VAGUE: Specify count or list items"),
+    (r"\bseveral\b", "VAGUE: Specify count or list items"),
+    (r"\betc\.?\b", "VAGUE: List explicitly or omit"),
+    (r"\band more\b", "VAGUE: List explicitly or omit"),
+    (r"\band so on\b", "VAGUE: List explicitly or omit"),
+    (r"\bdiverse\b", "VAGUE: Specify what types"),
+    (r"\bsundry\b", "VAGUE: Specify what items"),
+    # Category 5: Marketing/Hype Words (remove promotional language)
+    (r"\bseamless(ly)?\b", "MARKETING: Remove hype, state facts"),
+    (r"\brobust\b", "MARKETING: Describe specific capabilities"),
+    (r"\bpowerful\b", "MARKETING: Describe specific features"),
+    (r"\bcutting[\s-]?edge\b", "MARKETING: Remove hype language"),
+    (r"\brevolutionary\b", "MARKETING: Remove hype language"),
+    (r"\benterprise[\s-]?grade\b", "MARKETING: Describe specific features"),
+    (r"\bworld[\s-]?class\b", "MARKETING: Remove hype language"),
+    (r"\bbest[\s-]?in[\s-]?class\b", "MARKETING: Remove hype language"),
+    (r"\bunparalleled\b", "MARKETING: Remove hype language"),
+    (r"\bsuperior\b", "MARKETING: Remove hype language"),
+    (r"\binnovative\b", "MARKETING: Describe what it does instead"),
+    (r"\bstate[\s-]?of[\s-]?the[\s-]?art\b", "MARKETING: Remove hype language"),
+    # Category 6: Passive Voice Indicators
+    (r"\bis returned\b", "PASSIVE: Use 'returns' (active voice)"),
+    (r"\bare returned\b", "PASSIVE: Use 'return' (active voice)"),
+    (r"\bis handled\b", "PASSIVE: Use 'handles' (active voice)"),
+    (r"\bare handled\b", "PASSIVE: Use 'handle' (active voice)"),
+    (r"\bis provided\b", "PASSIVE: Use 'provides' (active voice)"),
+    (r"\bare provided\b", "PASSIVE: Use 'provide' (active voice)"),
+    (r"\bis sent\b", "PASSIVE: Use 'sends' (active voice)"),
+    (r"\bis used\b", "PASSIVE: Rewrite in active voice"),
+    (r"\bis created\b", "PASSIVE: Use 'creates' (active voice)"),
+    (r"\bis managed\b", "PASSIVE: Use 'manages' (active voice)"),
+    # Category 7: Truncation Indicators (incomplete content)
+    (r"\.\.\.", "TRUNCATED: Content was cut off - rewrite shorter"),
+    (r"…", "TRUNCATED: Content was cut off - rewrite shorter"),
 ]
 
+# Layer 2: Self-Referential Suffixes (domain name + generic suffix = lazy)
+SELF_REFERENTIAL_SUFFIXES = [
+    "api",
+    "apis",
+    "service",
+    "services",
+    "system",
+    "systems",
+    "module",
+    "modules",
+    "interface",
+    "interfaces",
+    "endpoint",
+    "endpoints",
+    "operations",
+    "functions",
+    "methods",
+    "calls",
+    "features",
+    "capabilities",
+    "functionality",
+]
+
+# Bad starters (descriptions should start with action verbs)
 BAD_STARTERS = [
     "this",
     "the ",
@@ -476,13 +573,178 @@ BAD_STARTERS = [
     "enables",
     "allows",
     "offers",
+    "it ",
+    "we ",
 ]
+
+# Action verbs for short descriptions (positive pattern)
+ACTION_VERBS = [
+    # Core management verbs
+    "manage",
+    "configure",
+    "monitor",
+    "secure",
+    "control",
+    "analyze",
+    "protect",
+    "deploy",
+    "automate",
+    "enable",
+    # Creation verbs
+    "create",
+    "define",
+    "set",
+    "establish",
+    "build",
+    # Traffic/routing verbs
+    "route",
+    "balance",
+    "distribute",
+    "cache",
+    "filter",
+    # Security verbs
+    "detect",
+    "block",
+    "mitigate",
+    "enforce",
+    "validate",
+    # Discovery/access verbs (valid for short descriptions)
+    "discover",
+    "connect",
+    "access",
+    "track",
+    "inspect",
+    "integrate",
+    "orchestrate",
+    "provision",
+    "generate",
+]
+
+
+def is_self_referential(domain: str, desc: str) -> tuple[bool, str]:
+    """Layer 2: Check if description merely restates domain + generic suffix.
+
+    Args:
+        domain: Domain name (e.g., "authentication", "data_intelligence")
+        desc: Description text to check
+
+    Returns:
+        Tuple of (is_violation, error_message)
+    """
+    desc_lower = desc.lower().strip()
+    domain_display = domain.replace("_", " ").lower()
+
+    for suffix in SELF_REFERENTIAL_SUFFIXES:
+        # Check exact match: "authentication api", "data intelligence service"
+        if desc_lower == f"{domain_display} {suffix}":
+            return True, f"LAZY: '{desc}' just restates domain name + '{suffix}'"
+        # Check plural variations
+        if desc_lower == f"{domain_display} {suffix}s":
+            return True, f"LAZY: '{desc}' just restates domain name + '{suffix}s'"
+
+    return False, ""
+
+
+def validate_quality_metrics(desc: str, desc_type: str) -> list[str]:
+    """Layer 3: Enforce character limits and quality standards.
+
+    Args:
+        desc: Description text to validate
+        desc_type: One of 'short', 'medium', 'long'
+
+    Returns:
+        List of violation messages (empty if compliant)
+    """
+    errors: list[str] = []
+    limits = {"short": MAX_SHORT, "medium": MAX_MEDIUM, "long": MAX_LONG}
+
+    # Character limit check
+    limit = limits.get(desc_type, MAX_LONG)
+    if len(desc) > limit:
+        errors.append(
+            f"LENGTH: {len(desc)} chars exceeds {desc_type} limit of {limit}",
+        )
+
+    # Minimum content check (at least 3 words)
+    word_count = len(desc.split())
+    if word_count < 3:
+        errors.append(f"SPARSE: Only {word_count} word(s) - needs at least 3")
+
+    # Action verb first check (for short descriptions)
+    if desc_type == "short" and desc:
+        first_word = desc.split()[0].lower() if desc.split() else ""
+        if not any(first_word.startswith(v) for v in ACTION_VERBS):
+            errors.append(
+                f"STYLE: Short description should start with action verb, not '{first_word}'",
+            )
+
+    return errors
+
+
+def is_circular_definition(desc: str, tier: str = "long") -> tuple[bool, str]:
+    """Layer 4: Detect definitions that repeat the same word excessively.
+
+    Thresholds are tier-aware:
+    - short: 2+ repetitions (very short, no room for repetition)
+    - medium: 2+ repetitions (still short, minimal repetition)
+    - long: 3+ repetitions (longer text, some repetition is natural)
+
+    Args:
+        desc: Description text to check
+        tier: Description tier for threshold selection
+
+    Returns:
+        Tuple of (is_violation, error_message)
+    """
+    # Tier-aware thresholds
+    threshold = {"short": 2, "medium": 2, "long": 3}.get(tier, 3)
+
+    words = desc.lower().split()
+    # Filter out small words
+    significant_words = [w.strip(".,;:!?()[]{}\"'") for w in words if len(w) > 4]
+
+    for word in set(significant_words):
+        count = significant_words.count(word)
+        if count >= threshold:
+            return True, f"CIRCULAR: '{word}' appears {count} times - use variety"
+
+    return False, ""
+
 
 MAX_RETRIES = 3
 
 
+def check_banned_patterns(tier: str, text: str) -> list[str]:
+    """Layer 1: Check for banned patterns using regex word boundaries.
+
+    Args:
+        tier: Description tier ('short', 'medium', 'long')
+        text: Description text to check
+
+    Returns:
+        List of violation messages
+    """
+    violations: list[str] = []
+
+    for pattern, error_msg in BANNED_PATTERNS:
+        if re.search(pattern, text, re.IGNORECASE):
+            # Find the actual matched text for better error reporting
+            match = re.search(pattern, text, re.IGNORECASE)
+            matched_text = match.group() if match else pattern
+            violations.append(f"{tier}: {error_msg} (found: '{matched_text}')")
+
+    return violations
+
+
 def check_dry_compliance(domain: str, descriptions: dict[str, str]) -> list[str]:
-    """Check for DRY violations in descriptions.
+    """Check for DRY violations in descriptions using 5-layer validation.
+
+    Layers:
+        1. Banned patterns (regex word boundaries)
+        2. Self-referential detection (domain + suffix)
+        3. Quality metrics (character limits, action verbs)
+        4. Circular definitions
+        5. Style compliance (bad starters)
 
     Args:
         domain: Domain name to check against
@@ -500,10 +762,22 @@ def check_dry_compliance(domain: str, descriptions: dict[str, str]) -> list[str]
     for tier, text in descriptions.items():
         text_lower = text.lower()
 
-        # Check banned terms (use extend for performance)
-        violations.extend(
-            f"{tier}: Contains banned term '{term}'" for term in BANNED_TERMS if term in text_lower
-        )
+        # Layer 1: Check banned patterns with regex
+        violations.extend(check_banned_patterns(tier, text))
+
+        # Layer 2: Check self-referential patterns
+        is_lazy, lazy_msg = is_self_referential(domain, text)
+        if is_lazy:
+            violations.append(f"{tier}: {lazy_msg}")
+
+        # Layer 3: Quality metrics (character limits, action verbs)
+        quality_errors = validate_quality_metrics(text, tier)
+        violations.extend(f"{tier}: {err}" for err in quality_errors)
+
+        # Layer 4: Circular definitions (tier-aware thresholds)
+        is_circular, circular_msg = is_circular_definition(text, tier)
+        if is_circular:
+            violations.append(f"{tier}: {circular_msg}")
 
         # Check domain name (avoid self-reference)
         if domain_lower in text_lower or domain_spaced in text_lower:
