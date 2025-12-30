@@ -38,14 +38,14 @@ domains:
     source_patterns_hash: sha256:24863cca564a39884cbab4c3d5dd5874587fde0b5f8da846524ef2081e70459e
     short: API discovery, security testing, and credential management
     medium: Discover and catalog APIs, test security behavior, manage credentials,
-      and define API groups with testing policies for comprehensive API lifecycle...
+      and define API groups with testing policies for comprehensive API lifecycle
     long: Comprehensive API lifecycle management including automatic discovery and
       cataloging of APIs across your infrastructure, security testing to identify
       vulnerabilities and validate behavior, credential management for secure API
       access, and policy-driven API grouping. Define testing policies to continuously
       validate API security posture, organize APIs into logical groups for governance,
       and integrate with WAF and network security controls. Supports marking endpoints
-      as non-API traffic and...
+      as non-API traffic and
   bigip:
     source_patterns_hash: sha256:d2e37b596b3c42de27b6fe481b84c44219694880437050bdd66c6046ee316f90
     short: BigIP appliance management, iRules, and data groups
@@ -57,7 +57,7 @@ domains:
       (APM) settings for authentication and access control, and define BigIP virtual
       servers. Provides metrics collection for APM performance monitoring and enables
       seamless hybrid deployments combining traditional BigIP infrastructure with
-      cloud-native services...
+      cloud-native services
   billing_and_usage:
     source_patterns_hash: sha256:20e1a78f97ada01b2a9cf01ea373858bc6f68c6b76db871f85a52b14e688be68
     short: Subscription billing, payment methods, and usage tracking
@@ -80,7 +80,7 @@ domains:
       for encryption operations, process policy information for secret sharing workflows,
       and decrypt secrets with proper authorization. Monitor secret access through
       comprehensive audit logs with aggregation and scrolling capabilities. Enforce
-      data protection...
+      data protection
   bot_and_threat_defense:
     source_patterns_hash: sha256:d6bacc6b4b4255883fe78b065484c3727b94bcc3baa2216d3994396b36c6377d
     short: Bot detection, threat categorization, and defense management
@@ -92,7 +92,7 @@ domains:
       Create and manage TPM categories to organize threats by type, configure bot
       defense instances per namespace, and handle TPM manager lifecycle operations.
       Supports preauthorization and provisioning workflows for integrating threat
-      intelligence services with...
+      intelligence services with
   cdn:
     source_patterns_hash: sha256:64e84bbe1afe9d9b4cd4a584c6c2a0e2ecada7da648db15304662f827529795f
     short: Configure content delivery and caching rules
@@ -114,7 +114,7 @@ domains:
       registration workflows including token-based registration, image downloads,
       and suggested configuration values. Monitor and execute site upgrades with pre-upgrade
       checks and status tracking. Supports both dedicated and Ethernet interface types
-      with...
+      with
   certificates:
     source_patterns_hash: sha256:d8b46d9704d3a5337910b8d489cbb6c5679f2cf8020481465b70e7465c503523
     short: SSL/TLS certificate and trusted CA management
@@ -131,38 +131,38 @@ domains:
     source_patterns_hash: sha256:221afe04e2b6caa0d3696d09d5a21c8790935f95533ece3472efebe4c3c58b9e
     short: Multi-cloud provider connectivity and credential management
     medium: Connect to AWS, Azure, and GCP cloud providers. Manage cloud credentials,
-      VPC attachments, transit gateways, and cross-cloud networking with...
+      VPC attachments, transit gateways, and cross-cloud networking with
     long: Establish and manage connectivity to major cloud providers including AWS,
       Azure, and GCP. Configure cloud credentials and authentication for secure provider
       access. Create and manage VPC attachments, transit gateways, and route tables
       for cross-cloud networking. Support elastic provisioning with automatic resource
       discovery and reapplication workflows. Monitor cloud connection metrics and
       segment performance. Integrate with Customer Edge sites for hybrid cloud deployments
-      across multiple...
+      across multiple
   container_services:
     source_patterns_hash: sha256:7ac8c2a7cdc3ee6e3f8c6927d1e126da20dc171036175f258f463220c34ed420
     short: Edge container workloads and virtual Kubernetes management
     medium: Deploy and manage containerized workloads at the edge with simplified
-      orchestration. Configure virtual Kubernetes clusters, workload flavors, and...
+      orchestration. Configure virtual Kubernetes clusters, workload flavors, and
     long: Container Services (XCCS) enables deployment and management of containerized
       applications across distributed edge sites without requiring full Kubernetes
       complexity. Create virtual Kubernetes clusters for isolated multi-tenant environments,
       define workload flavors for resource allocation, and deploy container workloads
       with simplified orchestration. Monitor workload usage and PVC metrics, manage
       namespace isolation, and integrate with site infrastructure for edge-native
-      container...
+      container
   data_and_privacy_security:
     source_patterns_hash: sha256:f938dc3d51783b2dac8667061995ce0904c191c9c676df48072251cecab16dc3
-    short: Sensitive data detection, classification, and privacy...
+    short: Sensitive data detection, classification, and privacy
     medium: Configure data types, sensitive data policies, and LMA regions for detecting,
-      classifying, and protecting personally identifiable information and...
+      classifying, and protecting personally identifiable information and
     long: Manage comprehensive data privacy and security controls including sensitive
       data detection policies, custom data type definitions, and log management analytics
       (LMA) region configurations. Define patterns for identifying PII, financial
       data, and other sensitive information with configurable actions for masking,
       alerting, or blocking. Configure LMA regions with Elasticsearch, Kafka, or ClickHouse
       backends for centralized security logging and compliance auditing. Integrate
-      geo-configurations...
+      geo-configurations
   ddos:
     source_patterns_hash: sha256:7dbd0476bad1312feb3f07d5c430301d450db99a6793dd0a8514f12b33f0cf66
     short: DDoS protection and infrastructure security policies
@@ -174,7 +174,7 @@ domains:
       connectivity. The infraprotect APIs enable proactive threat mitigation through
       customizable security policies, real-time tunnel status monitoring, and namespace-scoped
       rule management. Integrates with network security and virtual load balancing
-      for...
+      for
   generative_ai:
     source_patterns_hash: sha256:97ed1959147bfea3d0d69acc18bbb1c6afc020c7c2f9f894d08b91ba5f612afe
     short: AI-powered features, assistants, and data collection
@@ -186,7 +186,7 @@ domains:
       Manage AI data collection through the BFDP subsystem including feature enablement,
       token management, and subscription controls. Supports IP allocation for GIA
       services. Integrates dashboard visualization with customizable displays, filters,
-      and link...
+      and link
   label:
     source_patterns_hash: sha256:c903299afa4e0bdb34b1584fa62bf17ce77e8ab8bbb4ae5f124fcc8d9eacd723
     short: Resource labeling, tagging, and label policy management
@@ -208,7 +208,7 @@ domains:
       URLs. Create role bindings to associate users and groups with cluster-wide permissions.
       Enforce pod security standards through admission controllers with configurable
       enforcement levels. Manage private container registries for secure image distribution.
-      Integrates with external Kubernetes clusters including EKS, AKS, and GKE for...
+      Integrates with external Kubernetes clusters including EKS, AKS, and GKE for
   marketplace:
     source_patterns_hash: sha256:a3690c1c31792fd5f54e97f8e1cace7c8cd8be28cad5f3bd02c23f21f9170667
     short: Third-party integrations, add-ons, and extensions
@@ -220,7 +220,7 @@ domains:
       keepalive settings. Manage navigation tiles for custom UI extensions, activate
       and monitor add-on service status across namespaces, and integrate with external
       platforms like Terraform. Supports TPM policy management and configuration management
-      instances for...
+      instances for
   network:
     source_patterns_hash: sha256:c2ba88b0e087aa547f441781a57d2510ccb7573fb72d6422e66fac28c3435f9d
     short: BGP routing, IPsec tunnels, and network connectivity
@@ -232,7 +232,7 @@ domains:
       for hybrid cloud connectivity. Supports SRv6 segment routing, subnet management,
       DC cluster groups for data center integration, static and dynamic route definitions,
       and IP prefix set policies. Enables secure site-to-site VPN connections, multi-cloud
-      network...
+      network
   network_security:
     source_patterns_hash: sha256:7eec7fb4980781d3961479464dd7c4e8ac67646a9eaad4037901e898cc57fd6d
     short: Network firewall, NAT, ACL, and policy-based routing
@@ -244,19 +244,19 @@ domains:
       network policy sets for segmentation and micro-segmentation between workloads.
       Implement policy-based routing to direct traffic based on source, destination,
       or application criteria. Manage segment connections for multi-site network isolation.
-      Configure...
+      Configure
   nginx_one:
     source_patterns_hash: sha256:5926a24e0ee8cd746f7b1a3aae2f62f40d33eab555faa51c445f1298229b8c47
     short: NGINX One platform integration and instance management
     medium: Manage NGINX One platform subscriptions, configure NGINX Plus instances
-      and servers, and integrate service discovery with centralized...
+      and servers, and integrate service discovery with centralized
     long: Integrate and manage NGINX One platform capabilities including subscription
       lifecycle management, NGINX Plus instance provisioning, and server configuration.
       Configure dataplane servers, manage nginx instances with WAF and API discovery
       specifications, and enable service discovery integrations. Supports NGINX Configuration
       Sync Gateway (CSG) configurations for centralized management workflows. Typical
       operations include subscribing to NGINX One services, retrieving server status
-      and...
+      and
   object_storage:
     source_patterns_hash: sha256:eb2f63e38336d36cc8914b187085e0ef4f4b16a88daae13b351a3414c51d68ce
     short: Object storage for mobile SDK artifacts and integrations
@@ -268,43 +268,43 @@ domains:
       versions of each object enables rollback and version-specific deployments. Presigned
       URLs provide secure, time-limited access for direct object downloads. Object
       types include mobile-app-shield for application protection, mobile-integrator
-      for...
+      for
   observability:
     source_patterns_hash: sha256:8791a11c656556b03ad8b4ec59e27992603f9058dd555736e276adcc444b49a6
-    short: Synthetic monitoring, health checks, and observability...
+    short: Synthetic monitoring, health checks, and observability
     medium: Configure synthetic monitoring with DNS and HTTP health checks. Track
-      certificate status, monitor global health summaries, and analyze monitoring...
+      certificate status, monitor global health summaries, and analyze monitoring
     long: Comprehensive synthetic monitoring and observability capabilities for proactive
       infrastructure health assessment. Configure DNS monitors to validate resolution
       across AWS regions, set up HTTP monitors for endpoint availability testing,
       and track SSL/TLS certificate expiration status. Access real-time health summaries
       at global and namespace levels, review historical monitoring data, and generate
       detailed reports for DNS and HTTP monitors. Integrate with dashboards to visualize
-      monitoring...
+      monitoring
   rate_limiting:
     source_patterns_hash: sha256:82eda79a860141fa87528ba15e95fb8f5afa3aa028350392a778d6daf1e8a726
     short: Traffic rate limiting, policers, and throttling controls
     medium: Configure rate limiters and policers to control traffic flow. Define request
-      thresholds, leaky bucket algorithms, and enforcement actions for API...
+      thresholds, leaky bucket algorithms, and enforcement actions for API
     long: Manage rate limiting policies to protect applications from traffic surges
       and abuse. Configure rate limiters with customizable thresholds, time periods,
       and enforcement actions including blocking or throttling. Implement policers
       using leaky bucket algorithms for smooth traffic shaping. Define protocol-specific
       policers for granular control over different traffic types. Integrate with virtual
       hosts and load balancers to enforce rate limits at the edge, preventing resource
-      exhaustion and...
+      exhaustion and
   secops_and_incident_response:
     source_patterns_hash: sha256:266a28b0d77630cbea796639837a26d94f139e215e10713c100a51c09820f496
     short: Malicious user detection and automated threat mitigation
     medium: Configure automated responses to malicious user behavior. Define mitigation
-      rules based on threat levels and apply actions like blocking or rate...
+      rules based on threat levels and apply actions like blocking or rate
     long: Security operations and incident response capabilities for detecting and
       mitigating malicious user activity. Create mitigation policies that define automated
       responses based on user threat levels, including blocking, challenging, or rate
       limiting suspicious users. Configure rules that match specific malicious user
       types and threat severity levels to appropriate mitigation actions. Supports
       namespace-scoped configurations for managing security policies across different
-      application...
+      application
   service_mesh:
     source_patterns_hash: sha256:5a475651d202a3c5c95111ef8a777350665a9112b214ea7c05d9f0b75fc14bfa
     short: Service mesh connectivity, discovery, and NFV management
@@ -316,19 +316,19 @@ domains:
       Configure NFV (Network Function Virtualization) services with lifecycle management
       including force-delete operations. Leverage machine learning capabilities for
       automatic API endpoint detection, schema learning, and traffic pattern analysis.
-      Integrate with...
+      Integrate with
   shape:
     source_patterns_hash: sha256:56ac4bb3c75a08b56078c24403b0f39851e8894f99c28332692d79f1855e847b
     short: Bot defense and threat prevention with Shape Security
     medium: Configure Shape Security policies for bot defense, threat recognition,
-      and mobile SDK protection. Manage bot infrastructure deployments and SafeAP...
+      and mobile SDK protection. Manage bot infrastructure deployments and SafeAP
     long: Shape Security integration for advanced bot defense and threat prevention
       capabilities. Configure bot infrastructure deployments with policy management,
       deployment history tracking, and status monitoring. Manage mobile SDK attributes
       for application shielding and integrator configurations. Subscribe to bot defense
       add-ons and client-side defense services. Includes SafeAP policy configuration,
       threat recognition rules, and automated bot mitigation across namespaces with
-      comprehensive...
+      comprehensive
   sites:
     source_patterns_hash: sha256:09b069be1707029193be17885907465d632e5f09800cd13e23416a3414ca0726
     short: Multi-cloud site deployment and edge infrastructure
@@ -340,7 +340,7 @@ domains:
       for logical grouping and policy application. Deploy Secure Mesh sites for networking-focused
       edge deployments, integrate external Kubernetes clusters as Customer Edge nodes,
       and configure cloud-specific resources including AWS VPC, Azure VNet, and GCP
-      VPC sites....
+      VPC sites.
   statistics:
     source_patterns_hash: sha256:d62d981d8bc4a3e88ae17c2e349e0a0e5ac3e2744a23a88775dfba577bc53b64
     short: Flow statistics, alerts, logs, and operational analytics
@@ -352,7 +352,7 @@ domains:
       testing, and verification workflows for reliable notification delivery. Access
       flow statistics, view historical alerts, generate reports and graphs for capacity
       planning, track service topology and discovery patterns, and monitor real-time
-      status...
+      status
   support:
     source_patterns_hash: sha256:d570cb2b7fac31933176c8d5b7d032f0cce9b188b079e7d41b8dea70e86f28ba
     short: Customer support ticket lifecycle and site diagnostics
@@ -364,19 +364,19 @@ domains:
       including TCP dump capture, listing, and management for network troubleshooting.
       Integrates with operational workflows to enable support teams to gather diagnostic
       data directly from distributed sites while maintaining ticket-based tracking
-      of all customer...
+      of all customer
   tenant_and_identity:
     source_patterns_hash: sha256:c58496220a0d0bec96faf745b90749e3da8615a6ec58f564f80826cea6ebfb39
-    short: User settings, notifications, sessions, and identity...
+    short: User settings, notifications, sessions, and identity
     medium: Manage user profiles, notification preferences, session controls, OTP
-      settings, and customer support interactions. Configure identity management...
+      settings, and customer support interactions. Configure identity management
     long: Comprehensive user and tenant identity management for F5 Distributed Cloud.
       Configure user settings including profile images, notification preferences (admin
       and combined), and view preferences. Manage user sessions with listing and control
       capabilities. Handle OTP (one-time password) administration including admin
       resets. Support identity management (IDM) enable/disable operations. Process
       initial access requests for new users. Manage customer support ticket attachments
-      and interactions for...
+      and interactions for
   users:
     source_patterns_hash: sha256:7b5a2db36b349fa0e1cb5036ef35bf2f14c23d7a639dd23ec033cb97bb410276
     short: User accounts, tokens, and label management
@@ -388,7 +388,7 @@ domains:
       resource tagging taxonomies across namespaces. Configure implicit labels for
       automatic resource classification. Supports full lifecycle management of user-related
       configuration objects with metadata tracking, state management, and condition
-      monitoring for...
+      monitoring for
   waf:
     source_patterns_hash: sha256:ec99ff4e45bc12a3d6547c62e2fea083507792c5ec35f7ec1589fc5e5975738c
     short: Configure application firewall rules and bot protection
