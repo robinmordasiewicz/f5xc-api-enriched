@@ -47,16 +47,14 @@ domains:
       scanning. Monitor resource status and metadata throughout deployment zones.
   bigip:
     source_patterns_hash: sha256:d2e37b596b3c42de27b6fe481b84c44219694880437050bdd66c6046ee316f90
-    short: BigIP appliance management, iRules, and data groups
-    medium: Manage BigIP F5 appliances including iRule script configuration, data
-      groups, APM policies, and virtual server integration with Distributed Cloud.
-    long: Configure and manage BigIP F5 appliance integration with Distributed Cloud
-      infrastructure. Create and deploy iRule scripts for advanced traffic manipulation,
-      manage data groups for dynamic configuration, configure Access Policy Manager
-      (APM) settings for authentication and access control, and define BigIP virtual
-      servers. Provides metrics collection for APM performance monitoring and enables
-      seamless hybrid deployments combining traditional BigIP infrastructure with
-      cloud-native services
+    short: Manage iRules, data groups, and virtual servers
+    medium: Configure traffic logic scripts and structured list entries. Establish
+      appliance bindings and access module integrations.
+    long: Define custom rule-based policies governing routing decisions and request
+      handling. Build organized collections for network ranges, string patterns,
+      and key-value entries. Map cloud services to physical appliances through connector
+      setups. Link identity workflows using access modules. Track performance metrics
+      and coordinate synchronization between components.
   billing_and_usage:
     source_patterns_hash: sha256:20e1a78f97ada01b2a9cf01ea373858bc6f68c6b76db871f85a52b14e688be68
     short: Manage subscription plans and payment methods
@@ -134,16 +132,14 @@ domains:
       path selection between customer locations and cloud workloads.
   container_services:
     source_patterns_hash: sha256:7ac8c2a7cdc3ee6e3f8c6927d1e126da20dc171036175f258f463220c34ed420
-    short: Edge container workloads and virtual Kubernetes management
-    medium: Deploy and manage containerized workloads at the edge with simplified
-      orchestration. Configure virtual Kubernetes clusters, workload flavors, and
-    long: Container Services (XCCS) enables deployment and management of containerized
-      applications across distributed edge sites without requiring full Kubernetes
-      complexity. Create virtual Kubernetes clusters for isolated multi-tenant environments,
-      define workload flavors for resource allocation, and deploy container workloads
-      with simplified orchestration. Monitor workload usage and PVC metrics, manage
-      namespace isolation, and integrate with site infrastructure for edge-native
-      container
+    short: Deploy containerized workloads across sites
+    medium: Run services with simplified orchestration. Define blueprints governing
+      processor and storage allocation.
+    long: Create definitions for applications running on distributed infrastructure.
+      Establish standardized templates controlling resource consumption and disk
+      limits. Set up partitioned execution contexts supporting namespace separation
+      and multi-tenant isolation. Track persistent volume claims and usage metrics.
+      Connect with mesh networking for traffic routing.
   data_and_privacy_security:
     source_patterns_hash: sha256:f938dc3d51783b2dac8667061995ce0904c191c9c676df48072251cecab16dc3
     short: Configure sensitive data detection and privacy policies
@@ -157,16 +153,14 @@ domains:
       status through condition tracking and secret management with blindfold encryption.
   ddos:
     source_patterns_hash: sha256:7dbd0476bad1312feb3f07d5c430301d450db99a6793dd0a8514f12b33f0cf66
-    short: DDoS protection and infrastructure security policies
-    medium: Configure DDoS protection policies, deny lists, and firewall rules. Monitor
-      infrastructure threats and manage protection tunnels for network security.
-    long: Comprehensive DDoS protection and infrastructure security management. Configure
-      deny list rules to block malicious traffic sources, create firewall rule groups
-      for granular traffic filtering, and manage protection tunnels for secure infrastructure
-      connectivity. The infraprotect APIs enable proactive threat mitigation through
-      customizable security policies, real-time tunnel status monitoring, and namespace-scoped
-      rule management. Integrates with network security and virtual load balancing
-      for
+    short: Configure blocking policies and tunnel protection
+    medium: Set up firewall configurations with deny list rules. Filter malicious
+      traffic through inspection points.
+    long: Deploy definitions that block IP addresses and network segments from accessing
+      protected resources. Organize by threat type or source classification. Manage
+      secure channels routing suspicious packets for analysis before reaching origin
+      servers. Update status for real-time visibility into active defenses. Add items
+      during attacks and monitor health metrics.
   generative_ai:
     source_patterns_hash: sha256:97ed1959147bfea3d0d69acc18bbb1c6afc020c7c2f9f894d08b91ba5f612afe
     short: Access AI assistant queries and feedback
@@ -179,15 +173,13 @@ domains:
       enablement and token management for telemetry collection paths.
   label:
     source_patterns_hash: sha256:c903299afa4e0bdb34b1584fa62bf17ce77e8ab8bbb4ae5f124fcc8d9eacd723
-    short: Resource labeling, tagging, and label policy management
-    medium: Manage resource labels and tagging across your infrastructure. Configure
-      label policies for organizational compliance and resource categorization.
-    long: Organize and categorize resources using flexible labeling and tagging capabilities.
-      Define label policies to enforce consistent metadata across your infrastructure,
-      enabling compliance tracking and resource governance. Labels support filtering,
-      grouping, and policy-based automation, making it easier to manage resources
-      at scale. Integrate with other platform services to apply label-based access
-      controls, cost allocation, and operational workflows.
+    short: Manage resource tags and metadata
+    medium: Define categories for organization and discovery. Apply policies to maintain
+      consistent naming conventions across deployments.
+    long: Create taxonomies to categorize infrastructure by environment, owner, cost
+      center, or custom attributes. Set up governance rules requiring certain entries
+      on creation. Enable automated reporting through query filters. Configure inheritance
+      so child objects adopt parent settings automatically.
   managed_kubernetes:
     source_patterns_hash: sha256:d18f201ee40d02d9d06d23269ba2f1bf066300a109fb7c8bf3e64403b177b341
     short: Configure Kubernetes RBAC and pod security policies
@@ -234,9 +226,14 @@ domains:
       outbound connections.
   nginx_one:
     source_patterns_hash: sha256:5926a24e0ee8cd746f7b1a3aae2f62f40d33eab555faa51c445f1298229b8c47
-    short: ''
-    medium: ''
-    long: ''
+    short: Configure NGINX proxy instances and deployments
+    medium: Manage upstream server pools and health monitors. Define SSL termination
+      rules and connection parameters for gateway endpoints.
+    long: Set up load balancing configurations with backend server definitions and
+      routing logic. Create monitoring schedules for availability tracking across
+      distributed nodes. Build request handling pipelines with rate controls and authentication
+      layers. Track instance performance metrics and traffic patterns. Coordinate
+      failover mechanisms using weighted distribution and priority-based selection.
   object_storage:
     source_patterns_hash: sha256:eb2f63e38336d36cc8914b187085e0ef4f4b16a88daae13b351a3414c51d68ce
     short: Manage stored objects and bucket versioning
@@ -282,16 +279,14 @@ domains:
       for coordinated protection across application layers.
   service_mesh:
     source_patterns_hash: sha256:5a475651d202a3c5c95111ef8a777350665a9112b214ea7c05d9f0b75fc14bfa
-    short: Service mesh connectivity, discovery, and NFV management
-    medium: Configure service mesh networking with endpoint discovery, application
-      type definitions, API endpoint learning, and NFV service lifecycle management.
-    long: Manage service mesh infrastructure including endpoint discovery and intelligent
-      routing between distributed services. Define application types with learned
-      API schemas, security risk classifications, and authentication configurations.
-      Configure NFV (Network Function Virtualization) services with lifecycle management
-      including force-delete operations. Leverage machine learning capabilities for
-      automatic API endpoint detection, schema learning, and traffic pattern analysis.
-      Integrate with
+    short: Configure application types and discovery
+    medium: Manage NFV integrations and workload categories. Enable traffic learning
+      across distributed deployments.
+    long: Create classifications to organize services and support automatic identification
+      of interconnected components. Set up analysis pipelines to understand patterns
+      and build intelligent routing rules. Define network function virtualization
+      for regional architectures. Configure authentication settings including location,
+      state, and type recognition.
   shape:
     source_patterns_hash: sha256:56ac4bb3c75a08b56078c24403b0f39851e8894f99c28332692d79f1855e847b
     short: Configure bot defense and threat prevention
@@ -328,16 +323,14 @@ domains:
       discovery mapping across distributed environments.
   support:
     source_patterns_hash: sha256:d570cb2b7fac31933176c8d5b7d032f0cce9b188b079e7d41b8dea70e86f28ba
-    short: Customer support ticket lifecycle and site diagnostics
-    medium: Create, track, and manage support tickets with escalation workflows. Includes
-      site diagnostic tools for packet capture and troubleshooting.
-    long: Manage the complete customer support ticket lifecycle including creation,
-      commenting, priority adjustment, escalation, and closure. Submit specialized
-      requests such as tax exemption verification. Access site-level diagnostic capabilities
-      including TCP dump capture, listing, and management for network troubleshooting.
-      Integrates with operational workflows to enable support teams to gather diagnostic
-      data directly from distributed sites while maintaining ticket-based tracking
-      of all customer
+    short: Create and track customer tickets
+    medium: Submit requests with file uploads and priority levels. Add comments and
+      escalate critical incidents to engineering teams.
+    long: Open new cases and assign severity ratings based on business impact. Append
+      notes throughout resolution workflows. Mark items as closed or reinstate them
+      if symptoms recur. Execute diagnostic packet captures on deployed sites for
+      network troubleshooting. Handle tax exemption verification through certificate
+      submission.
   tenant_and_identity:
     source_patterns_hash: sha256:c58496220a0d0bec96faf745b90749e3da8615a6ec58f564f80826cea6ebfb39
     short: Manage user profiles and session controls
