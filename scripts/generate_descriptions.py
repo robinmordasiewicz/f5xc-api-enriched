@@ -193,6 +193,9 @@ MAX_SHORT = 60
 MAX_MEDIUM = 150
 MAX_LONG = 500
 
+# Valid tier names for filtering (excludes metadata like source_patterns_hash)
+VALID_TIERS = frozenset({"short", "medium", "long"})
+
 # JSON Schema for Claude Code structured output
 DESCRIPTION_SCHEMA = {
     "type": "object",
@@ -495,6 +498,16 @@ STYLE REQUIREMENTS:
 □ Active voice throughout (no "is/are + past participle")
 □ No ellipsis "..." or incomplete sentences
 
+COMPLETE THOUGHT REQUIREMENT (CRITICAL - instant rejection for violations):
+□ Every tier MUST end with a period (.) - no exceptions
+□ NEVER end a sentence with: and, or, with, for, to, the, a, an
+□ If your draft exceeds the limit, REWRITE it shorter as a complete thought
+□ Examples:
+  ✓ "Configure load balancers and health checks." (complete thought)
+  ✗ "Configure load balancers and" (cut-off mid-phrase)
+  ✗ "Configure load balancers with" (incomplete thought)
+  ✗ "Configure load balancers" (missing period)
+
 Do not use any tools. Generate based on context provided."""
 
     return prompt  # noqa: RET504
@@ -633,20 +646,39 @@ def parse_claude_output(output: str, verbose: bool = False) -> dict[str, str] | 
 
 
 def validate_descriptions(descriptions: dict[str, str]) -> dict[str, str]:
-    """Validate and truncate descriptions to max lengths."""
-    validated = {}
+    """Validate descriptions for length and completeness.
 
-    for tier, max_len in [("short", MAX_SHORT), ("medium", MAX_MEDIUM), ("long", MAX_LONG)]:
+    IMPORTANT: This function no longer truncates descriptions silently.
+    Silent truncation was causing incomplete sentences. Instead, we:
+    1. Warn about any issues but return descriptions unchanged
+    2. Rely on validation checks in the retry loop to catch problems
+
+    If descriptions exceed limits after all retries, they should be rejected
+    rather than truncated, as truncation creates incomplete thoughts.
+
+    Args:
+        descriptions: Dictionary with short/medium/long descriptions
+
+    Returns:
+        Validated descriptions (unchanged - no truncation)
+    """
+    limits = {"short": MAX_SHORT, "medium": MAX_MEDIUM, "long": MAX_LONG}
+
+    for tier, max_len in limits.items():
         value = descriptions.get(tier, "")
-        if len(value) > max_len:
-            # Truncate at word boundary (no ellipsis - banned term)
-            truncated = value[:max_len].rsplit(" ", 1)[0]
-            validated[tier] = truncated
-            print(f"  Warning: {tier} truncated from {len(value)} to {len(truncated)} chars")
-        else:
-            validated[tier] = value
+        text_stripped = value.rstrip()
 
-    return validated
+        # Check length - warn but don't truncate
+        if len(value) > max_len:
+            print(
+                f"  Warning: {tier} exceeds {max_len} chars ({len(value)} chars) - should have been caught earlier",
+            )
+
+        # Check for incomplete thoughts - warn but don't fix
+        if text_stripped and not text_stripped.endswith((".", "!", "?")):
+            print(f"  Warning: {tier} doesn't end with punctuation - may be incomplete thought")
+
+    return descriptions
 
 
 # =============================================================================
@@ -708,6 +740,12 @@ BANNED_PATTERNS: list[tuple[str, str]] = [
     # Category 7: Truncation Indicators (incomplete content)
     (r"\.\.\.", "TRUNCATED: Content was cut off - rewrite shorter"),
     (r"…", "TRUNCATED: Content was cut off - rewrite shorter"),
+    # Category 8: Incomplete Sentence Indicators (complete thought validation)
+    (
+        r"\s(and|or|with|for|to|the|a|an)$",
+        "INCOMPLETE: Sentence ends with conjunction/article - complete the thought",
+    ),
+    (r"[a-z]$", "INCOMPLETE: Sentence must end with punctuation (. ! ?) - not lowercase letter"),
 ]
 
 # Layer 2: Self-Referential Suffixes (domain name + generic suffix = lazy)
@@ -921,6 +959,70 @@ def check_domain_name_usage(domain: str, text: str, tier: str) -> Violation | No
     return None
 
 
+def check_complete_thought(text: str, tier: str) -> list[Violation]:
+    """Ensure description is a complete thought, not truncated or cut off.
+
+    Validates that descriptions:
+    1. End with proper sentence-ending punctuation (. ! ?)
+    2. Don't end with conjunctions, prepositions, or articles
+    3. Don't appear to be cut off mid-phrase
+
+    Args:
+        text: Description text to validate
+        tier: Description tier ('short', 'medium', 'long')
+
+    Returns:
+        List of Violation objects for incomplete thought issues
+    """
+    violations: list[Violation] = []
+    text_stripped = text.rstrip()
+
+    if not text_stripped:
+        return violations
+
+    # Check 1: Must end with sentence-ending punctuation
+    if not text_stripped.endswith((".", "!", "?")):
+        violations.append(
+            Violation(
+                layer="quality",
+                tier=tier,
+                code="INCOMPLETE_THOUGHT",
+                message="Description must end with period, exclamation, or question mark",
+                location=text_stripped[-30:] if len(text_stripped) > 30 else text_stripped,
+                suggestion="Complete the sentence with proper ending punctuation (.)",
+                examples=["Configure load balancers with health checks."],
+            ),
+        )
+
+    # Check 2: Detect cut-off patterns (articles, prepositions, conjunctions at end)
+    cutoff_patterns = [
+        (
+            r"\s+(and|or|but|with|for|to|from|in|on|at|by|the|a|an)\s*$",
+            "Ends with conjunction/preposition/article - sentence incomplete",
+        ),
+        (
+            r"\s+\w{1,2}\s*$",
+            "Ends with very short word (1-2 chars) - likely cut off",
+        ),
+    ]
+    for pattern, message in cutoff_patterns:
+        if re.search(pattern, text, re.IGNORECASE):
+            violations.append(
+                Violation(
+                    layer="quality",
+                    tier=tier,
+                    code="CUTOFF_DETECTED",
+                    message=message,
+                    location=text[-40:] if len(text) > 40 else text,
+                    suggestion="Complete the thought - don't end mid-phrase. Rewrite shorter if needed.",
+                    examples=["Configure routing rules and health checks."],
+                ),
+            )
+            break  # Only report one cutoff pattern
+
+    return violations
+
+
 def check_cross_tier_violations(descriptions: dict[str, str]) -> list[Violation]:
     """Check for excessive word overlap between description tiers.
 
@@ -1083,6 +1185,8 @@ def check_dry_compliance(domain: str, descriptions: dict[str, str]) -> list[str]
     violations: list[str] = []
 
     for tier, text in descriptions.items():
+        if tier not in VALID_TIERS:
+            continue  # Skip non-tier keys like source_patterns_hash
         # Layer 1: Check banned patterns with regex
         violations.extend(check_banned_patterns(tier, text))
 
@@ -1247,6 +1351,10 @@ def run_all_validations_structured(domain: str, descriptions: dict[str, str]) ->
         domain_violation = check_domain_name_usage(domain, text, tier)
         if domain_violation:
             violations.append(domain_violation)
+
+        # Layer 5: Complete thought validation (new)
+        complete_thought_violations = check_complete_thought(text, tier)
+        violations.extend(complete_thought_violations)
 
     # Check cross-tier repetition
     cross_tier_violations = check_cross_tier_violations(descriptions)
@@ -1504,6 +1612,8 @@ def check_style_compliance(descriptions: dict[str, str]) -> list[str]:
     violations = []
 
     for tier, text in descriptions.items():
+        if tier not in VALID_TIERS:
+            continue  # Skip non-tier keys like source_patterns_hash
         text_lower = text.lower().strip()
 
         # Check bad starters
@@ -1514,6 +1624,27 @@ def check_style_compliance(descriptions: dict[str, str]) -> list[str]:
                 )
                 break
 
+    return violations
+
+
+def check_complete_thought_string(descriptions: dict[str, str]) -> list[str]:
+    """Check for complete thought violations, returning string messages.
+
+    This is the string-format version of check_complete_thought() for
+    backward compatibility with run_all_validations().
+
+    Args:
+        descriptions: Dictionary with short/medium/long descriptions
+
+    Returns:
+        List of violation messages (empty if compliant)
+    """
+    violations: list[str] = []
+    for tier, text in descriptions.items():
+        if tier not in VALID_TIERS:
+            continue  # Skip non-tier keys like source_patterns_hash
+        tier_violations = check_complete_thought(text, tier)
+        violations.extend(f"{tier}: {v.message}" for v in tier_violations)
     return violations
 
 
@@ -1531,6 +1662,7 @@ def run_all_validations(domain: str, descriptions: dict[str, str]) -> list[str]:
     violations.extend(check_dry_compliance(domain, descriptions))
     violations.extend(check_character_limits(descriptions))
     violations.extend(check_style_compliance(descriptions))
+    violations.extend(check_complete_thought_string(descriptions))
     return violations
 
 
