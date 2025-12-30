@@ -1,15 +1,15 @@
 # Changelog
 
-## Version 1.0.66 (2025-12-29)
+## Version 1.0.67 (2025-12-29)
 
 ### Version Information
 
 | Field | Value |
 |-------|-------|
-| Full Version | 1.0.66 |
+| Full Version | 1.0.67 |
 | Upstream Timestamp | unknown |
 | Upstream ETag | unknown |
-| Enriched Version | 1.0.66 |
+| Enriched Version | 1.0.67 |
 
 ### Release Type
 
@@ -54,7 +54,7 @@ docs/specifications/api/
 
 ### Download
 
-- ZIP Package: F5xc-api-(unknown-1.0.66).zip
+- ZIP Package: F5xc-api-(unknown-1.0.67).zip
 
 ### Source
 
