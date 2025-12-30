@@ -1,5 +1,5 @@
 version: 1.0.0
-generated_at: '2025-12-30T15:36:10.770806+00:00'
+generated_at: '2025-12-30T16:30:46.645439+00:00'
 domains:
   virtual:
     source_patterns_hash: sha256:1eead315c8572a28f35b7d560a4b36b65c970cef1e8ba428dca3e6dc9bdca5e1
@@ -245,14 +245,12 @@ domains:
   observability:
     source_patterns_hash: sha256:8791a11c656556b03ad8b4ec59e27992603f9058dd555736e276adcc444b49a6
     short: Configure synthetic monitors and health checks
-    medium: Set up DNS and HTTP monitoring with alerting thresholds. Track certificate
-      expiration and service availability across regions.
-    long: Deploy synthetic monitors to validate DNS resolution and HTTP service health
-      from multiple geographic locations. Define monitoring schedules, response time
-      thresholds, and alerting conditions for proactive issue detection. Access health
-      summaries, historical trends, and detailed reports for certificate status and
-      service availability. Integrate monitoring data with dashboards to visualize
-      health patterns and identify performance degradation before user impact.
+    medium: Define DNS and HTTP monitors with regional testing. Track certificate
+      expiration and service availability across zones.
+    long: Set up synthetic monitoring for DNS resolution and HTTP services across
+      AWS regions. Generate health reports with historical trends and summary dashboards.
+      Monitor certificate validity, track response times, and aggregate results by
+      namespace for capacity planning.
   rate_limiting:
     source_patterns_hash: sha256:82eda79a860141fa87528ba15e95fb8f5afa3aa028350392a778d6daf1e8a726
     short: Configure traffic throttling and policer rules
@@ -297,16 +295,14 @@ domains:
       centralized infrastructure objects.
   sites:
     source_patterns_hash: sha256:09b069be1707029193be17885907465d632e5f09800cd13e23416a3414ca0726
-    short: Deploy and manage edge infrastructure
-    medium: Configure cloud provider resources on AWS, Azure, and GCP. Set up VPC
-      peering, transit gateways, and VPN tunnels for hybrid environments.
-    long: Create virtual and physical edge deployments spanning multiple providers.
-      Establish AWS Transit Gateway connections and secure tunnel configurations for
-      hybrid connectivity. Integrate external container orchestration systems as customer
-      edge nodes with managed control planes. Define virtual groupings using label
-      selectors to apply consistent policies across distributed infrastructure. Enable
-      secure mesh communication between edge nodes and cloud workloads with automated
-      certificate management.
+    short: Deploy edge nodes across cloud providers
+    medium: Configure AWS, Azure, GCP deployments with VPC integration. Manage transit
+      gateways and VPN tunnels.
+    long: Deploy edge nodes across AWS, Azure, and GCP with automated provisioning.
+      Configure VPC peering, transit gateway attachments, and VPN tunnel settings.
+      Define virtual groupings with label selectors for policy targeting. Manage Kubernetes
+      cluster integrations and secure mesh deployments. Monitor node health, validate
+      configurations, and set IP prefix allocations.
   statistics:
     source_patterns_hash: sha256:d62d981d8bc4a3e88ae17c2e349e0a0e5ac3e2744a23a88775dfba577bc53b64
     short: Monitor alerts, logs, and flow analytics
