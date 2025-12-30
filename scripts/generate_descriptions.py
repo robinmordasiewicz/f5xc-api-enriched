@@ -433,8 +433,8 @@ def validate_descriptions(descriptions: dict[str, str]) -> dict[str, str]:
     for tier, max_len in [("short", MAX_SHORT), ("medium", MAX_MEDIUM), ("long", MAX_LONG)]:
         value = descriptions.get(tier, "")
         if len(value) > max_len:
-            # Truncate at word boundary
-            truncated = value[: max_len - 3].rsplit(" ", 1)[0] + "..."
+            # Truncate at word boundary (no ellipsis - banned term)
+            truncated = value[:max_len].rsplit(" ", 1)[0]
             validated[tier] = truncated
             print(f"  Warning: {tier} truncated from {len(value)} to {len(truncated)} chars")
         else:
@@ -463,6 +463,8 @@ BANNED_TERMS = [
     " full",
     "various",
     "extensive",
+    "...",  # Truncation indicator
+    "…",  # Unicode ellipsis
 ]
 
 BAD_STARTERS = [
