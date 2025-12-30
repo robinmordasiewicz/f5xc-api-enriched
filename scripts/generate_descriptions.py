@@ -24,6 +24,7 @@ import json
 import re
 import subprocess
 import sys
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -32,6 +33,155 @@ import yaml
 
 from scripts.utils.domain_categorizer import DomainCategorizer
 from scripts.utils.domain_metadata import DOMAIN_METADATA
+
+# =============================================================================
+# STRUCTURED VIOLATION SYSTEM
+# Provides precise, actionable feedback for self-refine loops
+# =============================================================================
+
+
+@dataclass
+class Violation:
+    """Structured violation data for precise feedback in self-refine loops.
+
+    Instead of string parsing, this provides:
+    - Exact location of the problem
+    - Specific fix guidance
+    - Concrete examples of correct alternatives
+    """
+
+    layer: str  # "banned_patterns", "self_referential", "quality", "circular", "cross_tier"
+    tier: str  # "short", "medium", "long", or "cross_tier"
+    code: str  # "DOMAIN_NAME", "WORD_REPETITION", "STYLE", etc.
+    message: str  # Human-readable description
+    location: str  # Exact text that triggered violation
+    suggestion: str  # Specific fix recommendation
+    examples: list[str] = field(default_factory=list)  # Good alternatives
+
+    def __str__(self) -> str:
+        """Return string representation for backward compatibility."""
+        return f"{self.tier}: {self.message}"
+
+    def to_feedback(self) -> str:
+        """Generate specific, actionable feedback for the LLM."""
+        parts = [
+            f"### Issue: {self.code} in {self.tier.upper()}",
+            f"**Problem**: {self.message}",
+            f'**Found**: "{self.location}"',
+            f"**Fix**: {self.suggestion}",
+        ]
+        if self.examples:
+            parts.append(f'**Example**: "{self.examples[0]}"')
+        return "\n".join(parts)
+
+
+# Domain-specific synonyms for avoiding self-reference
+# Maps domain names to functional alternatives
+DOMAIN_SYNONYMS: dict[str, list[str]] = {
+    # Infrastructure domains
+    "observability": ["monitoring infrastructure", "telemetry systems", "metrics pipelines"],
+    "sites": ["edge locations", "deployment points", "regional nodes"],
+    "network": ["connectivity", "traffic routing", "data paths"],
+    "cloud_infrastructure": ["compute resources", "deployment targets", "hosting platforms"],
+    # Security domains
+    "authentication": ["identity verification", "access control", "credential management"],
+    "waf": ["request filtering", "attack prevention", "traffic inspection"],
+    "ddos": ["flood protection", "traffic scrubbing", "rate enforcement"],
+    "bot_and_threat_defense": ["automated threat blocking", "malicious traffic filtering"],
+    "network_security": ["perimeter controls", "traffic policies", "access rules"],
+    "data_and_privacy_security": ["sensitive data handling", "privacy controls"],
+    # Delivery domains
+    "cdn": ["content delivery", "edge caching", "distribution networks"],
+    "dns": ["name resolution", "record management", "zone configuration"],
+    "virtual": ["load distribution", "traffic management", "request routing"],
+    # Management domains
+    "certificates": ["TLS credentials", "SSL management", "PKI operations"],
+    "users": ["account management", "role assignments", "permission controls"],
+    "tenant_and_identity": ["organization settings", "identity providers"],
+    "billing_and_usage": ["consumption tracking", "cost management"],
+    # Operations domains
+    "telemetry_and_insights": ["metrics collection", "performance analysis"],
+    "statistics": ["usage metrics", "performance data", "trend analysis"],
+    "support": ["help resources", "troubleshooting tools"],
+    # Other domains
+    "api": ["interface definitions", "schema management"],
+    "container_services": ["workload orchestration", "pod management"],
+    "managed_kubernetes": ["cluster operations", "node management"],
+    "service_mesh": ["microservice routing", "sidecar configuration"],
+    "rate_limiting": ["request throttling", "quota enforcement"],
+    "marketplace": ["service catalog", "add-on management"],
+    "ce_management": ["customer edge control", "site operations"],
+    "vpm_and_node_management": ["node lifecycle", "edge provisioning"],
+    "generative_ai": ["model integration", "inference routing"],
+    "blindfold": ["secret encryption", "key management"],
+    "bigip": ["legacy integration", "device management"],
+    "shape": ["client integrity", "fraud prevention"],
+    "threat_campaign": ["attack patterns", "threat intelligence"],
+    "secops_and_incident_response": ["security automation", "alert handling"],
+    "object_storage": ["blob management", "file distribution"],
+    "nginx_one": ["proxy configuration", "gateway management"],
+    "data_intelligence": ["traffic analysis", "behavioral insights"],
+    "openapi": ["schema definitions", "interface contracts"],
+    "admin_console_and_ui": ["dashboard access", "portal configuration"],
+}
+
+
+# Successful description patterns by domain category
+# These examples demonstrate compliant descriptions that pass all validation layers
+SUCCESSFUL_PATTERNS: dict[str, dict[str, str]] = {
+    "infrastructure": {
+        "short": "Deploy edge nodes with automated provisioning",
+        "medium": "Configure regional clusters with health monitoring. Set failover policies.",
+        "long": (
+            "Manage multi-cloud deployments across AWS, Azure, GCP. "
+            "Configure VPC peering, transit gateways. Monitor node health and capacity metrics."
+        ),
+    },
+    "security": {
+        "short": "Configure firewall rules and access controls",
+        "medium": "Define security policies with threat detection. Set up WAF rules and rate limits.",
+        "long": (
+            "Manage perimeter defense with anomaly detection and automated blocking. "
+            "Configure SSL inspection, DDoS mitigation, and compliance reporting."
+        ),
+    },
+    "delivery": {
+        "short": "Route traffic to origin pools",
+        "medium": "Configure load balancing with health checks. Define routing policies.",
+        "long": (
+            "Manage traffic distribution across regions. Configure SSL termination, "
+            "caching policies, and failover rules. Monitor latency and throughput."
+        ),
+    },
+    "management": {
+        "short": "Configure organization settings and roles",
+        "medium": "Manage user permissions with role-based access. Set up identity providers.",
+        "long": (
+            "Define organizational hierarchy with delegated administration. "
+            "Configure SSO, audit logging, and compliance controls."
+        ),
+    },
+    "operations": {
+        "short": "Monitor system health and performance",
+        "medium": "Collect metrics with custom dashboards. Configure alerting rules.",
+        "long": (
+            "Analyze traffic patterns with log aggregation. "
+            "Set up automated remediation, SLA tracking, and capacity planning."
+        ),
+    },
+}
+
+# Map domain categories to pattern categories
+CATEGORY_TO_PATTERN: dict[str, str] = {
+    "Infrastructure": "infrastructure",
+    "Infrastructure Management": "infrastructure",
+    "Security": "security",
+    "Delivery": "delivery",
+    "Management": "management",
+    "Operations": "operations",
+    "Other": "infrastructure",  # Default fallback
+}
+
 
 # Constants
 CONFIG_PATH = Path("config/domain_descriptions.yaml")
@@ -193,6 +343,23 @@ def build_prompt(domain: str, context: dict[str, Any]) -> str:
     # Domain name variants to ban (the domain and common transforms)
     domain_variants = domain.replace("_", " ")
 
+    # Get successful pattern based on domain category
+    category = context.get("domain_category", "Other")
+    pattern_key = CATEGORY_TO_PATTERN.get(category, "infrastructure")
+    pattern = SUCCESSFUL_PATTERNS.get(pattern_key, SUCCESSFUL_PATTERNS["infrastructure"])
+
+    # Build successful patterns section with domain-specific synonyms
+    domain_synonyms = DOMAIN_SYNONYMS.get(domain, ["infrastructure", "systems", "services"])
+    synonyms_hint = f"(NEVER use '{domain_variants}' - use: {', '.join(domain_synonyms[:3])})"
+
+    successful_patterns_section = f"""
+SHORT ({len(pattern["short"])} chars): "{pattern["short"]}"
+MEDIUM ({len(pattern["medium"])} chars): "{pattern["medium"]}"
+LONG ({len(pattern["long"])} chars): "{pattern["long"]}"
+
+{synonyms_hint}
+"""
+
     prompt = f"""Generate 3-tier descriptions for the "{context["domain_title"]}" domain.
 
 CONTEXT:
@@ -296,6 +463,9 @@ LONG (TARGET: 350-450 chars, HARD MAX: {MAX_LONG}):
   • If over 450 chars, SIMPLIFY sentences (don't truncate!)
   • Remove verbose qualifiers ("authoritative", "global", "comprehensive")
 
+═══════════════════════════════════════════════════════════════════════════════
+SUCCESSFUL EXAMPLE - Follow this structure and style:
+{successful_patterns_section}
 ═══════════════════════════════════════════════════════════════════════════════
 OUTPUT FORMAT:
 
@@ -711,7 +881,164 @@ def is_circular_definition(desc: str, tier: str = "long") -> tuple[bool, str]:
     return False, ""
 
 
-MAX_RETRIES = 3
+def check_domain_name_usage(domain: str, text: str, tier: str) -> Violation | None:
+    """Check if description contains the domain name (self-reference).
+
+    Returns a structured Violation with specific synonyms to use instead.
+
+    Args:
+        domain: Domain name to check against
+        text: Description text to check
+        tier: Description tier ('short', 'medium', 'long')
+
+    Returns:
+        Violation object if domain name found, None otherwise
+    """
+    domain_lower = domain.lower()
+    domain_spaced = domain_lower.replace("_", " ")
+    text_lower = text.lower()
+
+    # Check both underscore and spaced versions
+    for variant in [domain_lower, domain_spaced]:
+        if variant in text_lower:
+            # Find exact position for precise feedback
+            start = text_lower.find(variant)
+            exact_match = text[start : start + len(variant)]
+
+            # Get domain-specific synonyms
+            synonyms = DOMAIN_SYNONYMS.get(domain, ["infrastructure", "systems", "services"])
+
+            return Violation(
+                layer="self_referential",
+                tier=tier,
+                code="DOMAIN_NAME",
+                message=f"Contains domain name '{domain}'",
+                location=exact_match,
+                suggestion=f"Replace '{exact_match}' with: {', '.join(synonyms[:3])}",
+                examples=[f"Deploy {synonyms[0]} with configuration management"],
+            )
+
+    return None
+
+
+def check_cross_tier_violations(descriptions: dict[str, str]) -> list[Violation]:
+    """Check for excessive word overlap between description tiers.
+
+    Returns structured Violations with specific words and synonym suggestions.
+
+    Args:
+        descriptions: Dictionary with short/medium/long descriptions
+
+    Returns:
+        List of Violation objects for cross-tier repetition issues
+    """
+    violations: list[Violation] = []
+
+    short_words = set(_extract_significant_words(descriptions.get("short", "")))
+    medium_words = set(_extract_significant_words(descriptions.get("medium", "")))
+    long_words = set(_extract_significant_words(descriptions.get("long", "")))
+
+    min_overlap_threshold = 4  # Only flag if >=4 significant words overlap
+
+    # Check medium→long overlap (most common issue)
+    medium_in_long = medium_words & long_words
+    if len(medium_in_long) >= min_overlap_threshold:
+        overlap_list = sorted(medium_in_long)
+        # Generate synonym suggestions for the overlapping words
+        synonym_hints = _get_synonym_hints(overlap_list[:4])
+
+        violations.append(
+            Violation(
+                layer="cross_tier",
+                tier="cross_tier",
+                code="CROSS_TIER_OVERLAP",
+                message=f"Medium and long share {len(medium_in_long)} significant words",
+                location=", ".join(overlap_list[:6]),
+                suggestion=f"In LONG tier, replace: {synonym_hints}",
+                examples=[
+                    "Use different vocabulary for each tier - add new concepts, not more of same",
+                ],
+            ),
+        )
+
+    # Check short→medium overlap
+    short_in_medium = short_words & medium_words
+    if len(short_in_medium) >= min_overlap_threshold:
+        overlap_list = sorted(short_in_medium)
+        synonym_hints = _get_synonym_hints(overlap_list[:4])
+
+        violations.append(
+            Violation(
+                layer="cross_tier",
+                tier="cross_tier",
+                code="CROSS_TIER_OVERLAP",
+                message=f"Short and medium share {len(short_in_medium)} significant words",
+                location=", ".join(overlap_list[:6]),
+                suggestion=f"In MEDIUM tier, replace: {synonym_hints}",
+                examples=["Each tier should introduce new concepts"],
+            ),
+        )
+
+    # Check short→long overlap
+    short_in_long = short_words & long_words
+    if len(short_in_long) >= min_overlap_threshold:
+        overlap_list = sorted(short_in_long)
+        synonym_hints = _get_synonym_hints(overlap_list[:4])
+
+        violations.append(
+            Violation(
+                layer="cross_tier",
+                tier="cross_tier",
+                code="CROSS_TIER_OVERLAP",
+                message=f"Short and long share {len(short_in_long)} significant words",
+                location=", ".join(overlap_list[:6]),
+                suggestion=f"In LONG tier, replace: {synonym_hints}",
+                examples=["Long descriptions should add depth, not repeat short"],
+            ),
+        )
+
+    return violations
+
+
+def _get_synonym_hints(words: list[str]) -> str:
+    """Generate synonym hints for overlapping words.
+
+    Args:
+        words: List of words that need synonyms
+
+    Returns:
+        String with word→synonym suggestions
+    """
+    # Common word synonyms for infrastructure/cloud domains
+    synonyms = {
+        "connections": "links, pathways, tunnels",
+        "virtual": "software-defined, logical, cloud-based",
+        "transit": "inter-region, cross-cloud, backbone",
+        "azure": "cloud provider, hyperscaler",
+        "configure": "set up, establish, define",
+        "manage": "administer, control, oversee",
+        "deploy": "provision, launch, instantiate",
+        "security": "protection, safeguards, controls",
+        "network": "connectivity, infrastructure, fabric",
+        "traffic": "requests, data flow, packets",
+        "routing": "path selection, forwarding, direction",
+        "cluster": "node group, instance pool",
+        "gateway": "entry point, ingress, proxy",
+        "policy": "rule set, governance, constraints",
+    }
+
+    hints = []
+    for word in words[:4]:
+        word_lower = word.lower()
+        if word_lower in synonyms:
+            hints.append(f"'{word}' → {synonyms[word_lower]}")
+        else:
+            hints.append(f"'{word}' → (use synonym)")
+
+    return "; ".join(hints)
+
+
+MAX_RETRIES = 5  # Increased from 3 for better self-refine success rate
 
 
 def check_banned_patterns(tier: str, text: str) -> list[str]:
@@ -755,13 +1082,7 @@ def check_dry_compliance(domain: str, descriptions: dict[str, str]) -> list[str]
     """
     violations: list[str] = []
 
-    # Domain name variants to check
-    domain_lower = domain.lower()
-    domain_spaced = domain_lower.replace("_", " ")
-
     for tier, text in descriptions.items():
-        text_lower = text.lower()
-
         # Layer 1: Check banned patterns with regex
         violations.extend(check_banned_patterns(tier, text))
 
@@ -779,35 +1100,157 @@ def check_dry_compliance(domain: str, descriptions: dict[str, str]) -> list[str]
         if is_circular:
             violations.append(f"{tier}: {circular_msg}")
 
-        # Check domain name (avoid self-reference)
-        if domain_lower in text_lower or domain_spaced in text_lower:
+        # Check domain name (avoid self-reference) using structured check
+        domain_violation = check_domain_name_usage(domain, text, tier)
+        if domain_violation:
             violations.append(f"{tier}: Contains domain name '{domain}'")
 
-    # Check cross-tier repetition (significant words)
-    # Only flag if there are more than 2 overlapping significant words
-    # (some overlap is acceptable for coherence)
-    short_words = set(_extract_significant_words(descriptions.get("short", "")))
-    medium_words = set(_extract_significant_words(descriptions.get("medium", "")))
-    long_words = set(_extract_significant_words(descriptions.get("long", "")))
+    # Check cross-tier repetition using structured check
+    cross_tier_violations = check_cross_tier_violations(descriptions)
+    # Convert to string format for backward compatibility using extend
+    violations.extend(f"Repetition: {v.message}: {{{v.location}}}" for v in cross_tier_violations)
 
-    # Short words should not appear in medium/long (threshold: >2 overlapping)
-    short_in_medium = short_words & medium_words
-    short_in_long = short_words & long_words
-    medium_in_long = medium_words & long_words
+    return violations
 
-    min_overlap_threshold = 4  # Only flag if >=4 significant words overlap
-    if len(short_in_medium) >= min_overlap_threshold:
-        violations.append(
-            f"Repetition: short→medium overlap ({len(short_in_medium)} words): {short_in_medium}",
-        )
-    if len(short_in_long) >= min_overlap_threshold:
-        violations.append(
-            f"Repetition: short→long overlap ({len(short_in_long)} words): {short_in_long}",
-        )
-    if len(medium_in_long) >= min_overlap_threshold:
-        violations.append(
-            f"Repetition: medium→long overlap ({len(medium_in_long)} words): {medium_in_long}",
-        )
+
+def run_all_validations_structured(domain: str, descriptions: dict[str, str]) -> list[Violation]:
+    """Run all validation checks and return structured Violation objects.
+
+    This is the new structured validation function that provides:
+    - Exact location of problems
+    - Specific fix suggestions
+    - Concrete examples of correct alternatives
+
+    Args:
+        domain: Domain name to check against
+        descriptions: Dictionary with short/medium/long descriptions
+
+    Returns:
+        List of Violation objects (empty if compliant)
+    """
+    violations: list[Violation] = []
+
+    for tier, text in descriptions.items():
+        # Layer 1: Check banned patterns
+        for pattern, error_msg in BANNED_PATTERNS:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                matched_text = match.group()
+                # Determine violation code from error message
+                code = "BANNED_PATTERN"
+                if "REDUNDANT" in error_msg:
+                    code = "REDUNDANT"
+                elif "BRAND" in error_msg:
+                    code = "BRAND"
+                elif "FILLER" in error_msg:
+                    code = "FILLER"
+                elif "VAGUE" in error_msg:
+                    code = "VAGUE"
+                elif "MARKETING" in error_msg:
+                    code = "MARKETING"
+                elif "PASSIVE" in error_msg:
+                    code = "PASSIVE"
+                elif "TRUNCATED" in error_msg:
+                    code = "TRUNCATED"
+
+                violations.append(
+                    Violation(
+                        layer="banned_patterns",
+                        tier=tier,
+                        code=code,
+                        message=error_msg,
+                        location=matched_text,
+                        suggestion=error_msg.split(": ", 1)[-1]
+                        if ": " in error_msg
+                        else "Remove or replace this term",
+                        examples=[],
+                    ),
+                )
+
+        # Layer 2: Check self-referential patterns
+        is_lazy, lazy_msg = is_self_referential(domain, text)
+        if is_lazy:
+            violations.append(
+                Violation(
+                    layer="self_referential",
+                    tier=tier,
+                    code="LAZY_PATTERN",
+                    message=lazy_msg,
+                    location=text,
+                    suggestion="Write a functional description instead of restating the domain name",
+                    examples=["Configure load distribution and traffic management"],
+                ),
+            )
+
+        # Layer 3: Quality metrics
+        limits = {"short": MAX_SHORT, "medium": MAX_MEDIUM, "long": MAX_LONG}
+        limit = limits.get(tier, MAX_LONG)
+        if len(text) > limit:
+            violations.append(
+                Violation(
+                    layer="quality",
+                    tier=tier,
+                    code="LENGTH",
+                    message=f"{len(text)} chars exceeds {tier} limit of {limit}",
+                    location=f"Current: {len(text)} chars",
+                    suggestion=f"Remove {len(text) - limit} characters - cut phrases like 'and policies', 'for distribution'",
+                    examples=[],
+                ),
+            )
+
+        word_count = len(text.split())
+        if word_count < 3:
+            violations.append(
+                Violation(
+                    layer="quality",
+                    tier=tier,
+                    code="SPARSE",
+                    message=f"Only {word_count} word(s) - needs at least 3",
+                    location=text,
+                    suggestion="Add more descriptive content",
+                    examples=["Configure load balancers and routing"],
+                ),
+            )
+
+        # Action verb check for short descriptions
+        if tier == "short" and text:
+            first_word = text.split()[0].lower() if text.split() else ""
+            if not any(first_word.startswith(v) for v in ACTION_VERBS):
+                violations.append(
+                    Violation(
+                        layer="quality",
+                        tier=tier,
+                        code="STYLE",
+                        message=f"Short description should start with action verb, not '{first_word}'",
+                        location=first_word,
+                        suggestion="Start with: Configure, Create, Manage, Define, Deploy, Set up",
+                        examples=["Configure load balancers", "Manage security policies"],
+                    ),
+                )
+
+        # Layer 4: Circular definitions
+        is_circular, circular_msg = is_circular_definition(text, tier)
+        if is_circular:
+            violations.append(
+                Violation(
+                    layer="circular",
+                    tier=tier,
+                    code="CIRCULAR",
+                    message=circular_msg,
+                    location=text,
+                    suggestion="Use variety - don't repeat significant words within the same tier",
+                    examples=[],
+                ),
+            )
+
+        # Check domain name
+        domain_violation = check_domain_name_usage(domain, text, tier)
+        if domain_violation:
+            violations.append(domain_violation)
+
+    # Check cross-tier repetition
+    cross_tier_violations = check_cross_tier_violations(descriptions)
+    violations.extend(cross_tier_violations)
 
     return violations
 
@@ -1095,14 +1538,15 @@ def build_refinement_prompt(
     domain: str,
     context: dict[str, Any],
     previous_response: dict[str, str],
-    violations: list[str],
+    violations: list[str] | list[Violation],
 ) -> str:
     """Build a refinement prompt with specific, actionable feedback.
 
     Instead of retrying with the same prompt, this provides the model with:
     - The previous response that failed
     - Specific violations with concrete fix instructions
-    - Character reduction targets (not just "too long")
+    - Exact words to replace and suggested alternatives
+    - Domain-specific synonym suggestions
 
     This implements the Self-Refine approach which achieves 85-95% compliance
     vs ~50% for blind retries.
@@ -1111,78 +1555,77 @@ def build_refinement_prompt(
         domain: Domain name being processed
         context: Domain context dictionary
         previous_response: The descriptions that failed validation
-        violations: List of violation messages from validation
+        violations: List of Violation objects OR legacy string messages
 
     Returns:
         Refined prompt with specific feedback
     """
-    # Parse violations into actionable feedback with specific fix instructions
+    # Handle both structured Violation objects and legacy string format
     feedback_items = []
     limits = {"short": MAX_SHORT, "medium": MAX_MEDIUM, "long": MAX_LONG}
 
     for violation in violations:
-        v_lower = violation.lower()
-        tier = violation.split(":")[0].lower() if ":" in violation else ""
-
-        if "exceeds" in v_lower:
-            # Character limit violation - calculate exact reduction needed
-            # Expected format is tier name followed by char counts in parentheses
-            try:
-                current_chars = int(violation.split("(")[1].split()[0])
-                max_chars = limits.get(tier, 500)
-                reduction = current_chars - max_chars
-                pct = (reduction * 100) // current_chars
-                feedback_items.append(
-                    f"❌ {tier.upper()}: {current_chars} chars → max {max_chars}. "
-                    f"REMOVE {reduction} chars ({pct}% reduction). "
-                    f"Cut phrases like 'and policies', 'for distribution', etc.",
-                )
-            except (IndexError, ValueError):
-                feedback_items.append(f"❌ {violation} - SHORTEN this tier")
-
-        elif "banned term" in v_lower:
-            # Extract the banned term and suggest alternatives
-            try:
-                term = violation.split("'")[1]
-                alternatives = {
-                    "comprehensive": "broad",
-                    "complete": "full-featured",
-                    "extensive": "wide-ranging",
-                    "specifications": "definitions",
-                    "spec": "definition",
-                    "api": "interface",
-                    "endpoint": "path",
-                }
-                alt = alternatives.get(term.lower(), "(remove entirely)")
-                feedback_items.append(
-                    f"❌ {tier.upper()}: Remove banned term '{term}'. Alternative: {alt}",
-                )
-            except IndexError:
-                feedback_items.append(f"❌ {violation}")
-
-        elif "domain name" in v_lower:
-            feedback_items.append(
-                f"❌ {tier.upper()}: Self-references domain '{domain}'. "
-                f"Never mention the domain name in its own description.",
-            )
-
-        elif "starts with" in v_lower:
-            try:
-                starter = violation.split("'")[1]
-                feedback_items.append(
-                    f"❌ {tier.upper()}: Starts with '{starter}'. "
-                    f"MUST start with action verb: Configure, Create, Manage, Define, Deploy",
-                )
-            except IndexError:
-                feedback_items.append(f"❌ {violation}")
-
-        elif "repetition" in v_lower:
-            feedback_items.append(
-                f"❌ {violation}. Use DIFFERENT words in each tier - no overlap.",
-            )
-
+        if isinstance(violation, Violation):
+            # Use structured violation data for precise feedback
+            feedback_items.append(violation.to_feedback())
         else:
-            feedback_items.append(f"❌ {violation}")
+            # Legacy string handling for backward compatibility
+            v_lower = violation.lower()
+            tier = violation.split(":")[0].lower() if ":" in violation else ""
+
+            if "exceeds" in v_lower:
+                try:
+                    current_chars = int(violation.split("(")[1].split()[0])
+                    max_chars = limits.get(tier, 500)
+                    reduction = current_chars - max_chars
+                    pct = (reduction * 100) // current_chars
+                    feedback_items.append(
+                        f"❌ {tier.upper()}: {current_chars} chars → max {max_chars}. "
+                        f"REMOVE {reduction} chars ({pct}% reduction). "
+                        f"Cut phrases like 'and policies', 'for distribution', etc.",
+                    )
+                except (IndexError, ValueError):
+                    feedback_items.append(f"❌ {violation} - SHORTEN this tier")
+            elif "banned term" in v_lower:
+                try:
+                    term = violation.split("'")[1]
+                    alternatives = {
+                        "comprehensive": "broad",
+                        "complete": "full-featured",
+                        "extensive": "wide-ranging",
+                        "specifications": "definitions",
+                        "spec": "definition",
+                        "api": "interface",
+                        "endpoint": "path",
+                    }
+                    alt = alternatives.get(term.lower(), "(remove entirely)")
+                    feedback_items.append(
+                        f"❌ {tier.upper()}: Remove banned term '{term}'. Alternative: {alt}",
+                    )
+                except IndexError:
+                    feedback_items.append(f"❌ {violation}")
+            elif "domain name" in v_lower:
+                # Get domain synonyms for better suggestions
+                synonyms = DOMAIN_SYNONYMS.get(domain, ["infrastructure", "systems", "services"])
+                feedback_items.append(
+                    f"❌ {tier.upper()}: Contains domain name '{domain}'. "
+                    f"Replace with: {', '.join(synonyms[:3])}",
+                )
+            elif "starts with" in v_lower:
+                try:
+                    starter = violation.split("'")[1]
+                    feedback_items.append(
+                        f"❌ {tier.upper()}: Starts with '{starter}'. "
+                        f"MUST start with action verb: Configure, Create, Manage, Define, Deploy",
+                    )
+                except IndexError:
+                    feedback_items.append(f"❌ {violation}")
+            elif "repetition" in v_lower or "overlap" in v_lower:
+                feedback_items.append(
+                    f"❌ {violation}. Use DIFFERENT vocabulary in each tier.",
+                )
+            else:
+                feedback_items.append(f"❌ {violation}")
 
     feedback_str = "\n".join(feedback_items)
     prev_json = json.dumps(previous_response, indent=2)
@@ -1192,6 +1635,10 @@ def build_refinement_prompt(
         tier: len(previous_response.get(tier, "")) for tier in ["short", "medium", "long"]
     }
     counts_str = ", ".join(f"{t}: {c}" for t, c in char_counts.items())
+
+    # Get domain synonyms to help the model avoid domain name
+    domain_synonyms = DOMAIN_SYNONYMS.get(domain, ["infrastructure", "systems", "services"])
+    synonyms_str = ", ".join(domain_synonyms[:5])
 
     return f"""Your previous response for "{context["domain_title"]}" domain FAILED validation.
 
@@ -1203,26 +1650,32 @@ SPECIFIC VIOLATIONS TO FIX:
 {feedback_str}
 
 ═══════════════════════════════════════════════════════════════════════════════
+DOMAIN-SPECIFIC GUIDANCE:
+
+NEVER use the word "{domain.replace("_", " ")}" in any description.
+Instead, use these synonyms: {synonyms_str}
+
+═══════════════════════════════════════════════════════════════════════════════
 FIX INSTRUCTIONS:
 
-1. For CHARACTER LIMIT violations:
-   - Count characters in your draft BEFORE responding
+1. For DOMAIN NAME violations:
+   - Replace "{domain.replace("_", " ")}" with one of: {synonyms_str}
+   - The description DESCRIBES the domain, it should NOT MENTION it
+
+2. For CHARACTER LIMIT violations:
    - SHORT must be ≤{MAX_SHORT} chars (aim for 35-50)
    - MEDIUM must be ≤{MAX_MEDIUM} chars (aim for 100-130)
    - LONG must be ≤{MAX_LONG} chars (aim for 350-450)
    - Remove words/phrases, don't truncate with "..."
 
-2. For BANNED TERM violations:
-   - Remove or replace the specific term mentioned
-   - Never use: F5, XC, API, spec, comprehensive, complete, full, various, extensive
+3. For REPETITION/OVERLAP violations:
+   - Each tier must use DIFFERENT vocabulary
+   - Replace overlapping words with synonyms
+   - Progress: WHAT (short) → HOW+SCOPE (medium) → WHERE+WHEN+METRICS (long)
 
-3. For STYLE violations:
-   - Start EVERY tier with action verb: Configure, Create, Manage, Define, Deploy, Set up
+4. For STYLE violations:
+   - Start EVERY tier with action verb: Configure, Create, Manage, Define, Deploy
    - Never start with: This, The, A, An, Provides, Enables
-
-4. For REPETITION violations:
-   - Each tier must use DIFFERENT words
-   - If SHORT says "load balancers", MEDIUM/LONG cannot
 
 ═══════════════════════════════════════════════════════════════════════════════
 OUTPUT:
