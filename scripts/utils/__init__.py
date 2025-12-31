@@ -13,6 +13,7 @@ from .description_structure import DescriptionStructureTransformer
 from .description_validator import DescriptionValidator
 from .discovery_enricher import DiscoveryEnricher
 from .domain_categorizer import DOMAIN_PATTERNS, DomainCategorizer, categorize_spec
+from .external_docs_enricher import ExternalDocsEnricher
 from .field_description_enricher import FieldDescriptionEnricher
 from .field_metadata_enricher import FieldMetadataEnricher
 from .grammar import GrammarImprover
@@ -43,6 +44,7 @@ __all__ = [
     "DescriptionValidator",
     "DiscoveryEnricher",
     "DomainCategorizer",
+    "ExternalDocsEnricher",
     "FieldDescriptionEnricher",
     "FieldMetadataEnricher",
     "GrammarImprover",

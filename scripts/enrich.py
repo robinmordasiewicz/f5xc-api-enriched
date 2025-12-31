@@ -32,6 +32,7 @@ from scripts.utils import (
     DescriptionStructureTransformer,
     DescriptionValidator,
     DiscoveryEnricher,
+    ExternalDocsEnricher,
     FieldMetadataEnricher,
     GrammarImprover,
     MinimumConfigurationEnricher,
@@ -314,7 +315,11 @@ def enrich_spec_file(
         namespace_scope_enricher = NamespaceScopeEnricher()
         spec = namespace_scope_enricher.enrich_spec(spec)
 
-        # 4.7. Domain description enrichment (apply DRY descriptions from config)
+        # 4.7. External docs enrichment (add externalDocs with F5 documentation links)
+        external_docs_enricher = ExternalDocsEnricher()
+        spec = external_docs_enricher.enrich_spec(spec, filename=spec_path.name)
+
+        # 4.8. Domain description enrichment (apply DRY descriptions from config)
         description_enricher = DescriptionEnricher()
         spec = description_enricher.enrich_spec(spec)
 
