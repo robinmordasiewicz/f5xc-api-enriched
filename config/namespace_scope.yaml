@@ -1,0 +1,145 @@
+# Namespace scope configuration for F5 XC OpenAPI specifications.
+#
+# This configuration defines which namespaces each resource type can be created in.
+# Used by NamespaceScopeEnricher to add x-ves-namespace-scope extension to specs.
+#
+# Scope values:
+#   - system: Only available in system namespace
+#   - shared: Only available in shared namespace
+#   - any: Available in user namespaces (shared, default, custom) but NOT system
+#
+# Resources not listed default to "any" scope.
+
+# Extension name to use in OpenAPI specs
+extension_name: x-ves-namespace-scope
+
+# Default scope for unlisted resources
+default_scope: any
+
+# Scope mappings by resource type
+scopes:
+  # System-scoped resources (58 total)
+  # These resources can only exist in the system namespace
+  system:
+    # Advertising and policy resources
+    - advertise_policy
+
+    # Alert and monitoring resources
+    - alert_policy
+    - alert_policy_set
+    - alert_receiver
+
+    # API and credential resources
+    - api_credential
+    - api_credential_api_token
+    - api_definition
+
+    # Site and infrastructure resources
+    - aws_tgw_site
+    - aws_vpc_site
+    - azure_vnet_site
+    - gcp_vpc_site
+    - physical_k8s_site
+    - voltstack_site
+
+    # Fleet and cluster management
+    - fleet
+    - k8s_cluster
+
+    # Network infrastructure
+    - global_network
+    - virtual_network
+
+    # Identity and access management
+    - role
+    - service_credential
+    - user
+
+    # Certificate management
+    - certificate
+    - certificate_chain
+
+    # Cloud connect resources
+    - cloud_connect
+    - cloud_credentials
+    - cloud_link
+
+    # Discovery and registration
+    - discovery
+    - registration
+
+    # Infrastructure configuration
+    - interface
+    - network_connector
+    - network_interface
+    - network_policy_rule
+    - network_policy_set
+    - site_mesh_group
+    - tunnel
+    - virtual_host
+    - virtual_k8s
+
+    # Tenant and system administration
+    - tenant
+    - tenant_settings
+
+    # App infrastructure
+    - app_setting
+    - app_type
+
+    # BGP and routing
+    - bgp
+    - bgp_asn_set
+
+    # Site mesh resources
+    - dc_cluster_group
+    - site_mesh
+
+    # Protocol inspection
+    - protocol_inspection
+
+    # Token and secret management
+    - token
+    - secret
+
+    # Views and custom resources
+    - views_advertise_policy
+    - views_aws_tgw_site
+    - views_aws_vpc_site
+    - views_azure_vnet_site
+    - views_gcp_vpc_site
+    - views_physical_k8s_site
+    - views_voltstack_site
+
+    # Label and metadata resources
+    - label
+    - label_group
+    - known_label
+    - known_label_key
+
+    # Log management
+    - log_receiver
+    - global_log_receiver
+
+    # Upgrade management
+    - upgrade_os
+    - software_version
+
+    # Namespace management (ironically system-scoped)
+    - namespace
+
+  # Shared-scoped resources (1 total)
+  # These resources can only exist in the shared namespace
+  shared:
+    - namespace_role_binding
+
+# Any-scoped resources (default)
+# Resources not listed above default to "any" scope
+# Examples include:
+#   - http_loadbalancer
+#   - origin_pool
+#   - waf
+#   - app_firewall
+#   - service_policy
+#   - rate_limiter
+#   - etc.

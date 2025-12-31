@@ -271,6 +271,9 @@ ignore = [
 "tests/test_curl_validator.py" = [
     "SLF001",  # Private member access (testing internal methods)
 ]
+"tests/test_namespace_scope_enricher.py" = [
+    "SLF001",  # Private member access (testing internal methods)
+]
 
 # __init__.py files can have unused imports (re-exports)
 "**/__init__.py" = [
