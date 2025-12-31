@@ -35,6 +35,7 @@ from scripts.utils import (
     FieldMetadataEnricher,
     GrammarImprover,
     MinimumConfigurationEnricher,
+    NamespaceScopeEnricher,
     SchemaFixer,
     TagGenerator,
 )
@@ -309,7 +310,11 @@ def enrich_spec_file(
         # 4.5. Minimum configuration enrichment (add x-ves-minimum-configuration)
         spec = minimum_configuration_enricher.enrich_spec(spec)
 
-        # 4.6. Domain description enrichment (apply DRY descriptions from config)
+        # 4.6. Namespace scope enrichment (add x-ves-namespace-scope)
+        namespace_scope_enricher = NamespaceScopeEnricher()
+        spec = namespace_scope_enricher.enrich_spec(spec)
+
+        # 4.7. Domain description enrichment (apply DRY descriptions from config)
         description_enricher = DescriptionEnricher()
         spec = description_enricher.enrich_spec(spec)
 
@@ -368,6 +373,7 @@ def enrich_spec_file(
         desc_stats = description_validator.get_stats()
         consistency_stats = consistency_validator.get_stats()
         minimum_config_stats = minimum_configuration_enricher.get_stats()
+        namespace_scope_stats = namespace_scope_enricher.get_stats()
 
         return EnrichmentResult(
             filename=filename,
@@ -388,6 +394,7 @@ def enrich_spec_file(
                 "descriptions_generated": desc_stats.get("operations_generated", 0),
                 "consistency_issues": consistency_stats.get("total_issues", 0),
                 "minimum_configs_added": minimum_config_stats.get("minimum_configs_added", 0),
+                "namespace_scopes_added": namespace_scope_stats.get("specs_enriched", 0),
                 "discovery_enrichments": discovery_enrichments,
             },
             validation_passed=validation_passed,

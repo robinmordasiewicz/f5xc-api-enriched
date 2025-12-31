@@ -17,6 +17,7 @@ from .field_description_enricher import FieldDescriptionEnricher
 from .field_metadata_enricher import FieldMetadataEnricher
 from .grammar import GrammarImprover
 from .minimum_configuration_enricher import MinimumConfigurationEnricher
+from .namespace_scope_enricher import NamespaceScopeEnricher
 from .operation_metadata_enricher import OperationMetadataEnricher
 from .readonly_enricher import ReadOnlyEnricher
 from .schema_fixer import SchemaFixer
@@ -46,6 +47,7 @@ __all__ = [
     "FieldMetadataEnricher",
     "GrammarImprover",
     "MinimumConfigurationEnricher",
+    "NamespaceScopeEnricher",
     "OperationMetadataEnricher",
     "ReadOnlyEnricher",
     "SchemaFixer",
