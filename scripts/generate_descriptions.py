@@ -127,46 +127,48 @@ DOMAIN_SYNONYMS: dict[str, list[str]] = {
 
 
 # Successful description patterns by domain category
-# These examples demonstrate compliant descriptions that pass all validation layers
+# These examples demonstrate NOUN-FIRST, DRY-compliant descriptions
+# CRITICAL: Do NOT start with CRUD verbs (Configure, Manage, Deploy, etc.)
+# because they're implied in API context and waste character budget
 SUCCESSFUL_PATTERNS: dict[str, dict[str, str]] = {
     "infrastructure": {
-        "short": "Deploy edge nodes with automated provisioning",
-        "medium": "Configure regional clusters with health monitoring. Set failover policies.",
+        "short": "Edge nodes, regional clusters, and cloud sites.",
+        "medium": "Multi-cloud deployments with automated provisioning. Health monitoring and failover policies.",
         "long": (
-            "Manage multi-cloud deployments across AWS, Azure, GCP. "
-            "Configure VPC peering, transit gateways. Monitor node health and capacity metrics."
+            "Geographic distribution across AWS, Azure, GCP with node lifecycle management. "
+            "VPC peering, transit gateways, and capacity metrics for enterprise scale."
         ),
     },
     "security": {
-        "short": "Configure firewall rules and access controls",
-        "medium": "Define security policies with threat detection. Set up WAF rules and rate limits.",
+        "short": "Firewall rules, access controls, and threat detection.",
+        "medium": "Security policies with WAF rules and rate limits. Anomaly detection and blocking.",
         "long": (
-            "Manage perimeter defense with anomaly detection and automated blocking. "
-            "Configure SSL inspection, DDoS mitigation, and compliance reporting."
+            "Perimeter defense with signature-based detection and automated blocking. "
+            "SSL inspection, DDoS mitigation, and compliance reporting for enterprise security."
         ),
     },
     "delivery": {
-        "short": "Route traffic to origin pools",
-        "medium": "Configure load balancing with health checks. Define routing policies.",
+        "short": "Origin pools, load balancing, and traffic routing.",
+        "medium": "Health-checked origin servers with routing policies. Session persistence and failover.",
         "long": (
-            "Manage traffic distribution across regions. Configure SSL termination, "
-            "caching policies, and failover rules. Monitor latency and throughput."
+            "Traffic distribution across regions with weighted routing. SSL termination, "
+            "caching policies, and latency monitoring for optimal performance."
         ),
     },
     "management": {
-        "short": "Configure organization settings and roles",
-        "medium": "Manage user permissions with role-based access. Set up identity providers.",
+        "short": "Organization settings, roles, and permissions.",
+        "medium": "Role-based access with identity provider integration. Audit logging and compliance.",
         "long": (
-            "Define organizational hierarchy with delegated administration. "
-            "Configure SSO, audit logging, and compliance controls."
+            "Organizational hierarchy with delegated administration. SSO integration, "
+            "audit trails, and compliance controls for enterprise governance."
         ),
     },
     "operations": {
-        "short": "Monitor system health and performance",
-        "medium": "Collect metrics with custom dashboards. Configure alerting rules.",
+        "short": "Metrics, dashboards, alerts, and log aggregation.",
+        "medium": "Custom monitoring dashboards with alerting rules. Performance analytics.",
         "long": (
-            "Analyze traffic patterns with log aggregation. "
-            "Set up automated remediation, SLA tracking, and capacity planning."
+            "Traffic pattern analysis with centralized logging. Automated remediation, "
+            "SLA tracking, and capacity planning for operational excellence."
         ),
     },
 }
@@ -411,10 +413,25 @@ STRICT RULES - Violations cause INSTANT REJECTION:
    ✗ "Connections are managed" → ✓ "Manages connections"
    ✗ "Security is handled" → ✓ "Handles security"
 
-3. ACTION-VERB-FIRST MANDATORY:
-   ✓ Start EVERY tier with: Configure, Create, Manage, Define, Deploy, Set up,
-     Route, Balance, Distribute, Cache, Filter, Detect, Block, Enforce, Validate
-   ✗ NEVER start with: "This", "The", "A", "An", "Provides", "Enables", "Offers"
+3. NOUN-FIRST, VALUE-ADD DESCRIPTIONS (CRITICAL - DRY COMPLIANCE):
+   Since this is a CRUD API, users already know they can configure/manage/deploy.
+   DO NOT waste characters on implied operations. Instead, describe:
+   - WHAT resources/concepts exist in this domain
+   - WHAT technical capabilities are available
+   - WHAT specific features differentiate this domain
+
+   ✗ BANNED STARTERS (redundant in API context):
+     "Configure...", "Manage...", "Create...", "Deploy...", "Monitor...",
+     "Access...", "Define...", "Set up...", "Enable...", "Control...", "Handle..."
+
+   ✗ ALSO BANNED: "This", "The", "A", "An", "Provides", "Enables", "Offers"
+
+   ✓ GOOD PATTERNS (noun-first, information-dense):
+     "HTTP, TCP, UDP load balancing with origin pool health checks."
+     "Authoritative zones, record types, and DNS-based failover."
+     "Request inspection, attack signatures, and bot mitigation."
+
+   The first word should be a NOUN or NOUN-PHRASE describing domain concepts.
 
 4. PROGRESSIVE INFORMATION (no repetition across tiers):
    - SHORT: Primary capability only (the core "what")
@@ -492,8 +509,9 @@ BANNED PATTERNS (instant rejection):
 □ No "seamless", "robust", "powerful" (marketing hype)
 □ No passive voice ("is returned", "are handled")
 
-STYLE REQUIREMENTS:
-□ Each tier starts with action verb (Configure, Manage, Deploy...)
+STYLE REQUIREMENTS (DRY-COMPLIANT):
+□ Each tier starts with NOUN/CONCEPT (not action verbs)
+□ NO CRUD verbs: Configure, Manage, Deploy, Create, Monitor, Access
 □ No tier starts with "This", "The", "A", "Provides", "Enables"
 □ Active voice throughout (no "is/are + past participle")
 □ No ellipsis "..." or incomplete sentences
@@ -746,6 +764,20 @@ BANNED_PATTERNS: list[tuple[str, str]] = [
         "INCOMPLETE: Sentence ends with conjunction/article - complete the thought",
     ),
     (r"[a-z]$", "INCOMPLETE: Sentence must end with punctuation (. ! ?) - not lowercase letter"),
+    # Category 9: Redundant CRUD Action Words (implied in API context)
+    # These verbs waste character budget since users already know it's a CRUD API
+    (r"^Configure\s", "REDUNDANT_CRUD: 'Configure' is implied - start with noun/concept"),
+    (r"^Manage\s", "REDUNDANT_CRUD: 'Manage' is implied - start with noun/concept"),
+    (r"^Create\s", "REDUNDANT_CRUD: 'Create' is implied - describe what can be created"),
+    (r"^Deploy\s", "REDUNDANT_CRUD: 'Deploy' is implied - describe what can be deployed"),
+    (r"^Monitor\s", "REDUNDANT_CRUD: 'Monitor' is implied - describe what can be monitored"),
+    (r"^Access\s", "REDUNDANT_CRUD: 'Access' is implied - describe what can be accessed"),
+    (r"^Define\s", "REDUNDANT_CRUD: 'Define' is implied - describe what can be defined"),
+    (r"^Set up\s", "REDUNDANT_CRUD: 'Set up' is implied - describe what can be set up"),
+    (r"^Enable\s", "REDUNDANT_CRUD: 'Enable' is implied - describe what can be enabled"),
+    (r"^Control\s", "REDUNDANT_CRUD: 'Control' is implied - describe what is controlled"),
+    (r"^Handle\s", "REDUNDANT_CRUD: 'Handle' is implied - describe what is handled"),
+    (r"^Automate\s", "REDUNDANT_CRUD: 'Automate' is implied - describe what is automated"),
 ]
 
 # Layer 2: Self-Referential Suffixes (domain name + generic suffix = lazy)
@@ -771,8 +803,9 @@ SELF_REFERENTIAL_SUFFIXES = [
     "functionality",
 ]
 
-# Bad starters (descriptions should start with action verbs)
+# Bad starters (descriptions should NOT start with these - includes CRUD verbs which are implied)
 BAD_STARTERS = [
+    # Generic starters
     "this",
     "the ",
     "a ",
@@ -783,6 +816,19 @@ BAD_STARTERS = [
     "offers",
     "it ",
     "we ",
+    # CRUD verbs (redundant in API context - implied that users will CRUD)
+    "configure",
+    "manage",
+    "create",
+    "deploy",
+    "monitor",
+    "access",
+    "define",
+    "set up",
+    "enable",
+    "control",
+    "handle",
+    "automate",
 ]
 
 # Action verbs for short descriptions (positive pattern)
@@ -878,13 +924,10 @@ def validate_quality_metrics(desc: str, desc_type: str) -> list[str]:
     if word_count < 3:
         errors.append(f"SPARSE: Only {word_count} word(s) - needs at least 3")
 
-    # Action verb first check (for short descriptions)
-    if desc_type == "short" and desc:
-        first_word = desc.split()[0].lower() if desc.split() else ""
-        if not any(first_word.startswith(v) for v in ACTION_VERBS):
-            errors.append(
-                f"STYLE: Short description should start with action verb, not '{first_word}'",
-            )
+    # NOTE: Action verb first check REMOVED (DRY-compliant)
+    # CRUD verbs like Configure/Manage/Deploy are now BANNED because
+    # they're implied in a CRUD API context. Descriptions should start
+    # with nouns/concepts, not action verbs.
 
     return errors
 
@@ -1316,21 +1359,9 @@ def run_all_validations_structured(domain: str, descriptions: dict[str, str]) ->
                 ),
             )
 
-        # Action verb check for short descriptions
-        if tier == "short" and text:
-            first_word = text.split()[0].lower() if text.split() else ""
-            if not any(first_word.startswith(v) for v in ACTION_VERBS):
-                violations.append(
-                    Violation(
-                        layer="quality",
-                        tier=tier,
-                        code="STYLE",
-                        message=f"Short description should start with action verb, not '{first_word}'",
-                        location=first_word,
-                        suggestion="Start with: Configure, Create, Manage, Define, Deploy, Set up",
-                        examples=["Configure load balancers", "Manage security policies"],
-                    ),
-                )
+        # NOTE: Action verb check REMOVED (DRY-compliant)
+        # CRUD verbs are now BANNED - descriptions should start with nouns/concepts
+        # that describe what exists in the domain, not what operations are possible
 
         # Layer 4: Circular definitions
         is_circular, circular_msg = is_circular_definition(text, tier)
@@ -1748,7 +1779,8 @@ def build_refinement_prompt(
                     starter = violation.split("'")[1]
                     feedback_items.append(
                         f"❌ {tier.upper()}: Starts with '{starter}'. "
-                        f"MUST start with action verb: Configure, Create, Manage, Define, Deploy",
+                        f"MUST start with NOUN/CONCEPT (not CRUD verbs). "
+                        f"Example: 'HTTP load balancing...' not 'Configure load balancing...'",
                     )
                 except IndexError:
                     feedback_items.append(f"❌ {violation}")
@@ -1805,9 +1837,11 @@ FIX INSTRUCTIONS:
    - Replace overlapping words with synonyms
    - Progress: WHAT (short) → HOW+SCOPE (medium) → WHERE+WHEN+METRICS (long)
 
-4. For STYLE violations:
-   - Start EVERY tier with action verb: Configure, Create, Manage, Define, Deploy
-   - Never start with: This, The, A, An, Provides, Enables
+4. For STYLE violations (DRY-COMPLIANT):
+   - Start EVERY tier with NOUN/CONCEPT (not action verbs)
+   - BANNED: Configure, Create, Manage, Define, Deploy, Monitor, Access
+   - Also banned: This, The, A, An, Provides, Enables
+   - Example: "HTTP load balancing..." NOT "Configure load balancing..."
 
 ═══════════════════════════════════════════════════════════════════════════════
 OUTPUT:
