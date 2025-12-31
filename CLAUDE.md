@@ -46,6 +46,7 @@ f5xc-api-enriched/
 │   ├── server_variables.yaml    # 6 OpenAPI server variables (multi-env support)
 │   ├── minimum_configs.yaml     # CLI metadata for 5 priority resources (Issue #152)
 │   ├── default_minimum_configs.yaml  # Default templates for auto-generation
+│   ├── downstream_repos.yaml    # Downstream repositories for release notifications
 │   └── spectral.yaml            # Spectral linting ruleset
 ├── .github/workflows/
 │   └── sync-and-enrich.yml # Main CI/CD workflow
@@ -126,6 +127,38 @@ make discover-and-push
 5. **Version Bump**: Auto-increment based on change type (see below)
 6. **Release**: Create GitHub release with changelog
 7. **Deploy**: Publish to GitHub Pages
+8. **Notify Downstream**: Trigger workflows in downstream repositories
+
+**Downstream Notification**:
+
+When a new release is created, the workflow automatically dispatches `repository_dispatch` events to downstream repositories that consume the enriched API specs:
+
+| Repository | Description | Event Type |
+|------------|-------------|------------|
+| `robinmordasiewicz/f5xc-api-mcp` | MCP server for AI assistants | `enriched-specs-updated` |
+| `robinmordasiewicz/f5xc-xcsh` | CLI shell tool | `enriched-specs-updated` |
+| `robinmordasiewicz/vscode-f5xc-tools` | VS Code extension | `enriched-specs-updated` |
+
+Configuration: `config/downstream_repos.yaml`
+
+**Payload sent to downstream**:
+
+```json
+{
+  "version": "1.0.82",
+  "release_tag": "v1.0.82",
+  "release_url": "https://github.com/robinmordasiewicz/f5xc-api-enriched/releases/tag/v1.0.82",
+  "timestamp": "2025-01-01T00:00:00Z",
+  "trigger_source": "robinmordasiewicz/f5xc-api-enriched",
+  "run_id": "12345678"
+}
+```
+
+**Adding a new downstream repository**:
+
+1. Add entry to `config/downstream_repos.yaml`
+2. Ensure downstream repo has workflow with `repository_dispatch` trigger for `enriched-specs-updated`
+3. Verify `DOWNSTREAM_DISPATCH_TOKEN` secret has access to the new repo
 
 **Change Detection** (PR #68):
 

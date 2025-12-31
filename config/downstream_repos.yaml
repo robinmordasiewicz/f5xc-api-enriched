@@ -1,0 +1,43 @@
+# Downstream Repositories Configuration
+# =====================================
+# This file defines repositories that should be notified when API specs are updated.
+# The upstream workflow (sync-and-enrich.yml) reads this file and dispatches events
+# to each enabled repository using GitHub's repository_dispatch mechanism.
+#
+# To add a new downstream repository:
+# 1. Add an entry below with owner, repo, event_type, and enabled fields
+# 2. Ensure the downstream repo has a workflow listening for repository_dispatch
+#    with the matching event_type
+# 3. The DOWNSTREAM_DISPATCH_TOKEN secret must have write access to the repo
+
+downstream_repositories:
+  # F5 XC API MCP Server - Already has repository_dispatch handler
+  - owner: robinmordasiewicz
+    repo: f5xc-api-mcp
+    event_type: enriched-specs-updated
+    enabled: true
+    description: MCP server exposing F5 XC APIs to AI assistants
+
+  # F5 XC Shell (xcsh) - CLI tool for F5 XC
+  - owner: robinmordasiewicz
+    repo: f5xc-xcsh
+    event_type: enriched-specs-updated
+    enabled: true
+    description: Interactive CLI shell for F5 XC resource management
+
+  # VS Code F5 XC Tools - VS Code extension
+  - owner: robinmordasiewicz
+    repo: vscode-f5xc-tools
+    event_type: enriched-specs-updated
+    enabled: true
+    description: VS Code extension for F5 XC development
+
+# Payload sent to downstream repositories (for documentation):
+# {
+#   "version": "1.0.82",
+#   "release_tag": "v1.0.82",
+#   "release_url": "https://github.com/robinmordasiewicz/f5xc-api-enriched/releases/tag/v1.0.82",
+#   "timestamp": "2025-01-01T00:00:00Z",
+#   "trigger_source": "robinmordasiewicz/f5xc-api-enriched",
+#   "run_id": "12345678"
+# }
