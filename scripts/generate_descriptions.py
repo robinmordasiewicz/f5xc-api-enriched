@@ -655,6 +655,21 @@ def parse_claude_output(output: str, verbose: bool = False) -> dict[str, str] | 
             for tier, desc in descriptions.items():
                 print(f"  {tier}: {desc[:60]}...")
 
+        # Check for empty descriptions - reject if ALL tiers are empty or too short
+        # This prevents {"short": "", "medium": "", "long": ""} from being treated as valid
+        non_empty_count = sum(1 for v in descriptions.values() if v and len(v.split()) >= 3)
+        if non_empty_count == 0:
+            print("Error: All description tiers are empty or too short (less than 3 words)")
+            if verbose:
+                for tier, desc in descriptions.items():
+                    word_count = len(desc.split()) if desc else 0
+                    print(
+                        f"  {tier}: {word_count} word(s) - '{desc[:50]}...' "
+                        if desc
+                        else f"  {tier}: empty",
+                    )
+            return None
+
         return descriptions if descriptions else None
 
     except json.JSONDecodeError as e:
