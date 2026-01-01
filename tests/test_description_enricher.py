@@ -261,3 +261,48 @@ class TestDescriptionValidation:
             desc = enricher.get_description(domain, tier="long")
             if desc:
                 assert len(desc) <= 500, f"Long description for {domain} exceeds 500 chars"
+
+
+class TestRootDescriptionEnrichment:
+    """Test root/master spec description enrichment."""
+
+    def test_root_description_exists(self, enricher):
+        """Test that root domain has descriptions configured."""
+        assert enricher.has_description("root") is True
+
+    def test_root_short_description(self, enricher):
+        """Test root short description is properly configured."""
+        desc = enricher.get_description("root", tier="short")
+        assert desc is not None
+        assert len(desc) <= 60
+        assert "F5" in desc or "API" in desc
+
+    def test_root_medium_description(self, enricher):
+        """Test root medium description is properly configured."""
+        desc = enricher.get_description("root", tier="medium")
+        assert desc is not None
+        assert len(desc) <= 150
+        # Should describe product capabilities
+        assert any(keyword in desc.lower() for keyword in ["multi-cloud", "application", "deploy"])
+
+    def test_root_long_description(self, enricher):
+        """Test root long description is substantial and informative."""
+        desc = enricher.get_description("root", tier="long")
+        assert desc is not None
+        assert len(desc) > 100  # Should be substantial
+        assert len(desc) <= 500
+        # Should mention key domains
+        assert any(keyword in desc.lower() for keyword in ["load balancing", "waf", "dns", "cdn"])
+
+    def test_root_all_descriptions(self, enricher):
+        """Test root has all description tiers configured."""
+        descs = enricher.get_all_descriptions("root")
+        assert descs is not None
+        assert "short" in descs
+        assert "medium" in descs
+        assert "long" in descs
+
+    def test_root_in_configured_domains(self, enricher):
+        """Test root is in the list of configured domains."""
+        domains = enricher.get_configured_domains()
+        assert "root" in domains

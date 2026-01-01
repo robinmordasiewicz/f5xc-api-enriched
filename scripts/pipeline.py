@@ -1146,9 +1146,13 @@ def create_master_spec(domain_specs: dict[str, dict[str, Any]], version: str) ->
     Ensures operationId uniqueness across all domains by prefixing
     cross-domain duplicates with the domain name.
     """
+    # Load enriched description for root/master spec
+    enricher = DescriptionEnricher()
+    root_desc = enricher.get_description("root", tier="long")
+
     master = create_base_spec(
         title="F5 Distributed Cloud API",
-        description="Complete F5 Distributed Cloud API specification",
+        description=root_desc or "Complete F5 Distributed Cloud API specification",
         version=version,
     )
 

@@ -18,6 +18,7 @@ from rich.console import Console
 from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
 from rich.table import Table
 
+from scripts.utils.description_enricher import DescriptionEnricher
 from scripts.utils.domain_categorizer import (
     categorize_spec as categorize_spec_util,
 )
@@ -383,9 +384,13 @@ def create_master_spec(
     upstream_info: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     """Create a master specification combining all domains."""
+    # Load enriched description for root/master spec
+    enricher = DescriptionEnricher()
+    root_desc = enricher.get_description("root", tier="long")
+
     master = create_base_spec(
         title="F5 Distributed Cloud API",
-        description="Complete F5 Distributed Cloud API specification",
+        description=root_desc or "Complete F5 Distributed Cloud API specification",
         version=version,
         upstream_info=upstream_info,
     )
