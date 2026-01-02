@@ -958,6 +958,98 @@ git push
 6. **Never hardcode credentials** - Use environment variables.
 7. **Never run discovery without VPN** - API is not publicly accessible.
 
+## Content Style Guide
+
+This section defines text content patterns for deterministic LLM responses. Every word must add semantic value.
+
+### Core Principles
+
+| Principle | Description |
+|-----------|-------------|
+| **Implicit Context** | Repository context (F5 XC, API) is already known - don't repeat it |
+| **Character Efficiency** | Limited space in CLI columns, UI headers - every character counts |
+| **DRY Content** | Don't Repeat Yourself in text - avoid redundant prefixes/suffixes |
+| **Noun-First Descriptions** | Lead with the thing being described, not actions or articles |
+
+### Title Patterns
+
+**Domain Spec Titles** - Use domain name only, context is implicit:
+
+| Anti-Pattern | Pattern | Reason |
+|--------------|---------|--------|
+| ❌ `F5 XC Dns API` | ✅ `Dns` | "F5 XC" and "API" are both implicit |
+| ❌ `F5 XC Virtual` | ✅ `Virtual` | Repository already provides F5 XC context |
+| ❌ `F5 XC Waf API` | ✅ `Waf` | Every spec is an API - suffix is redundant |
+
+**Root Spec Title** - Exception: master spec uses full branding:
+
+- ✅ `F5 Distributed Cloud API` - Appropriate as the canonical reference
+
+### Description Patterns
+
+**Noun-First Structure** - Lead with the subject, not verbs or articles:
+
+| Anti-Pattern | Pattern | Reason |
+|--------------|---------|--------|
+| ❌ `Manage DNS zones and records` | ✅ `DNS zone and record management` | Noun-first |
+| ❌ `Configure load balancers` | ✅ `Load balancer configuration` | Noun-first |
+| ❌ `The API for managing...` | ✅ `Management API for...` | Avoid leading articles |
+| ❌ `This resource allows...` | ✅ `Resource for...` | Avoid filler phrases |
+
+**Character Limits by Tier**:
+
+| Tier | Max Chars | Use Case | Example |
+|------|-----------|----------|---------|
+| `short` | 60 | CLI columns, badges | `DNS zone and record management` |
+| `medium` | 150 | Tooltips, banners | `Authoritative zone hosting with DNSSEC...` |
+| `long` | 500 | Documentation, AI context | Full paragraph with capabilities |
+
+### Redundancy Detection Rules
+
+When generating or reviewing content, check for these redundancies:
+
+1. **Contextual Prefixes**: Remove prefixes that match repository/project context
+   - Repository is `f5xc-*` → Don't prefix with "F5 XC"
+   - All files are APIs → Don't suffix with "API"
+
+2. **Implied Suffixes**: Remove suffixes that state the obvious
+   - In an API spec → Don't add "API" to titles
+   - In a config file → Don't add "configuration" to descriptions
+
+3. **Repeated Information**: Don't duplicate info available elsewhere
+   - Domain name in title → Don't repeat in first line of description
+   - Version in `info.version` → Don't repeat in description
+
+### Content Generation Checklist
+
+Before generating titles, descriptions, or documentation:
+
+- [ ] Does every word add unique semantic value?
+- [ ] Is any context already implied by the file/repo/section?
+- [ ] Does it start with a noun (not verb or article)?
+- [ ] Does it fit within character limits?
+- [ ] Would a user learn something new from each word?
+
+### Examples
+
+**Title Generation**:
+
+```text
+Input: Domain "dns" needs a title
+Context: Repository is f5xc-api-enriched (F5 XC implied)
+         File is OpenAPI spec (API implied)
+Output: "Dns" (just the domain name)
+```
+
+**Description Generation**:
+
+```text
+Input: Describe the dns domain
+Anti-pattern: "The F5 XC DNS API allows you to manage DNS zones and records"
+Pattern: "Authoritative zone hosting with DNSSEC, GeoDNS routing, and health-based failover"
+Reason: Removed implied context, noun-first, adds specific capabilities
+```
+
 ## Testing Changes
 
 Before committing any changes:
