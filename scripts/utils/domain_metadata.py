@@ -123,7 +123,7 @@ DOMAIN_ICONS = {
     "telemetry_and_insights": {"icon": "📉", "svg_key": "analytics"},
     "data_intelligence": {"icon": "🧠", "svg_key": "brain"},
     # AI
-    "generative_ai": {"icon": "🤖", "svg_key": "ai_brain"},
+    "ai_services": {"icon": "🤖", "svg_key": "ai_brain"},
 }
 
 # =============================================================================
@@ -170,7 +170,7 @@ DOMAIN_PRIMARY_RESOURCES = {
     "marketplace": ["marketplace_item", "subscription"],
     "bigip": ["bigip_pool", "bigip_device"],
     "nginx_one": ["nginx_config", "nginx_upstream"],
-    "generative_ai": ["ai_policy", "ai_gateway"],
+    "ai_services": ["ai_policy", "ai_gateway"],
     "object_storage": ["object_store", "bucket"],
     "bot_and_threat_defense": ["bot_defense_instance", "threat_category"],
     "ce_management": ["site_config", "fleet_config", "registration_token"],
@@ -735,7 +735,7 @@ DOMAIN_METADATA = {
         ],
         "related_domains": ["blindfold", "system"],
     },
-    "generative_ai": {
+    "ai_services": {
         "is_preview": True,
         "requires_tier": "Advanced",
         "domain_category": "AI",
