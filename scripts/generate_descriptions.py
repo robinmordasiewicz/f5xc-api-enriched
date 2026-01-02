@@ -382,15 +382,34 @@ Sample paths:
 Schemas: {schemas_str or "(none)"}
 
 ═══════════════════════════════════════════════════════════════════════════════
+IMPLICIT CONTEXT PRINCIPLE - Why These Rules Exist:
+
+This repository is `f5xc-api-enriched` - enriched F5 XC API specifications.
+From repository context alone, readers already know:
+• This is F5 XC content → "F5", "F5 XC", "XC", "Volterra" add zero information
+• This is API documentation → "API", "endpoint", "specification" add zero information
+• Every resource is an API → "REST", "HTTP endpoint" add zero information
+
+CHARACTER EFFICIENCY:
+Every character in short/medium descriptions must add NEW semantic value.
+Repeating what's already implied wastes limited character space.
+Mental test: "Does this word tell readers something they couldn't infer from context?"
+
+This principle drives ALL banned terms below - they fail the semantic value test.
+Understand WHY terms are banned (redundancy), not just WHAT is banned.
+
+═══════════════════════════════════════════════════════════════════════════════
 STRICT RULES - Violations cause INSTANT REJECTION:
 
-1. BANNED TERMS BY CATEGORY:
+1. BANNED TERMS BY CATEGORY (all fail implicit context test):
 
-   REDUNDANT (these ARE API specs - never state the obvious):
+   REDUNDANT (context implies these - zero semantic value):
    ✗ "API", "REST API", "endpoint", "specifications", "spec"
+   Why: Repository name includes "api" - readers already know this is API documentation
 
-   BRAND NAMES (never reference products):
+   BRAND NAMES (context implies these - zero semantic value):
    ✗ "F5", "F5 XC", "XC", "Distributed Cloud", "Volterra"
+   Why: Repository name includes "f5xc" - readers already know this is F5 XC content
 
    FILLER WORDS (use simpler alternatives):
    ✗ "utilize" → use "use"
@@ -1833,6 +1852,16 @@ DOMAIN-SPECIFIC GUIDANCE:
 
 NEVER use the word "{domain.replace("_", " ")}" in any description.
 Instead, use these synonyms: {synonyms_str}
+
+═══════════════════════════════════════════════════════════════════════════════
+IMPLICIT CONTEXT PRINCIPLE - Remember why terms are banned:
+
+Repository context (`f5xc-api-enriched`) already tells readers:
+• This is F5 XC → "F5", "XC", "Volterra" are redundant
+• This is API documentation → "API", "endpoint" are redundant
+• Every resource is an API → stating the obvious wastes characters
+
+Mental test: "Does this word add semantic value beyond what context implies?"
 
 ═══════════════════════════════════════════════════════════════════════════════
 FIX INSTRUCTIONS:
