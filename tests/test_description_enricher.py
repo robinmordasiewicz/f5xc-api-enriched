@@ -129,6 +129,7 @@ class TestSpecEnrichment:
         result = enricher.enrich_spec(spec_with_info, domain="virtual")
         assert "info" in result
         assert "description" in result["info"]
+        assert "summary" in result["info"]  # New: summary should also be added
         # Should use enriched long description
         desc = result["info"]["description"]
         assert len(desc) > 0
@@ -156,9 +157,10 @@ class TestSpecEnrichment:
     def test_enrich_spec_without_info(self, enricher, spec_without_info):
         """Test enriching spec without info section."""
         result = enricher.enrich_spec(spec_without_info, domain="virtual")
-        # Should add info section with description
+        # Should add info section with description and summary
         assert "info" in result
         assert "description" in result["info"]
+        assert "summary" in result["info"]
 
 
 class TestStatistics:
@@ -275,15 +277,18 @@ class TestRootDescriptionEnrichment:
         desc = enricher.get_description("root", tier="short")
         assert desc is not None
         assert len(desc) <= 60
-        assert "F5" in desc or "API" in desc
+        # Should describe platform capabilities (noun-first pattern, no "F5" branding)
+        assert "cloud" in desc.lower() or "platform" in desc.lower()
 
     def test_root_medium_description(self, enricher):
         """Test root medium description is properly configured."""
         desc = enricher.get_description("root", tier="medium")
         assert desc is not None
         assert len(desc) <= 150
-        # Should describe product capabilities
-        assert any(keyword in desc.lower() for keyword in ["multi-cloud", "application", "deploy"])
+        # Should describe product capabilities (noun-first pattern)
+        assert any(
+            keyword in desc.lower() for keyword in ["multi-cloud", "application", "services"]
+        )
 
     def test_root_long_description(self, enricher):
         """Test root long description is substantial and informative."""
@@ -306,3 +311,70 @@ class TestRootDescriptionEnrichment:
         """Test root is in the list of configured domains."""
         domains = enricher.get_configured_domains()
         assert "root" in domains
+
+
+class TestInfoSummaryEnrichment:
+    """Test info.summary field enrichment (OpenAPI 3.0 standard)."""
+
+    def test_summary_applied_with_domain(self, enricher, spec_with_info):
+        """Test that medium description is applied to info.summary."""
+        result = enricher.enrich_spec(spec_with_info, domain="virtual")
+        assert "summary" in result["info"]
+        medium_desc = enricher.get_description("virtual", tier="medium")
+        assert result["info"]["summary"] == medium_desc
+
+    def test_summary_length_within_limit(self, enricher):
+        """Verify summary (medium tier) is within 150 char limit for all domains."""
+        for domain in enricher.get_configured_domains():
+            spec = {"info": {"x-ves-cli-domain": domain}, "paths": {}}
+            result = enricher.enrich_spec(spec, domain=domain)
+            if "summary" in result.get("info", {}):
+                assert len(result["info"]["summary"]) <= 150, f"{domain} summary exceeds 150 chars"
+
+    def test_summary_not_applied_without_medium(self, enricher):
+        """Test that info.summary is not added when medium description is empty."""
+        # Temporarily add a test domain with no medium description
+        enricher.descriptions["test_domain_no_medium"] = {
+            "short": "Short desc",
+            "medium": "",  # Empty medium
+            "long": "Long description text that is substantial.",
+        }
+        spec = {"info": {}, "paths": {}}
+        result = enricher.enrich_spec(spec, domain="test_domain_no_medium")
+        assert "summary" not in result["info"]
+        assert "description" in result["info"]
+
+    def test_summary_applied_to_spec_without_info(self, enricher, spec_without_info):
+        """Test that info section is created with both description and summary."""
+        result = enricher.enrich_spec(spec_without_info, domain="virtual")
+        assert "info" in result
+        assert "description" in result["info"]
+        assert "summary" in result["info"]
+
+    def test_root_domain_has_summary(self, enricher):
+        """Test that root domain gets summary in master spec."""
+        spec = {"info": {"x-ves-cli-domain": "root"}, "paths": {}}
+        result = enricher.enrich_spec(spec, domain="root")
+        assert "summary" in result["info"]
+        medium_desc = enricher.get_description("root", tier="medium")
+        assert result["info"]["summary"] == medium_desc
+
+    def test_summary_and_description_are_different(self, enricher, spec_with_info):
+        """Test that summary (medium) and description (long) are different tiers."""
+        result = enricher.enrich_spec(spec_with_info, domain="virtual")
+        summary = result["info"].get("summary", "")
+        description = result["info"].get("description", "")
+        # Summary should be shorter than description
+        assert len(summary) < len(description)
+        # They should not be identical
+        assert summary != description
+
+    def test_all_configured_domains_get_summary(self, enricher):
+        """Test that all configured domains with medium descriptions get summary."""
+        for domain in enricher.get_configured_domains():
+            medium_desc = enricher.get_description(domain, tier="medium")
+            if medium_desc:  # Only test domains with medium configured
+                spec = {"info": {}, "paths": {}}
+                result = enricher.enrich_spec(spec, domain=domain)
+                assert "summary" in result["info"], f"Domain {domain} missing summary"
+                assert result["info"]["summary"] == medium_desc
