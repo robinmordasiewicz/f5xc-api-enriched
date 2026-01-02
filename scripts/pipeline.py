@@ -1028,7 +1028,7 @@ def merge_specs_by_domain(
         )
 
         merged_spec = create_base_spec(
-            title=f"F5 XC {domain_title} API",
+            title=f"F5 XC {domain_title}",
             description=description,
             version=version,
         )
