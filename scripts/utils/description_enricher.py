@@ -1,12 +1,14 @@
 """Domain Description Enricher for OpenAPI specifications.
 
 Applies enriched domain descriptions from config/domain_descriptions.yaml
-to the info.description field of merged domain specifications.
+to OpenAPI specification info section:
+- info.summary: Medium tier description (max 150 chars) for CLI banners
+- info.description: Long tier description (max 500 chars) for documentation
 
 Description Tiers:
-- short: max 60 chars - CLI help columns, badges
-- medium: max 150 chars - Tooltips, quick summaries
-- long: max 500 chars - Full documentation, AI context, spec info.description
+- short: max 60 chars - CLI help columns, badges, index entries
+- medium: max 150 chars - CLI banners, tooltips, info.summary field
+- long: max 500 chars - Full documentation, AI context, info.description field
 
 Usage:
     enricher = DescriptionEnricher()
@@ -43,8 +45,9 @@ class DescriptionEnrichmentStats:
 class DescriptionEnricher:
     """Enrich OpenAPI specifications with domain descriptions.
 
-    Loads enriched descriptions from config/domain_descriptions.yaml and applies
-    the 'long' description to info.description in merged domain specs.
+    Loads enriched descriptions from config/domain_descriptions.yaml and applies:
+    - 'medium' description to info.summary (for CLI banners)
+    - 'long' description to info.description (for documentation)
 
     Attributes:
         config_path: Path to domain_descriptions.yaml
@@ -119,11 +122,13 @@ class DescriptionEnricher:
         return normalized
 
     def enrich_spec(self, spec: dict[str, Any], domain: str | None = None) -> dict[str, Any]:
-        """Enrich OpenAPI specification with domain description.
+        """Enrich OpenAPI specification with domain description and summary.
 
-        Applies the 'long' description from configuration to the spec's
-        info.description field. Skips if no description is configured
-        for the domain.
+        Applies descriptions from configuration to the spec's info section:
+        - 'medium' tier → info.summary (for CLI banners, max 150 chars)
+        - 'long' tier → info.description (for documentation, max 500 chars)
+
+        Skips if no description is configured for the domain.
 
         Args:
             spec: OpenAPI specification dictionary
@@ -131,7 +136,7 @@ class DescriptionEnricher:
                    from spec's x-ves-cli-domain extension.
 
         Returns:
-            Specification with enriched info.description
+            Specification with enriched info.description and info.summary
         """
         self.stats.specs_processed += 1
 
@@ -152,16 +157,23 @@ class DescriptionEnricher:
 
         description_config = self.descriptions[domain]
         long_description = description_config.get("long", "")
+        medium_description = description_config.get("medium", "")
 
         if not long_description:
             self.stats.descriptions_skipped += 1
             return spec
 
-        # Apply long description to info.description
+        # Ensure info section exists
         if "info" not in spec:
             spec["info"] = {}
 
+        # Apply long description to info.description
         spec["info"]["description"] = long_description
+
+        # Apply medium description to info.summary (OpenAPI 3.0 standard field)
+        if medium_description:
+            spec["info"]["summary"] = medium_description
+
         self.stats.descriptions_applied += 1
 
         return spec
