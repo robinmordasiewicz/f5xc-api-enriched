@@ -1033,6 +1033,9 @@ def merge_specs_by_domain(
             version=version,
         )
 
+        # Apply medium tier to info.summary
+        merged_spec = description_enricher.enrich_spec(merged_spec, domain=domain)
+
         all_tags = []
         existing_operation_ids: set[str] = set()  # Track operationIds within domain
 
@@ -1156,6 +1159,9 @@ def create_master_spec(domain_specs: dict[str, dict[str, Any]], version: str) ->
         description=root_desc or "Complete F5 Distributed Cloud API specification",
         version=version,
     )
+
+    # Apply medium tier to info.summary for root spec
+    master = enricher.enrich_spec(master, domain="root")
 
     all_tags = []
     existing_operation_ids: set[str] = set()  # Track operationIds across all domains
