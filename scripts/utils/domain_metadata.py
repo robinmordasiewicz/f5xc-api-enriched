@@ -5,7 +5,14 @@ based on their characteristics and category, ensuring idempotent generation
 suitable for CICD automation.
 """
 
+from pathlib import Path
 from typing import Any
+
+import yaml
+
+# Resource metadata cache for per-resource metadata from config/resource_metadata.yaml
+# Uses mutable container pattern to avoid global statement (PLW0603)
+_CACHE: dict[str, Any] = {}
 
 # =============================================================================
 # SVG Icon Library - URL-encoded data URIs for embedded icons
@@ -203,6 +210,126 @@ def get_primary_resources(domain: str) -> list[str]:
         List of primary resource type names
     """
     return DOMAIN_PRIMARY_RESOURCES.get(domain, [])
+
+
+def _load_resource_metadata() -> dict[str, dict[str, Any]]:
+    """Load per-resource metadata from config/resource_metadata.yaml.
+
+    Uses caching to avoid repeated file reads.
+
+    Returns:
+        Dictionary with 'resources' mapping resource names to their metadata,
+        and '_defaults' containing default values for unconfigured resources.
+    """
+    cache_key = "resource_metadata"
+
+    if cache_key in _CACHE:
+        return _CACHE[cache_key]
+
+    config_path = Path(__file__).parent.parent.parent / "config" / "resource_metadata.yaml"
+
+    if not config_path.exists():
+        _CACHE[cache_key] = {"_defaults": {}}
+        return _CACHE[cache_key]
+
+    try:
+        with config_path.open() as f:
+            config = yaml.safe_load(f) or {}
+        resources = config.get("resources", {})
+        resources["_defaults"] = config.get("defaults", {})
+        _CACHE[cache_key] = resources
+    except (yaml.YAMLError, OSError):
+        _CACHE[cache_key] = {"_defaults": {}}
+
+    return _CACHE[cache_key]
+
+
+def get_resource_metadata(resource_name: str) -> dict[str, Any]:
+    """Get metadata for a single resource.
+
+    Args:
+        resource_name: Name of the resource (e.g., 'http_loadbalancer')
+
+    Returns:
+        Resource metadata dictionary with all fields populated,
+        using defaults for unconfigured resources.
+    """
+    resource_config = _load_resource_metadata()
+    defaults = resource_config.get("_defaults", {})
+    metadata = resource_config.get(resource_name, {})
+
+    # Build metadata with defaults fallback
+    return {
+        "name": resource_name,
+        "description": metadata.get(
+            "description",
+            f"{resource_name.replace('_', ' ').title()} resource",
+        ),
+        "description_short": metadata.get(
+            "description_short",
+            resource_name.replace("_", " ").title(),
+        ),
+        "tier": metadata.get("tier", defaults.get("tier", "Standard")),
+        "icon": metadata.get("icon", defaults.get("icon", "📦")),
+        "category": metadata.get("category", defaults.get("category", "Other")),
+        "supports_logs": metadata.get(
+            "supports_logs",
+            defaults.get("supports_logs", False),
+        ),
+        "supports_metrics": metadata.get(
+            "supports_metrics",
+            defaults.get("supports_metrics", False),
+        ),
+        "dependencies": metadata.get(
+            "dependencies",
+            defaults.get("dependencies", {"required": [], "optional": []}),
+        ),
+        "relationship_hints": metadata.get(
+            "relationship_hints",
+            defaults.get("relationship_hints", []),
+        ),
+    }
+
+
+def get_primary_resources_metadata(domain: str) -> list[dict[str, Any]]:
+    """Get primary resources with full metadata for a domain.
+
+    Returns rich metadata objects instead of simple resource name strings.
+    This is used by create_spec_index() to generate per-resource metadata
+    in index.json for IDE tooling and CLI integration.
+
+    Args:
+        domain: The domain name (e.g., 'virtual', 'waf', 'dns')
+
+    Returns:
+        List of resource metadata dictionaries with structure:
+        {
+            "name": str,
+            "description": str,
+            "description_short": str,
+            "tier": str,
+            "icon": str,
+            "category": str,
+            "supports_logs": bool,
+            "supports_metrics": bool,
+            "dependencies": {"required": list, "optional": list},
+            "relationship_hints": list[str]
+        }
+
+    Example:
+        >>> get_primary_resources_metadata("virtual")
+        [
+            {
+                "name": "http_loadbalancer",
+                "description": "Layer 7 HTTP/HTTPS load balancer...",
+                "tier": "Standard",
+                ...
+            },
+            ...
+        ]
+    """
+    resource_names = DOMAIN_PRIMARY_RESOURCES.get(domain, [])
+    return [get_resource_metadata(name) for name in resource_names]
 
 
 DOMAIN_METADATA = {
