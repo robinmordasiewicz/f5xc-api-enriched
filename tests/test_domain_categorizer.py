@@ -213,10 +213,10 @@ class TestDomainCategorization:
         assert categorize_spec("ves.io.schema.views.addon_package.json") == "marketplace"
 
     # J. Advanced & Emerging (5 categories)
-    def test_generative_ai(self) -> None:
-        """Test categorization of generative AI specs."""
-        assert categorize_spec("ves.io.schema.views.ai_assistant.json") == "generative_ai"
-        assert categorize_spec("ves.io.schema.views.ai_data.json") == "generative_ai"
+    def test_ai_services(self) -> None:
+        """Test categorization of AI services specs."""
+        assert categorize_spec("ves.io.schema.views.ai_assistant.json") == "ai_services"
+        assert categorize_spec("ves.io.schema.views.ai_data.json") == "ai_services"
 
     def test_rate_limiting(self) -> None:
         """Test categorization of rate limiting specs."""
@@ -295,7 +295,7 @@ class TestBackwardCompatibility:
             "observability",
             "statistics",
             "support",
-            "generative_ai",
+            "ai_services",
             "admin_console_and_ui",
             "label",
         }

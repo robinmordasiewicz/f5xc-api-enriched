@@ -112,7 +112,7 @@ DOMAIN_SYNONYMS: dict[str, list[str]] = {
     "marketplace": ["service catalog", "add-on management"],
     "ce_management": ["customer edge control", "site operations"],
     "vpm_and_node_management": ["node lifecycle", "edge provisioning"],
-    "generative_ai": ["model integration", "inference routing"],
+    "ai_services": ["model integration", "inference routing"],
     "blindfold": ["secret encryption", "key management"],
     "bigip": ["legacy integration", "device management"],
     "shape": ["client integrity", "fraud prevention"],

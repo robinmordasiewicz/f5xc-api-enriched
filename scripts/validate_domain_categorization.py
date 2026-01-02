@@ -38,8 +38,8 @@ PATH_PREFIX_DOMAIN_MAP: dict[str, str] = {
     "/api/mobile": "bot_and_threat_defense",
     "/api/scim": "tenant_and_identity",
     "/api/bigipconnector": "bigip",
-    "/api/ai_data": "generative_ai",
-    "/api/gen-ai": "generative_ai",
+    "/api/ai_data": "ai_services",
+    "/api/gen-ai": "ai_services",
     "/api/register": "ce_management",
     "/api/waf": "waf",
     "/api/object_store": "object_storage",
@@ -60,7 +60,7 @@ PACKAGE_NAMESPACE_DOMAIN_MAP: dict[str, str] = {
     "operate": "support",
     "bigip": "bigip",
     "bigcne": "bigip",
-    "ai_data": "generative_ai",
+    "ai_data": "ai_services",
     "user": "users",
     "was": "api",  # Web App Scanning
 }
