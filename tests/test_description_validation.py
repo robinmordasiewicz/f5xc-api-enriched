@@ -121,10 +121,10 @@ class TestSelfReferential:
             ("data_intelligence", "Data Intelligence Service", True),
             ("virtual", "Virtual APIs", True),
             ("network_security", "Network Security System", True),
-            # Acceptable descriptions
-            ("authentication", "Secure identity verification", False),
-            ("data_intelligence", "Analyze traffic patterns", False),
-            ("virtual", "Configure load balancers", False),
+            # Acceptable descriptions (noun-first, DRY-compliant)
+            ("authentication", "Secure identity verification.", False),
+            ("data_intelligence", "Traffic pattern analysis.", False),
+            ("loadbalancing", "Load balancers and routing.", False),
         ],
     )
     def test_self_referential_detection(
@@ -168,32 +168,18 @@ class TestQualityMetrics:
         errors = validate_quality_metrics("Too short", "short")
         assert any("SPARSE" in e for e in errors)
 
-    @pytest.mark.parametrize(
-        ("first_word", "should_pass"),
-        [
-            ("Configure", True),
-            ("Manage", True),
-            ("Deploy", True),
-            ("Create", True),
-            ("Monitor", True),
-            ("Discover", True),
-            ("Connect", True),
-            ("Access", True),
-            ("This", False),
-            ("The", False),
-            ("A", False),
-            ("Provides", False),
-        ],
-    )
-    def test_action_verb_requirement(self, first_word: str, should_pass: bool) -> None:
-        """Verify short descriptions must start with action verbs."""
-        text = f"{first_word} load balancers and routing"
+    def test_quality_metrics_no_style_enforcement(self) -> None:
+        """Verify quality metrics no longer enforce style (DRY-compliant).
+
+        Action verb requirements were removed because CRUD verbs are
+        implied in a CRUD API context. Descriptions should start with
+        nouns/concepts, not action verbs.
+        """
+        # Quality metrics only checks length and word count now
+        text = "Load balancers and routing policies"
         errors = validate_quality_metrics(text, "short")
         style_errors = [e for e in errors if "STYLE" in e]
-        if should_pass:
-            assert len(style_errors) == 0, f"Unexpected style error for: {first_word}"
-        else:
-            assert len(style_errors) > 0, f"Expected style error for: {first_word}"
+        assert len(style_errors) == 0, "Quality metrics should not enforce style"
 
 
 class TestCircularDefinition:
@@ -247,33 +233,33 @@ class TestCheckDryCompliance:
     def test_valid_descriptions_pass(self) -> None:
         """Verify well-formed descriptions pass all checks."""
         descriptions = {
-            "short": "Configure load balancers and routing",
-            "medium": "Create HTTP and TCP listeners with health checks. Define failover policies.",
+            "short": "Load balancers, routing, and traffic distribution.",
+            "medium": "HTTP and TCP listeners with health checks. Failover policies and routing.",
             "long": (
-                "Deploy application delivery infrastructure with origin pools. "
-                "Set up geo-routing, rate limiting, and SSL termination. "
-                "Integrate with security policies for WAF and bot protection."
+                "Application delivery infrastructure with origin pools. "
+                "Geo-routing, rate limiting, and SSL termination. "
+                "Security policies for WAF and bot protection."
             ),
         }
-        violations = check_dry_compliance("virtual", descriptions)
+        violations = check_dry_compliance("loadbalancing", descriptions)
         assert len(violations) == 0, f"Unexpected violations: {violations}"
 
     def test_api_in_description_fails(self) -> None:
         """Verify 'API' in description triggers violation."""
         descriptions = {
-            "short": "Authentication API",
-            "medium": "Configure authentication.",
-            "long": "Set up identity verification.",
+            "short": "Identity verification API.",
+            "medium": "Token-based authentication methods.",
+            "long": "Identity verification and access control.",
         }
-        violations = check_dry_compliance("authentication", descriptions)
+        violations = check_dry_compliance("auth", descriptions)
         assert any("REDUNDANT" in v and "API" in v for v in violations)
 
     def test_domain_name_in_description_fails(self) -> None:
         """Verify domain name in description triggers violation."""
         descriptions = {
-            "short": "Manage virtual resources",
-            "medium": "Configure virtual machines.",
-            "long": "Deploy virtual infrastructure.",
+            "short": "Virtual resources and workloads.",
+            "medium": "Virtual machines and containers.",
+            "long": "Virtual infrastructure and scaling.",
         }
         violations = check_dry_compliance("virtual", descriptions)
         assert any("domain name" in v.lower() for v in violations)
@@ -281,9 +267,9 @@ class TestCheckDryCompliance:
     def test_brand_names_fail(self) -> None:
         """Verify brand names trigger violations."""
         descriptions = {
-            "short": "Configure F5 services",
-            "medium": "Manage XC deployments.",
-            "long": "Set up Distributed Cloud infrastructure.",
+            "short": "F5 services and deployments.",
+            "medium": "XC deployments and infrastructure.",
+            "long": "Distributed Cloud infrastructure.",
         }
         violations = check_dry_compliance("network", descriptions)
         assert any("BRAND" in v for v in violations)
@@ -419,7 +405,7 @@ class TestDomainNameUsage:
         """Verify domain name is detected in text."""
         v = check_domain_name_usage(
             "observability",
-            "Configure observability tools and dashboards",
+            "Observability tools and dashboards.",
             "long",
         )
         assert v is not None
@@ -431,7 +417,7 @@ class TestDomainNameUsage:
         """Verify no violation when domain name is not present."""
         v = check_domain_name_usage(
             "observability",
-            "Configure monitoring tools and dashboards",
+            "Monitoring tools and dashboards.",
             "long",
         )
         assert v is None
@@ -440,7 +426,7 @@ class TestDomainNameUsage:
         """Verify suggestion includes domain-specific synonyms."""
         v = check_domain_name_usage(
             "observability",
-            "Set up observability pipelines",
+            "Observability pipelines and data flows.",
             "medium",
         )
         assert v is not None
@@ -450,7 +436,7 @@ class TestDomainNameUsage:
         """Verify domains with underscores are normalized."""
         v = check_domain_name_usage(
             "network_security",
-            "Configure network security policies",
+            "Network security policies.",
             "short",
         )
         assert v is not None
@@ -464,9 +450,9 @@ class TestCrossTierViolations:
         """Verify word overlap is detected between tiers (needs 4+ words not in stop list)."""
         # Use words NOT in stop_words: connections, transit, virtual, peering, upstream
         descriptions = {
-            "short": "Orchestrate connections transit virtual peering",
-            "medium": "Handle connections with transit links. Set up virtual peering upstream.",
-            "long": "Deploy connections across regions. Enable transit virtual peering upstream.",
+            "short": "Connections transit virtual peering.",
+            "medium": "Connections with transit links. Virtual peering upstream.",
+            "long": "Connections across regions. Transit virtual peering upstream.",
         }
         violations = check_cross_tier_violations(descriptions)
         assert len(violations) > 0
@@ -476,9 +462,9 @@ class TestCrossTierViolations:
     def test_no_violation_with_unique_vocabulary(self) -> None:
         """Verify no violation when tiers use unique words."""
         descriptions = {
-            "short": "Configure load balancers",
-            "medium": "Define routing policies with health checks. Set failover rules.",
-            "long": "Manage traffic distribution across regions. Monitor latency and throughput metrics.",
+            "short": "Load balancers and routing.",
+            "medium": "Routing policies with health checks. Failover rules.",
+            "long": "Traffic distribution across regions. Latency and throughput metrics.",
         }
         violations = check_cross_tier_violations(descriptions)
         # Should not have cross-tier overlap since vocabulary is different
@@ -505,14 +491,14 @@ class TestRunAllValidationsStructured:
     def test_returns_empty_for_valid_descriptions(self) -> None:
         """Verify empty list for compliant descriptions."""
         descriptions = {
-            "short": "Configure load balancers and routing",
-            "medium": "Create HTTP listeners with health checks. Define failover policies.",
+            "short": "Load balancers and routing policies.",
+            "medium": "HTTP listeners with health checks. Failover policies.",
             "long": (
-                "Deploy application delivery infrastructure with origin pools. "
-                "Set up geo-routing, rate limiting, and SSL termination."
+                "Application delivery infrastructure with origin pools. "
+                "Geo-routing, rate limiting, and SSL termination."
             ),
         }
-        violations = run_all_validations_structured("virtual", descriptions)
+        violations = run_all_validations_structured("loadbalancing", descriptions)
         # Filter out any overlap violations (depends on exact wording)
         critical_violations = [v for v in violations if v.code in ("DOMAIN_NAME", "BANNED_PATTERN")]
         assert len(critical_violations) == 0
@@ -520,20 +506,20 @@ class TestRunAllValidationsStructured:
     def test_returns_violations_for_banned_terms(self) -> None:
         """Verify violations are returned for banned terms."""
         descriptions = {
-            "short": "Configure the API endpoints",
-            "medium": "Create HTTP listeners.",
-            "long": "Deploy infrastructure.",
+            "short": "API endpoints and interfaces.",
+            "medium": "HTTP listeners and routing.",
+            "long": "Infrastructure and deployments.",
         }
-        violations = run_all_validations_structured("virtual", descriptions)
+        violations = run_all_validations_structured("routing", descriptions)
         assert len(violations) > 0
         assert any(v.code == "REDUNDANT" for v in violations)
 
     def test_returns_violations_for_domain_name(self) -> None:
         """Verify violations are returned for domain name in text."""
         descriptions = {
-            "short": "Configure observability tools",
-            "medium": "Create dashboards for observability data.",
-            "long": "Deploy observability infrastructure.",
+            "short": "Observability tools and dashboards.",
+            "medium": "Dashboards for observability data.",
+            "long": "Observability infrastructure.",
         }
         violations = run_all_validations_structured("observability", descriptions)
         assert len(violations) > 0
@@ -612,22 +598,22 @@ class TestSuccessfulPatterns:
             assert len(pattern["medium"]) <= 150, f"{cat} medium too long: {len(pattern['medium'])}"
             assert len(pattern["long"]) <= 500, f"{cat} long too long: {len(pattern['long'])}"
 
-    def test_patterns_start_with_action_verbs(self) -> None:
-        """Verify patterns start with action verbs."""
-        action_verbs = {
+    def test_patterns_are_noun_first(self) -> None:
+        """Verify patterns start with nouns, not action verbs (DRY-compliant)."""
+        banned_starters = {
             "configure",
             "create",
             "manage",
             "define",
             "deploy",
             "set",
-            "route",
             "monitor",
-            "collect",
-            "analyze",
+            "access",
+            "enable",
+            "handle",
         }
         for cat, pattern in SUCCESSFUL_PATTERNS.items():
-            first_word = pattern["short"].split()[0].lower()
-            assert first_word in action_verbs, (
-                f"{cat} short doesn't start with action verb: {first_word}"
+            first_word = pattern["short"].split()[0].lower().rstrip(",.:;")
+            assert first_word not in banned_starters, (
+                f"{cat} short starts with banned verb: {first_word}"
             )

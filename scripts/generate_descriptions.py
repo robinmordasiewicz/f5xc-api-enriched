@@ -451,10 +451,10 @@ COMPRESSION TECHNIQUES - Apply these to stay under limits:
 
 NEGATIVE EXAMPLES (from actual failures - DO NOT repeat these patterns):
 ❌ "Configure content delivery and caching policies for global distribution" (71 chars)
-   → Remove "policies for global": "Configure caching and content delivery" (38 chars) ✓
+   → Noun-first rewrite: "Content delivery and edge caching." (35 chars) ✓
 
 ❌ "Manage zones, records, and load balancing for domain resolution" (63 chars)
-   → Remove "for domain resolution": "Manage zones, records, and load balancing" (42 chars) ✓
+   → Noun-first rewrite: "DNS zones, record types, and load balancing." (45 chars) ✓
 
 ═══════════════════════════════════════════════════════════════════════════════
 CHARACTER LIMITS - WRITE TO FIT, NEVER TRUNCATE:
@@ -464,18 +464,20 @@ CHARACTER LIMITS - WRITE TO FIT, NEVER TRUNCATE:
    If your draft is too long, REWRITE it shorter - do not cut it off.
 
 SHORT (TARGET: 35-50 chars, HARD MAX: {MAX_SHORT}):
-  • Format: [Verb] [object]
+  • Format: [Noun/Concept phrase ending with period]
+  • Start with WHAT exists, not what users DO
   • Remove ALL unnecessary words
   • If over 50 chars, REMOVE WORDS (don't truncate!)
   • Examples:
-    ✓ "Configure HTTP load balancers" (30 chars)
-    ✓ "Manage WAF rules and bot protection" (35 chars)
+    ✓ "HTTP load balancers and traffic distribution." (46 chars)
+    ✓ "WAF rules, rate limits, and bot protection." (44 chars)
+    ✓ "Edge nodes, clusters, and cloud sites." (39 chars)
     ✗ TOO LONG (71 chars): "Configure content delivery and caching..."
 
 MEDIUM (TARGET: 100-130 chars, HARD MAX: {MAX_MEDIUM}):
-  • Two short sentences
+  • Two short noun-first sentences
   • If over 130 chars, REWRITE with fewer words (don't truncate!)
-  • Example (82 chars): "Define routing rules and health checks. Enable failover."
+  • Example (82 chars): "Routing rules, health checks, and failover. Traffic distribution controls."
   • AVOID long phrases like "with support for BIND and AXFR transfer protocols"
 
 LONG (TARGET: 350-450 chars, HARD MAX: {MAX_LONG}):
@@ -521,10 +523,10 @@ COMPLETE THOUGHT REQUIREMENT (CRITICAL - instant rejection for violations):
 □ NEVER end a sentence with: and, or, with, for, to, the, a, an
 □ If your draft exceeds the limit, REWRITE it shorter as a complete thought
 □ Examples:
-  ✓ "Configure load balancers and health checks." (complete thought)
-  ✗ "Configure load balancers and" (cut-off mid-phrase)
-  ✗ "Configure load balancers with" (incomplete thought)
-  ✗ "Configure load balancers" (missing period)
+  ✓ "Load balancers and health checks." (complete thought)
+  ✗ "Load balancers and" (cut-off mid-phrase)
+  ✗ "Load balancers with" (incomplete thought)
+  ✗ "Load balancers" (missing period)
 
 Do not use any tools. Generate based on context provided."""
 
@@ -550,8 +552,8 @@ def call_claude(prompt: str, dry_run: bool = False, verbose: bool = False) -> di
         print(f"\n[JSON SCHEMA]\n{json.dumps(DESCRIPTION_SCHEMA, indent=2)}\n")
         return None
 
-    # Build command with JSON output, schema validation, and minimal config
-    # Use --strict-mcp-config and --disable-slash-commands for clean environment
+    # Build command with JSON output, schema validation, and MINIMAL config
+    # Goal: Fast, cheap generation without loading MCP servers or tools
     cmd = [
         "claude",
         "-p",
@@ -560,11 +562,9 @@ def call_claude(prompt: str, dry_run: bool = False, verbose: bool = False) -> di
         "json",
         "--json-schema",
         json.dumps(DESCRIPTION_SCHEMA),
-        "--tools",
-        "",  # Disable all tools - only need text generation
+        "--model",
+        "haiku",  # Use haiku for fast, cheap generation
         "--no-session-persistence",  # Don't save session to disk
-        "--strict-mcp-config",  # Ignore all MCP configurations
-        "--disable-slash-commands",  # Disable skills/slash commands
         "--append-system-prompt",
         "You are generating API descriptions. Respond ONLY with JSON matching the schema. Do not use any tools.",
     ]
