@@ -1,0 +1,1683 @@
+# Per-Resource Metadata Configuration
+# Provides rich metadata for primary_resources in index.json
+# Addresses GitHub Issues: #267, #268, #269, #270
+
+version: "1.0.0"
+description: "Per-resource metadata for IDE tooling, CLI integration, and documentation"
+
+# Default values for resources not explicitly configured
+defaults:
+  tier: "Standard"
+  icon: "📦"
+  category: "Other"
+  supports_logs: false
+  supports_metrics: false
+  dependencies:
+    required: []
+    optional: []
+  relationship_hints: []
+
+# Tier definitions
+tier_definitions:
+  Standard:
+    description: "Included in standard F5 XC subscription"
+    requires_addon: false
+  Advanced:
+    description: "Requires Advanced tier or WAAP subscription"
+    requires_addon: true
+
+# Category definitions with visual styling
+category_definitions:
+  Load Balancing:
+    icon: "⚖️"
+  Security:
+    icon: "🛡️"
+  DNS:
+    icon: "🌐"
+  Infrastructure:
+    icon: "🏗️"
+  Monitoring:
+    icon: "📊"
+  Networking:
+    icon: "🔗"
+  Identity:
+    icon: "👤"
+  Storage:
+    icon: "💾"
+  API Management:
+    icon: "🔌"
+  Container:
+    icon: "📦"
+  Other:
+    icon: "📁"
+
+# Per-resource metadata definitions
+resources:
+  # ===========================================================================
+  # virtual domain - Load Balancing
+  # ===========================================================================
+  http_loadbalancer:
+    description: "Layer 7 HTTP/HTTPS load balancer for application traffic distribution"
+    description_short: "HTTP load balancer"
+    tier: "Standard"
+    icon: "🌐"
+    category: "Load Balancing"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required:
+        - origin_pool
+      optional:
+        - healthcheck
+        - app_firewall
+        - certificate
+        - rate_limiter
+        - service_policy
+        - bot_defense_policy
+    relationship_hints:
+      - "origin_pool: Backend servers for traffic distribution"
+      - "app_firewall: WAF protection (requires WAAP subscription)"
+      - "healthcheck: Monitor backend availability"
+      - "certificate: TLS termination for HTTPS"
+      - "rate_limiter: Protect against traffic spikes"
+
+  tcp_loadbalancer:
+    description: "Layer 4 TCP/UDP load balancer for non-HTTP protocol traffic"
+    description_short: "TCP load balancer"
+    tier: "Standard"
+    icon: "🔌"
+    category: "Load Balancing"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required:
+        - origin_pool
+      optional:
+        - healthcheck
+    relationship_hints:
+      - "origin_pool: Backend servers for TCP/UDP traffic"
+      - "healthcheck: Monitor origin server health"
+
+  origin_pool:
+    description: "Backend server group for load balancer traffic distribution"
+    description_short: "Origin pool"
+    tier: "Standard"
+    icon: "🎯"
+    category: "Load Balancing"
+    supports_logs: false
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional:
+        - healthcheck
+    relationship_hints:
+      - "healthcheck: Monitor origin server health"
+
+  healthcheck:
+    description: "Health monitoring configuration for origin server availability"
+    description_short: "Health check"
+    tier: "Standard"
+    icon: "💓"
+    category: "Monitoring"
+    supports_logs: false
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # waf domain - Security
+  # ===========================================================================
+  app_firewall:
+    description: "Web Application Firewall policy for HTTP traffic protection"
+    description_short: "WAF policy"
+    tier: "Advanced"
+    icon: "🛡️"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional:
+        - service_policy
+    relationship_hints:
+      - "service_policy: Fine-grained access control rules"
+
+  service_policy:
+    description: "Service-level access control and traffic management rules"
+    description_short: "Service policy"
+    tier: "Advanced"
+    icon: "📋"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  malicious_user_detection:
+    description: "Automated detection and mitigation of malicious user behavior"
+    description_short: "Malicious user detection"
+    tier: "Advanced"
+    icon: "🚨"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # dns domain
+  # ===========================================================================
+  dns_zone:
+    description: "Authoritative DNS zone with record management capabilities"
+    description_short: "DNS zone"
+    tier: "Standard"
+    icon: "🌐"
+    category: "DNS"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional:
+        - dns_load_balancer
+    relationship_hints:
+      - "dns_load_balancer: Geographic or weighted DNS routing"
+
+  dns_domain:
+    description: "DNS domain delegation and configuration settings"
+    description_short: "DNS domain"
+    tier: "Standard"
+    icon: "🔗"
+    category: "DNS"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  dns_load_balancer:
+    description: "DNS-based traffic distribution with geographic routing and failover"
+    description_short: "DNS load balancer"
+    tier: "Standard"
+    icon: "⚖️"
+    category: "DNS"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required:
+        - dns_zone
+      optional: []
+    relationship_hints:
+      - "dns_zone: Parent zone for DNS records"
+
+  # ===========================================================================
+  # sites domain - Infrastructure
+  # ===========================================================================
+  site:
+    description: "Physical or cloud deployment location for edge services"
+    description_short: "Site"
+    tier: "Standard"
+    icon: "🏢"
+    category: "Infrastructure"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional:
+        - virtual_site
+    relationship_hints:
+      - "virtual_site: Logical grouping of physical sites"
+
+  virtual_site:
+    description: "Logical grouping of sites using label selectors"
+    description_short: "Virtual site"
+    tier: "Standard"
+    icon: "🏷️"
+    category: "Infrastructure"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  site_mesh_group:
+    description: "Mesh connectivity configuration between multiple sites"
+    description_short: "Site mesh group"
+    tier: "Advanced"
+    icon: "🕸️"
+    category: "Infrastructure"
+    supports_logs: false
+    supports_metrics: true
+    dependencies:
+      required:
+        - site
+      optional: []
+    relationship_hints:
+      - "site: Sites to include in mesh connectivity"
+
+  # ===========================================================================
+  # cloud_infrastructure domain
+  # ===========================================================================
+  aws_vpc_site:
+    description: "AWS VPC site deployment with edge node provisioning"
+    description_short: "AWS VPC site"
+    tier: "Standard"
+    icon: "☁️"
+    category: "Infrastructure"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required:
+        - cloud_credentials
+      optional: []
+    relationship_hints:
+      - "cloud_credentials: AWS authentication for deployment"
+
+  azure_vnet_site:
+    description: "Azure VNet site deployment with edge node provisioning"
+    description_short: "Azure VNet site"
+    tier: "Standard"
+    icon: "☁️"
+    category: "Infrastructure"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required:
+        - cloud_credentials
+      optional: []
+    relationship_hints:
+      - "cloud_credentials: Azure authentication for deployment"
+
+  gcp_vpc_site:
+    description: "Google Cloud VPC site deployment with edge node provisioning"
+    description_short: "GCP VPC site"
+    tier: "Standard"
+    icon: "☁️"
+    category: "Infrastructure"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required:
+        - cloud_credentials
+      optional: []
+    relationship_hints:
+      - "cloud_credentials: GCP authentication for deployment"
+
+  cloud_credentials:
+    description: "Cloud provider authentication credentials for site deployment"
+    description_short: "Cloud credentials"
+    tier: "Standard"
+    icon: "🔑"
+    category: "Infrastructure"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # customer_edge domain
+  # ===========================================================================
+  voltstack_site:
+    description: "VoltStack edge site with container orchestration capabilities"
+    description_short: "VoltStack site"
+    tier: "Advanced"
+    icon: "🏗️"
+    category: "Infrastructure"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional:
+        - virtual_site
+    relationship_hints:
+      - "virtual_site: Logical grouping for policy targeting"
+
+  securemesh_site:
+    description: "SecureMesh edge site for secure network connectivity"
+    description_short: "SecureMesh site"
+    tier: "Standard"
+    icon: "🔒"
+    category: "Infrastructure"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional:
+        - virtual_site
+    relationship_hints:
+      - "virtual_site: Logical grouping for policy targeting"
+
+  # ===========================================================================
+  # cdn domain
+  # ===========================================================================
+  cdn_loadbalancer:
+    description: "Content delivery network load balancer for edge caching"
+    description_short: "CDN load balancer"
+    tier: "Standard"
+    icon: "🌍"
+    category: "Load Balancing"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required:
+        - cdn_origin_pool
+      optional: []
+    relationship_hints:
+      - "cdn_origin_pool: Origin servers for CDN content"
+
+  cdn_origin_pool:
+    description: "Origin server pool for CDN content sourcing"
+    description_short: "CDN origin pool"
+    tier: "Standard"
+    icon: "🎯"
+    category: "Load Balancing"
+    supports_logs: false
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # network domain
+  # ===========================================================================
+  virtual_network:
+    description: "Virtual network for site connectivity and segmentation"
+    description_short: "Virtual network"
+    tier: "Standard"
+    icon: "🔗"
+    category: "Networking"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional:
+        - network_connector
+    relationship_hints:
+      - "network_connector: Connect to external networks"
+
+  network_connector:
+    description: "Network connector for site-to-site or cloud connectivity"
+    description_short: "Network connector"
+    tier: "Advanced"
+    icon: "🔌"
+    category: "Networking"
+    supports_logs: false
+    supports_metrics: true
+    dependencies:
+      required:
+        - virtual_network
+      optional: []
+    relationship_hints:
+      - "virtual_network: Network to connect"
+
+  # ===========================================================================
+  # bot_defense domain
+  # ===========================================================================
+  bot_defense_policy:
+    description: "Bot detection and mitigation policy configuration"
+    description_short: "Bot defense policy"
+    tier: "Advanced"
+    icon: "🤖"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  bot_defense_advanced_policy:
+    description: "Advanced bot defense with machine learning detection"
+    description_short: "Advanced bot defense"
+    tier: "Advanced"
+    icon: "🤖"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # api domain
+  # ===========================================================================
+  api_definition:
+    description: "API schema definition for discovery and protection"
+    description_short: "API definition"
+    tier: "Advanced"
+    icon: "📄"
+    category: "API Management"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional:
+        - api_endpoint
+    relationship_hints:
+      - "api_endpoint: Endpoints defined by this API"
+
+  api_endpoint:
+    description: "Individual API endpoint configuration and protection"
+    description_short: "API endpoint"
+    tier: "Advanced"
+    icon: "🔌"
+    category: "API Management"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional:
+        - api_rate_limit
+    relationship_hints:
+      - "api_rate_limit: Rate limiting for this endpoint"
+
+  api_rate_limit:
+    description: "API rate limiting configuration for traffic control"
+    description_short: "API rate limit"
+    tier: "Advanced"
+    icon: "⏱️"
+    category: "API Management"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # network_security domain
+  # ===========================================================================
+  network_policy:
+    description: "Network security policy for traffic filtering"
+    description_short: "Network policy"
+    tier: "Standard"
+    icon: "🔒"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  forward_proxy_policy:
+    description: "Forward proxy policy for outbound traffic control"
+    description_short: "Forward proxy policy"
+    tier: "Advanced"
+    icon: "➡️"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  network_firewall:
+    description: "Network firewall for layer 3/4 traffic protection"
+    description_short: "Network firewall"
+    tier: "Standard"
+    icon: "🧱"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # certificates domain
+  # ===========================================================================
+  certificate:
+    description: "TLS certificate for secure HTTPS connections"
+    description_short: "Certificate"
+    tier: "Standard"
+    icon: "📜"
+    category: "Security"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  ca_certificate:
+    description: "Certificate authority certificate for trust chain"
+    description_short: "CA certificate"
+    tier: "Standard"
+    icon: "📜"
+    category: "Security"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  certificate_chain:
+    description: "Certificate chain for complete trust verification"
+    description_short: "Certificate chain"
+    tier: "Standard"
+    icon: "🔗"
+    category: "Security"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # rate_limiting domain
+  # ===========================================================================
+  rate_limiter:
+    description: "Rate limiter for traffic throttling and protection"
+    description_short: "Rate limiter"
+    tier: "Standard"
+    icon: "⏱️"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional:
+        - rate_limiter_policy
+    relationship_hints:
+      - "rate_limiter_policy: Detailed rate limiting rules"
+
+  rate_limiter_policy:
+    description: "Rate limiter policy with detailed throttling rules"
+    description_short: "Rate limiter policy"
+    tier: "Standard"
+    icon: "📋"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  rate_limit_threshold:
+    description: "Rate limit threshold configuration for traffic control"
+    description_short: "Rate limit threshold"
+    tier: "Standard"
+    icon: "📊"
+    category: "Security"
+    supports_logs: false
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # container_services domain
+  # ===========================================================================
+  virtual_k8s:
+    description: "Virtual Kubernetes namespace for container workloads"
+    description_short: "Virtual K8s"
+    tier: "Advanced"
+    icon: "☸️"
+    category: "Container"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional:
+        - workload
+    relationship_hints:
+      - "workload: Container workloads in this namespace"
+
+  workload:
+    description: "Container workload deployment configuration"
+    description_short: "Workload"
+    tier: "Advanced"
+    icon: "📦"
+    category: "Container"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required:
+        - virtual_k8s
+      optional: []
+    relationship_hints:
+      - "virtual_k8s: Namespace for workload deployment"
+
+  pod_security_policy:
+    description: "Pod security policy for container runtime constraints"
+    description_short: "Pod security policy"
+    tier: "Advanced"
+    icon: "🔒"
+    category: "Container"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # managed_kubernetes domain
+  # ===========================================================================
+  mk8s_cluster:
+    description: "Managed Kubernetes cluster configuration"
+    description_short: "MK8s cluster"
+    tier: "Advanced"
+    icon: "☸️"
+    category: "Container"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional:
+        - k8s_cluster_role
+    relationship_hints:
+      - "k8s_cluster_role: RBAC roles for cluster access"
+
+  k8s_cluster_role:
+    description: "Kubernetes cluster RBAC role configuration"
+    description_short: "K8s cluster role"
+    tier: "Advanced"
+    icon: "👤"
+    category: "Container"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  container_registry:
+    description: "Container image registry for workload images"
+    description_short: "Container registry"
+    tier: "Advanced"
+    icon: "📦"
+    category: "Container"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # service_mesh domain
+  # ===========================================================================
+  endpoint:
+    description: "Service mesh endpoint for traffic routing"
+    description_short: "Endpoint"
+    tier: "Advanced"
+    icon: "🎯"
+    category: "Networking"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  service_discovery:
+    description: "Service discovery configuration for dynamic endpoints"
+    description_short: "Service discovery"
+    tier: "Advanced"
+    icon: "🔍"
+    category: "Networking"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # observability domain
+  # ===========================================================================
+  log_receiver:
+    description: "Log receiver for centralized log collection"
+    description_short: "Log receiver"
+    tier: "Standard"
+    icon: "📝"
+    category: "Monitoring"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  metrics_receiver:
+    description: "Metrics receiver for centralized metrics collection"
+    description_short: "Metrics receiver"
+    tier: "Standard"
+    icon: "📊"
+    category: "Monitoring"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  alert_policy:
+    description: "Alert policy for monitoring and notification"
+    description_short: "Alert policy"
+    tier: "Standard"
+    icon: "🔔"
+    category: "Monitoring"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # authentication domain
+  # ===========================================================================
+  authentication_policy:
+    description: "Authentication policy for user and API access"
+    description_short: "Auth policy"
+    tier: "Standard"
+    icon: "🔐"
+    category: "Identity"
+    supports_logs: true
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  token:
+    description: "API token for programmatic access"
+    description_short: "Token"
+    tier: "Standard"
+    icon: "🎫"
+    category: "Identity"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  api_credential:
+    description: "API credential for service authentication"
+    description_short: "API credential"
+    tier: "Standard"
+    icon: "🔑"
+    category: "Identity"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # users domain
+  # ===========================================================================
+  user:
+    description: "User account for platform access"
+    description_short: "User"
+    tier: "Standard"
+    icon: "👤"
+    category: "Identity"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional:
+        - user_role
+    relationship_hints:
+      - "user_role: Role assignment for user permissions"
+
+  user_role:
+    description: "User role for permission management"
+    description_short: "User role"
+    tier: "Standard"
+    icon: "👔"
+    category: "Identity"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  namespace_role:
+    description: "Namespace-scoped role for fine-grained permissions"
+    description_short: "Namespace role"
+    tier: "Standard"
+    icon: "📁"
+    category: "Identity"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # blindfold domain
+  # ===========================================================================
+  blindfold_secret:
+    description: "Encrypted secret using Blindfold encryption"
+    description_short: "Blindfold secret"
+    tier: "Standard"
+    icon: "🔐"
+    category: "Security"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  secret_policy:
+    description: "Secret management policy configuration"
+    description_short: "Secret policy"
+    tier: "Standard"
+    icon: "📋"
+    category: "Security"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  policy_document:
+    description: "Policy document for access control definitions"
+    description_short: "Policy document"
+    tier: "Standard"
+    icon: "📄"
+    category: "Security"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # ddos domain
+  # ===========================================================================
+  ddos_protection:
+    description: "DDoS protection configuration for traffic scrubbing"
+    description_short: "DDoS protection"
+    tier: "Advanced"
+    icon: "🛡️"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional:
+        - ddos_mitigation_rule
+    relationship_hints:
+      - "ddos_mitigation_rule: Custom mitigation rules"
+
+  ddos_mitigation_rule:
+    description: "DDoS mitigation rule for attack response"
+    description_short: "DDoS mitigation rule"
+    tier: "Advanced"
+    icon: "📋"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # shape domain
+  # ===========================================================================
+  shape_app_firewall:
+    description: "Shape application firewall for advanced protection"
+    description_short: "Shape WAF"
+    tier: "Advanced"
+    icon: "🛡️"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  shape_recognizer:
+    description: "Shape recognizer for traffic pattern analysis"
+    description_short: "Shape recognizer"
+    tier: "Advanced"
+    icon: "🔍"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # threat_campaign domain
+  # ===========================================================================
+  threat_campaign_policy:
+    description: "Threat campaign detection and mitigation policy"
+    description_short: "Threat campaign policy"
+    tier: "Advanced"
+    icon: "🎯"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # support domain
+  # ===========================================================================
+  support_case:
+    description: "Support case for issue tracking and resolution"
+    description_short: "Support case"
+    tier: "Standard"
+    icon: "🎫"
+    category: "Other"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  alert:
+    description: "System alert for operational notifications"
+    description_short: "Alert"
+    tier: "Standard"
+    icon: "🔔"
+    category: "Monitoring"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  audit_log:
+    description: "Audit log for compliance and security tracking"
+    description_short: "Audit log"
+    tier: "Standard"
+    icon: "📝"
+    category: "Monitoring"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # system domain
+  # ===========================================================================
+  namespace:
+    description: "Namespace for resource organization and isolation"
+    description_short: "Namespace"
+    tier: "Standard"
+    icon: "📁"
+    category: "Infrastructure"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  tenant:
+    description: "Tenant configuration for multi-tenancy"
+    description_short: "Tenant"
+    tier: "Standard"
+    icon: "🏢"
+    category: "Infrastructure"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  cluster:
+    description: "Cluster configuration for distributed deployment"
+    description_short: "Cluster"
+    tier: "Standard"
+    icon: "🖥️"
+    category: "Infrastructure"
+    supports_logs: false
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # statistics domain
+  # ===========================================================================
+  dashboard:
+    description: "Dashboard for metrics visualization"
+    description_short: "Dashboard"
+    tier: "Standard"
+    icon: "📊"
+    category: "Monitoring"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional:
+        - saved_query
+    relationship_hints:
+      - "saved_query: Queries displayed on dashboard"
+
+  saved_query:
+    description: "Saved query for metrics and log analysis"
+    description_short: "Saved query"
+    tier: "Standard"
+    icon: "🔍"
+    category: "Monitoring"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # billing_and_usage / billing domains
+  # ===========================================================================
+  subscription:
+    description: "Subscription for service entitlements"
+    description_short: "Subscription"
+    tier: "Standard"
+    icon: "💳"
+    category: "Other"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  quota:
+    description: "Resource quota for usage limits"
+    description_short: "Quota"
+    tier: "Standard"
+    icon: "📊"
+    category: "Other"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  usage_report:
+    description: "Usage report for consumption tracking"
+    description_short: "Usage report"
+    tier: "Standard"
+    icon: "📈"
+    category: "Other"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  invoice:
+    description: "Invoice for billing records"
+    description_short: "Invoice"
+    tier: "Standard"
+    icon: "🧾"
+    category: "Other"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  payment_method:
+    description: "Payment method for billing"
+    description_short: "Payment method"
+    tier: "Standard"
+    icon: "💳"
+    category: "Other"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # admin_console_and_ui / admin domains
+  # ===========================================================================
+  ui_component:
+    description: "UI component for console customization"
+    description_short: "UI component"
+    tier: "Standard"
+    icon: "🎨"
+    category: "Other"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  static_asset:
+    description: "Static asset for UI resources"
+    description_short: "Static asset"
+    tier: "Standard"
+    icon: "📁"
+    category: "Other"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  global_setting:
+    description: "Global setting for system-wide configuration"
+    description_short: "Global setting"
+    tier: "Standard"
+    icon: "⚙️"
+    category: "Other"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  system_config:
+    description: "System configuration for platform settings"
+    description_short: "System config"
+    tier: "Standard"
+    icon: "⚙️"
+    category: "Other"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # tenant_and_identity domain
+  # ===========================================================================
+  user_profile:
+    description: "User profile with personal settings"
+    description_short: "User profile"
+    tier: "Standard"
+    icon: "👤"
+    category: "Identity"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  session:
+    description: "User session for authentication state"
+    description_short: "Session"
+    tier: "Standard"
+    icon: "🔑"
+    category: "Identity"
+    supports_logs: true
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  otp_policy:
+    description: "OTP policy for multi-factor authentication"
+    description_short: "OTP policy"
+    tier: "Standard"
+    icon: "🔐"
+    category: "Identity"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # marketplace domain
+  # ===========================================================================
+  marketplace_item:
+    description: "Marketplace item for service catalog"
+    description_short: "Marketplace item"
+    tier: "Standard"
+    icon: "🛒"
+    category: "Other"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # bigip domain
+  # ===========================================================================
+  bigip_pool:
+    description: "BIG-IP pool for load balancing integration"
+    description_short: "BIG-IP pool"
+    tier: "Advanced"
+    icon: "🎯"
+    category: "Load Balancing"
+    supports_logs: false
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  bigip_device:
+    description: "BIG-IP device registration and management"
+    description_short: "BIG-IP device"
+    tier: "Advanced"
+    icon: "🖥️"
+    category: "Infrastructure"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # nginx_one domain
+  # ===========================================================================
+  nginx_config:
+    description: "NGINX configuration for proxy settings"
+    description_short: "NGINX config"
+    tier: "Advanced"
+    icon: "⚙️"
+    category: "Load Balancing"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional:
+        - nginx_upstream
+    relationship_hints:
+      - "nginx_upstream: Backend server configuration"
+
+  nginx_upstream:
+    description: "NGINX upstream for backend server pools"
+    description_short: "NGINX upstream"
+    tier: "Advanced"
+    icon: "🎯"
+    category: "Load Balancing"
+    supports_logs: false
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # generative_ai domain
+  # ===========================================================================
+  ai_policy:
+    description: "AI policy for generative AI traffic control"
+    description_short: "AI policy"
+    tier: "Advanced"
+    icon: "🤖"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  ai_gateway:
+    description: "AI gateway for LLM API management"
+    description_short: "AI gateway"
+    tier: "Advanced"
+    icon: "🚀"
+    category: "API Management"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional:
+        - ai_policy
+    relationship_hints:
+      - "ai_policy: Policy for AI traffic control"
+
+  # ===========================================================================
+  # object_storage domain
+  # ===========================================================================
+  object_store:
+    description: "Object store for blob storage management"
+    description_short: "Object store"
+    tier: "Standard"
+    icon: "💾"
+    category: "Storage"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional:
+        - bucket
+    relationship_hints:
+      - "bucket: Storage buckets in this store"
+
+  bucket:
+    description: "Storage bucket for object storage"
+    description_short: "Bucket"
+    tier: "Standard"
+    icon: "📦"
+    category: "Storage"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required:
+        - object_store
+      optional: []
+    relationship_hints:
+      - "object_store: Parent object store"
+
+  # ===========================================================================
+  # bot_and_threat_defense domain
+  # ===========================================================================
+  bot_defense_instance:
+    description: "Bot defense instance for deployment"
+    description_short: "Bot defense instance"
+    tier: "Advanced"
+    icon: "🤖"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  threat_category:
+    description: "Threat category for classification"
+    description_short: "Threat category"
+    tier: "Advanced"
+    icon: "🎯"
+    category: "Security"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # ce_management domain
+  # ===========================================================================
+  site_config:
+    description: "Site configuration for edge node settings"
+    description_short: "Site config"
+    tier: "Standard"
+    icon: "⚙️"
+    category: "Infrastructure"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  fleet_config:
+    description: "Fleet configuration for multi-site management"
+    description_short: "Fleet config"
+    tier: "Standard"
+    icon: "🚀"
+    category: "Infrastructure"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  registration_token:
+    description: "Registration token for site onboarding"
+    description_short: "Registration token"
+    tier: "Standard"
+    icon: "🎫"
+    category: "Infrastructure"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # data_and_privacy_security domain
+  # ===========================================================================
+  sensitive_data_policy:
+    description: "Sensitive data policy for PII protection"
+    description_short: "Sensitive data policy"
+    tier: "Advanced"
+    icon: "🔐"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  data_classification:
+    description: "Data classification for content categorization"
+    description_short: "Data classification"
+    tier: "Advanced"
+    icon: "🏷️"
+    category: "Security"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # secops_and_incident_response domain
+  # ===========================================================================
+  mitigation_policy:
+    description: "Mitigation policy for incident response"
+    description_short: "Mitigation policy"
+    tier: "Advanced"
+    icon: "🛡️"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  malicious_user_rule:
+    description: "Malicious user rule for threat mitigation"
+    description_short: "Malicious user rule"
+    tier: "Advanced"
+    icon: "🚨"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # vpm_and_node_management domain
+  # ===========================================================================
+  node_config:
+    description: "Node configuration for edge device settings"
+    description_short: "Node config"
+    tier: "Standard"
+    icon: "🖥️"
+    category: "Infrastructure"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  vpm_config:
+    description: "VPM configuration for virtual platform management"
+    description_short: "VPM config"
+    tier: "Standard"
+    icon: "⚙️"
+    category: "Infrastructure"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # client_side_defense domain
+  # ===========================================================================
+  csd_policy:
+    description: "Client-side defense policy for browser protection"
+    description_short: "CSD policy"
+    tier: "Advanced"
+    icon: "🌐"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  script_monitor:
+    description: "Script monitor for JavaScript security"
+    description_short: "Script monitor"
+    tier: "Advanced"
+    icon: "📜"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # telemetry_and_insights domain
+  # ===========================================================================
+  telemetry_receiver:
+    description: "Telemetry receiver for data collection"
+    description_short: "Telemetry receiver"
+    tier: "Standard"
+    icon: "📡"
+    category: "Monitoring"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  insight_query:
+    description: "Insight query for analytics"
+    description_short: "Insight query"
+    tier: "Standard"
+    icon: "🔍"
+    category: "Monitoring"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # data_intelligence domain
+  # ===========================================================================
+  analytics_query:
+    description: "Analytics query for data analysis"
+    description_short: "Analytics query"
+    tier: "Standard"
+    icon: "📊"
+    category: "Monitoring"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  data_export:
+    description: "Data export configuration for reporting"
+    description_short: "Data export"
+    tier: "Standard"
+    icon: "📤"
+    category: "Monitoring"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # label domain
+  # ===========================================================================
+  label_group:
+    description: "Label group for resource organization"
+    description_short: "Label group"
+    tier: "Standard"
+    icon: "🏷️"
+    category: "Other"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  known_label:
+    description: "Known label for predefined tagging"
+    description_short: "Known label"
+    tier: "Standard"
+    icon: "🏷️"
+    category: "Other"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []

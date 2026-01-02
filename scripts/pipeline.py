@@ -92,6 +92,7 @@ from scripts.utils.domain_metadata import (
     get_domain_icon,
     get_metadata,
     get_primary_resources,
+    get_primary_resources_metadata,
 )
 from scripts.utils.server_variables import ServerVariableHelper
 
@@ -1230,7 +1231,10 @@ def create_spec_index(domain_specs: dict[str, dict[str, Any]], version: str) -> 
 
         # Get icon and primary resources for the domain
         icon_info = get_domain_icon(domain)
-        primary_resources = get_primary_resources(domain)
+        # Rich metadata format for IDE tooling (Issues #267-270)
+        primary_resources_metadata = get_primary_resources_metadata(domain)
+        # Simple format for backward compatibility
+        primary_resources_simple = get_primary_resources(domain)
 
         # Build spec entry
         spec_entry = {
@@ -1254,7 +1258,10 @@ def create_spec_index(domain_specs: dict[str, dict[str, Any]], version: str) -> 
             # Visual identity and resource metadata (Issue #184)
             "icon": icon_info["icon"],
             "logo_svg": icon_info["logo_svg"],
-            "primary_resources": primary_resources,
+            # Rich resource metadata for IDE tooling (Issues #267-270)
+            "primary_resources": primary_resources_metadata,
+            # Backward compatible simple format
+            "primary_resources_simple": primary_resources_simple,
         }
 
         # Add CLI metadata if available

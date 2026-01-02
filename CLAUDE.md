@@ -46,6 +46,7 @@ f5xc-api-enriched/
 │   ├── server_variables.yaml    # 6 OpenAPI server variables (multi-env support)
 │   ├── minimum_configs.yaml     # CLI metadata for 5 priority resources (Issue #152)
 │   ├── default_minimum_configs.yaml  # Default templates for auto-generation
+│   ├── resource_metadata.yaml   # Per-resource metadata (Issues #267-270)
 │   ├── downstream_repos.yaml    # Downstream repositories for release notifications
 │   └── spectral.yaml            # Spectral linting ruleset
 ├── .github/workflows/
@@ -282,6 +283,68 @@ Four OpenAPI extensions are added to schemas and specs:
 - 30 tests for explicit configurations (5 resources × parametrized patterns)
 - 13 new tests for auto-generation and idempotency
 - Total: 43 comprehensive tests with 82% code coverage
+
+## Per-Resource Metadata (Issues #267-270)
+
+**Purpose**: Provide rich per-resource metadata in `index.json` for IDE tooling, CLI help, and AI assistants.
+
+**Addresses**:
+
+- Issue #267: x-ves-resource-metadata for IDE tooling
+- Issue #268: Per-resource descriptions
+- Issue #269: Per-resource tier requirements
+- Issue #270: Resource dependency/relationship metadata
+
+**Output Format** (in `index.json`):
+
+```json
+{
+  "primary_resources": [
+    {
+      "name": "http_loadbalancer",
+      "description": "Layer 7 HTTP/HTTPS load balancer for application traffic distribution",
+      "description_short": "HTTP load balancer",
+      "tier": "Standard",
+      "icon": "🌐",
+      "category": "Load Balancing",
+      "supports_logs": true,
+      "supports_metrics": true,
+      "dependencies": {
+        "required": ["origin_pool"],
+        "optional": ["healthcheck", "app_firewall", "certificate"]
+      },
+      "relationship_hints": [
+        "origin_pool: Backend servers for traffic distribution",
+        "app_firewall: WAF protection (requires WAAP subscription)"
+      ]
+    }
+  ],
+  "primary_resources_simple": ["http_loadbalancer", "origin_pool"]
+}
+```
+
+**Configuration**:
+
+- `config/resource_metadata.yaml`: Per-resource metadata definitions for ~90+ resources
+- Auto-generation for unconfigured resources with sensible defaults
+- Caching for performance optimization
+
+**Architecture**:
+
+- **Stage 1**: `_load_resource_metadata()` loads and caches YAML config
+- **Stage 2**: `get_resource_metadata()` returns single resource metadata with defaults fallback
+- **Stage 3**: `get_primary_resources_metadata()` returns list of rich metadata for a domain
+- **Stage 4**: `create_spec_index()` includes both rich and simple formats
+
+**Backward Compatibility**:
+
+- `primary_resources`: Rich metadata format (new)
+- `primary_resources_simple`: String array format (legacy, preserved for compatibility)
+
+**Testing**:
+
+- Comprehensive tests in `tests/test_resource_metadata.py`
+- Tests for loading, structure validation, defaults, and consistency
 
 ## Domain Description Enrichment (Issue #183)
 
