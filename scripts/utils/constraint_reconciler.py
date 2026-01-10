@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Constraint Reconciler Module.
 
 Reconciles discovered API constraints from x-discovered-* extensions

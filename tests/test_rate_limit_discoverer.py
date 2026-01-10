@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Unit tests for RateLimitDiscoverer module.
 
 Tests rate limit discovery functionality including configuration,

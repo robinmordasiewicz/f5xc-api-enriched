@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Deprecated tier transformation enricher for OpenAPI specifications.
 
 This enricher transforms deprecated subscription tier values to their

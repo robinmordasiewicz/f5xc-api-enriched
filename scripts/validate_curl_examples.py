@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Validate curl examples by executing CRUD operations against live F5 XC API.
 
 This script tests the curl examples from config/minimum_configs.yaml by

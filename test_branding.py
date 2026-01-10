@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Test script to validate CLI branding transformations.
 
 Tests that:

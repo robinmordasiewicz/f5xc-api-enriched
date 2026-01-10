@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 # Pre-commit hook: Regenerate enriched specs and validate on every commit
 #
 # IMPORTANT: This hook validates ALL files on every commit, including:

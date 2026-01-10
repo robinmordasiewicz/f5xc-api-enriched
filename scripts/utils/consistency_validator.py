@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Consistency validator for OpenAPI specifications.
 
 Validates naming conventions and structural consistency,

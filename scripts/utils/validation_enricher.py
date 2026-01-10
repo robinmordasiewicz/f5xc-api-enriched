@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Validation Rule Enricher for OpenAPI specifications.
 
 Adds OpenAPI validation constraints (pattern, minLength, maxLength, minimum, maximum, etc.)

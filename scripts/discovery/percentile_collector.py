@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Response time percentile collector for API discovery.
 
 Collects multiple response time samples and calculates statistical

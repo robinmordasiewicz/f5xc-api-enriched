@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Unified F5 XC API Enrichment Pipeline.
 
 Single command to process all specifications from original → enriched.

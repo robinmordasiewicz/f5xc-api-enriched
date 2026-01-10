@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Tests for the 5-layer description validation system.
 
 Tests cover:

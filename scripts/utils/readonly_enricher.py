@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """ReadOnly Field Enricher for OpenAPI specifications.
 
 Adds `readOnly: true` to API-computed fields following the OpenAPI 3.0 standard.

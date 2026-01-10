@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Tests for CurlExampleValidator CRUD validation.
 
 Tests the validation of curl examples against live F5 XC API

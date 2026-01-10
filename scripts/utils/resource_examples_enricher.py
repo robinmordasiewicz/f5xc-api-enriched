@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Resource Examples Enricher for OpenAPI specifications.
 
 Provides tiered resource configuration examples (minimal, production, advanced, migration)

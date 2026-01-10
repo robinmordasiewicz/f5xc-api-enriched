@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Constraint Analyzer Module.
 
 Compares published API constraints with discovered real-world constraints,

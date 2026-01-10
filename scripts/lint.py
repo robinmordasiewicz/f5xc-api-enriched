@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Lint OpenAPI specifications using Spectral.
 
 Validates specifications against OpenAPI standards and custom rules before merge.

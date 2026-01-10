@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Acronym Enricher for OpenAPI specifications.
 
 Applies structured technical terminology from config/acronyms.yaml

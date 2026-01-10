@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Merge multiple OpenAPI specifications into unified documents for documentation.
 
 Creates merged specifications organized by domain for Swagger UI and Scalar portals.

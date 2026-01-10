@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Unit tests for PropertyDescriptionShortEnricher.
 
 Tests for Issue #330: Add x-f5xc-description-short and x-f5xc-description-medium extensions

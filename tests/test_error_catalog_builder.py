@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Unit tests for ErrorCatalogBuilder module.
 
 Tests error catalog building functionality including configuration,

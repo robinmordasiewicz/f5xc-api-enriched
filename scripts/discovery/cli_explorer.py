@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """xcsh CLI integration for API discovery.
 
 Uses the xcsh command-line tool (F5 Distributed Cloud Shell) to:

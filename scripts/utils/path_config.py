@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Centralized path configuration management for F5 XC API pipeline.
 
 Provides a singleton PathConfig class that manages all directory and file paths

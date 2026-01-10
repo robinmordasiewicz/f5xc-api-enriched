@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Operation Metadata Enricher for OpenAPI specifications.
 
 Adds operation-level metadata for CLI tooling:

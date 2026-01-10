@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Unit tests for per-resource metadata functionality (Issues #267-270).
 
 Tests resource metadata loading, structure validation, and integration

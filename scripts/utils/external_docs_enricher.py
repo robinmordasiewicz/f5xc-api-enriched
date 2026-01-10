@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """External documentation enricher for OpenAPI specifications.
 
 This enricher adds externalDocs metadata to OpenAPI specs,

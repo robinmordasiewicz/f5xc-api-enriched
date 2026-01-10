@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Schema diff analyzer for comparing published vs discovered APIs.
 
 Compares published OpenAPI specs with discovered behavior to detect:

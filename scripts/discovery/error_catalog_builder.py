@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Error catalog builder for API discovery.
 
 Catalogs error responses discovered during API exploration,

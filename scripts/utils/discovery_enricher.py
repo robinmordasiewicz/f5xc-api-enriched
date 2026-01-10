@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Discovery Enricher Module.
 
 Merges live API discovery data into published OpenAPI specifications,

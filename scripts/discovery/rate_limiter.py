@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Async rate limiter with exponential backoff.
 
 Provides rate limiting for API discovery to avoid throttling.

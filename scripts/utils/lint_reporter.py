@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Lint report generator for OpenAPI specification validation.
 
 Extracts report generation logic from lint.py into a reusable reporter class

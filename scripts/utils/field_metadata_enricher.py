@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Unified Field-Level Metadata Enricher for OpenAPI specifications.
 
 Consolidates and extends field-level enrichment with:

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Namespace scope metadata enricher for OpenAPI specifications.
 
 This enricher adds namespace scope metadata to OpenAPI specs,

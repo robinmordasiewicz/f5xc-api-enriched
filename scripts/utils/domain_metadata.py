@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Generate and manage domain metadata for CLI tool integration.
 
 This utility provides programmatic assignment of metadata fields to domains

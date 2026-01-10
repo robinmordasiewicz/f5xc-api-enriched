@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Centralized constants for x-f5xc-* OpenAPI extension namespace.
 
 This module provides:

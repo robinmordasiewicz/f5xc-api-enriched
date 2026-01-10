@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Tag generator for OpenAPI specifications.
 
 Generates and assigns tags to operations based on path patterns,

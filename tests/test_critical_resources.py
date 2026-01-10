@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Unit tests for critical resources configuration and loading.
 
 Tests the x-ves-critical-resources extension added to index.json

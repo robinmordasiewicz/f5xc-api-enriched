@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Automated validation of enriched API specifications against live F5 XC endpoints.
 
 Validates endpoint availability and response schema conformance.

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Automated branding transformations for API specification text fields.
 
 Applies consistent F5 branding by replacing legacy Volterra references

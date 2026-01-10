@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """F5 XC API Discovery Package.
 
 Systematically explores live API to discover undocumented behavior:

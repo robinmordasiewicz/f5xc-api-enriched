@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Error Resolution Enricher for OpenAPI specifications.
 
 Applies HTTP error diagnostics from config/error_resolution.yaml

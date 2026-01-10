@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Validate domain categorization against natural identifiers in original specs.
 
 This script compares the current regex-based domain categorization

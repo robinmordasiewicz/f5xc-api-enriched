@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Unit tests for ReadOnlyEnricher.
 
 Tests the readOnly: true annotation added to API-computed fields

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Guided Workflow Enricher for OpenAPI specifications.
 
 Applies step-by-step deployment workflows from config/guided_workflows.yaml

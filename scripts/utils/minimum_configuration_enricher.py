@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Minimum configuration metadata enricher for OpenAPI specifications.
 
 This enricher adds minimum configuration metadata to resource schemas,

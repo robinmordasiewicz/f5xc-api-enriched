@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Utility modules for F5 XC API enrichment."""
 
 from .acronym_enricher import AcronymEnricher

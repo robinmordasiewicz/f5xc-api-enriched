@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Property Description Enricher for OpenAPI specifications.
 
 Generates concise descriptions for schema properties with long descriptions (>300 chars):

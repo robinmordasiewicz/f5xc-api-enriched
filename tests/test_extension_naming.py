@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Tests for extension naming constants and validation utilities.
 
 Version: v3.0.0 - Clean break, no backward compatibility

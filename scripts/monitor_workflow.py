@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Workflow Monitoring Script.
 
 Analyzes GitHub Actions workflow runs for failures and creates/updates issues.

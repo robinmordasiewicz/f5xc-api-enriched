@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Automated grammar improvement for API specification text fields.
 
 Uses language-tool-python for automated grammar checking and correction.

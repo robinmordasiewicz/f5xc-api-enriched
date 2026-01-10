@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Domain categorization utility for F5 XC API specifications.
 
 This module provides centralized domain categorization patterns for categorizing

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Ensure GitHub Labels Script.
 
 Creates required labels for workflow monitoring if they don't exist.

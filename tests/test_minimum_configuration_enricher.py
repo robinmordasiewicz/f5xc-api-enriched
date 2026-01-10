@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Tests for MinimumConfigurationEnricher.
 
 Tests the enrichment of OpenAPI specs with minimum configuration metadata

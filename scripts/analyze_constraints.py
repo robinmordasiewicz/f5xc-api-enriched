@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Constraint Analysis CLI.
 
 Compares published API specifications with discovered real-world constraints,

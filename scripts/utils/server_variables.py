@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Server variables helper for F5 XC API OpenAPI specifications.
 
 Centralizes server variable configuration and URL template construction

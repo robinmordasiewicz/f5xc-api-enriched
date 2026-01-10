@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Generate enriched domain descriptions using OpenCode.
 
 Uses OpenCode API in non-interactive mode to generate 3-tier descriptions

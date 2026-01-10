@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Tests for discovery enricher operation-level extensions.
 
 Tests the new operation-level enrichment functionality added in Issue #314:

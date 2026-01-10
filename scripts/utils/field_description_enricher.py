@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Field Description and Example Enricher for OpenAPI specifications.
 
 Adds comprehensive descriptions and realistic examples to schema properties

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Tests for NamespaceScopeEnricher.
 
 Tests the enrichment of OpenAPI specs with namespace scope metadata

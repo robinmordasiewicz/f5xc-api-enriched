@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Unit tests for BrandingNormalizer and XCKS/XCCS terminology transformations.
 
 Tests the BrandingNormalizer class for transforming legacy F5 XC Kubernetes

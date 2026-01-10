@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Description validator for OpenAPI specifications.
 
 Validates description completeness and auto-generates missing descriptions

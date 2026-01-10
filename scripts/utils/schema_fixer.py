@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Schema fixer for OpenAPI specifications.
 
 Fixes malformed schema definitions that violate OpenAPI 3.0.3 specification,

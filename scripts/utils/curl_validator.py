@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """CRUD validation for curl examples against live F5 XC API.
 
 Validates curl examples by executing actual Create, Read, Update, Delete

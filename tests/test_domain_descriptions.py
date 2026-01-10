@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Tests that validate generated domain descriptions in config/domain_descriptions.yaml.
 
 Ensures all descriptions comply with DRY principles:

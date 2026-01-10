@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Best Practices Enricher for OpenAPI specifications.
 
 Applies domain-specific operational knowledge from config/best_practices.yaml

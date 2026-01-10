@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """JSON Schema inference from API responses.
 
 Analyzes live API responses to infer:

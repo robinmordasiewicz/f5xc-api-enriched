@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Base reporter class for all documentation generators.
 
 Provides abstract base class and common utilities for generating both

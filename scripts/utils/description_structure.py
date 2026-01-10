@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Description structure normalization for API specifications.
 
 Extracts embedded metadata (examples, validation rules) to proper fields

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Validation report generator for live API testing.
 
 Extracts report generation logic from validate.py into a reusable reporter class

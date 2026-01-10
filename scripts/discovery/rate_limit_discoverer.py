@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Rate limit discoverer for API endpoints.
 
 Safely probes API endpoints to characterize rate limiting behavior.

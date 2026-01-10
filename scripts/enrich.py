@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Automated enrichment pipeline for F5 XC API specifications.
 
 Applies acronym normalization, grammar improvements, and branding transformations

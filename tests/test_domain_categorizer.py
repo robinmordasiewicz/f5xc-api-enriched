@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Unit tests for domain categorization utility.
 
 Tests the DomainCategorizer class and module-level functions for categorizing

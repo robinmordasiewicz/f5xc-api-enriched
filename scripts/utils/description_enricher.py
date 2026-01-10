@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Domain Description Enricher for OpenAPI specifications.
 
 Applies enriched domain descriptions from config/domain_descriptions.yaml

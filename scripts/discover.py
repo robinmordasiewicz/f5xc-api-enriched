@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """F5 XC API Discovery Script.
 
 Systematically explores the live authenticated F5 XC API to discover

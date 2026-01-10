@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Normalize OpenAPI specifications to fix structural issues.
 
 Resolves orphan $ref references, removes empty operations, and ensures

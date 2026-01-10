@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+
 """Server variables markdown rendering utilities.
 
 Centralizes server variables rendering for all documentation generators,
