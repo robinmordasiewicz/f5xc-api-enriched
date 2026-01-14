@@ -7,17 +7,13 @@ supporting both JSON and markdown output formats.
 """
 
 import logging
-import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-# Add utils to path for imports
-sys.path.insert(0, str(Path(__file__).parent))
-
-from path_config import PathConfig
-from report_base import BaseReporter
-from server_variables_markdown import ServerVariablesMarkdownHelper
+from scripts.utils.path_config import PathConfig
+from scripts.utils.report_base import BaseReporter
+from scripts.utils.server_variables_markdown import ServerVariablesMarkdownHelper
 
 logger = logging.getLogger(__name__)
 

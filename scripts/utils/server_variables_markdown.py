@@ -8,16 +8,12 @@ linting, and validation reports.
 """
 
 import logging
-import sys
 from pathlib import Path
 from typing import Any
 
 import yaml
 
-# Add utils to path for imports
-sys.path.insert(0, str(Path(__file__).parent))
-
-from report_base import BaseReporter
+from scripts.utils.report_base import BaseReporter
 
 logger = logging.getLogger(__name__)
 

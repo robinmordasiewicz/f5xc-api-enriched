@@ -8,16 +8,12 @@ markdown and JSON reports consistently across all generators.
 
 import json
 import logging
-import sys
 from abc import ABC, abstractmethod
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-# Add utils to path for imports
-sys.path.insert(0, str(Path(__file__).parent))
-
-from path_config import PathConfig
+from scripts.utils.path_config import PathConfig
 
 logger = logging.getLogger(__name__)
 
