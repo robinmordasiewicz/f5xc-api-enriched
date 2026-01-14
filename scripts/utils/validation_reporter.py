@@ -11,9 +11,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from scripts.utils.path_config import PathConfig
-from scripts.utils.report_base import BaseReporter
-from scripts.utils.server_variables_markdown import ServerVariablesMarkdownHelper
+from path_config import PathConfig
+from report_base import BaseReporter
+from server_variables_markdown import ServerVariablesMarkdownHelper
 
 logger = logging.getLogger(__name__)
 

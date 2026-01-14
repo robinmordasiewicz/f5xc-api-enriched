@@ -13,7 +13,7 @@ from typing import Any
 
 import yaml
 
-from scripts.utils.report_base import BaseReporter
+from report_base import BaseReporter
 
 logger = logging.getLogger(__name__)
 

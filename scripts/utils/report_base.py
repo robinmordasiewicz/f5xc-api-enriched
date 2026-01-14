@@ -13,7 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from scripts.utils.path_config import PathConfig
+from path_config import PathConfig
 
 logger = logging.getLogger(__name__)
 
