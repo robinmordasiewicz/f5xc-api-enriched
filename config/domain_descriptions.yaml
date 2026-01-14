@@ -353,37 +353,37 @@ domains:
       validates rules before enforcement. Security event metrics track rule hits and
       blocked requests across namespaces.
   authentication:
-    short: Authentication settings, policies, and user management.
-    medium: Configure authentication providers, access policies, and user credentials
-      across your F5 Distributed Cloud deployment.
-    long: Authentication management for F5 Distributed Cloud. Provides APIs for configuring
-      authentication providers, access policies, and user credentials. Supports lifecycle
-      operations, multi-factor authentication, and identity provider integration.
+    short: Identity provider and access policy configuration.
+    medium: Identity management with provider integration, access policies, and credential
+      lifecycle control.
+    long: Identity and access management providing APIs for configuring identity providers,
+      access policies, and user credentials. Supports MFA, identity provider integration,
+      and lifecycle operations for credential management across distributed deployments.
   data_intelligence:
-    short: Data Intelligence settings, policies, and resource management.
-    medium: Configure and manage data intelligence settings, policies, and resources
-      across your F5 Distributed Cloud deployment.
-    long: Data Intelligence management for F5 Distributed Cloud. Provides APIs for
-      configuring data intelligence policies and resources. Supports data classification,
-      insight generation, and integration with security services.
+    short: Classification, insights, and policy management.
+    medium: Classification rules, resource policies, and insight generation for data
+      analysis workflows.
+    long: APIs for configuring classification policies and resource management. Supports
+      data classification, insight generation, and integration with security services
+      across deployments.
   telemetry_and_insights:
-    short: Telemetry and insights collection, analysis, and visualization.
-    medium: Configure telemetry collection, metrics analysis, and insight generation
-      across your F5 Distributed Cloud deployment.
-    long: Telemetry and insights management for F5 Distributed Cloud. Provides APIs
-      for configuring telemetry collection, metrics storage, and insight generation.
-      Supports log aggregation, performance monitoring, and alerting integration.
+    short: Metrics collection, analysis, and visualization.
+    medium: Collection endpoints, metrics storage, and insight generation for observability
+      workflows.
+    long: APIs for configuring collection endpoints, metrics storage, and insight generation.
+      Supports log aggregation, performance monitoring, and alerting integration across
+      deployments.
   threat_campaign:
-    short: Threat campaign detection, tracking, and mitigation policies.
-    medium: Configure threat campaign detection, tracking, and mitigation policies
-      across your F5 Distributed Cloud deployment.
-    long: Threat campaign management for F5 Distributed Cloud. Provides APIs for
-      configuring threat campaign detection and tracking policies. Supports campaign
-      analysis, risk assessment, and mitigation rule generation.
+    short: Attack detection, tracking, and mitigation rules.
+    medium: Detection policies, attack tracking, and automated mitigation rule generation
+      for security operations.
+    long: APIs for configuring detection policies and attack tracking. Supports campaign
+      analysis, risk assessment, and automated mitigation rule generation across security
+      domains.
   vpm_and_node_management:
-    short: VPM and node management, configuration, and lifecycle operations.
-    medium: Configure VPM and node management settings, policies, and resources
-      across your F5 Distributed Cloud deployment.
-    long: VPM and node management for F5 Distributed Cloud. Provides APIs for
-      configuring node policies, fleet management, and lifecycle operations. Supports
-      node registration, configuration deployment, and status monitoring.
+    short: Node lifecycle, fleet grouping, and orchestration.
+    medium: Lifecycle control, fleet configuration, and deployment policies for distributed
+      node management.
+    long: APIs for configuring node policies, fleet management, and lifecycle operations.
+      Supports node registration, configuration deployment, and status monitoring across
+      distributed infrastructure.

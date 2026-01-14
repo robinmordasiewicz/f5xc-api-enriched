@@ -94,12 +94,13 @@ class TestPatternMatching:
         assert description is not None
         assert "ip" in description.lower().replace("ipv", "ip")
 
-    def test_generic_field_no_match(self, enricher):
-        """Test that generic field names don't match."""
-        # These are intentionally ambiguous and should not match
-        assert enricher._find_description("value") is None
-        assert enricher._find_description("data") is None
-        assert enricher._find_description("config") is None
+    def test_generic_field_gets_fallback_description(self, enricher):
+        """Test that generic field names get fallback descriptions for 100% coverage."""
+        # The enricher now provides fallback descriptions for all fields
+        # to ensure 100% description coverage
+        assert enricher._find_description("value") is not None
+        assert enricher._find_description("data") is not None
+        assert enricher._find_description("config") is not None
 
 
 class TestExampleGeneration:
@@ -215,9 +216,9 @@ class TestSpecEnrichment:
         assert "description" in user_props["email"]
         assert "x-f5xc-example" in user_props["email"]
 
-        # Check that unmatched id field wasn't enriched
-        assert "description" not in user_props["id"]
-        assert "x-f5xc-example" not in user_props["id"]
+        # Check that id field was enriched (100% coverage - all fields get descriptions)
+        assert "description" in user_props["id"]
+        assert "x-f5xc-example" in user_props["id"]
 
     def test_stats_after_full_enrichment(self, enricher, simple_spec):
         """Test that stats are correctly updated after full enrichment."""
