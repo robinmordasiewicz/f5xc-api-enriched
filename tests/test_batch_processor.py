@@ -481,3 +481,212 @@ class TestEdgeCases:
         assert len(cache_paths) == 5
         assert processor.stats["batches_processed"] == 5
         assert processor.stats["gc_collections"] == 5
+
+
+class TestDiscoveryReconciliationBatch:
+    """Test Phase 3: Discovery/reconciliation batch processing."""
+
+    def test_discovery_only(self, temp_spec_dir, mock_enrich_func, mock_normalize_func):
+        """Verify batch processing with discovery enrichment only."""
+        processor = BatchSpecProcessor(batch_size=2)
+        spec_files = sorted(temp_spec_dir.glob("*.json"))
+        config = {}
+
+        # First create cache from batch processing
+        cache_paths = processor.process_batch(
+            spec_files,
+            mock_enrich_func,
+            mock_normalize_func,
+            config,
+        )
+
+        # Discovery function adds a marker
+        def discovery_func(spec: dict) -> dict:
+            spec["x-discovery-enriched"] = True
+            return spec
+
+        # Process discovery in batches
+        final_paths = processor.process_discovery_reconciliation_batch(
+            cache_paths,
+            discovery_func=discovery_func,
+            reconcile_func=None,
+        )
+
+        # Verify all specs processed
+        assert len(final_paths) == 5
+
+        # Verify discovery marker was applied and cached
+        for cache_path in final_paths.values():
+            spec = processor.load_cached_spec(cache_path)
+            assert spec["x-discovery-enriched"] is True
+
+    def test_reconciliation_only(self, temp_spec_dir, mock_enrich_func, mock_normalize_func):
+        """Verify batch processing with reconciliation only."""
+        processor = BatchSpecProcessor(batch_size=2)
+        spec_files = sorted(temp_spec_dir.glob("*.json"))
+        config = {}
+
+        # First create cache from batch processing
+        cache_paths = processor.process_batch(
+            spec_files,
+            mock_enrich_func,
+            mock_normalize_func,
+            config,
+        )
+
+        # Reconciliation function adds marker and returns report
+        def reconcile_func(spec: dict) -> tuple[dict, dict]:
+            spec["x-reconciled"] = True
+            return spec, {"reconciled": 1}
+
+        # Process reconciliation in batches
+        final_paths = processor.process_discovery_reconciliation_batch(
+            cache_paths,
+            discovery_func=None,
+            reconcile_func=reconcile_func,
+        )
+
+        # Verify all specs processed
+        assert len(final_paths) == 5
+
+        # Verify reconciliation marker was applied and cached
+        for cache_path in final_paths.values():
+            spec = processor.load_cached_spec(cache_path)
+            assert spec["x-reconciled"] is True
+
+    def test_both_discovery_and_reconciliation(
+        self,
+        temp_spec_dir,
+        mock_enrich_func,
+        mock_normalize_func,
+    ):
+        """Verify batch processing with both discovery and reconciliation."""
+        processor = BatchSpecProcessor(batch_size=2)
+        spec_files = sorted(temp_spec_dir.glob("*.json"))
+        config = {}
+
+        # First create cache from batch processing
+        cache_paths = processor.process_batch(
+            spec_files,
+            mock_enrich_func,
+            mock_normalize_func,
+            config,
+        )
+
+        # Both functions add markers
+        def discovery_func(spec: dict) -> dict:
+            spec["x-discovery-enriched"] = True
+            return spec
+
+        def reconcile_func(spec: dict) -> tuple[dict, dict]:
+            spec["x-reconciled"] = True
+            return spec, {"reconciled": 1}
+
+        # Process both in batches
+        final_paths = processor.process_discovery_reconciliation_batch(
+            cache_paths,
+            discovery_func=discovery_func,
+            reconcile_func=reconcile_func,
+        )
+
+        # Verify all specs processed
+        assert len(final_paths) == 5
+
+        # Verify both markers were applied and cached
+        for cache_path in final_paths.values():
+            spec = processor.load_cached_spec(cache_path)
+            assert spec["x-discovery-enriched"] is True
+            assert spec["x-reconciled"] is True
+
+    def test_no_functions_provided(self, temp_spec_dir, mock_enrich_func, mock_normalize_func):
+        """Verify handling when no functions are provided."""
+        processor = BatchSpecProcessor(batch_size=2)
+        spec_files = sorted(temp_spec_dir.glob("*.json"))
+        config = {}
+
+        # First create cache from batch processing
+        cache_paths = processor.process_batch(
+            spec_files,
+            mock_enrich_func,
+            mock_normalize_func,
+            config,
+        )
+
+        # Call with no functions (should skip processing)
+        final_paths = processor.process_discovery_reconciliation_batch(
+            cache_paths,
+            discovery_func=None,
+            reconcile_func=None,
+        )
+
+        # Should return same paths unchanged
+        assert final_paths == cache_paths
+
+    def test_error_handling_continues(self, temp_spec_dir, mock_enrich_func, mock_normalize_func):
+        """Verify processing continues after errors."""
+        processor = BatchSpecProcessor(batch_size=2)
+        spec_files = sorted(temp_spec_dir.glob("*.json"))
+        config = {}
+
+        # First create cache from batch processing
+        cache_paths = processor.process_batch(
+            spec_files,
+            mock_enrich_func,
+            mock_normalize_func,
+            config,
+        )
+
+        # Discovery function fails on spec_2.json
+        call_count = [0]
+
+        def failing_discovery(spec: dict) -> dict:
+            call_count[0] += 1
+            if "Spec 2" in spec["info"]["title"]:
+                raise ValueError("Simulated discovery error")
+            spec["x-discovery-enriched"] = True
+            return spec
+
+        # Process with failing function
+        final_paths = processor.process_discovery_reconciliation_batch(
+            cache_paths,
+            discovery_func=failing_discovery,
+            reconcile_func=None,
+        )
+
+        # All specs should still be in final_paths (error doesn't remove them)
+        assert len(final_paths) == 5
+
+        # Discovery function was called for all specs
+        assert call_count[0] == 5
+
+    def test_multiple_batches(self, temp_spec_dir, mock_enrich_func, mock_normalize_func):
+        """Verify correct batching across multiple batches."""
+        processor = BatchSpecProcessor(batch_size=2)
+        spec_files = sorted(temp_spec_dir.glob("*.json"))
+        config = {}
+
+        # First create cache from batch processing
+        cache_paths = processor.process_batch(
+            spec_files,
+            mock_enrich_func,
+            mock_normalize_func,
+            config,
+        )
+
+        initial_batches = processor.stats["batches_processed"]
+
+        # Discovery function adds marker
+        def discovery_func(spec: dict) -> dict:
+            spec["x-discovery-enriched"] = True
+            return spec
+
+        # Process discovery in batches
+        processor.process_discovery_reconciliation_batch(
+            cache_paths,
+            discovery_func=discovery_func,
+            reconcile_func=None,
+        )
+
+        # 5 specs / 2 per batch = 3 batches (should add to initial batches)
+        # Initial batches was 3, so total should be 6
+        assert processor.stats["batches_processed"] == initial_batches + 3

@@ -207,6 +207,107 @@ class BatchSpecProcessor:
 
         logger.info("Cache cleanup complete: %d files removed", len(cache_files))
 
+    def process_discovery_reconciliation_batch(
+        self,
+        cache_paths: dict[str, Path],
+        discovery_func: Callable[[dict], dict] | None = None,
+        reconcile_func: Callable[[dict], tuple[dict, dict]] | None = None,
+    ) -> dict[str, Path]:
+        """Process discovery and reconciliation in batches without accumulating in memory.
+
+        Phase 3 optimization: Processes cached specs in batches, applying discovery
+        enrichment and constraint reconciliation, then writing back to cache immediately.
+        This avoids loading all specs into memory at once.
+
+        Args:
+            cache_paths: Dictionary mapping filenames to cache paths from Phase 2
+            discovery_func: Optional discovery enrichment function (spec) -> enriched_spec
+            reconcile_func: Optional reconciliation function (spec) -> (reconciled_spec, report)
+
+        Returns:
+            Dictionary mapping filenames to final cache paths (same as input for Phase 3)
+
+        Example:
+            >>> # After Phase 2 batch processing
+            >>> final_paths = processor.process_discovery_reconciliation_batch(
+            ...     cache_paths,
+            ...     discovery_func=lambda s: discovery_enricher.enrich_with_discoveries(s, data),
+            ...     reconcile_func=lambda s: reconciler.reconcile_spec(s),
+            ... )
+        """
+        if not discovery_func and not reconcile_func:
+            logger.warning("No discovery or reconciliation functions provided, skipping")
+            return cache_paths
+
+        total_specs = len(cache_paths)
+        logger.info(
+            "Processing discovery/reconciliation for %d specs in batches of %d",
+            total_specs,
+            self.batch_size,
+        )
+
+        processed_paths: dict[str, Path] = {}
+        cache_items = list(cache_paths.items())
+
+        # Process in batches
+        for batch_idx in range(0, total_specs, self.batch_size):
+            batch = cache_items[batch_idx : batch_idx + self.batch_size]
+            batch_num = (batch_idx // self.batch_size) + 1
+
+            logger.info(
+                "Processing discovery/reconciliation batch %d (%d specs)",
+                batch_num,
+                len(batch),
+            )
+
+            for filename, cache_path in batch:
+                try:
+                    # Load cached spec
+                    spec = self.load_cached_spec(cache_path)
+
+                    # Apply discovery enrichment if provided
+                    if discovery_func:
+                        spec = discovery_func(spec)
+
+                    # Apply constraint reconciliation if provided
+                    if reconcile_func:
+                        spec, _ = reconcile_func(spec)
+
+                    # Write back to cache immediately (overwrite existing)
+                    with cache_path.open("w") as f:
+                        json.dump(spec, f, indent=2)
+
+                    processed_paths[filename] = cache_path
+                    self.stats["cache_writes"] += 1
+
+                    # Explicit cleanup
+                    del spec
+
+                except Exception:
+                    logger.exception("Error processing discovery/reconciliation for %s", filename)
+                    # Continue processing other specs
+                    # Keep original cache path if processing fails
+                    processed_paths[filename] = cache_path
+
+            # Garbage collection after each batch
+            collected = gc.collect()
+            self.stats["gc_collections"] += 1
+            self.stats["batches_processed"] += 1
+
+            logger.info(
+                "Discovery/reconciliation batch %d complete: %d specs, %d objects collected",
+                batch_num,
+                len(batch),
+                collected,
+            )
+
+        logger.info(
+            "Discovery/reconciliation complete: %d specs processed",
+            len(processed_paths),
+        )
+
+        return processed_paths
+
     def get_stats(self) -> dict[str, int]:
         """Get processing statistics.
 

@@ -1500,63 +1500,72 @@ def run_pipeline(
             console.print(f"[red]Batch processing failed: {str(e)}[/red]")
             raise
 
-        # Step 3-4: Load cached specs and apply discovery/reconciliation
-        # (These require loaded specs and cannot be batched effectively)
-        with Progress(
-            SpinnerColumn(),
-            TextColumn("[progress.description]{task.description}"),
-            BarColumn(),
-            TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
-            TimeElapsedColumn(),
-            console=console,
-        ) as progress:
-            task = progress.add_task(
-                "Applying discovery and reconciliation...",
-                total=len(cache_paths),
-            )
+        # Step 3-4: Batch process discovery/reconciliation (Phase 3 optimization)
+        # Process in batches to avoid accumulating all specs in memory
+        if discovery_enricher and discovery_data or reconciler:
+            console.print("[blue]Applying discovery and reconciliation in batches...[/blue]")
 
-            for filename, cache_path in cache_paths.items():
-                try:
-                    # Load cached spec
-                    spec = batch_processor.load_cached_spec(cache_path)
+            # Create wrapper functions with statistics tracking
+            discovery_func = None
+            if discovery_enricher and discovery_data:
 
-                    # Step 3: Discovery enrichment (in memory)
-                    if discovery_enricher and discovery_data:
-                        spec = discovery_enricher.enrich_with_discoveries(spec, discovery_data)
-                        discovery_stats = discovery_enricher.get_stats()
-                        stats.discovery_enriched += discovery_stats.get("fields_enriched", 0)
+                def apply_discovery(spec: dict) -> dict:
+                    """Apply discovery enrichment and track stats."""
+                    enriched = discovery_enricher.enrich_with_discoveries(spec, discovery_data)
+                    discovery_stats = discovery_enricher.get_stats()
+                    stats.discovery_enriched += discovery_stats.get("fields_enriched", 0)
+                    return enriched
 
-                    # Step 4: Constraint reconciliation (in memory)
-                    if reconciler:
-                        spec, reconcile_report = reconciler.reconcile_spec(spec)
-                        reconcile_stats = reconcile_report.get("statistics", {})
-                        stats.constraints_reconciled += reconcile_stats.get("reconciled", 0)
-                        stats.constraints_preserved += reconcile_stats.get("preserved", 0)
+                discovery_func = apply_discovery
 
-                    # Store for merging (no individual file output)
-                    processed_specs[filename] = spec
+            reconcile_func = None
+            if reconciler:
 
-                except Exception as e:
-                    stats.files_failed += 1
-                    stats.errors.append({
-                        "file": filename,
-                        "error": f"Discovery/reconciliation error: {str(e)}",
-                        "type": "processing_error",
-                    })
-                    console.print(f"[yellow]Warning: Failed to process {filename}: {str(e)}[/yellow]")
-                    if not config.get("processing", {}).get("continue_on_error", True):
-                        raise
+                def apply_reconciliation(spec: dict) -> tuple[dict, dict]:
+                    """Apply constraint reconciliation and track stats."""
+                    reconciled, reconcile_report = reconciler.reconcile_spec(spec)
+                    reconcile_stats = reconcile_report.get("statistics", {})
+                    stats.constraints_reconciled += reconcile_stats.get("reconciled", 0)
+                    stats.constraints_preserved += reconcile_stats.get("preserved", 0)
+                    return reconciled, reconcile_report
 
-                progress.update(task, advance=1)
+                reconcile_func = apply_reconciliation
+
+            try:
+                # Batch process discovery/reconciliation (writes back to cache)
+                cache_paths = batch_processor.process_discovery_reconciliation_batch(
+                    cache_paths,
+                    discovery_func=discovery_func,
+                    reconcile_func=reconcile_func,
+                )
+
+                batch_stats = batch_processor.get_stats()
+                console.print(
+                    f"[green]Discovery/reconciliation complete: {len(cache_paths)} specs processed "
+                    f"in {batch_stats['batches_processed']} batches[/green]",
+                )
+
+            except Exception as e:
+                console.print(f"[red]Discovery/reconciliation batch processing failed: {str(e)}[/red]")
+                raise
 
         profiler.checkpoint("discovery_reconciliation_complete", force_gc=True)
 
-        # Clean up cache files
-        batch_processor.cleanup_cache()
-        console.print("[dim]Cache cleanup complete[/dim]")
+        # Step 5: Merge by domain (load from cache just-in-time for merge)
+        if not dry_run and cache_paths:
+            console.print("[blue]Loading processed specs from cache for merging...[/blue]")
 
-        # Step 5: Merge by domain (only merged specs are written)
-        if not dry_run and processed_specs:
+            # Load all processed specs from cache (they've been batched during processing)
+            processed_specs = {}
+            for filename, cache_path in cache_paths.items():
+                try:
+                    processed_specs[filename] = batch_processor.load_cached_spec(cache_path)
+                except Exception as e:
+                    console.print(f"[yellow]Warning: Failed to load {filename} from cache: {str(e)}[/yellow]")
+                    stats.files_failed += 1
+
+            profiler.checkpoint("specs_loaded_for_merge", force_gc=True)
+
             console.print("[blue]Merging specifications by domain...[/blue]")
             version = get_version()
 
@@ -1567,7 +1576,14 @@ def run_pipeline(
             stats.best_practices_enriched = merge_stats.get("best_practices_enriched", 0)
             stats.guided_workflows_added = merge_stats.get("guided_workflows_added", 0)
 
-            profiler.checkpoint("specs_merged")
+            # Clear processed_specs to free memory before saving
+            del processed_specs
+
+            profiler.checkpoint("specs_merged", force_gc=True)
+
+            # Clean up cache files after merge
+            batch_processor.cleanup_cache()
+            console.print("[dim]Cache cleanup complete[/dim]")
 
             # Save domain specs
             for domain, spec in domain_specs.items():
