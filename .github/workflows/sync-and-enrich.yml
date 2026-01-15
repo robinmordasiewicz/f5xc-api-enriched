@@ -68,6 +68,7 @@ jobs:
             set -e
 
             if [ $EXIT_CODE -eq 1 ]; then
+              echo "updated=true" >> "$GITHUB_OUTPUT"
               echo "Updates detected - will proceed with download"
               exit 0
             elif [ $EXIT_CODE -eq 0 ]; then
