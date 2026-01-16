@@ -472,8 +472,7 @@ jobs:
               --body "${PR_BODY}" \
               --base main \
               --head "$BRANCH_NAME" \
-              --label "release,autorelease" \
-              --autoMerge || echo "Note: Enable auto-merge in repo settings for fully automated workflow"
+              --auto || echo "Note: Enable auto-merge in repo settings for fully automated workflow"
 
             echo "Version bump PR created: https://github.com/${{ github.repository }}/pulls"
           else
