@@ -381,7 +381,12 @@ class MinimumConfigurationEnricher:
         )
 
     def _add_auto_generated_field_requirements(self, schema: dict[str, Any]) -> None:
-        """Add basic x-f5xc-required-for to schema properties (auto-generated).
+        """Add x-f5xc-required-for to schema properties based on multiple indicators.
+
+        Checks:
+        1. Schema's required array (OpenAPI standard)
+        2. x-ves-required: "true" (F5's original required indicator)
+        3. Validation rules that indicate required status
 
         Args:
             schema: Schema definition
@@ -390,13 +395,19 @@ class MinimumConfigurationEnricher:
         if not properties:
             return
 
-        required_list = schema.get("required", [])
+        required_list = schema.get("required", []) or []
 
         for field_name, field_schema in properties.items():
             if not isinstance(field_schema, dict):
                 continue
 
-            is_required = field_name in required_list
+            # Check multiple indicators for required status
+            is_required = (
+                field_name in required_list
+                or field_schema.get("x-ves-required") == "true"
+                or self._has_required_validation_rules(field_schema)
+            )
+
             field_requirements = {
                 "minimum_config": is_required,
                 "create": is_required,
@@ -405,6 +416,59 @@ class MinimumConfigurationEnricher:
             }
             field_schema[X_F5XC_REQUIRED_FOR] = field_requirements
             self.stats.field_requirements_added += 1
+
+    def _has_required_validation_rules(self, field_schema: dict[str, Any]) -> bool:
+        """Check if validation rules indicate field is required.
+
+        Examines x-ves-validation-rules for constraints that imply the field
+        must have a non-zero/non-empty value:
+        - message.required: "true" - explicit required flag
+        - uint32.gte: N (N >= 1) - minimum value constraint
+        - repeated.min_items: N (N >= 1) - minimum array items
+        - string.min_bytes: N (N >= 1) - minimum string length
+
+        Args:
+            field_schema: Field schema definition
+
+        Returns:
+            True if validation rules indicate the field is required
+        """
+        rules = field_schema.get("x-ves-validation-rules", {})
+        if not rules:
+            return False
+
+        # Direct required indicator
+        if rules.get("ves.io.schema.rules.message.required") == "true":
+            return True
+
+        # Minimum value constraints that fail with default (0)
+        gte_value = rules.get("ves.io.schema.rules.uint32.gte")
+        if gte_value is not None:
+            try:
+                if int(gte_value) >= 1:
+                    return True
+            except (ValueError, TypeError):
+                pass
+
+        # Array minimum items constraint
+        min_items = rules.get("ves.io.schema.rules.repeated.min_items")
+        if min_items is not None:
+            try:
+                if int(min_items) >= 1:
+                    return True
+            except (ValueError, TypeError):
+                pass
+
+        # String minimum bytes constraint
+        min_bytes = rules.get("ves.io.schema.rules.string.min_bytes")
+        if min_bytes is not None:
+            try:
+                if int(min_bytes) >= 1:
+                    return True
+            except (ValueError, TypeError):
+                pass
+
+        return False
 
     def _detect_resource_type(self, schema_name: str) -> str | None:
         """Detect resource type from schema name.
@@ -494,6 +558,9 @@ class MinimumConfigurationEnricher:
     ) -> None:
         """Add x-f5xc-required-for to schema properties.
 
+        Uses explicit configuration as primary source, but also checks
+        x-ves-required and validation rules for fields not in config.
+
         Args:
             schema: Schema definition
             resource_config: Resource configuration from config file
@@ -507,7 +574,15 @@ class MinimumConfigurationEnricher:
         for field_name, field_schema in properties.items():
             if not isinstance(field_schema, dict):
                 continue
-            is_required = field_name in required_fields
+
+            # Check config-defined required fields first, then fall back to
+            # x-ves-required and validation rules for comprehensive coverage
+            is_required = (
+                field_name in required_fields
+                or field_schema.get("x-ves-required") == "true"
+                or self._has_required_validation_rules(field_schema)
+            )
+
             field_requirements = {
                 "minimum_config": is_required,
                 "create": is_required,

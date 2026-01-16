@@ -3,6 +3,7 @@
 **Purpose**: This document provides Claude Code with F5 XC API Enriched codebase context and AI-specific guidance.
 
 **Quick Links**:
+
 - User-facing overview: [README.md](README.md)
 - Developer guide: [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)
 - Migration guide: [MIGRATION.md](MIGRATION.md)
@@ -33,6 +34,7 @@
 Three OpenAPI extensions enable AI assistants and CLI tools to generate working configurations:
 
 **1. x-f5xc-minimum-configuration** (schema-level)
+
 - Description of minimum viable configuration
 - Required fields list
 - Example YAML configuration
@@ -40,17 +42,20 @@ Three OpenAPI extensions enable AI assistants and CLI tools to generate working 
 - Applied to ALL resource schemas (5 configured + auto-generated)
 
 **2. x-f5xc-cli-domain** (schema + spec level)
+
 - Domain classification (e.g., "virtual", "waf", "cdn")
 - Schema: Resource classification
 - Spec: Domain grouping metadata
 - Idempotent: Preserves existing values
 
 **3. x-f5xc-required-for** (field-level)
+
 - Context-specific field requirements
 - Flags: minimum_config, create, update, read
 - Enables intelligent configuration generation
 
 **Configuration**:
+
 - Explicit: `config/minimum_configs.yaml` (5 priority resources)
 - Auto-generated: `config/default_minimum_configs.yaml` (templates)
 
@@ -59,6 +64,7 @@ Three OpenAPI extensions enable AI assistants and CLI tools to generate working 
 **Purpose**: Rich metadata in `index.json` for IDE tooling, CLI help, AI assistants.
 
 **Output Format**:
+
 ```json
 {
   "primary_resources": [
@@ -93,6 +99,7 @@ Three OpenAPI extensions enable AI assistants and CLI tools to generate working 
 **Configuration**: `config/domain_descriptions.yaml`
 
 **Generation** (uses OpenCode API):
+
 ```bash
 python -m scripts.generate_descriptions --domain dns
 python -m scripts.generate_descriptions --all
@@ -105,6 +112,7 @@ python -m scripts.generate_descriptions --all
 **Configuration**: `config/operation_descriptions.yaml`
 
 **Patterns**:
+
 - Resources: http_loadbalancer, origin_pool, etc.
 - Actions: create, get, update, delete, list
 - Method fallbacks: GET, POST, PUT, DELETE
@@ -131,11 +139,13 @@ python -m scripts.generate_descriptions --all
 ### Multi-Environment Server Variables
 
 **Server URL Template**:
+
 ```
 https://{tenant}.{console_url}/api/v1/namespaces/{namespace}
 ```
 
 **Configuration Variables**:
+
 - `tenant`: F5 XC tenant identifier (e.g., `example-corp`)
 - `console_url`: Console base URL (e.g., `console.ves.volterra.io`)
 - `namespace`: Kubernetes-style namespace (e.g., `production`, `staging`)
@@ -146,6 +156,7 @@ https://{tenant}.{console_url}/api/v1/namespaces/{namespace}
 **Config File**: `config/server_variables.yaml`
 
 **GitHub Branch Mapping** (CI/CD):
+
 - `main` → production namespace
 - `staging` → staging namespace
 - `feature/*` → development namespaces
@@ -176,10 +187,12 @@ https://{tenant}.{console_url}/api/v1/namespaces/{namespace}
 ### When User Says "Run Discovery"
 
 **Prerequisites**:
+
 - VPN connection to F5 XC API
 - `F5XC_API_URL` and `F5XC_API_TOKEN` set
 
 **Steps**:
+
 ```bash
 # Set credentials
 export F5XC_API_URL="https://tenant.console.ves.volterra.io/api"
@@ -193,6 +206,7 @@ make push-discovery
 ```
 
 **Outputs**:
+
 - `specs/discovered/openapi.json` (25MB full spec)
 - `specs/discovered/session.json` (metadata)
 - `reports/discovery.log` (execution log)
@@ -202,11 +216,13 @@ make push-discovery
 **NEVER Manual**: Releases are automated via GitHub Actions.
 
 **Trigger Methods**:
+
 1. Push to main (code/config changes)
 2. Scheduled run (6 AM UTC daily)
 3. Manual workflow dispatch
 
 **Version Bumping** (automated):
+
 - Source spec changes (new domains) → Minor (1.0.15 → 1.1.0)
 - Source spec changes (no new domains) → Patch (1.0.15 → 1.0.16)
 - Pipeline/config changes → Patch
@@ -217,6 +233,7 @@ make push-discovery
 ### When User Says "Debug Pipeline"
 
 **Individual Steps**:
+
 ```bash
 make enrich
 make normalize
@@ -224,12 +241,14 @@ make merge
 ```
 
 **Check Reports**:
+
 ```bash
 cat reports/pipeline-report.json
 cat reports/lint-report.json
 ```
 
 **Verbose Mode**:
+
 ```bash
 python -m scripts.pipeline --verbose
 ```
@@ -239,41 +258,49 @@ python -m scripts.pipeline --verbose
 ## Key Gotchas
 
 ### 1. Pre-commit Pipeline Always Runs
+
 **Issue**: Every commit triggers full pipeline (~50 seconds)
 **Detection**: Watch for "F5 XC API Enrichment Pipeline...Passed"
 **Prevention**: Intentional - ensures spec consistency
 
 ### 2. Discovery Data Requires Separate Push
+
 **Issue**: `make discover` generates local data; CI/CD can't access VPN
 **Detection**: `specs/discovered/openapi.json` not in git
 **Prevention**: Always `make push-discovery` after discovery
 
 ### 3. Specs Are Gitignored But Generated
+
 **Issue**: `docs/specifications/api/` empty after clone
 **Detection**: Directory exists but contains no files
 **Prevention**: Run `make pipeline` before serving docs locally
 
 ### 4. ETag Caching May Skip Downloads
+
 **Issue**: `make download` reports "No changes" unexpectedly
 **Detection**: Check `.etag` modification date
 **Prevention**: Use `make download-force` to bypass cache
 
 ### 5. Version Managed By Workflow
+
 **Issue**: Manual `.version` edits cause conflicts
 **Detection**: Merge conflicts in `.version`
 **Prevention**: Let workflow manage; use commit messages for hints
 
 ### 6. Large Files Need Pre-commit Exception
+
 **Issue**: `check-added-large-files` blocks >1MB files
 **Detection**: Pre-commit fails with "exceeds X KB"
 **Prevention**: Add exclusion in `.pre-commit-config.yaml`
 
 ### 7. Config/Script Changes Trigger Releases
+
 **Issue**: Changes to `config/`, `scripts/`, `requirements.txt` → new release
 **Detection**: Pushing to main creates release
 **Impact**: Intentional - pipeline changes affect output quality
 
 ### 8. Docs-Only Changes Skip Pipeline
+
 **Issue**: CLAUDE.md/README.md changes trigger workflow but skip pipeline
 **Detection**: Workflow log shows "Documentation-only changes - skipping"
 **Impact**: Intentional optimization (~50 seconds saved)
@@ -287,6 +314,7 @@ python -m scripts.pipeline --verbose
 **Core Directive**: Every word must add unique semantic value.
 
 **Principles**:
+
 - **Implicit Context**: Repository context (F5 XC, API) is known - don't repeat
 - **Character Efficiency**: Limited space in CLI columns, UI headers
 - **DRY Content**: Don't repeat information available elsewhere
@@ -302,6 +330,7 @@ python -m scripts.pipeline --verbose
 | ❌ `F5 XC Virtual` | ✅ `Virtual` | Repository provides context |
 
 **Root Spec Title** - Exception:
+
 - ✅ `F5 Distributed Cloud API` (canonical reference)
 
 ### Description Patterns
@@ -315,6 +344,7 @@ python -m scripts.pipeline --verbose
 | ❌ `This resource allows...` | ✅ `Resource for...` | Avoid filler phrases |
 
 **Character Limits**:
+
 - `short`: 60 chars max (CLI columns, badges)
 - `medium`: 150 chars max (tooltips, banners)
 - `long`: 500 chars max (documentation, AI context)
@@ -322,6 +352,7 @@ python -m scripts.pipeline --verbose
 ### Redundancy Detection
 
 **Check for**:
+
 1. Contextual prefixes matching repo/project context
 2. Implied suffixes that state the obvious
 3. Repeated information available elsewhere
@@ -329,6 +360,7 @@ python -m scripts.pipeline --verbose
 ### Content Generation Checklist
 
 Before generating titles/descriptions:
+
 - [ ] Does every word add unique value?
 - [ ] Is context already implied?
 - [ ] Does it start with a noun?
@@ -352,6 +384,7 @@ Before generating titles/descriptions:
 ## Testing Changes
 
 **Before committing**:
+
 ```bash
 # Run full pipeline
 make pipeline
@@ -367,6 +400,7 @@ make discover-dry-run
 ```
 
 **Common Operations**:
+
 ```bash
 # Full build
 make build

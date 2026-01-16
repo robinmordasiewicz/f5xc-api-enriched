@@ -1,0 +1,124 @@
+version: "1.0.0"
+description: "Server-applied default values discovered through API testing"
+
+# Configuration settings
+settings:
+  # Use OpenAPI standard 'default' field for server-applied defaults
+  use_openapi_default: true
+  # Add x-f5xc-server-default: true marker to indicate the default comes from server
+  add_marker_extension: true
+
+# Discovered defaults by resource type
+# Format:
+#   resource_name:
+#     schema_pattern: regex pattern to match schema names
+#     defaults: flat key-value defaults at spec level
+#     nested: nested object defaults within spec properties
+resources:
+  # ============================================================================
+  # WAF - Web Application Firewall
+  # ============================================================================
+
+  app_firewall:
+    description: "WAF policy server-applied defaults for monitoring mode"
+    schema_pattern: "app_firewall.*SpecType"
+    # When creating app_firewall with empty spec {}, server applies these defaults
+    defaults:
+      # Response code handling - allows all response codes
+      allow_all_response_codes: {}
+      # Anonymization settings - default anonymization policy
+      default_anonymization: {}
+      # Bot protection - default bot detection settings
+      default_bot_setting: {}
+      # Detection settings - default attack detection configuration
+      default_detection_settings: {}
+      # AI enhancements - disabled by default
+      disable_ai_enhancements: {}
+      # WAF mode - monitoring mode (non-blocking)
+      monitoring: {}
+      # Blocking page - use system default blocking page
+      use_default_blocking_page: {}
+
+  # ============================================================================
+  # Virtual Services - Health Checks
+  # ============================================================================
+
+  healthcheck:
+    description: "Health check server-applied defaults for HTTP monitoring"
+    schema_pattern: "healthcheck.*SpecType"
+    # Top-level spec defaults
+    defaults:
+      # Jitter percentage for health check timing randomization
+      jitter_percent: 0
+    # Nested defaults within http_health_check object
+    nested:
+      http_health_check:
+        # Use origin server name for Host header
+        use_origin_server_name: {}
+        # Custom headers (empty by default)
+        headers: {}
+        # Headers to remove from health check requests
+        request_headers_to_remove: []
+        # HTTP/2 support (disabled by default)
+        use_http2: false
+        # Expected status codes (empty = accept 200-299)
+        expected_status_codes: []
+        # Expected response body (empty = any response)
+        expected_response: ""
+
+  # ============================================================================
+  # Virtual Services - Rate Limiters
+  # ============================================================================
+
+  rate_limiter:
+    description: "Rate limiter server-applied defaults"
+    schema_pattern: "rate_limiter.*SpecType"
+    defaults:
+      # Rate limit rules (empty array initialized)
+      rules: []
+      # User identification methods
+      user_identification: []
+
+  # ============================================================================
+  # API Security - API Definitions
+  # ============================================================================
+
+  api_definition:
+    description: "API definition server-applied defaults"
+    schema_pattern: "api_definition.*SpecType"
+    defaults:
+      # Swagger/OpenAPI spec references
+      swagger_specs: []
+
+  # ============================================================================
+  # Origin Pools (To be expanded after API testing)
+  # ============================================================================
+
+  # origin_pool:
+  #   description: "Origin pool server-applied defaults"
+  #   schema_pattern: "origin_pool.*SpecType"
+  #   defaults: {}
+
+  # ============================================================================
+  # HTTP Load Balancers (To be expanded after API testing)
+  # ============================================================================
+
+  # http_loadbalancer:
+  #   description: "HTTP load balancer server-applied defaults"
+  #   schema_pattern: "http_loadbalancer.*SpecType"
+  #   defaults: {}
+
+  # ============================================================================
+  # TCP Load Balancers (To be expanded after API testing)
+  # ============================================================================
+
+  # tcp_loadbalancer:
+  #   description: "TCP load balancer server-applied defaults"
+  #   schema_pattern: "tcp_loadbalancer.*SpecType"
+  #   defaults: {}
+
+# Documentation for adding new defaults:
+# 1. Create resource in F5 XC with minimal/empty spec via API
+# 2. Read back the created resource to see server-applied values
+# 3. Document defaults in this file under the resource section
+# 4. Run pipeline to apply defaults to OpenAPI specs

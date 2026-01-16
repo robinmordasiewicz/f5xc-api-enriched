@@ -74,6 +74,7 @@ from scripts.utils import (
     BrandingTransformer,
     ConsistencyValidator,
     ConstraintReconciler,
+    DefaultValueEnricher,
     DescriptionEnricher,
     DescriptionStructureTransformer,
     DescriptionValidator,
@@ -327,6 +328,9 @@ def enrich_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], dic
     spec = readonly_enricher.enrich_spec(spec)
     readonly_stats = readonly_enricher.get_stats()
 
+    # Note: Server-applied default value enrichment runs in merge_specs_by_domain() (Issue #449)
+    # because it requires merged schemas - individual specs don't have the full resource schemas.
+
     # Note: Best practices and guided workflow enrichment moved to merge_specs_by_domain()
     # These enrichers require domain context which is only available after merging.
     # See Issue #314 for details.
@@ -367,7 +371,8 @@ def enrich_spec(spec: dict[str, Any], config: dict) -> tuple[dict[str, Any], dic
         "readonly_fields_marked": readonly_stats.get("total_fields_marked", 0),
         "readonly_metadata_schemas": readonly_stats.get("metadata_schemas_matched", 0),
         "readonly_objectref_schemas": readonly_stats.get("object_ref_schemas_matched", 0),
-        # Note: best_practices and guided_workflows stats tracked in merge_specs_by_domain()
+        # Note: best_practices, guided_workflows, and server_defaults stats tracked
+        # in merge_specs_by_domain() since they require merged schemas
     }
 
 
@@ -1076,6 +1081,7 @@ def merge_specs_by_domain(
         "operationIds_deduplicated": 0,
         "best_practices_enriched": 0,
         "guided_workflows_added": 0,
+        "server_defaults_added": 0,
     }
 
     # Load description enricher for domain-specific descriptions
@@ -1085,6 +1091,10 @@ def merge_specs_by_domain(
     # These run after merging when domain is known
     best_practices_enricher = BestPracticesEnricher()
     guided_workflow_enricher = GuidedWorkflowEnricher()
+
+    # Load enrichers that require merged schemas (Issue #449)
+    # Server-applied defaults need the full merged schema to match patterns
+    default_value_enricher = DefaultValueEnricher()
 
     for domain, spec_list in sorted(domain_specs.items()):
         domain_title = domain.replace("_", " ").title()
@@ -1218,7 +1228,15 @@ def merge_specs_by_domain(
         gw_stats = guided_workflow_enricher.get_stats()
         stats["guided_workflows_added"] = max(
             stats["guided_workflows_added"],
-            gw_stats.get("specs_enriched", 0),
+            gw_stats.get("workflows_added", 0),
+        )
+
+        # Server-applied defaults: add discovered defaults to schema properties (Issue #449)
+        merged_spec = default_value_enricher.enrich_spec(merged_spec)
+        dv_stats = default_value_enricher.get_stats()
+        stats["server_defaults_added"] = max(
+            stats["server_defaults_added"],
+            dv_stats.get("defaults_added", 0),
         )
 
         merged[domain] = merged_spec
