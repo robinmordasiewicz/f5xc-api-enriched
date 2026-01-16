@@ -1,181 +1,479 @@
 enabled: true
 resources:
+  # ===========================================================================
+  # virtual domain - Load Balancing & Traffic Management
+  # ===========================================================================
   http_loadbalancer:
     short: HTTP/HTTPS load balancer with origin pools and routing rules
     medium: Layer 7 load balancing for HTTP/HTTPS traffic with advanced routing, health checks, and WAF integration
     long: 'Application load balancer supporting HTTP/HTTPS protocols with origin pool management, advanced
-
       routing rules, health monitoring, TLS termination, and optional WAF policy integration for
-
       comprehensive traffic management and security'
+  tcp_loadbalancer:
+    short: Layer 4 TCP load balancer for non-HTTP traffic
+    medium: TCP load balancing for non-HTTP protocols with origin pool management, health checks, and connection tracking
+    long: 'Layer 4 load balancer supporting TCP protocol with transparent proxy capabilities, origin pool
+      configuration, connection state tracking, health monitoring, source IP preservation, and support for
+      any TCP-based application protocol'
+  udp_loadbalancer:
+    short: Layer 4 UDP load balancer for stateless protocols
+    medium: UDP load balancing for DNS, gaming, and streaming protocols with origin pool management
+    long: 'Layer 4 load balancer supporting UDP protocol for stateless applications like DNS, gaming,
+      video streaming, with origin pool configuration and health monitoring for reliable delivery'
   origin_pool:
     short: Backend server pool for load balancing and failover
-    medium: Collection of backend servers with health monitoring, load distribution algorithms, and automatic
-      failover capabilities
+    medium: Collection of backend servers with health monitoring, load distribution algorithms, and automatic failover
     long: 'Backend server pool configuration defining origin endpoints, health check policies, load balancing
-
       algorithms (round-robin, least-connections, random), automatic failover behavior, and
-
       endpoint-specific weighting for intelligent traffic distribution'
-  app_firewall:
-    short: Web application firewall for threat protection
-    medium: 'WAF policy protecting applications from OWASP Top 10 threats, DDoS attacks, and malicious traffic
-
-      with customizable rules'
-    long: 'Web Application and API Protection (WAAP) policy providing defense against OWASP Top 10
-
-      vulnerabilities, SQL injection, XSS attacks, DDoS mitigation, bot detection, and API-specific
-
-      threats through signature-based and behavioral analysis with configurable allow/block rules'
-  virtual_host:
-    short: DNS name mapping to routes and load balancers
-    medium: 'Virtual host configuration mapping domain names to HTTP load balancers with TLS certificate
-
-      management and routing policies'
-    long: 'Virtual host defining DNS domain name associations with HTTP load balancers, TLS/SSL certificate
-
-      management, HTTP to HTTPS redirection, custom headers, CORS policies, and advanced routing rules for
-
-      multi-tenant application hosting'
   healthcheck:
     short: Endpoint health monitoring configuration
     medium: Health check policy monitoring backend endpoint availability with HTTP, TCP, or custom probe configurations
     long: 'Health monitoring policy defining probe type (HTTP, HTTPS, TCP, UDP, custom), check intervals,
-
       timeout thresholds, success/failure criteria, and automated endpoint state management for ensuring
-
       traffic only reaches healthy backends'
-  tcp_loadbalancer:
-    short: Layer 4 TCP load balancer for non-HTTP traffic
-    medium: TCP load balancing for non-HTTP protocols with origin pool management, health checks, and
-      connection tracking
-    long: 'Layer 4 load balancer supporting TCP protocol with transparent proxy capabilities, origin pool
+  virtual_host:
+    short: DNS name mapping to routes and load balancers
+    medium: Virtual host configuration mapping domain names to HTTP load balancers with TLS certificate management
+    long: 'Virtual host defining DNS domain name associations with HTTP load balancers, TLS/SSL certificate
+      management, HTTP to HTTPS redirection, custom headers, CORS policies, and advanced routing rules for
+      multi-tenant application hosting'
+  cluster:
+    short: Backend cluster for distributed service deployment
+    medium: Cluster configuration for distributed backend services with load balancing and service discovery
+    long: 'Cluster resource defining backend service topology, load balancing policies, service discovery
+      mechanisms, and connectivity settings for distributed application deployments'
+  proxy:
+    short: Traffic proxy for request forwarding and transformation
+    medium: Proxy configuration for request forwarding with header manipulation and protocol translation
+    long: 'Proxy resource enabling traffic forwarding, header manipulation, protocol translation, and
+      request/response transformation for complex routing scenarios'
 
-      configuration, connection state tracking, health monitoring, source IP preservation, and support for
+  # ===========================================================================
+  # virtual domain - Service Policies
+  # ===========================================================================
+  service_policy:
+    short: Traffic control policy with allow/deny rules
+    medium: Service policy defining traffic control rules for request filtering, rate limiting, and access control
+    long: 'Service policy configuration establishing traffic control through allow/deny rules, request
+      filtering, rate limiting, geo-blocking, and advanced matching conditions for fine-grained access control'
+  service_policy_rule:
+    short: Individual rule within a service policy
+    medium: Service policy rule defining specific match conditions and actions for traffic control
+    long: 'Service policy rule specifying match conditions (source IP, headers, paths), actions (allow, deny,
+      rate limit), and priority ordering for granular traffic control within a service policy'
+  service_policy_set:
+    short: Collection of service policies for grouped application
+    medium: Service policy set grouping multiple policies for coordinated traffic control and enforcement
+    long: 'Service policy set aggregating multiple service policies for unified enforcement, priority-based
+      evaluation, and coordinated traffic control across related applications and endpoints'
 
-      any TCP-based application protocol'
+  # ===========================================================================
+  # virtual domain - Rate Limiting & DDoS
+  # ===========================================================================
+  rate_limiter:
+    short: Request rate limiting for traffic control
+    medium: Rate limiter configuration defining request limits, time windows, and throttling behavior
+    long: 'Rate limiter policy specifying request rate limits, time window calculations, burst allowances,
+      response actions (throttle, block), and key extraction for per-client or per-endpoint limiting'
+  rate_limiter_policy:
+    short: Rate limiting policy for request throttling
+    medium: Rate limiter policy defining thresholds, time windows, and actions for traffic throttling
+    long: 'Rate limiting policy configuration establishing request thresholds, time-based windows, burst
+      handling, and enforcement actions for protecting services from traffic spikes and abuse'
+  dos_automitigation_rule:
+    short: Automated DDoS mitigation rule configuration
+    medium: DoS auto-mitigation rule defining thresholds and actions for automatic attack response
+    long: 'Denial-of-Service auto-mitigation rule specifying detection thresholds, traffic patterns,
+      automatic response actions, and recovery procedures for protecting against volumetric attacks'
+  l7ddos_rps_threshold:
+    short: Layer 7 DDoS requests-per-second threshold
+    medium: L7 DDoS RPS threshold defining detection limits for application-layer attack mitigation
+    long: 'Layer 7 DDoS threshold configuration specifying requests-per-second limits, detection sensitivity,
+      and mitigation triggers for application-layer denial-of-service protection'
+
+  # ===========================================================================
+  # virtual domain - Geographic & DNS
+  # ===========================================================================
+  geo_location_set:
+    short: Geographic location set for geo-based routing
+    medium: Geo-location set defining geographic regions for location-based traffic routing and blocking
+    long: 'Geographic location set configuration defining country, region, or custom geographic boundaries
+      for geo-based traffic routing, access control, and compliance with regional data requirements'
+  get_dns_info:
+    short: DNS resolution information retrieval
+    medium: DNS info operation retrieving resolution details and record information for domains
+    long: 'DNS information retrieval operation returning resolution status, record types, TTL values,
+      and propagation status for configured domain names'
+
+  # ===========================================================================
+  # virtual domain - API & Security
+  # ===========================================================================
+  api_endpoint:
+    short: API endpoint configuration for traffic management
+    medium: API endpoint definition for routing, rate limiting, and security policy application
+    long: 'API endpoint configuration defining path patterns, methods, authentication requirements,
+      rate limiting, and security policies for API traffic management and protection'
+  get_security_config:
+    short: Security configuration retrieval
+    medium: Security config operation retrieving current security settings and policy configurations
+    long: 'Security configuration retrieval operation returning active security policies, rule sets,
+      protection levels, and enforcement status for security posture assessment'
+  calls_by_response_code:
+    short: API call statistics grouped by response code
+    medium: API metrics aggregating call counts by HTTP response codes for traffic analysis
+    long: 'API statistics operation returning call counts aggregated by HTTP response codes (2xx, 4xx, 5xx)
+      for traffic analysis, error rate monitoring, and performance assessment'
+
+  # ===========================================================================
+  # Security domain - WAF & Firewall
+  # ===========================================================================
+  app_firewall:
+    short: Web application firewall for threat protection
+    medium: WAF policy protecting applications from OWASP Top 10 threats, DDoS attacks, and malicious traffic
+    long: 'Web Application and API Protection (WAAP) policy providing defense against OWASP Top 10
+      vulnerabilities, SQL injection, XSS attacks, DDoS mitigation, bot detection, and API-specific
+      threats through signature-based and behavioral analysis with configurable allow/block rules'
+  waf_policy:
+    short: WAF policy for application security
+    medium: WAF security policy protecting web applications from common attacks with OWASP rule sets
+    long: 'Web Application Firewall policy configuration defining protection rules, OWASP ModSecurity core
+      rule sets, custom signature detection, false positive management, geo-blocking, rate limiting, bot
+      mitigation, and detailed attack logging with blocking or monitoring modes'
+  bot_defense:
+    short: Bot detection and mitigation configuration
+    medium: Bot defense policy detecting and blocking automated threats through behavioral analysis
+    long: 'Bot defense configuration providing detection and mitigation of automated threats through
+      JavaScript challenges, behavioral analysis, fingerprinting, and reputation-based blocking'
+  bot_defense_policy:
+    short: Bot defense policy for automated threat protection
+    medium: Bot defense policy defining detection methods and response actions for automated threats
+    long: 'Bot defense policy configuration specifying detection techniques (JS challenge, fingerprinting),
+      threat categories (scraping, credential stuffing), and response actions for comprehensive bot protection'
+  malicious_user:
+    short: Malicious user detection and blocking configuration
+    medium: Malicious user policy detecting and responding to suspicious user behavior patterns
+    long: 'Malicious user detection configuration analyzing user behavior patterns, session anomalies,
+      and threat indicators to identify and block malicious actors'
+
+  # ===========================================================================
+  # Certificates domain
+  # ===========================================================================
   certificate:
     short: TLS/SSL certificate for secure connections
     medium: X.509 certificate management for TLS termination with automatic renewal and private key security
-    long: 'TLS/SSL certificate resource managing X.509 certificates for secure communication, supporting Let''s
-
+    long: 'TLS/SSL certificate resource managing X.509 certificates for secure communication, supporting Lets
       Encrypt auto-renewal, custom CA certificates, private key storage with encryption, certificate chain
-
       management, and SNI-based serving'
+  ca_certificate:
+    short: Certificate authority certificate for trust chains
+    medium: CA certificate for establishing trust chains and validating client certificates
+    long: 'Certificate Authority certificate resource for establishing trust hierarchies, validating
+      client certificates in mTLS configurations, and managing certificate chains for secure communications'
+
+  # ===========================================================================
+  # DNS domain
+  # ===========================================================================
+  dns_zone:
+    short: DNS zone for domain name management
+    medium: DNS zone configuration managing domain records, TTLs, and zone transfers
+    long: 'DNS zone configuration for authoritative domain name management including A, AAAA, CNAME, MX,
+      TXT records, TTL settings, DNSSEC configuration, and zone transfer policies'
+  dns_record:
+    short: DNS record for name resolution
+    medium: DNS record defining name-to-address mappings with TTL and routing policies
+    long: 'DNS record configuration specifying record type (A, AAAA, CNAME, MX, TXT), target values,
+      TTL settings, and optional geographic or weighted routing for intelligent DNS resolution'
+  primary_dns:
+    short: Primary DNS zone configuration
+    medium: Primary DNS zone for authoritative domain hosting with record management
+    long: 'Primary DNS zone configuration establishing authoritative DNS hosting with full record
+      management, DNSSEC signing, and zone transfer policies'
+  secondary_dns:
+    short: Secondary DNS zone for redundancy
+    medium: Secondary DNS zone providing redundant DNS hosting through zone transfers
+    long: 'Secondary DNS zone configuration providing redundant DNS resolution through zone transfers
+      from primary servers with automatic synchronization and failover capabilities'
+
+  # ===========================================================================
+  # Network domain
+  # ===========================================================================
+  network_policy:
+    short: Network access control policy
+    medium: Network policy defining connectivity rules between workloads and external resources
+    long: 'Network policy configuration establishing connectivity rules, firewall policies, and access
+      controls between workloads, namespaces, and external resources for network segmentation'
+  network_connector:
+    short: Network connector for site connectivity
+    medium: Network connector establishing connectivity between sites and cloud networks
+    long: 'Network connector configuration establishing secure connectivity between F5 XC sites,
+      cloud VPCs, and on-premises networks through various transport protocols'
+  virtual_network:
+    short: Virtual network for workload connectivity
+    medium: Virtual network providing isolated connectivity for application workloads
+    long: 'Virtual network configuration creating isolated network segments for application workloads
+      with custom IP addressing, routing policies, and inter-network connectivity options'
+  network_firewall:
+    short: Network layer firewall for traffic filtering
+    medium: Network firewall policy defining Layer 3/4 traffic filtering rules
+    long: 'Network firewall configuration establishing Layer 3/4 traffic filtering through IP-based
+      rules, port restrictions, protocol filtering, and connection tracking for network security'
+
+  # ===========================================================================
+  # Sites domain - Infrastructure
+  # ===========================================================================
+  site:
+    short: F5 XC site for edge deployment
+    medium: Site configuration for F5 XC edge node deployment and management
+    long: 'F5 XC site resource representing edge deployment location with node configuration,
+      network connectivity, software versioning, and operational status management'
+  aws_vpc_site:
+    short: AWS VPC site for cloud deployment
+    medium: AWS VPC site configuration for F5 XC deployment in Amazon Web Services
+    long: 'AWS VPC site configuration defining F5 XC deployment within Amazon VPC including instance
+      types, networking, IAM roles, and integration with AWS services'
+  azure_vnet_site:
+    short: Azure VNet site for cloud deployment
+    medium: Azure VNet site configuration for F5 XC deployment in Microsoft Azure
+    long: 'Azure VNet site configuration defining F5 XC deployment within Azure Virtual Network
+      including VM sizes, networking, managed identities, and Azure service integration'
+  gcp_vpc_site:
+    short: GCP VPC site for cloud deployment
+    medium: GCP VPC site configuration for F5 XC deployment in Google Cloud Platform
+    long: 'GCP VPC site configuration defining F5 XC deployment within Google Cloud VPC including
+      machine types, networking, service accounts, and GCP service integration'
+  voltstack_site:
+    short: Customer Edge site for on-premises deployment
+    medium: VoltStack site configuration for on-premises F5 XC edge node deployment
+    long: 'VoltStack (Customer Edge) site configuration for on-premises deployment including
+      hardware requirements, network configuration, and hybrid connectivity options'
+
+  # ===========================================================================
+  # Namespace & Identity
+  # ===========================================================================
   namespace:
     short: Logical resource grouping and multi-tenancy boundary
-    medium: Kubernetes-style namespace providing resource isolation, access control, and multi-tenant
-      environment separation
+    medium: Kubernetes-style namespace providing resource isolation, access control, and environment separation
     long: 'Namespace resource establishing logical boundaries for resource organization, multi-tenant
-
       isolation, role-based access control (RBAC), quota management, and environment separation
-
       (development, staging, production) with inherited policies and settings'
+  user:
+    short: User account for console access
+    medium: User account configuration for F5 XC console access with role assignments
+    long: 'User account resource managing console access credentials, role-based permissions,
+      API token generation, and multi-factor authentication settings'
+  service_credential:
+    short: Service credential for API authentication
+    medium: Service credential providing API access tokens for automated integrations
+    long: 'Service credential resource generating API tokens for service-to-service authentication,
+      automation workflows, and CI/CD pipeline integration with scope-limited permissions'
+  api_credential:
+    short: API credential for programmatic access
+    medium: API credential enabling programmatic access to F5 XC APIs with scoped permissions
+    long: 'API credential resource managing access tokens for programmatic API access with
+      configurable scopes, expiration policies, and audit logging'
+
+  # ===========================================================================
+  # Observability domain
+  # ===========================================================================
+  alert_policy:
+    short: Alert policy for monitoring notifications
+    medium: Alert policy defining conditions and notification channels for operational alerts
+    long: 'Alert policy configuration specifying trigger conditions, severity levels, notification
+      channels (email, webhook, PagerDuty), and escalation procedures for operational monitoring'
+  alert_receiver:
+    short: Alert receiver for notification delivery
+    medium: Alert receiver configuration defining notification endpoints and delivery methods
+    long: 'Alert receiver resource configuring notification endpoints including email addresses,
+      webhook URLs, PagerDuty integrations, and Slack channels for alert delivery'
+  log_receiver:
+    short: Log receiver for centralized logging
+    medium: Log receiver configuration for streaming logs to external SIEM systems
+    long: 'Log receiver resource configuring log streaming to external systems including Splunk,
+      Datadog, Elasticsearch, and custom HTTP endpoints for centralized log management'
+  global_log_receiver:
+    short: Global log receiver for tenant-wide logging
+    medium: Global log receiver aggregating logs across all namespaces for centralized analysis
+    long: 'Global log receiver configuration aggregating logs from all namespaces within a tenant
+      for centralized security analysis, compliance reporting, and operational monitoring'
+
+  # ===========================================================================
+  # CDN domain
+  # ===========================================================================
+  cdn_distribution:
+    short: CDN distribution for content delivery
+    medium: CDN distribution configuration for global content caching and delivery
+    long: 'CDN distribution resource configuring global content delivery with edge caching,
+      origin configuration, cache rules, and geographic distribution policies'
+  cdn_origin:
+    short: CDN origin server configuration
+    medium: CDN origin defining source servers for content retrieval and caching
+    long: 'CDN origin configuration specifying source servers, protocols, authentication,
+      and failover behavior for content retrieval'
+
+  # ===========================================================================
+  # API Management domain
+  # ===========================================================================
+  api_definition:
+    short: API definition for endpoint documentation
+    medium: API definition describing endpoints, schemas, and authentication for API management
+    long: 'API definition resource documenting API endpoints, request/response schemas,
+      authentication requirements, and versioning for API lifecycle management'
+  api_discovery:
+    short: API discovery for automatic endpoint detection
+    medium: API discovery configuration for automatic detection and documentation of API endpoints
+    long: 'API discovery configuration enabling automatic detection of API endpoints through
+      traffic analysis, schema learning, and endpoint classification'
+
+  # ===========================================================================
+  # Container Services domain
+  # ===========================================================================
+  virtual_k8s:
+    short: Virtual Kubernetes cluster for workload deployment
+    medium: Virtual K8s cluster providing managed Kubernetes environment for application workloads
+    long: 'Virtual Kubernetes cluster resource providing managed Kubernetes environment with
+      namespace isolation, resource quotas, and integrated networking for application deployment'
+  workload:
+    short: Container workload deployment configuration
+    medium: Workload resource defining container deployments with scaling and networking
+    long: 'Workload resource configuring container deployments including image references,
+      resource limits, scaling policies, networking, and service exposure'
+
+  # ===========================================================================
+  # Route patterns (generic)
+  # ===========================================================================
   route:
     short: HTTP routing rule for path-based traffic distribution
-    medium: HTTP route configuration matching request paths and headers to origin pools with advanced
-      routing capabilities
+    medium: HTTP route configuration matching request paths and headers to origin pools
     long: 'HTTP routing policy defining path-based, header-based, or query parameter-based traffic
-
       distribution rules, supporting regex matching, weighted routing, A/B testing, canary deployments,
-
       request/response transformations, and traffic splitting across multiple origin pools'
-  waf_policy:
-    short: Security policy for application protection
-    medium: WAF security policy protecting web applications from common attacks with OWASP rule sets and
-      custom signatures
-    long: 'Web Application Firewall policy configuration defining protection rules, OWASP ModSecurity core
 
-      rule sets, custom signature detection, false positive management, geo-blocking, rate limiting, bot
-
-      mitigation, and detailed attack logging with blocking or monitoring modes'
 patterns:
   - resource_pattern: .*loadbalancer.*
     short: Load balancing configuration for traffic distribution
-    medium: Load balancer managing traffic distribution across backend servers with health monitoring and failover
-    long: 'Load balancer configuration defining traffic distribution policies, backend server pools, health
-
-    monitoring, automatic failover, and advanced routing capabilities for high availability and
-
-    scalability'
+    medium: Load balancer managing traffic distribution across backend servers with health monitoring
+    long: 'Load balancer configuration defining traffic distribution policies, backend server pools,
+      health monitoring, automatic failover, and advanced routing capabilities'
   - resource_pattern: .*pool.*
     short: Backend server pool configuration
     medium: Collection of backend servers with load balancing and health check policies
     long: 'Backend server pool defining origin endpoints, health monitoring policies, load distribution
-
-    algorithms, and automatic failover behavior for reliable service delivery'
+      algorithms, and automatic failover behavior'
   - resource_pattern: .*policy.*
     short: Configuration policy for resource behavior
     medium: Policy defining behavior rules, conditions, and actions for resource management
-    long: 'Policy configuration establishing rules, conditions, triggers, and automated actions governing
-
-    resource behavior, access control, and operational characteristics'
+    long: 'Policy configuration establishing rules, conditions, triggers, and automated actions
+      governing resource behavior, access control, and operational characteristics'
   - resource_pattern: .*firewall.*|.*waf.*
     short: Security policy for threat protection
-    medium: Security policy protecting resources from threats with customizable rules and monitoring
-    long: 'Security policy configuration providing threat protection through rule-based filtering, signature
-
-    detection, behavioral analysis, and automated response capabilities with detailed logging and
-
-    alerting'
+    medium: Security policy protecting resources from threats with customizable rules
+    long: 'Security policy configuration providing threat protection through rule-based filtering,
+      signature detection, behavioral analysis, and automated response capabilities'
   - resource_pattern: .*route.*|.*routing.*
     short: Traffic routing configuration
-    medium: Routing rules directing traffic based on paths, headers, or conditions to appropriate backends
+    medium: Routing rules directing traffic based on paths, headers, or conditions
     long: 'Traffic routing configuration defining path-based, header-based, or conditional traffic
-
-    distribution with support for weighted routing, A/B testing, canary deployments, and dynamic backend
-
-    selection'
+      distribution with support for weighted routing and dynamic backend selection'
   - resource_pattern: .*health.*|.*monitor.*
     short: Health monitoring configuration
-    medium: Health check policy monitoring endpoint availability with configurable probes and thresholds
-    long: 'Health monitoring policy defining probe types, check intervals, success/failure criteria, and
-
-    automated state management ensuring traffic reaches only healthy and responsive endpoints'
+    medium: Health check policy monitoring endpoint availability with configurable probes
+    long: 'Health monitoring policy defining probe types, check intervals, success/failure criteria,
+      and automated state management'
   - resource_pattern: .*certificate.*|.*cert.*|.*tls.*|.*ssl.*
     short: TLS/SSL certificate management
-    medium: Certificate configuration for secure TLS/SSL connections with automatic renewal capabilities
-    long: 'TLS/SSL certificate management supporting X.509 certificates, automatic renewal workflows, private
-
-    key security, certificate chain configuration, and multi-domain SNI serving for secure
-
-    communications'
+    medium: Certificate configuration for secure TLS/SSL connections
+    long: 'TLS/SSL certificate management supporting X.509 certificates, automatic renewal,
+      private key security, and certificate chain configuration'
   - resource_pattern: .*namespace.*|.*tenant.*
     short: Resource isolation and multi-tenancy boundary
     medium: Namespace providing logical separation, access control, and resource organization
-    long: 'Namespace configuration establishing logical boundaries for resource isolation, multi-tenant
+    long: 'Namespace configuration establishing logical boundaries for resource isolation,
+      multi-tenant separation, and role-based access control'
+  - resource_pattern: .*dns.*|.*zone.*
+    short: DNS configuration for name resolution
+    medium: DNS resource managing domain names, records, and resolution policies
+    long: 'DNS configuration defining domain zones, record types, TTL settings, and routing
+      policies for intelligent name resolution'
+  - resource_pattern: .*site.*
+    short: Edge site for distributed deployment
+    medium: Site configuration for F5 XC edge node deployment
+    long: 'Site resource representing edge deployment location with node configuration,
+      network connectivity, and operational management'
+  - resource_pattern: .*network.*
+    short: Network configuration for connectivity
+    medium: Network resource defining connectivity, routing, and segmentation
+    long: 'Network configuration establishing connectivity between resources, routing policies,
+      and network segmentation for secure communications'
+  - resource_pattern: .*alert.*
+    short: Alert configuration for monitoring
+    medium: Alert policy defining conditions and notifications for operational monitoring
+    long: 'Alert configuration specifying trigger conditions, severity levels, and notification
+      channels for proactive operational monitoring'
+  - resource_pattern: .*log.*
+    short: Logging configuration for audit and analysis
+    medium: Log resource configuring log collection, streaming, and retention
+    long: 'Logging configuration defining log collection, streaming destinations, retention
+      policies, and filtering for security and operational analysis'
+  - resource_pattern: .*credential.*|.*token.*
+    short: Authentication credential for access control
+    medium: Credential resource managing authentication tokens and access keys
+    long: 'Credential resource managing authentication tokens, API keys, and service accounts
+      for secure programmatic access'
+  - resource_pattern: .*user.*
+    short: User account for access management
+    medium: User resource managing console access and permissions
+    long: 'User account resource managing identity, authentication, role assignments, and
+      access permissions for console and API access'
+  - resource_pattern: .*bot.*
+    short: Bot detection and defense configuration
+    medium: Bot defense resource detecting and mitigating automated threats
+    long: 'Bot defense configuration providing detection and mitigation of automated threats
+      through behavioral analysis and reputation-based blocking'
+  - resource_pattern: .*ddos.*|.*dos.*
+    short: DDoS protection configuration
+    medium: DDoS defense resource protecting against volumetric and application attacks
+    long: 'DDoS protection configuration defining detection thresholds, mitigation actions,
+      and automatic response procedures for denial-of-service defense'
+  - resource_pattern: .*api.*endpoint.*
+    short: API endpoint for traffic management
+    medium: API endpoint defining routing, security, and rate limiting for API traffic
+    long: 'API endpoint configuration defining path patterns, authentication requirements,
+      rate limiting, and security policies for API management'
+  - resource_pattern: .*cdn.*
+    short: CDN configuration for content delivery
+    medium: CDN resource for global content caching and distribution
+    long: 'CDN configuration defining edge caching, origin servers, cache rules, and
+      geographic distribution for optimized content delivery'
+  - resource_pattern: .*k8s.*|.*kubernetes.*|.*workload.*
+    short: Kubernetes workload configuration
+    medium: Kubernetes resource for container deployment and management
+    long: 'Kubernetes workload configuration defining container deployments, scaling policies,
+      networking, and service exposure for application management'
 
-    separation, role-based access control, quota management, and environment-based organization with
-
-    inherited policies'
 method_fallbacks:
   POST:
     short: Resource creation operation
     medium: Operation creating new resource with specified configuration
-    long: 'Resource creation operation accepting configuration parameters and establishing a new managed
-
-      resource with automated provisioning and validation'
+    long: 'Resource creation operation accepting configuration parameters and establishing a new
+      managed resource with automated provisioning and validation'
   GET:
     short: Resource retrieval operation
     medium: Operation fetching current resource state and configuration
-    long: 'Resource retrieval operation returning current state, configuration parameters, and operational
-
-      status with filtering and pagination support'
+    long: 'Resource retrieval operation returning current state, configuration parameters, and
+      operational status with filtering and pagination support'
   PUT:
     short: Resource replacement operation
     medium: Operation replacing entire resource configuration with new definition
-    long: 'Resource replacement operation updating complete resource configuration, potentially modifying all
-
-      fields with validation and atomic updates'
+    long: 'Resource replacement operation updating complete resource configuration, potentially
+      modifying all fields with validation and atomic updates'
   PATCH:
     short: Resource modification operation
     medium: Operation updating specific resource fields while preserving others
-    long: 'Resource modification operation applying partial updates to specific configuration fields with
-
-      merge semantics and validation'
+    long: 'Resource modification operation applying partial updates to specific configuration
+      fields with merge semantics and validation'
   DELETE:
     short: Resource deletion operation
     medium: Operation removing resource and cleaning up associated resources
-    long: 'Resource deletion operation permanently removing resource, cleaning up dependencies, and optionally
-
-      cascading deletions to related resources with confirmation requirements'
+    long: 'Resource deletion operation permanently removing resource, cleaning up dependencies,
+      and optionally cascading deletions to related resources'
