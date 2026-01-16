@@ -140,7 +140,7 @@ python -m scripts.generate_descriptions --all
 
 **Server URL Template**:
 
-```
+```text
 https://{tenant}.{console_url}/api/v1/namespaces/{namespace}
 ```
 

@@ -448,6 +448,7 @@ jobs:
         if: steps.version.outputs.has_changes == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.VERSION_BUMP_PAT }}
           VERSION: ${{ steps.version.outputs.new_version }}
           BUMP_TYPE: ${{ steps.version.outputs.bump_type }}
         run: |
@@ -468,7 +469,7 @@ jobs:
 
             PR_BODY="Automated version bump for ${BUMP_TYPE} release."
 
-            # Create PR
+            # Create PR using PAT to trigger workflow checks
             PR_URL=$(gh pr create \
               --title "chore: bump version to v${VERSION}" \
               --body "${PR_BODY}" \
@@ -478,7 +479,8 @@ jobs:
             echo "Version bump PR created: $PR_URL"
 
             # Enable auto-merge on the created PR
-            gh pr merge "$PR_URL" --auto --squash || echo "Note: Auto-merge failed - may need to enable in repo settings"
+            gh pr merge "$PR_URL" --auto --squash || \
+              echo "Note: Auto-merge failed - may need to enable in repo settings"
           else
             echo "No changes to commit"
           fi
