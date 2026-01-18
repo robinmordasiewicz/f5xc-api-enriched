@@ -153,6 +153,7 @@ defaults.resources.healthcheck
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.1.2 | 2026-01-18 | Rewritten as pure API reference; removed downstream examples and prescriptive language |
 | 2.1.1 | 2026-01-18 | Added nested recommended values, OneOf recommended variants, `x-f5xc-recommended-oneof-variant` extension |
 | 2.1.0 | 2026-01-18 | Added unified defaults structure in validation.json |
 | 2.0.30 | 2026-01-16 | Added nested defaults for `$ref` schemas (healthcheckHttpHealthCheck) |
