@@ -1,14 +1,14 @@
 # Changelog
 
-## Version 2.0.36 (2026-01-18)
+## Version 2.0.37 (2026-01-18)
 
 ### Version Information
 | Field | Value |
 |-------|-------|
-| Full Version | 2.0.36 |
+| Full Version | 2.0.37 |
 | Upstream Timestamp | unknown |
 | Upstream ETag | unknown |
-| Enriched Version | 2.0.36 |
+| Enriched Version | 2.0.37 |
 
 ### Release Type
 - **patch** release
@@ -47,7 +47,7 @@ docs/specifications/api/
 ```
 
 ### Download
-- ZIP Package: F5xc-api-(unknown-2.0.36).zip
+- ZIP Package: F5xc-api-(unknown-2.0.37).zip
 
 ### Source
 - Source: F5 Distributed Cloud OpenAPI specifications
