@@ -1,6 +1,6 @@
-# Development Guide - F5 XC API Enriched
+# Development Guide
 
-This guide provides everything you need to work with the F5 XC API Enrichment Pipeline.
+This guide describes the development workflow for the F5 XC API Enrichment Pipeline.
 
 ## Table of Contents
 
@@ -10,7 +10,7 @@ This guide provides everything you need to work with the F5 XC API Enrichment Pi
 - [Discovery Deep Dive](#discovery-deep-dive)
 - [Release Process](#release-process)
 - [Configuration Guide](#configuration-guide)
-- [OpenAPI Extension Semantics](#openapi-extension-semantics)
+- [OpenAPI Extensions](#openapi-extensions)
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
 
@@ -18,7 +18,7 @@ This guide provides everything you need to work with the F5 XC API Enrichment Pi
 
 ## Quick Start
 
-### First-Time Setup (5 minutes)
+### First-Time Setup
 
 ```bash
 # Clone the repository
@@ -57,8 +57,6 @@ make serve
 ## Architecture Overview
 
 ### Two-Folder Design
-
-The pipeline uses a simple two-folder architecture:
 
 ```text
 ┌─────────────────────┐     ┌─────────────────────────────┐
@@ -99,10 +97,7 @@ Download (ETag) → Enrich → Normalize → Merge → Lint → Serve
 
 ### 1. Discovery Workflow
 
-**When to Use**: Periodically to capture real API behavior.
-
 **Prerequisites**:
-
 - VPN connection to F5 XC environment
 - Valid API credentials
 
@@ -111,7 +106,7 @@ Download (ETag) → Enrich → Normalize → Merge → Lint → Serve
 export F5XC_API_URL="https://your-tenant.console.ves.volterra.io/api"
 export F5XC_API_TOKEN="your-api-token"
 
-# Run discovery (5-10 minutes)
+# Run discovery
 make discover
 
 # View results
@@ -121,8 +116,7 @@ jq '.statistics' specs/discovered/session.json
 make push-discovery
 ```
 
-**What Discovery Captures**:
-
+**Discovery captures**:
 - Actual required/optional fields
 - Enum values from live responses
 - Default values
@@ -131,7 +125,7 @@ make push-discovery
 
 ### 2. Release Workflow
 
-**How Releases Happen** (Automated):
+Releases are automated:
 
 1. Daily schedule (6 AM UTC) or push to main triggers workflow
 2. ETag check determines if F5 specs changed
@@ -149,18 +143,13 @@ make push-discovery
 | New domain spec added | Minor | 1.0.0 → 1.1.0 |
 | Any other change | Patch | 1.0.0 → 1.0.1 |
 
-For detailed version bump logic including source spec detection, see the "Version Bumping Logic" section in CLAUDE.md.
-
 ### 3. Development Workflow
-
-**Making Changes**:
 
 ```bash
 # Create feature branch
 git checkout -b feature/my-change
 
 # Make changes to config or scripts
-# ...
 
 # Test locally
 make pipeline
@@ -185,7 +174,7 @@ Discovery explores the live F5 XC API to find:
 
 - **Undocumented constraints**: Required fields not marked in OpenAPI
 - **Actual enum values**: Real values seen in production
-- **Default behaviors**: What happens when fields are omitted
+- **Default behaviors**: Server-applied values when fields are omitted
 - **Response patterns**: Actual data shapes
 
 ### Discovery Configuration
@@ -227,29 +216,14 @@ Discovery adds `x-discovered-*` extensions to specs:
 
 ### Constraint Analysis Report
 
-After discovery, generate a comparison report:
-
 ```bash
 make constraint-report
 # Output: reports/constraint-analysis.md
 ```
 
-This shows differences between published specs and actual API behavior.
-
 ---
 
 ## Release Process
-
-### Automatic Releases
-
-Releases are fully automated. The workflow:
-
-1. Detects spec changes via ETag
-2. Runs full enrichment pipeline
-3. Calculates version bump
-4. Generates changelog
-5. Creates GitHub Release
-6. Deploys to GitHub Pages
 
 ### Release Package Contents
 
@@ -267,8 +241,6 @@ f5xc-api-specs-v1.0.14.zip
 ```
 
 ### Manual Workflow Trigger
-
-If you need to force a release:
 
 ```bash
 gh workflow run sync-and-enrich.yml
@@ -292,7 +264,6 @@ enrichment:
   acronyms:
     API: "Application Programming Interface"
     DNS: "Domain Name System"
-    # 100+ more...
 
   grammar:
     enabled: true
@@ -325,28 +296,33 @@ extends:
 rules:
   operation-operationId: error
   operation-tags: warn
-  # Custom rules...
 ```
 
 ---
 
-## OpenAPI Extension Semantics
+## OpenAPI Extensions
 
-The enrichment pipeline uses two different required field indicators that serve distinct purposes.
+The enrichment pipeline uses vendor extensions to embed validation and default value metadata.
 
-### x-ves-required vs x-f5xc-required-for
+### Required Field Extensions
 
-| Extension | Source | Meaning |
+| Extension | Source | Purpose |
 |-----------|--------|---------|
-| `x-ves-required: "true"` | F5 XC original spec | Field must have a non-zero/non-empty value |
-| `x-f5xc-required-for.create: true` | Enriched by pipeline | User MUST provide value at create time |
+| `x-ves-required: "true"` | F5 XC original spec | Field requires non-zero/non-empty value |
+| `x-f5xc-required-for` | Enrichment pipeline | Context-specific required status |
 
-**When they align**: Most fields - if `x-ves-required` is true, then `create` is true.
+**x-f5xc-required-for contexts**:
+- `create`: Required when creating the resource
+- `update`: Required when updating the resource
+- `minimum_config`: Required for minimum viable configuration
 
-**When they differ**:
+### Default Value Extensions
 
-- **app_firewall**: `x-ves-required` may be true, but server provides defaults
-- Server-applied defaults mean user doesn't need to provide the value
+| Extension | Purpose |
+|-----------|---------|
+| `x-f5xc-server-default: true` | Marks server-applied defaults |
+| `x-f5xc-recommended-value` | F5 XC console pre-populated value |
+| `x-f5xc-recommended-oneof-variant` | Recommended OneOf variant |
 
 ### Validation Rule Implications
 
@@ -356,91 +332,36 @@ The enricher inspects `x-ves-validation-rules` to infer required status:
 |------|-------------|
 | `ves.io.schema.rules.message.required: "true"` | Field is required |
 | `ves.io.schema.rules.uint32.gte: N` | If N >= 1 and no server default, field is required |
-| `ves.io.schema.rules.repeated.min_items: N` | If N >= 1, array must have at least N items |
-| `ves.io.schema.rules.string.min_bytes: N` | If N >= 1, string must have at least N bytes |
+| `ves.io.schema.rules.repeated.min_items: N` | If N >= 1, array requires at least N items |
+| `ves.io.schema.rules.string.min_bytes: N` | If N >= 1, string requires at least N bytes |
 
-### Resources with Server-Side Defaults
+### Resources with Server-Applied Defaults
 
-Some resources accept empty specs because the server applies sensible defaults:
+Some resources accept empty specs because the server applies defaults:
 
-| Resource | Server Behavior |
-|----------|-----------------|
-| `app_firewall` | Applies `monitoring: {}`, `default_detection_settings: {}` |
-| `rate_limiter` | Initializes `limits: []`, `user_identification: []` |
-| `api_definition` | Initializes `swagger_specs: []`, creates default `api_groups` |
+| Resource | Server-Applied Defaults |
+|----------|------------------------|
+| `app_firewall` | `monitoring: {}`, `default_detection_settings: {}` |
+| `rate_limiter` | `limits: []`, `user_identification: []` |
+| `api_definition` | `swagger_specs: []`, default `api_groups` |
+| `healthcheck` | `jitter: 0`, `jitter_percent: 0`, nested http_health_check defaults |
 
 For these resources, `x-f5xc-required-for.create` may be `false` even when `x-ves-required` is `true`.
 
-### How Required Status is Determined
+### Default Value Patterns
 
-The enricher determines if a field is required by checking (in order):
+| Pattern | Type | Example |
+|---------|------|---------|
+| `{}` | Empty object (choice selection) | `monitoring: {}` |
+| `[]` | Empty array | `expected_status_codes: []` |
+| `0` | Numeric | `jitter: 0` |
+| `""` | String | `expected_response: ""` |
+| `false` | Boolean | `use_http2: false` |
 
-1. **Explicit configuration** in `config/minimum_configs.yaml`
-2. **`x-ves-required: "true"`** on the field schema
-3. **Validation rules** that imply non-empty values
+### Adding Discovered Defaults
 
-This ensures CLI tools and AI assistants can correctly identify which flags are mandatory.
-
-### Server-Applied Default Values
-
-When resources are created via the F5 XC API with minimal configuration, the server automatically applies default values to many fields. These defaults are visible when reading the resource back but are NOT documented in the original API specifications.
-
-**Problem**: Without knowing server-applied defaults, downstream tools cannot:
-
-- Display what value will be applied if a field is omitted
-- Generate accurate documentation
-- Make informed decisions during CRUD operations
-
-**Solution**: The enrichment pipeline discovers and documents these defaults using:
-
-| Extension | Purpose |
-|-----------|---------|
-| OpenAPI `default` field | Standard field containing the server-applied value |
-| `x-f5xc-server-default: true` | Marker indicating the default comes from server behavior |
-
-**Example - app_firewall schema after enrichment**:
-
-```json
-{
-  "properties": {
-    "monitoring": {
-      "type": "object",
-      "default": {},
-      "x-f5xc-server-default": true,
-      "description": "WAF monitoring mode configuration"
-    },
-    "default_detection_settings": {
-      "type": "object",
-      "default": {},
-      "x-f5xc-server-default": true
-    }
-  }
-}
-```
-
-**Default Value Patterns Observed**:
-
-| Pattern | Meaning | Example |
-|---------|---------|---------|
-| `{}` (empty object) | Server selects this "choice" option | `monitoring: {}` |
-| `[]` (empty array) | Optional list defaults to empty | `expected_status_codes: []` |
-| `0` | Numeric defaults | `jitter: 0` |
-| `""` | String defaults | `expected_response: ""` |
-| `false` | Boolean defaults | `use_http2: false` |
-
-**Configured Resources** (config/discovered_defaults.yaml):
-
-| Resource | Key Defaults Applied |
-|----------|---------------------|
-| `app_firewall` | `monitoring: {}`, `default_detection_settings: {}`, `allow_all_response_codes: {}` |
-| `healthcheck` | `jitter: 0`, `jitter_percent: 0`, nested http_health_check defaults |
-| `rate_limiter` | `rules: []`, `user_identification: []` |
-| `api_definition` | `swagger_specs: []` |
-
-**Adding New Discovered Defaults**:
-
-1. Create resource in F5 XC with minimal/empty spec via API
-2. Read back the created resource to see server-applied values
+1. Create resource in F5 XC with minimal spec via API
+2. Read back the resource to see server-applied values
 3. Document defaults in `config/discovered_defaults.yaml`
 4. Run pipeline: `make pipeline`
 5. Verify with: `jq '.components.schemas | to_entries[] | select(.key | contains("resource_name"))'`
@@ -449,24 +370,16 @@ When resources are created via the F5 XC API with minimal configuration, the ser
 
 ## Troubleshooting
 
-### Issue 1: Pre-commit Takes Too Long
+### Pre-commit Takes Too Long
 
-**Symptoms**: Commits take 50+ seconds.
-
-**Cause**: Pipeline runs on every commit to ensure consistency.
-
-**Solution**: This is intentional. If you need faster commits during development:
+The pipeline runs on every commit to ensure consistency. For work-in-progress commits:
 
 ```bash
 git commit --no-verify -m "WIP: work in progress"
-# Remember to run: make pre-commit-run before final commit
+# Run before final commit: make pre-commit-run
 ```
 
-### Issue 2: Discovery Fails
-
-**Symptoms**: `make discover` returns connection errors.
-
-**Diagnosis**:
+### Discovery Fails
 
 ```bash
 # Check VPN
@@ -477,31 +390,19 @@ echo $F5XC_API_TOKEN | head -c 10
 
 # Check API URL format
 echo $F5XC_API_URL
-# Should be: https://tenant.console.ves.volterra.io/api
+# Format: https://tenant.console.ves.volterra.io/api
 ```
 
-**Solution**: Ensure VPN is connected and credentials are valid.
-
-### Issue 3: Lint Errors on Generated Specs
-
-**Symptoms**: `make lint` fails with Spectral errors.
-
-**Diagnosis**:
+### Lint Errors on Generated Specs
 
 ```bash
 # Check lint report
 cat reports/lint-report.json | jq '.errors'
 ```
 
-**Solution**: Fix issues in enrichment/normalization config, not the output files.
+Fix issues in enrichment/normalization config, not the output files.
 
-### Issue 4: Version Conflicts
-
-**Symptoms**: Merge conflicts in `.version` file.
-
-**Cause**: Multiple PRs touching the same version.
-
-**Solution**:
+### Version Conflicts
 
 ```bash
 # Accept incoming version (workflow will correct it)
@@ -510,25 +411,17 @@ git add .version
 git commit -m "resolve: accept workflow version"
 ```
 
-### Issue 5: Missing Specs After Clone
+### Missing Specs After Clone
 
-**Symptoms**: `docs/specifications/api/` is empty.
-
-**Cause**: Generated specs are gitignored.
-
-**Solution**:
+Generated specs are gitignored:
 
 ```bash
 make build  # Downloads and generates everything
 ```
 
-### Issue 6: Large File Blocked
+### Large File Blocked
 
-**Symptoms**: Pre-commit fails with "exceeds X KB" error.
-
-**Cause**: File exceeds 1MB limit.
-
-**Solution**: If file should be tracked, add exclusion to `.pre-commit-config.yaml`:
+Add exclusion to `.pre-commit-config.yaml`:
 
 ```yaml
 - id: check-added-large-files
@@ -541,13 +434,13 @@ make build  # Downloads and generates everything
 
 ### Development Process
 
-1. **Branch**: Create feature branch from `main`
-2. **Develop**: Make changes with tests
-3. **Validate**: Run `make pre-commit-run`
-4. **Commit**: Use conventional commit messages
-5. **PR**: Create pull request with description
-6. **Review**: Address feedback
-7. **Merge**: Squash and merge to main
+1. Create feature branch from `main`
+2. Make changes with tests
+3. Run `make pre-commit-run`
+4. Use conventional commit messages
+5. Create pull request
+6. Address review feedback
+7. Squash and merge to main
 
 ### Commit Message Format
 
@@ -561,14 +454,6 @@ type(scope): description
 
 Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 
-Examples:
-
-```text
-feat(enrichment): add new acronym expansions
-fix(pipeline): handle empty description fields
-docs(readme): update installation instructions
-```
-
 ### Code Style
 
 - **Python**: Ruff formatter + linter (configured in `pyproject.toml`)
@@ -576,8 +461,6 @@ docs(readme): update installation instructions
 - **Markdown**: markdownlint (configured via pre-commit)
 
 ### Testing Changes
-
-Always test before committing:
 
 ```bash
 # Full pipeline test
@@ -631,3 +514,10 @@ make discover-dry-run
 | `config/normalization.yaml` | Normalization rules |
 | `config/discovery.yaml` | Discovery settings |
 | `config/spectral.yaml` | Linting rules |
+
+## Related Documentation
+
+- [Healthcheck Enhancements](HEALTHCHECK_ENHANCEMENTS.md) - Healthcheck schema enrichments
+- [Origin Pool Enhancements](ORIGINPOOL_ENHANCEMENTS.md) - Origin pool schema enrichments
+- [Validation Specification](VALIDATION_SPEC.md) - validation.json format and structure
+- [CLAUDE.md](../CLAUDE.md) - AI assistant instructions
