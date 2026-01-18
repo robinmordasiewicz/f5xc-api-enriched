@@ -304,6 +304,16 @@ rules:
 
 The enrichment pipeline uses vendor extensions to embed validation and default value metadata.
 
+### Extension Categories
+
+| Extension | Meaning | Implication |
+|-----------|---------|-------------|
+| `x-f5xc-server-default` | The F5 XC API server applies this value when the field is omitted | Field is optional; omitting it produces the documented default behavior |
+| `x-f5xc-recommended-value` | The F5 XC web console pre-populates this value for new resources | Field has no server default but this value represents typical configuration |
+| `x-f5xc-recommended-oneof-variant` | The F5 XC console pre-selects this OneOf variant | Identifies the typical choice when multiple mutually exclusive options exist |
+
+**Key distinction**: Server-applied defaults are handled by the API automatically. Recommended values are suggestions that require explicit inclusion if desired.
+
 ### Required Field Extensions
 
 | Extension | Source | Purpose |
@@ -323,6 +333,44 @@ The enrichment pipeline uses vendor extensions to embed validation and default v
 | `x-f5xc-server-default: true` | Marks server-applied defaults |
 | `x-f5xc-recommended-value` | F5 XC console pre-populated value |
 | `x-f5xc-recommended-oneof-variant` | Recommended OneOf variant |
+
+#### x-f5xc-server-default
+
+**Type**: `boolean`
+
+When `true`, indicates the accompanying `default` value is enforced by the F5 XC API server. Fields with this extension can be safely omitted from API requests—the server applies the default automatically.
+
+```yaml
+use_http2:
+  type: boolean
+  default: false
+  x-f5xc-server-default: true
+```
+
+#### x-f5xc-recommended-value
+
+**Type**: `any` (matches field type)
+
+Specifies a value that the F5 XC web console uses as a pre-populated default. This value is not server-enforced but represents the typical starting configuration for new resources created via the console.
+
+```yaml
+timeout:
+  type: integer
+  x-f5xc-recommended-value: 3
+```
+
+#### x-f5xc-recommended-oneof-variant
+
+**Type**: `object` (map of group name to variant name)
+
+For schemas with mutually exclusive field groups, identifies which variant is the default or most common choice. The key is the OneOf group name and the value is the recommended variant field name.
+
+```yaml
+healthcheckCreateSpecType:
+  type: object
+  x-f5xc-recommended-oneof-variant:
+    health_check: "http_health_check"
+```
 
 ### Validation Rule Implications
 

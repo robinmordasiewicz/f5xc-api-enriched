@@ -148,51 +148,42 @@ resources:
     # =========================================================================
     # Nested defaults for advanced_options (via $ref resolution)
     # These are applied to origin_poolOriginPoolAdvancedOptions schema
+    # Structure matches healthcheck pattern with defaults/recommended sub-keys
     # =========================================================================
     nested:
       advanced_options:
-        # UI Option 7: Connection Timeout (milliseconds)
-        connection_timeout: 2000
-        # UI Option 8: HTTP Idle Timeout (milliseconds)
-        http_idle_timeout: 300000
-        # UI Option 3: Health check port - default uses endpoint port
-        same_as_endpoint_port: {}
-        # UI Option 9: Circuit breaker - use default settings
-        default_circuit_breaker: {}
-        # UI Option 10: Outlier detection - disabled
-        disable_outlier_detection: {}
-        # UI Option 11: Panic threshold - none
-        no_panic_threshold: {}
-        # UI Option 12: Subset load balancing - disabled
-        disable_subsets: {}
-        # UI Option 13: HTTP protocol - auto negotiation
-        auto_http_config: {}
-        # UI Option 14: Proxy protocol - disabled
-        disable_proxy_protocol: {}
-        # UI Option 15: LB source IP persistence - disabled
-        disable_lb_source_ip_persistance: {}
+        # Server-applied defaults (what server sets when fields are omitted)
+        defaults:
+          # UI Option 3: Health check port - default uses endpoint port
+          same_as_endpoint_port: {}
+          # UI Option 9: Circuit breaker - use default settings
+          default_circuit_breaker: {}
+          # UI Option 10: Outlier detection - disabled
+          disable_outlier_detection: {}
+          # UI Option 11: Panic threshold - none
+          no_panic_threshold: {}
+          # UI Option 12: Subset load balancing - disabled
+          disable_subsets: {}
+          # UI Option 13: HTTP protocol - auto negotiation
+          auto_http_config: {}
+          # UI Option 14: Proxy protocol - disabled
+          disable_proxy_protocol: {}
+          # UI Option 15: LB source IP persistence - disabled
+          disable_lb_source_ip_persistance: {}
+        # Recommended values for UI/CLI/AI assistants
+        # These match F5 XC web interface pre-populated values
+        recommended:
+          # UI Option 7: Connection Timeout (milliseconds)
+          connection_timeout: 2000
+          # UI Option 8: HTTP Idle Timeout (milliseconds)
+          http_idle_timeout: 300000
 
     # =========================================================================
-    # advanced_options_defaults (for validation.json export)
-    # Duplicate of nested.advanced_options for validation_exporter.py
+    # OneOf field recommended selections
+    # Maps OneOf group names to their recommended variant for UI/CLI/AI assistants
+    # Renamed from oneof_defaults to align with healthcheck pattern
     # =========================================================================
-    advanced_options_defaults:
-      connection_timeout: 2000
-      http_idle_timeout: 300000
-      same_as_endpoint_port: {}
-      default_circuit_breaker: {}
-      disable_outlier_detection: {}
-      no_panic_threshold: {}
-      disable_subsets: {}
-      auto_http_config: {}
-      disable_proxy_protocol: {}
-      disable_lb_source_ip_persistance: {}
-
-    # =========================================================================
-    # OneOf field default selections
-    # Maps OneOf group names to their default selection when omitted
-    # =========================================================================
-    oneof_defaults:
+    oneof_recommended:
       # UI Option 1: Port Configuration
       port_choice: "port"  # Most common is explicit port
       # UI Option 2: Connection Pool Reuse
@@ -259,6 +250,62 @@ resources:
         ui_default: "LB_OVERRIDE"
         server_default: "ROUND_ROBIN"
         note: "UI pre-selects LB_OVERRIDE but server applies ROUND_ROBIN if omitted"
+
+    # =========================================================================
+    # Origin Server Types
+    # Constrained values for origin_servers[].type selection
+    # =========================================================================
+    origin_server_types:
+      # OneOf recommended variant for origin server type
+      oneof_recommended:
+        origin_server_type: "public_name"  # Default in UI
+
+      # Constrained values (enums)
+      enums:
+        origin_server_type:
+          description: "Type of origin server to add to the pool"
+          values:
+            - value: "public_name"
+              description: "Specify origin server with public DNS name"
+              is_default: true
+              nested_fields:
+                - dns_name (required)
+            - value: "public_ip"
+              description: "Specify origin server with public IP"
+              nested_fields:
+                - ip (required, IPv4)
+            # TODO: Site-dependent types require "site" logic development
+            # See: docs/ORIGINPOOL_ENHANCEMENTS.md for full specification
+            - value: "private_ip"
+              description: "Specify origin server with private/public IP and site information"
+              status: "TODO - requires site logic"
+            - value: "private_name"
+              description: "Specify origin server with DNS name and site information"
+              status: "TODO - requires site logic"
+            - value: "k8s_service"
+              description: "Specify origin server with K8s service name and site information"
+              status: "TODO - requires site logic"
+            - value: "consul_service"
+              description: "Specify origin server with HashiCorp Consul service name and site"
+              status: "TODO - requires site logic"
+
+      # Completed type configurations
+      nested:
+        public_name:
+          recommended:
+            dns_name: ""  # Required, user must provide
+        public_ip:
+          oneof_recommended:
+            public_ip_choice: "ip"  # IPv4 default
+          recommended:
+            ip: ""  # Required, user must provide (e.g., "8.8.8.8")
+
+      # TODO: Site-dependent nested configurations
+      # These require completion after "site" development sprint:
+      # - private_ip: ip, site_locator, network_choice, snat_pool
+      # - private_name: dns_name, site_locator, network_choice, snat_pool
+      # - k8s_service: service_name, site_locator, network_choice
+      # - consul_service: service_name, site_locator, network_choice
 
 # Documentation for adding new defaults:
 # 1. Create resource in F5 XC with minimal/empty spec via API
