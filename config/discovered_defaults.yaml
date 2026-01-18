@@ -118,6 +118,8 @@ resources:
       loadbalancer_algorithm: "ROUND_ROBIN"
       # Endpoint selection strategy (DISTRIBUTED, LOCAL_ONLY, LOCAL_PREFERRED)
       endpoint_selection: "DISTRIBUTED"
+      # Health check port - uses same port as endpoint by default (OneOf choice)
+      same_as_endpoint_port: {}
 
     # Recommended values for required fields (used by UI/CLI/AI assistants)
     # These match F5 XC web interface pre-populated values for consistency
@@ -127,29 +129,46 @@ resources:
       http_idle_timeout: 300000
 
     # =========================================================================
-    # advanced_options defaults (UI options 3, 7-15)
-    # These are applied when advanced_options is not specified
+    # Nested defaults for advanced_options (via $ref resolution)
+    # These are applied to origin_poolOriginPoolAdvancedOptions schema
+    # =========================================================================
+    nested:
+      advanced_options:
+        # UI Option 7: Connection Timeout (milliseconds)
+        connection_timeout: 2000
+        # UI Option 8: HTTP Idle Timeout (milliseconds)
+        http_idle_timeout: 300000
+        # UI Option 3: Health check port - default uses endpoint port
+        same_as_endpoint_port: {}
+        # UI Option 9: Circuit breaker - use default settings
+        default_circuit_breaker: {}
+        # UI Option 10: Outlier detection - disabled
+        disable_outlier_detection: {}
+        # UI Option 11: Panic threshold - none
+        no_panic_threshold: {}
+        # UI Option 12: Subset load balancing - disabled
+        disable_subsets: {}
+        # UI Option 13: HTTP protocol - auto negotiation
+        auto_http_config: {}
+        # UI Option 14: Proxy protocol - disabled
+        disable_proxy_protocol: {}
+        # UI Option 15: LB source IP persistence - disabled
+        disable_lb_source_ip_persistance: {}
+
+    # =========================================================================
+    # advanced_options_defaults (for validation.json export)
+    # Duplicate of nested.advanced_options for validation_exporter.py
     # =========================================================================
     advanced_options_defaults:
-      # UI Option 7: Connection Timeout (milliseconds)
       connection_timeout: 2000
-      # UI Option 8: HTTP Idle Timeout (milliseconds)
       http_idle_timeout: 300000
-      # UI Option 3: Health check port - default uses endpoint port
       same_as_endpoint_port: {}
-      # UI Option 9: Circuit breaker - use default settings
       default_circuit_breaker: {}
-      # UI Option 10: Outlier detection - disabled
       disable_outlier_detection: {}
-      # UI Option 11: Panic threshold - none
       no_panic_threshold: {}
-      # UI Option 12: Subset load balancing - disabled
       disable_subsets: {}
-      # UI Option 13: HTTP protocol - auto negotiation
       auto_http_config: {}
-      # UI Option 14: Proxy protocol - disabled
       disable_proxy_protocol: {}
-      # UI Option 15: LB source IP persistence - disabled
       disable_lb_source_ip_persistance: {}
 
     # =========================================================================
@@ -224,14 +243,10 @@ resources:
         server_default: "ROUND_ROBIN"
         note: "UI pre-selects LB_OVERRIDE but server applies ROUND_ROBIN if omitted"
 
-    # Nested defaults within origin_servers items
-    nested:
-      origin_servers:
-        # Labels for origin server (empty by default)
-        labels: {}
-      public_name:
-        # DNS refresh interval (0 = use system default)
-        refresh_interval: 0
+    # Note: The main 'nested' section for origin_pool is defined above
+    # with advanced_options defaults. The following are additional nested defaults:
+    # - origin_servers[].labels: {} (empty labels)
+    # - origin_servers[].public_name.refresh_interval: 0 (use system default)
 
 # Documentation for adding new defaults:
 # 1. Create resource in F5 XC with minimal/empty spec via API
