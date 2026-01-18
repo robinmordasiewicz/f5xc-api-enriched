@@ -1732,3 +1732,325 @@ resources:
       optional: ["http_loadbalancer"]
     relationship_hints:
       - "http_loadbalancer: Applies security protection to HTTP load balancers"
+
+  # ===========================================================================
+  # Additional Load Balancing Resources
+  # ===========================================================================
+  udp_loadbalancer:
+    description: "Layer 4 UDP load balancer for UDP protocol traffic distribution"
+    description_short: "UDP load balancer"
+    tier: "Standard"
+    icon: "📡"
+    category: "Load Balancing"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required:
+        - origin_pool
+      optional:
+        - healthcheck
+    relationship_hints:
+      - "origin_pool: Backend servers for UDP traffic"
+      - "healthcheck: Monitor origin server health"
+
+  proxy:
+    description: "Forward or reverse proxy configuration for traffic routing"
+    description_short: "Proxy configuration"
+    tier: "Standard"
+    icon: "🔀"
+    category: "Networking"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional:
+        - origin_pool
+    relationship_hints:
+      - "origin_pool: Backend servers for proxied traffic"
+
+  # ===========================================================================
+  # Additional Security Resources
+  # ===========================================================================
+  service_policy_rule:
+    description: "Individual rule within a service policy for traffic control"
+    description_short: "Service policy rule"
+    tier: "Advanced"
+    icon: "📜"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: false
+    dependencies:
+      required:
+        - service_policy
+      optional: []
+    relationship_hints:
+      - "service_policy: Parent policy containing this rule"
+
+  service_policy_set:
+    description: "Collection of service policies applied as a group"
+    description_short: "Service policy set"
+    tier: "Advanced"
+    icon: "📚"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional:
+        - service_policy
+    relationship_hints:
+      - "service_policy: Policies included in this set"
+
+  dos_automitigation_rule:
+    description: "Automated DDoS attack detection and mitigation configuration"
+    description_short: "DDoS auto-mitigation rule"
+    tier: "Advanced"
+    icon: "🚫"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional:
+        - http_loadbalancer
+    relationship_hints:
+      - "http_loadbalancer: Protected load balancer"
+
+  l7ddos_rps_threshold:
+    description: "Layer 7 DDoS protection with requests-per-second thresholds"
+    description_short: "L7 DDoS RPS threshold"
+    tier: "Advanced"
+    icon: "🛑"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional:
+        - http_loadbalancer
+    relationship_hints:
+      - "http_loadbalancer: Protected load balancer"
+
+  geo_location_set:
+    description: "Geographic location grouping for access control policies"
+    description_short: "Geo location set"
+    tier: "Standard"
+    icon: "🌍"
+    category: "Security"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional:
+        - service_policy
+    relationship_hints:
+      - "service_policy: Policy using geographic restrictions"
+
+  bot_defense:
+    description: "Bot detection and mitigation for protecting applications"
+    description_short: "Bot defense"
+    tier: "Advanced"
+    icon: "🤖"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional:
+        - http_loadbalancer
+    relationship_hints:
+      - "http_loadbalancer: Protected load balancer"
+
+  malicious_user:
+    description: "Malicious user tracking and blocking configuration"
+    description_short: "Malicious user"
+    tier: "Advanced"
+    icon: "🚷"
+    category: "Security"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # Additional DNS Resources
+  # ===========================================================================
+  dns_record:
+    description: "Individual DNS record within a DNS zone"
+    description_short: "DNS record"
+    tier: "Standard"
+    icon: "📝"
+    category: "DNS"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required:
+        - dns_zone
+      optional: []
+    relationship_hints:
+      - "dns_zone: Parent zone containing this record"
+
+  primary_dns:
+    description: "Primary authoritative DNS server configuration"
+    description_short: "Primary DNS"
+    tier: "Standard"
+    icon: "🔵"
+    category: "DNS"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional:
+        - dns_zone
+    relationship_hints:
+      - "dns_zone: Zones served by this DNS server"
+
+  secondary_dns:
+    description: "Secondary DNS server for zone replication and redundancy"
+    description_short: "Secondary DNS"
+    tier: "Standard"
+    icon: "🟢"
+    category: "DNS"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required:
+        - primary_dns
+      optional: []
+    relationship_hints:
+      - "primary_dns: Source DNS server for zone transfers"
+
+  get_dns_info:
+    description: "DNS information retrieval operation for diagnostics"
+    description_short: "Get DNS info"
+    tier: "Standard"
+    icon: "🔍"
+    category: "DNS"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # Additional Monitoring Resources
+  # ===========================================================================
+  get_security_config:
+    description: "Security configuration retrieval operation"
+    description_short: "Get security config"
+    tier: "Standard"
+    icon: "🔒"
+    category: "Security"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  calls_by_response_code:
+    description: "Analytics for API calls grouped by HTTP response codes"
+    description_short: "Calls by response code"
+    tier: "Standard"
+    icon: "📈"
+    category: "Monitoring"
+    supports_logs: false
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  alert_receiver:
+    description: "Alert notification endpoint for monitoring events"
+    description_short: "Alert receiver"
+    tier: "Standard"
+    icon: "🔔"
+    category: "Monitoring"
+    supports_logs: false
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  global_log_receiver:
+    description: "Centralized log collection endpoint for all namespaces"
+    description_short: "Global log receiver"
+    tier: "Standard"
+    icon: "📋"
+    category: "Monitoring"
+    supports_logs: true
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # CDN Resources
+  # ===========================================================================
+  cdn_distribution:
+    description: "Content delivery network distribution for global content caching"
+    description_short: "CDN distribution"
+    tier: "Standard"
+    icon: "🌐"
+    category: "Load Balancing"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required:
+        - cdn_origin
+      optional: []
+    relationship_hints:
+      - "cdn_origin: Origin server for cached content"
+
+  cdn_origin:
+    description: "Origin server configuration for CDN content distribution"
+    description_short: "CDN origin"
+    tier: "Standard"
+    icon: "🎯"
+    category: "Load Balancing"
+    supports_logs: false
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
+
+  # ===========================================================================
+  # API Management Resources
+  # ===========================================================================
+  api_discovery:
+    description: "Automatic API endpoint discovery and documentation"
+    description_short: "API discovery"
+    tier: "Advanced"
+    icon: "🔎"
+    category: "API Management"
+    supports_logs: true
+    supports_metrics: true
+    dependencies:
+      required: []
+      optional:
+        - http_loadbalancer
+    relationship_hints:
+      - "http_loadbalancer: Load balancer for API traffic analysis"
+
+  # ===========================================================================
+  # Identity Resources
+  # ===========================================================================
+  service_credential:
+    description: "Credential management for service-to-service authentication"
+    description_short: "Service credential"
+    tier: "Standard"
+    icon: "🔑"
+    category: "Identity"
+    supports_logs: true
+    supports_metrics: false
+    dependencies:
+      required: []
+      optional: []
+    relationship_hints: []
