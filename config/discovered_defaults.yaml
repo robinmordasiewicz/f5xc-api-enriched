@@ -60,19 +60,36 @@ resources:
       unhealthy_threshold: 1
       healthy_threshold: 3
       jitter_percent: 30
-    # Nested defaults within http_health_check object
+    # Recommended OneOf variant for health check type selection
+    # The health_check field is a OneOf group; http_health_check is the most common choice
+    oneof_recommended:
+      health_check: "http_health_check"
+    # Nested defaults and recommended values within http_health_check object
     nested:
       http_health_check:
-        # Use origin server name for Host header
-        use_origin_server_name: {}
-        # Custom headers (empty by default)
-        headers: {}
-        # Headers to remove from health check requests
-        request_headers_to_remove: []
-        # HTTP/2 support (disabled by default)
-        use_http2: false
-        # Expected status codes (empty = accept 200-299)
-        expected_status_codes: []
+        # Server-applied defaults (what server sets when fields are omitted)
+        defaults:
+          # Use origin server name for Host header
+          use_origin_server_name: {}
+          # Custom headers (empty by default)
+          headers: {}
+          # Headers to remove from health check requests
+          request_headers_to_remove: []
+          # HTTP/2 support (disabled by default)
+          use_http2: false
+          # Expected status codes (empty = accept 200-299)
+          expected_status_codes: []
+        # Recommended values for UI/CLI/AI assistants
+        # These match F5 XC web interface pre-populated values
+        recommended:
+          # Health check path (required field, UI pre-populates "/")
+          path: "/"
+          # HTTP/2 disabled by default
+          use_http2: false
+          # Expected status code (UI pre-populates "200")
+          expected_status_codes: ["200"]
+          # Use origin server name for Host header
+          use_origin_server_name: {}
 
   # ============================================================================
   # Virtual Services - Rate Limiters
@@ -243,13 +260,12 @@ resources:
         server_default: "ROUND_ROBIN"
         note: "UI pre-selects LB_OVERRIDE but server applies ROUND_ROBIN if omitted"
 
-    # Note: The main 'nested' section for origin_pool is defined above
-    # with advanced_options defaults. The following are additional nested defaults:
-    # - origin_servers[].labels: {} (empty labels)
-    # - origin_servers[].public_name.refresh_interval: 0 (use system default)
-
 # Documentation for adding new defaults:
 # 1. Create resource in F5 XC with minimal/empty spec via API
 # 2. Read back the created resource to see server-applied values
 # 3. Document defaults in this file under the resource section
 # 4. Run pipeline to apply defaults to OpenAPI specs
+#
+# Note: For origin_pool, additional nested defaults exist:
+# - origin_servers[].labels: {} (empty labels)
+# - origin_servers[].public_name.refresh_interval: 0 (use system default)

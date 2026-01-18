@@ -33,6 +33,8 @@ class ExporterStats:
     constraints_exported: int = 0
     server_defaults_exported: int = 0
     recommended_values_exported: int = 0
+    nested_recommended_exported: int = 0
+    oneof_recommended_exported: int = 0
     advanced_options_exported: int = 0
     conditional_requirements_exported: int = 0
     minimum_configs_exported: int = 0
@@ -49,6 +51,8 @@ class ExporterStats:
             "constraints_exported": self.constraints_exported,
             "server_defaults_exported": self.server_defaults_exported,
             "recommended_values_exported": self.recommended_values_exported,
+            "nested_recommended_exported": self.nested_recommended_exported,
+            "oneof_recommended_exported": self.oneof_recommended_exported,
             "advanced_options_exported": self.advanced_options_exported,
             "conditional_requirements_exported": self.conditional_requirements_exported,
             "minimum_configs_exported": self.minimum_configs_exported,
@@ -308,8 +312,9 @@ class ValidationExporter:
     def _export_defaults(self) -> dict[str, Any]:
         """Export all defaults in unified resource-centric structure.
 
-        Consolidates server_applied, recommended, advanced_options,
-        oneof_choices, and ui_vs_server into per-resource structure.
+        Consolidates server_applied, recommended, nested_recommended,
+        oneof_recommended, advanced_options, oneof_choices, and ui_vs_server
+        into per-resource structure.
 
         Returns:
             Unified defaults dictionary with resources as top-level keys.
@@ -355,6 +360,21 @@ class ValidationExporter:
             if "recommended" in discovered:
                 resource_entry["recommended"] = discovered["recommended"]
                 self.stats.recommended_values_exported += len(discovered["recommended"])
+
+            # OneOf recommended variants (which variant is recommended for each OneOf group)
+            if "oneof_recommended" in discovered:
+                resource_entry["oneof_recommended"] = discovered["oneof_recommended"]
+                self.stats.oneof_recommended_exported += len(discovered["oneof_recommended"])
+
+            # Nested recommended values (recommended values within nested objects)
+            nested = discovered.get("nested", {})
+            nested_recommended: dict[str, Any] = {}
+            for nested_name, nested_config in nested.items():
+                if isinstance(nested_config, dict) and "recommended" in nested_config:
+                    nested_recommended[nested_name] = nested_config["recommended"]
+                    self.stats.nested_recommended_exported += len(nested_config["recommended"])
+            if nested_recommended:
+                resource_entry["nested_recommended"] = nested_recommended
 
             # Advanced options defaults
             if "advanced_options_defaults" in discovered:

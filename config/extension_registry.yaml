@@ -252,6 +252,31 @@ property_level:
     consumers: [ide, cli, mcp]
     migrated_from: "x-ves-deprecated"
 
+  x-f5xc-server-default:
+    type: boolean
+    purpose: Marker indicating value is server-applied when field omitted
+    consumers: [cli, mcp, ide]
+    added_in: "3.1.0"
+    issue: "#449"
+
+  x-f5xc-recommended-value:
+    type: any
+    purpose: UI-recommended value for fields (matches F5 XC web interface defaults)
+    consumers: [cli, mcp, ide]
+    added_in: "3.1.0"
+    issue: "#449"
+
+  x-f5xc-recommended-oneof-variant:
+    type: object
+    purpose: Recommended OneOf variant for schema with mutually exclusive fields
+    consumers: [cli, mcp, ide]
+    properties:
+      "{oneof_group}": "Recommended variant name for this OneOf group"
+    example:
+      health_check: "http_health_check"
+    added_in: "3.1.0"
+    issue: "#449"
+
 # =============================================================================
 # OPERATION-LEVEL EXTENSIONS (path operations)
 # =============================================================================

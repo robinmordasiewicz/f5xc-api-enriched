@@ -52,6 +52,25 @@ For required fields that have no server default, we provide **recommended values
 | `healthy_threshold` | `3` | Consecutive successes before marking healthy |
 | `jitter_percent` | `30` | Recommended jitter for production use |
 
+### Nested Recommended Values (http_health_check)
+
+The `http_health_check` schema also includes recommended values for fields that the UI pre-populates:
+
+| Field | Recommended Value | Description |
+|-------|-------------------|-------------|
+| `path` | `"/"` | Health check endpoint path |
+| `use_http2` | `false` | HTTP/2 support setting |
+| `expected_status_codes` | `["200"]` | Status codes indicating healthy origin |
+| `use_origin_server_name` | `{}` | Use origin server name for Host header |
+
+### OneOf Recommended Variants
+
+For schemas with mutually exclusive field groups (OneOf), we indicate the recommended variant:
+
+| OneOf Group | Recommended Variant | Description |
+|-------------|---------------------|-------------|
+| `health_check` | `http_health_check` | Most common health check type for HTTP services |
+
 ## OpenAPI Extensions
 
 ### x-f5xc-server-default
@@ -90,6 +109,28 @@ timeout:
 # Use recommended value as placeholder/suggestion
 if 'x-f5xc-recommended-value' in schema:
     suggested = schema['x-f5xc-recommended-value']
+```
+
+### x-f5xc-recommended-oneof-variant
+
+Indicates the recommended variant for OneOf field groups:
+
+```yaml
+healthcheckCreateSpecType:
+  type: object
+  x-f5xc-recommended-oneof-variant:
+    health_check: "http_health_check"
+```
+
+**Downstream usage**:
+
+```python
+# Get recommended OneOf variant for a schema
+if 'x-f5xc-recommended-oneof-variant' in schema:
+    oneof_recommendations = schema['x-f5xc-recommended-oneof-variant']
+    # {"health_check": "http_health_check"}
+    for group, variant in oneof_recommendations.items():
+        print(f"For {group}, use {variant}")
 ```
 
 ## Refactoring Guide for Downstream Projects
@@ -241,12 +282,16 @@ def load_healthcheck_defaults():
     return {
         "server_applied": healthcheck.get("server_applied", {}),
         "recommended": healthcheck.get("recommended", {}),
+        "oneof_recommended": healthcheck.get("oneof_recommended", {}),
+        "nested_recommended": healthcheck.get("nested_recommended", {}),
     }
 
 # Example output:
 # {
 #     "server_applied": {"jitter": 0, "jitter_percent": 0},
-#     "recommended": {"timeout": 3, "interval": 15, "unhealthy_threshold": 1, "healthy_threshold": 3, "jitter_percent": 30}
+#     "recommended": {"timeout": 3, "interval": 15, "unhealthy_threshold": 1, "healthy_threshold": 3, "jitter_percent": 30},
+#     "oneof_recommended": {"health_check": "http_health_check"},
+#     "nested_recommended": {"http_health_check": {"path": "/", "use_http2": false, "expected_status_codes": ["200"], "use_origin_server_name": {}}}
 # }
 ```
 
@@ -263,9 +308,16 @@ server_applied = hc_defaults["server_applied"]  # {"jitter": 0, "jitter_percent"
 
 # Get recommended values (F5 XC UI pre-populated values)
 recommended = hc_defaults["recommended"]  # {"timeout": 3, "interval": 15, ...}
+
+# Get recommended OneOf variant (which health check type to use)
+oneof_recommended = hc_defaults["oneof_recommended"]  # {"health_check": "http_health_check"}
+
+# Get nested recommended values (values for nested objects like http_health_check)
+nested_recommended = hc_defaults["nested_recommended"]
+# {"http_health_check": {"path": "/", "use_http2": false, "expected_status_codes": ["200"], ...}}
 ```
 
-> **Migration Note**: v2.1.0 consolidated `server_defaults`, `oneof_defaults`, `ui_vs_server_defaults`, and `advanced_options_defaults` into a single `defaults.resources.<resource>` structure. See [VALIDATION_SPEC.md](VALIDATION_SPEC.md) for full details.
+> **Migration Note**: v2.1.0 consolidated `server_defaults`, `oneof_defaults`, `ui_vs_server_defaults`, and `advanced_options_defaults` into a single `defaults.resources.<resource>` structure. v2.1.1 added `oneof_recommended` and `nested_recommended` fields. See [VALIDATION_SPEC.md](VALIDATION_SPEC.md) for full details.
 
 ## Related Resources
 
@@ -277,6 +329,7 @@ recommended = hc_defaults["recommended"]  # {"timeout": 3, "interval": 15, ...}
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.1.1 | 2026-01-18 | Added nested recommended values (path, expected_status_codes), OneOf recommended variants, x-f5xc-recommended-oneof-variant extension |
 | 2.1.0 | 2026-01-18 | Added unified defaults access documentation |
 | 2.0.30 | 2026-01-16 | Added nested defaults for `$ref` schemas (http_health_check) |
 | 2.0.29 | 2026-01-17 | Initial healthcheck defaults discovery |

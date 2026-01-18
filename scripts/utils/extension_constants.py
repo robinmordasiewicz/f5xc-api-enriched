@@ -66,6 +66,7 @@ X_F5XC_CONDITIONS = "x-f5xc-conditions"
 X_F5XC_DEPRECATED = "x-f5xc-deprecated"
 X_F5XC_SERVER_DEFAULT = "x-f5xc-server-default"
 X_F5XC_RECOMMENDED_VALUE = "x-f5xc-recommended-value"
+X_F5XC_RECOMMENDED_ONEOF_VARIANT = "x-f5xc-recommended-oneof-variant"
 
 # =============================================================================
 # OPERATION-LEVEL EXTENSIONS (path operations)
@@ -163,6 +164,7 @@ VALID_X_F5XC_EXTENSIONS = frozenset(
         X_F5XC_DEPRECATED,
         X_F5XC_SERVER_DEFAULT,
         X_F5XC_RECOMMENDED_VALUE,
+        X_F5XC_RECOMMENDED_ONEOF_VARIANT,
         # Operation-level
         X_F5XC_REQUIRED_FIELDS,
         X_F5XC_DANGER_LEVEL,

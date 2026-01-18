@@ -21,7 +21,11 @@ from typing import Any
 
 import yaml
 
-from .extension_constants import X_F5XC_RECOMMENDED_VALUE, X_F5XC_SERVER_DEFAULT
+from .extension_constants import (
+    X_F5XC_RECOMMENDED_ONEOF_VARIANT,
+    X_F5XC_RECOMMENDED_VALUE,
+    X_F5XC_SERVER_DEFAULT,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +39,8 @@ class DefaultValueEnrichmentStats:
     defaults_added: int = 0
     nested_defaults_added: int = 0
     recommended_added: int = 0
+    nested_recommended_added: int = 0
+    oneof_recommended_added: int = 0
     markers_added: int = 0
     errors: list[dict[str, Any]] = field(default_factory=list)
 
@@ -46,6 +52,8 @@ class DefaultValueEnrichmentStats:
             "defaults_added": self.defaults_added,
             "nested_defaults_added": self.nested_defaults_added,
             "recommended_added": self.recommended_added,
+            "nested_recommended_added": self.nested_recommended_added,
+            "oneof_recommended_added": self.oneof_recommended_added,
             "markers_added": self.markers_added,
             "error_count": len(self.errors),
             "errors": self.errors,
@@ -172,6 +180,13 @@ class DefaultValueEnricher:
             recommended = resource_config.get("recommended", {})
             self._apply_recommended_to_properties(schema, recommended)
 
+            # Apply nested recommended values (within nested objects like http_health_check)
+            self._apply_nested_recommended(schema, nested, all_schemas)
+
+            # Apply OneOf recommended variants
+            oneof_recommended = resource_config.get("oneof_recommended", {})
+            self._apply_oneof_recommended(schema, oneof_recommended)
+
         except Exception as e:
             logger.exception("Error enriching schema %s with defaults", schema_name)
             self.stats.errors.append(
@@ -242,9 +257,13 @@ class DefaultValueEnricher:
         this applies defaults to properties within the nested object.
         Supports both inline properties and $ref references.
 
+        Handles two config formats:
+        1. Flat: {prop_name: default_value} - legacy format
+        2. Structured: {defaults: {prop_name: default_value}, recommended: {...}}
+
         Args:
             schema: Schema definition
-            nested: Dictionary of property_name -> {nested_prop_name -> default_value}
+            nested: Dictionary of property_name -> nested config
             all_schemas: All schemas from the spec for $ref resolution
         """
         if not nested:
@@ -257,7 +276,7 @@ class DefaultValueEnricher:
         use_default = self.settings.get("use_openapi_default", True)
         add_marker = self.settings.get("add_marker_extension", True)
 
-        for parent_prop_name, nested_defaults in nested.items():
+        for parent_prop_name, nested_config in nested.items():
             if parent_prop_name not in properties:
                 continue
 
@@ -275,18 +294,27 @@ class DefaultValueEnricher:
                     ref_schema = all_schemas[ref_schema_name]
                     nested_properties = ref_schema.get("properties", {})
 
-            if nested_properties:
-                for nested_prop_name, default_value in nested_defaults.items():
-                    if nested_prop_name in nested_properties:
-                        nested_prop_schema = nested_properties[nested_prop_name]
+            if not nested_properties:
+                continue
 
-                        if use_default:
-                            nested_prop_schema["default"] = default_value
-                            self.stats.nested_defaults_added += 1
+            # Handle structured format with 'defaults' sub-key
+            if "defaults" in nested_config:
+                nested_defaults = nested_config["defaults"]
+            else:
+                # Legacy flat format - entire nested_config is the defaults dict
+                nested_defaults = nested_config
 
-                        if add_marker:
-                            nested_prop_schema[X_F5XC_SERVER_DEFAULT] = True
-                            self.stats.markers_added += 1
+            for nested_prop_name, default_value in nested_defaults.items():
+                if nested_prop_name in nested_properties:
+                    nested_prop_schema = nested_properties[nested_prop_name]
+
+                    if use_default:
+                        nested_prop_schema["default"] = default_value
+                        self.stats.nested_defaults_added += 1
+
+                    if add_marker:
+                        nested_prop_schema[X_F5XC_SERVER_DEFAULT] = True
+                        self.stats.markers_added += 1
 
     def _apply_recommended_to_properties(
         self,
@@ -318,6 +346,92 @@ class DefaultValueEnricher:
                 # Add x-f5xc-recommended-value extension
                 prop_schema[X_F5XC_RECOMMENDED_VALUE] = recommended_value
                 self.stats.recommended_added += 1
+
+    def _apply_nested_recommended(
+        self,
+        schema: dict[str, Any],
+        nested: dict[str, dict[str, Any]],
+        all_schemas: dict[str, Any],
+    ) -> None:
+        """Apply recommended values to nested object properties.
+
+        For nested objects like http_health_check within healthcheck,
+        this applies x-f5xc-recommended-value to properties within the nested object.
+        Supports both inline properties and $ref references.
+
+        Only processes nested configs that have a 'recommended' sub-key.
+
+        Args:
+            schema: Schema definition
+            nested: Dictionary of property_name -> nested config (with recommended sub-key)
+            all_schemas: All schemas from the spec for $ref resolution
+        """
+        if not nested:
+            return
+
+        properties = schema.get("properties", {})
+        if not properties:
+            return
+
+        for parent_prop_name, nested_config in nested.items():
+            # Only process if there's a 'recommended' sub-key
+            if "recommended" not in nested_config:
+                continue
+
+            if parent_prop_name not in properties:
+                continue
+
+            parent_prop = properties[parent_prop_name]
+
+            # Handle inline object properties
+            nested_properties = parent_prop.get("properties", {})
+
+            # Handle $ref to another schema - resolve and apply to referenced schema
+            if "$ref" in parent_prop:
+                ref_path = parent_prop["$ref"]
+                # Extract schema name from "#/components/schemas/healthcheckHttpHealthCheck"
+                ref_schema_name = ref_path.split("/")[-1]
+                if ref_schema_name in all_schemas:
+                    ref_schema = all_schemas[ref_schema_name]
+                    nested_properties = ref_schema.get("properties", {})
+
+            if not nested_properties:
+                continue
+
+            nested_recommended = nested_config["recommended"]
+            for nested_prop_name, recommended_value in nested_recommended.items():
+                if nested_prop_name in nested_properties:
+                    nested_prop_schema = nested_properties[nested_prop_name]
+                    nested_prop_schema[X_F5XC_RECOMMENDED_VALUE] = recommended_value
+                    self.stats.nested_recommended_added += 1
+
+    def _apply_oneof_recommended(
+        self,
+        schema: dict[str, Any],
+        oneof_recommended: dict[str, str],
+    ) -> None:
+        """Apply recommended OneOf variant extension to schema.
+
+        For schemas with OneOf fields (like health_check with http_health_check,
+        tcp_health_check variants), this marks the recommended variant.
+
+        The x-f5xc-recommended-oneof-variant extension is added at the schema level
+        for each OneOf group, indicating which variant is recommended.
+
+        Args:
+            schema: Schema definition
+            oneof_recommended: Dictionary of oneof_group_name -> recommended_variant
+        """
+        if not oneof_recommended:
+            return
+
+        # Add the recommended OneOf variants at the schema level
+        for oneof_group, recommended_variant in oneof_recommended.items():
+            # Store as a nested dict keyed by group name
+            if X_F5XC_RECOMMENDED_ONEOF_VARIANT not in schema:
+                schema[X_F5XC_RECOMMENDED_ONEOF_VARIANT] = {}
+            schema[X_F5XC_RECOMMENDED_ONEOF_VARIANT][oneof_group] = recommended_variant
+            self.stats.oneof_recommended_added += 1
 
     def get_stats(self) -> dict[str, Any]:
         """Get enrichment statistics.
