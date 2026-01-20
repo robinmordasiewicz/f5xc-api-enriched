@@ -78,11 +78,6 @@ class TestDomainCategorization:
         # virtual_network moved to network domain (L3 overlay)
 
     # B. Security - Core (4 categories)
-    def test_waf(self) -> None:
-        """Test categorization of web application firewall specs."""
-        assert categorize_spec("ves.io.schema.views.app_firewall.json") == "waf"
-        assert categorize_spec("ves.io.schema.views.waf.json") == "waf"
-
     def test_api(self) -> None:
         """Test categorization of API security specs."""
         assert categorize_spec("ves.io.schema.views.api_sec.json") == "api"
@@ -132,13 +127,17 @@ class TestDomainCategorization:
 
     # D. Application Delivery (2 categories)
     def test_virtual(self) -> None:
-        """Test categorization of virtual service specs (HTTP/TCP/UDP load balancing)."""
+        """Test categorization of virtual service specs (HTTP/TCP/UDP load balancing with WAF)."""
+        # Virtual services
         assert categorize_spec("ves.io.schema.views.http_loadbalancer.json") == "virtual"
         assert categorize_spec("ves.io.schema.views.tcp_loadbalancer.json") == "virtual"
         assert categorize_spec("ves.io.schema.views.origin_pool.json") == "virtual"
         assert categorize_spec("ves.io.schema.views.threat_campaign.json") == "virtual"
         assert categorize_spec("ves.io.schema.views.geo_location_set.json") == "virtual"
         assert categorize_spec("ves.io.schema.views.malware_protection.json") == "virtual"
+        # WAF (merged into virtual domain)
+        assert categorize_spec("ves.io.schema.views.app_firewall.json") == "virtual"
+        assert categorize_spec("ves.io.schema.views.waf.json") == "virtual"
 
     def test_dns(self) -> None:
         """Test categorization of DNS specs."""
@@ -266,7 +265,7 @@ class TestFallbackBehavior:
     def test_case_insensitive(self) -> None:
         """Verify that categorization is case-insensitive."""
         assert categorize_spec("VES.IO.SCHEMA.VIEWS.AWS_VPC_SITE.JSON") == "sites"
-        assert categorize_spec("Ves.Io.Schema.Views.App_Firewall.Json") == "waf"
+        assert categorize_spec("Ves.Io.Schema.Views.App_Firewall.Json") == "virtual"
 
 
 class TestModuleLevelFunctions:
@@ -280,12 +279,12 @@ class TestModuleLevelFunctions:
         """Verify that get_domain_patterns function works correctly."""
         patterns = get_domain_patterns()
         assert isinstance(patterns, dict)
-        assert len(patterns) == 34  # 34 domains in current structure
+        assert len(patterns) == 33  # 33 domains (WAF merged into virtual)
 
     def test_all_domains_in_patterns(self) -> None:
         """Verify that all domains are present via get_domain_patterns()."""
         patterns = get_domain_patterns()
-        expected_domain_count = 34
+        expected_domain_count = 33  # WAF merged into virtual
         assert len(patterns) == expected_domain_count
 
         # Verify key domains exist

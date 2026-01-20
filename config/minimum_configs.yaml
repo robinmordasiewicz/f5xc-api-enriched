@@ -322,7 +322,7 @@ resources:
 
   app_firewall:
     description: "Web Application Firewall (WAF) policy for protecting HTTP applications"
-    domain: "waf"
+    domain: "virtual"
     resource_type: "policy"
 
     required_fields:
@@ -385,7 +385,7 @@ resources:
         -d @waf-policy.json
 
     cli:
-      domain: "waf"
+      domain: "virtual"
       resource_name: "app_firewall"
 
   # ============================================================================

@@ -93,7 +93,6 @@ DOMAIN_ICONS = {
     "cdn": {"icon": "🚀", "svg_key": "rocket"},
     "network": {"icon": "🔌", "svg_key": "plug"},
     # Security
-    "waf": {"icon": "🛡️", "svg_key": "shield"},
     "bot_defense": {"icon": "🤖", "svg_key": "robot"},
     "api": {"icon": "🔐", "svg_key": "lock_key"},
     "network_security": {"icon": "🔒", "svg_key": "lock"},
@@ -145,10 +144,9 @@ DOMAIN_PRIMARY_RESOURCES = {
     "service_mesh": ["endpoint", "origin_pool", "service_discovery"],
     "sites": ["site", "virtual_site", "site_mesh_group"],
     "dns": ["dns_zone", "dns_domain", "dns_load_balancer"],
-    "virtual": ["http_loadbalancer", "tcp_loadbalancer", "origin_pool", "healthcheck"],
+    "virtual": ["http_loadbalancer", "tcp_loadbalancer", "origin_pool", "healthcheck", "app_firewall", "service_policy", "malicious_user_detection"],
     "cdn": ["cdn_loadbalancer", "cdn_origin_pool"],
     "network": ["virtual_network", "network_connector", "site_mesh_group"],
-    "waf": ["app_firewall", "service_policy", "malicious_user_detection"],
     "bot_defense": ["bot_defense_policy", "bot_defense_advanced_policy"],
     "api": ["api_definition", "api_endpoint", "api_rate_limit"],
     "network_security": ["network_policy", "forward_proxy_policy", "network_firewall"],
@@ -433,19 +431,7 @@ DOMAIN_METADATA = {
             "Manage API credentials",
             "Define API groups and testing policies",
         ],
-        "related_domains": ["waf", "network_security"],
-    },
-    "waf": {
-        "is_preview": False,
-        "requires_tier": "Advanced",
-        "category": "Security",
-        "use_cases": [
-            "Configure web application firewall rules",
-            "Manage application security policies",
-            "Enable enhanced firewall capabilities",
-            "Configure protocol inspection",
-        ],
-        "related_domains": ["api", "network_security", "virtual"],
+        "related_domains": ["virtual", "network_security"],
     },
     "bot_defense": {
         "is_preview": False,
@@ -457,7 +443,7 @@ DOMAIN_METADATA = {
             "Integrate threat intelligence",
             "Manage mobile SDK for app protection",
         ],
-        "related_domains": ["waf", "network_security"],
+        "related_domains": ["virtual", "network_security"],
     },
     "network_security": {
         "is_preview": False,
@@ -470,7 +456,7 @@ DOMAIN_METADATA = {
             "Define network segments and policies",
             "Configure forward proxy policies",
         ],
-        "related_domains": ["waf", "api", "network"],
+        "related_domains": ["virtual", "api", "network"],
     },
     # Security - Advanced
     "blindfold": {
@@ -494,7 +480,7 @@ DOMAIN_METADATA = {
             "Manage device identification",
             "Configure data privacy controls",
         ],
-        "related_domains": ["blindfold", "waf"],
+        "related_domains": ["blindfold", "virtual"],
     },
     "ddos": {
         "is_preview": False,
@@ -730,7 +716,7 @@ DOMAIN_METADATA = {
             "Configure SafeAP policies",
             "Enable threat recognition",
         ],
-        "related_domains": ["bot_defense", "waf"],
+        "related_domains": ["bot_defense", "virtual"],
     },
     # UI & Platform Infrastructure
     "admin": {
@@ -847,7 +833,7 @@ DOMAIN_METADATA = {
             "Provision API keys for automated defense systems",
             "Integrate threat intelligence services",
         ],
-        "related_domains": ["bot_defense", "shape", "waf"],
+        "related_domains": ["bot_defense", "shape", "virtual"],
     },
     "ce_management": {
         "is_preview": False,
@@ -883,7 +869,7 @@ DOMAIN_METADATA = {
             "Manage incident response workflows",
             "Apply blocking or rate limiting to threats",
         ],
-        "related_domains": ["bot_defense", "waf", "network_security"],
+        "related_domains": ["bot_defense", "virtual", "network_security"],
     },
     "tenant_and_identity": {
         "is_preview": False,
