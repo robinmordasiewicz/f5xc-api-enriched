@@ -780,6 +780,7 @@ discovery_mapping:
 
   # String validation rules
   string_rules:
+    # Length constraints
     - ves_rule: "ves.io.schema.rules.string.max_len"
       constraint_field: "maxLength"
       description: "Maximum string length from API validation"
@@ -788,20 +789,54 @@ discovery_mapping:
       constraint_field: "minLength"
       description: "Minimum string length from API validation"
 
+    # Byte length constraints
+    - ves_rule: "ves.io.schema.rules.string.max_bytes"
+      constraint_field: "byteLength"
+      constraint_subfield: "max"
+      description: "Maximum byte length from API validation"
+
+    - ves_rule: "ves.io.schema.rules.string.min_bytes"
+      constraint_field: "byteLength"
+      constraint_subfield: "min"
+      description: "Minimum byte length from API validation"
+
+    # Pattern constraints
     - ves_rule: "ves.io.schema.rules.string.pattern"
       constraint_field: "pattern"
       description: "Regex pattern from API validation"
 
+    - ves_rule: "ves.io.schema.rules.string.regex"
+      constraint_field: "pattern"
+      description: "Regex pattern from API validation (alias)"
+
+    # Format constraints - DNS
     - ves_rule: "ves.io.schema.rules.string.dns_name"
       constraint_field: "format"
       constraint_value: "dns-label"
       description: "DNS name format validation"
 
+    - ves_rule: "ves.io.schema.rules.string.dns_1123_label"
+      constraint_field: "format"
+      constraint_value: "dns-label"
+      description: "DNS RFC 1123 label validation"
+
+    - ves_rule: "ves.io.schema.rules.string.hostname"
+      constraint_field: "format"
+      constraint_value: "hostname"
+      description: "Hostname format validation"
+
+    - ves_rule: "ves.io.schema.rules.string.vh_domain"
+      constraint_field: "format"
+      constraint_value: "fqdn"
+      description: "Virtual host domain name validation"
+
+    # Format constraints - Email
     - ves_rule: "ves.io.schema.rules.string.email"
       constraint_field: "format"
       constraint_value: "email"
       description: "Email format validation"
 
+    # Format constraints - IP addresses
     - ves_rule: "ves.io.schema.rules.string.ipv4"
       constraint_field: "format"
       constraint_value: "ipv4"
@@ -811,6 +846,39 @@ discovery_mapping:
       constraint_field: "format"
       constraint_value: "ipv6"
       description: "IPv6 address validation"
+
+    - ves_rule: "ves.io.schema.rules.string.ip"
+      constraint_field: "format"
+      constraint_value: "ip"
+      description: "IP address (v4 or v6) validation"
+
+    # Format constraints - Network
+    - ves_rule: "ves.io.schema.rules.string.mac"
+      constraint_field: "format"
+      constraint_value: "mac-address"
+      description: "MAC address format validation"
+
+    - ves_rule: "ves.io.schema.rules.string.ip_prefix"
+      constraint_field: "format"
+      constraint_value: "cidr"
+      description: "IP prefix/CIDR notation validation"
+
+    # Format constraints - URIs
+    - ves_rule: "ves.io.schema.rules.string.uri"
+      constraint_field: "format"
+      constraint_value: "uri"
+      description: "URI format validation"
+
+    - ves_rule: "ves.io.schema.rules.string.uri_ref"
+      constraint_field: "format"
+      constraint_value: "uri"
+      description: "URI reference validation"
+
+    # Format constraints - Other
+    - ves_rule: "ves.io.schema.rules.string.hex"
+      constraint_field: "format"
+      constraint_value: "hex"
+      description: "Hexadecimal string validation"
 
   # Array validation rules
   array_rules:

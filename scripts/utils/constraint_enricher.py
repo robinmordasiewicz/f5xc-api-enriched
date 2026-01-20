@@ -367,6 +367,126 @@ class ConstraintEnricher:
         for prop_name, prop_schema in schema['properties'].items():
             self._enrich_property(prop_name, prop_schema)
 
+    def _extract_discovery_constraints(self, schema: Dict) -> Optional[Dict]:
+        """
+        Extract constraints from x-ves-validation-rules
+
+        Args:
+            schema: Property schema with potential x-ves-validation-rules
+
+        Returns:
+            Constraints dictionary in x-f5xc-constraints format or None
+        """
+        ves_rules = schema.get('x-ves-validation-rules')
+        if not ves_rules:
+            return None
+
+        field_type = schema.get('type')
+        if not field_type:
+            return None
+
+        # Get discovery mapping from config
+        mapping = self.config.get('discovery_mapping', {})
+
+        constraints = {}
+
+        # Map string rules
+        if field_type == 'string':
+            string_rules = mapping.get('string_rules', [])
+            for rule_def in string_rules:
+                ves_rule = rule_def.get('ves_rule')
+                if ves_rule in ves_rules:
+                    constraint_field = rule_def.get('constraint_field')
+                    constraint_subfield = rule_def.get('constraint_subfield')
+                    constraint_value = rule_def.get('constraint_value')
+
+                    if constraint_value is not None:
+                        # Fixed value mapping (e.g., format: "email")
+                        constraints[constraint_field] = constraint_value
+                    elif constraint_subfield:
+                        # Nested field mapping (e.g., byteLength.max)
+                        rule_value = ves_rules[ves_rule]
+                        try:
+                            value = int(rule_value)
+                            if constraint_field not in constraints:
+                                constraints[constraint_field] = {}
+                            constraints[constraint_field][constraint_subfield] = value
+                        except ValueError:
+                            pass
+                    else:
+                        # Direct value mapping
+                        rule_value = ves_rules[ves_rule]
+                        if rule_value not in ('true', 'false'):
+                            # Convert string numbers to int
+                            try:
+                                constraints[constraint_field] = int(rule_value)
+                            except ValueError:
+                                constraints[constraint_field] = rule_value
+
+        # Map array rules
+        elif field_type == 'array':
+            array_rules = mapping.get('array_rules', [])
+            for rule_def in array_rules:
+                ves_rule = rule_def.get('ves_rule')
+                if ves_rule in ves_rules:
+                    constraint_field = rule_def.get('constraint_field')
+                    constraint_value = rule_def.get('constraint_value')
+
+                    if constraint_value is not None:
+                        constraints[constraint_field] = constraint_value
+                    else:
+                        rule_value = ves_rules[ves_rule]
+                        try:
+                            constraints[constraint_field] = int(rule_value)
+                        except ValueError:
+                            constraints[constraint_field] = rule_value
+
+        # Map numeric rules
+        elif field_type in ('integer', 'number'):
+            number_rules = mapping.get('number_rules', [])
+            for rule_def in number_rules:
+                ves_rule = rule_def.get('ves_rule')
+                if ves_rule in ves_rules:
+                    constraint_field = rule_def.get('constraint_field')
+                    rule_value = ves_rules[ves_rule]
+
+                    try:
+                        value = int(rule_value)
+                        constraints[constraint_field] = value
+
+                        # Handle exclusive bounds
+                        if rule_def.get('exclusive'):
+                            exclusive_field = f'exclusive{constraint_field.capitalize()}'
+                            constraints[exclusive_field] = True
+                    except ValueError:
+                        pass
+
+        if not constraints:
+            return None
+
+        # Build x-f5xc-constraints structure
+        result = {
+            'type': field_type,
+            'category': 'discovery'
+        }
+
+        if field_type == 'string':
+            result['string'] = constraints
+        elif field_type == 'array':
+            result['array'] = constraints
+        elif field_type in ('integer', 'number'):
+            result['number'] = constraints
+
+        # Add metadata
+        result['metadata'] = {
+            'source': 'discovery',
+            'confidence': 0.99,
+            'validatedAt': datetime.now(timezone.utc).isoformat()
+        }
+        result['deterministic'] = True
+
+        return result
+
     def _enrich_property(self, field_name: str, schema: Dict):
         """
         Enrich a single property with constraints
@@ -377,48 +497,61 @@ class ConstraintEnricher:
         """
         self.stats['properties_analyzed'] += 1
 
-        # Skip if already has x-f5xc-constraints
-        if 'x-f5xc-constraints' in schema:
+        # Get existing constraints
+        existing = schema.get('x-f5xc-constraints')
+        if existing:
             self.stats['constraints_skipped_existing'] += 1
             return
+
+        # Extract discovery constraints
+        discovery = self._extract_discovery_constraints(schema)
+        if discovery:
+            self.stats['discovery_merges'] += 1
 
         # Determine field type
         field_type = schema.get('type')
         if not field_type:
             return
 
-        # Extract constraints based on type
-        constraints = None
+        # Extract inferred constraints based on type
+        inferred = None
         pattern_match = None
 
         if field_type == 'string':
             pattern_match = self.pattern_matcher.match_string_pattern(field_name)
             if pattern_match:
                 self.stats['pattern_matches'] += 1
-            constraints = self._extract_string_constraints(field_name, schema, pattern_match)
-            if constraints:
+            inferred = self._extract_string_constraints(field_name, schema, pattern_match)
+            if inferred:
                 self.stats['string_constraints'] += 1
 
         elif field_type == 'array':
             pattern_match = self.pattern_matcher.match_array_pattern(field_name)
             if pattern_match:
                 self.stats['pattern_matches'] += 1
-            constraints = self._extract_array_constraints(field_name, schema, pattern_match)
-            if constraints:
+            inferred = self._extract_array_constraints(field_name, schema, pattern_match)
+            if inferred:
                 self.stats['array_constraints'] += 1
 
         elif field_type in ('integer', 'number'):
             pattern_match = self.pattern_matcher.match_number_pattern(field_name)
             if pattern_match:
                 self.stats['pattern_matches'] += 1
-            constraints = self._extract_numeric_constraints(field_name, schema, pattern_match)
-            if constraints:
+            inferred = self._extract_numeric_constraints(field_name, schema, pattern_match)
+            if inferred:
                 self.stats['number_constraints'] += 1
 
         elif field_type == 'object':
-            constraints = self._extract_object_constraints(field_name, schema)
-            if constraints:
+            inferred = self._extract_object_constraints(field_name, schema)
+            if inferred:
                 self.stats['object_constraints'] += 1
+
+        # Reconcile constraints from all sources
+        constraints = ConstraintReconciler.reconcile(
+            existing=existing,
+            discovery=discovery,
+            inferred=inferred
+        )
 
         # Apply constraints if found
         if constraints:
