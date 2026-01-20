@@ -50,4 +50,3 @@ docs/specifications/api/
 ### Source
 - Source: F5 Distributed Cloud OpenAPI specifications
 - Upstream: unknown (ETag: unknown)
-
