@@ -148,15 +148,6 @@ domains:
       # Discovery - API discovery and exploration (moved from service_mesh)
       - "\\.discovery\\.ves"
 
-  waf:
-    description: "Web Application Firewall"
-    patterns:
-      - "app_firewall"
-      - "app_security"
-      - "enhanced_firewall"
-      - "protocol_inspection"
-      - "waf"
-
   bot_and_threat_defense:
     description: "Bot defense and threat intelligence"
     patterns:
@@ -225,8 +216,13 @@ domains:
       - "rrset"
 
   virtual:
-    description: "Virtual Services - HTTP, TCP, UDP Load Balancing"
+    description: "Virtual Services - HTTP, TCP, UDP Load Balancing with WAF Protection"
     patterns:
+      - "app_firewall"
+      - "app_security"
+      - "enhanced_firewall"
+      - "protocol_inspection"
+      - "waf"
       - "geo_location_set"
       - "http_loadbalancer"
       - "malware_protection"
