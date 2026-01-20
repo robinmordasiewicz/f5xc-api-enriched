@@ -414,5 +414,5 @@ class TestMetadata:
 
 if __name__ == "__main__":
     pytest.main(
-        [__file__, "-v", "--cov=scripts.utils.uniqueness_enricher", "--cov-report=term-missing"]
+        [__file__, "-v", "--cov=scripts.utils.uniqueness_enricher", "--cov-report=term-missing"],
     )

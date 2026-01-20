@@ -346,7 +346,7 @@ class ConstraintEnricher:
                 self._enrich_schema(schema_name, schema)
 
         logger.info(
-            f"Constraint enrichment complete. Added {self.stats['constraints_added']} constraints"
+            f"Constraint enrichment complete. Added {self.stats['constraints_added']} constraints",
         )
         return spec
 
@@ -792,7 +792,7 @@ class ConstraintEnricher:
         # Calculate average confidence
         if stats["confidence_scores"]:
             stats["average_confidence"] = sum(stats["confidence_scores"]) / len(
-                stats["confidence_scores"]
+                stats["confidence_scores"],
             )
         else:
             stats["average_confidence"] = 0.0

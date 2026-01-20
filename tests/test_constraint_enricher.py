@@ -663,5 +663,5 @@ class TestPatternCoverage:
 
 if __name__ == "__main__":
     pytest.main(
-        [__file__, "-v", "--cov=scripts.utils.constraint_enricher", "--cov-report=term-missing"]
+        [__file__, "-v", "--cov=scripts.utils.constraint_enricher", "--cov-report=term-missing"],
     )
