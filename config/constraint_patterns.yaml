@@ -966,3 +966,57 @@ confidence_scoring:
     rfc_standard: 0.05  # Has RFC reference
     industry_standard: 0.03  # Has industry standard reference
     discovery_validated: 0.10  # Validated against discovery data
+
+# =============================================================================
+# Uniqueness Constraints (Phase 5)
+# Purpose: Derive uniqueness scope from namespace scope for explicit metadata
+# Usage: scripts/utils/uniqueness_enricher.py
+# =============================================================================
+uniqueness_patterns:
+  # Namespace scope to uniqueness mapping (primary derivation logic)
+  namespace_scope_mapping:
+    system:
+      scope: "platform"
+      within: []
+      explanation: "Resource names must be unique across the entire F5 XC platform"
+      confidence: 0.99
+
+    shared:
+      scope: "namespace"
+      within: ["namespace"]
+      explanation: "Resource names must be unique within the shared namespace"
+      confidence: 0.99
+
+    any:
+      scope: "namespace"
+      within: ["namespace"]
+      explanation: "Resource names must be unique within each namespace"
+      confidence: 0.95
+
+  # Resource-specific overrides (exceptions to namespace scope mapping)
+  resource_overrides:
+    tenant:
+      scope: "platform"
+      within: []
+      explanation: "Tenant names must be globally unique across all F5 XC tenants"
+      confidence: 0.99
+
+    certificate:
+      scope: "tenant"
+      within: ["tenant"]
+      explanation: "Certificate names must be unique within the tenant"
+      confidence: 0.95
+
+    namespace:
+      scope: "tenant"
+      within: ["tenant"]
+      explanation: "Namespace names must be unique within the tenant"
+      confidence: 0.95
+
+  # Default uniqueness fields (applied to all resources)
+  default_fields:
+    - "metadata.name"
+    - "name"
+
+  # Case sensitivity (F5 XC enforces case-sensitive names)
+  case_sensitive: true

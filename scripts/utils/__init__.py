@@ -34,6 +34,7 @@ from .readonly_enricher import ReadOnlyEnricher
 from .resource_examples_enricher import ResourceExamplesEnricher
 from .schema_fixer import SchemaFixer
 from .tag_generator import TagGenerator
+from .uniqueness_enricher import UniquenessEnricher
 from .validation_enricher import ValidationEnricher
 from .validation_exporter import ValidationExporter
 from .version_calculator import (
@@ -79,6 +80,7 @@ __all__ = [
     "ResourceExamplesEnricher",
     "SchemaFixer",
     "TagGenerator",
+    "UniquenessEnricher",
     "ValidationEnricher",
     "ValidationExporter",
     "calculate_next_version",

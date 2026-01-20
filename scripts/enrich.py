@@ -42,6 +42,7 @@ from scripts.utils import (
     NamespaceScopeEnricher,
     SchemaFixer,
     TagGenerator,
+    UniquenessEnricher,
 )
 
 console = Console()
@@ -274,7 +275,7 @@ def enrich_spec_file(
         description_validator = DescriptionValidator()
         consistency_validator = ConsistencyValidator()
         constraint_enricher = ConstraintEnricher(
-            config_path=Path("config/constraint_patterns.yaml")
+            config_path=Path("config/constraint_patterns.yaml"),
         )
 
         grammar_config = config.get("grammar", {})
@@ -320,6 +321,10 @@ def enrich_spec_file(
         # 4.6. Namespace scope enrichment (add x-f5xc-namespace-scope)
         namespace_scope_enricher = NamespaceScopeEnricher()
         spec = namespace_scope_enricher.enrich_spec(spec)
+
+        # 4.6.5. Uniqueness enrichment (add x-f5xc-uniqueness derived from namespace scope)
+        uniqueness_enricher = UniquenessEnricher()
+        spec = uniqueness_enricher.enrich_spec(spec)
 
         # 4.7. External docs enrichment (add externalDocs with F5 documentation links)
         external_docs_enricher = ExternalDocsEnricher()

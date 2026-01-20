@@ -218,6 +218,91 @@ export F5XC_TENANT="your-tenant"
 ./validate_array_size.sh      # Test array limits
 ```
 
+### Uniqueness Awareness (Phase 5)
+
+**Purpose**: Explicit uniqueness scope metadata enabling downstream tools to validate name conflicts before API submission.
+
+**Extension**: `x-f5xc-uniqueness` (schema-level)
+
+**Derivation**: Inferred from `x-f5xc-namespace-scope` with resource-specific overrides
+
+**Uniqueness Scopes**:
+
+| Scope | Boundary | Use Case | Example Resources |
+|-------|----------|----------|-------------------|
+| `platform` | Globally unique | System resources, tenants | Tenant names across all F5 XC |
+| `tenant` | Within tenant | Cross-namespace resources | Certificates, namespaces |
+| `namespace` | Within namespace | Standard resources | HTTP load balancers, origin pools |
+
+**Mapping from Namespace Scope**:
+
+| Namespace Scope | Uniqueness Scope | Reasoning |
+|----------------|------------------|-----------|
+| `system` | `platform` | System resources are globally unique |
+| `shared` | `namespace` | Unique within the shared namespace |
+| `any` | `namespace` | Unique within each user namespace |
+
+**Resource Overrides**:
+
+Some resources have explicit uniqueness scopes that differ from their namespace scope:
+
+| Resource | Namespace Scope | Uniqueness Scope | Reason |
+|----------|----------------|------------------|--------|
+| `tenant` | `system` | `platform` | Globally unique across F5 XC |
+| `certificate` | (varies) | `tenant` | Unique within tenant |
+| `namespace` | `system` | `tenant` | Unique within tenant |
+
+**Extension Structure**:
+
+```json
+{
+  "x-f5xc-uniqueness": {
+    "scope": "namespace|tenant|platform",
+    "within": ["namespace"],
+    "fields": ["metadata.name", "name"],
+    "caseSensitive": true,
+    "constraintExplanation": "Resource names must be unique within each namespace",
+    "metadata": {
+      "source": "inferred",
+      "confidence": 0.95,
+      "validatedAt": "2026-01-19T12:00:00Z"
+    }
+  }
+}
+```
+
+**Configuration**: `config/constraint_patterns.yaml` (uniqueness_patterns section)
+
+**Implementation**: `scripts/utils/uniqueness_enricher.py` (~325 lines)
+
+**Use Cases**:
+
+- **Terraform Provider**: Validate uniqueness at plan time, not apply time
+- **CLI Tools**: Check conflicts before resource creation
+- **MCP/AI**: Generate unique names deterministically
+- **IDE Extensions**: Real-time conflict warnings
+
+**Example Integration**:
+
+```python
+# Terraform provider plan-time validation
+resource_type = "http_loadbalancer"
+uniqueness = schema.get("x-f5xc-uniqueness", {})
+
+if uniqueness.get("scope") == "namespace":
+    # Check uniqueness within namespace
+    if resource_exists(name, namespace):
+        raise ConflictError(f"Resource '{name}' already exists in namespace '{namespace}'")
+elif uniqueness.get("scope") == "platform":
+    # Check global uniqueness
+    if resource_exists_globally(name):
+        raise ConflictError(f"Resource '{name}' already exists globally")
+```
+
+**Pipeline Integration**: Step 4.6.5 (after NamespaceScopeEnricher, before ExternalDocsEnricher)
+
+**Coverage**: 100% of resources with namespace scope have uniqueness metadata
+
 ---
 
 ## Configuration Reference
@@ -272,6 +357,7 @@ https://{tenant}.{console_url}/api/v1/namespaces/{namespace}
 | `config/resource_metadata.yaml` | Per-resource metadata (~90 resources) |
 | `config/domain_descriptions.yaml` | 3-tier domain descriptions |
 | `config/operation_descriptions.yaml` | Operation description patterns |
+| `config/constraint_patterns.yaml` | Constraint & uniqueness patterns (59 string, array, numeric patterns + uniqueness mappings) |
 
 ---
 
