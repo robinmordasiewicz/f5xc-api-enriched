@@ -1,3 +1,29 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Node
+node_modules/
+dist/
+
+# Environment
+.env
+.env.*
+
+# Logs
+*.log
+
+# Astro
+.astro/
+site/
+
 # Python
 __pycache__/
 *.py[cod]
@@ -6,7 +32,6 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -20,54 +45,35 @@ wheels/
 .installed.cfg
 *.egg
 
-# Virtual environments
+# Python virtual environments
 venv/
-ENV/
 env/
+ENV/
 .venv/
-
-# IDE
-.idea/
-.vscode/
-.serena/
-*.swp
-*.swo
-*~
-
-# Claude documentation
-claudedocs/
-
-# Node
-node_modules/
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Build artifacts
-reports/
 
 # Test coverage
 .coverage
 htmlcov/
 
-# Generated specs - downloaded on demand with ETag caching
-# specs/original/ contains proprietary F5 API specs that cannot be committed
-# Run 'make download' to fetch fresh copy (uses ETag to minimize bandwidth)
-specs/original/
+# Build artifacts
+reports/
 
-# Discovery data - full openapi.json tracked for CI/CD enrichment and git diffs
-# Run 'make discover' locally (VPN required), then 'make push-discovery' to commit
+# Projects
+projects/
+
+# Tool-specific
+.playwright-mcp/
+.serena/
+claudedocs/
+cache/
+src/generated/
+
+# API spec pipeline
+specs/original/
 specs/discovered/diffs/
 specs/discovered/endpoints/
 specs/discovered/schemas/
-
-# Generated documentation (built by pipeline, served by GitHub Pages)
-# Consumers can bundle with: npx @redocly/cli bundle docs/specifications/api/index.json -o openapi.json
 docs/specifications/api/
-
-# Version tracking files
-# Version is now derived from git tags (eliminates merge conflicts)
-.version  # Deprecated: File-based versioning (kept for backward compatibility)
-.etag  # Legacy: HTTP ETag caching (used with docs.cloud.f5.com)
-.github_release  # Current: GitHub release version tracking (JSON metadata)
+.version
+.etag
+.github_release
