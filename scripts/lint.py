@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # Copyright (c) 2026 Robin Mordasiewicz. MIT License.
+# Spectral-based linting for enriched OpenAPI specifications.
 
 """Lint OpenAPI specifications using Spectral.
 
