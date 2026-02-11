@@ -145,13 +145,26 @@ jobs:
           HASH=$(find specs/original -name '*.json' -type f -exec sha256sum {} + | sort | sha256sum | cut -d' ' -f1)
           echo "hash=$HASH" >> "$GITHUB_OUTPUT"
 
+      - name: Compute pipeline code fingerprint
+        id: pipeline-fingerprint
+        run: |
+          HASH=$(cat \
+            scripts/pipeline.py \
+            scripts/merge_specs.py \
+            scripts/enrich.py \
+            scripts/normalize.py \
+            requirements.txt \
+            $(find scripts/utils scripts/discovery config -type f 2>/dev/null | sort) \
+            | sha256sum | cut -d' ' -f1)
+          echo "hash=$HASH" >> "$GITHUB_OUTPUT"
+
       - name: Restore enriched output cache
         if: github.event_name != 'workflow_dispatch'
         id: enriched-cache
         uses: actions/cache/restore@v4
         with:
           path: docs/specifications/api
-          key: enriched-${{ steps.specs-fingerprint.outputs.hash }}-${{ hashFiles('scripts/pipeline.py', 'scripts/merge_specs.py', 'scripts/enrich.py', 'scripts/normalize.py', 'scripts/utils/**', 'scripts/discovery/**', 'config/**', 'requirements.txt') }}
+          key: enriched-${{ steps.specs-fingerprint.outputs.hash }}-${{ steps.pipeline-fingerprint.outputs.hash }}
 
       - name: Install Java (for LanguageTool)
         if: steps.enriched-cache.outputs.cache-hit != 'true'
@@ -202,7 +215,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: docs/specifications/api
-          key: enriched-${{ steps.specs-fingerprint.outputs.hash }}-${{ hashFiles('scripts/pipeline.py', 'scripts/merge_specs.py', 'scripts/enrich.py', 'scripts/normalize.py', 'scripts/utils/**', 'scripts/discovery/**', 'config/**', 'requirements.txt') }}
+          key: enriched-${{ steps.specs-fingerprint.outputs.hash }}-${{ steps.pipeline-fingerprint.outputs.hash }}
 
       - name: Generate API viewer pages
         run: python -m scripts.generate_api_viewer

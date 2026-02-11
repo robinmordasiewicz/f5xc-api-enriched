@@ -3,9 +3,6 @@
 
 """Generate Scalar API viewer pages and Starlight MDX wrappers.
 
-# Cache-hit verification: this comment triggers the workflow via scripts/** path
-# but does NOT invalidate the enriched cache (this file is excluded from the key).
-
 Reads docs/specifications/api/index.json and generates:
   - docs/specifications/api/viewer/{domain}.html  (standalone Scalar viewers)
   - docs/api-reference/{domain}.mdx               (Starlight iframe wrappers)
