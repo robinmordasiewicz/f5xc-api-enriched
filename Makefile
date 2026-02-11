@@ -42,7 +42,7 @@
 #       ├── openapi.json    (master combined spec)
 #       └── index.json      (spec metadata)
 
-.PHONY: all build clean install download download-force pipeline enrich normalize merge lint validate validate-domains validate-curl validate-curl-dry validate-curl-cleanup serve help check-deps venv pre-commit-install pre-commit-run pre-commit-uninstall discover discover-namespace discover-dry-run discover-cli enrich-with-discovery constraint-report build-enriched pipeline-enriched push-discovery discover-and-push
+.PHONY: all build clean install download download-force pipeline enrich normalize merge lint validate validate-domains validate-curl validate-curl-dry validate-curl-cleanup serve help check-deps venv pre-commit-install pre-commit-run pre-commit-uninstall discover discover-namespace discover-dry-run discover-cli enrich-with-discovery constraint-report build-enriched pipeline-enriched push-discovery discover-and-push api-viewer
 
 # Virtual environment
 VENV := .venv
@@ -85,9 +85,10 @@ download:
 download-force:
 	$(PYTHON) -m scripts.download --force
 
-# Run unified pipeline (enrich → normalize → merge)
+# Run unified pipeline (enrich → normalize → merge → api-viewer)
 pipeline:
 	$(PYTHON) -m scripts.pipeline
+	$(PYTHON) -m scripts.generate_api_viewer
 
 # Individual steps (for debugging or development)
 enrich:
@@ -98,6 +99,10 @@ normalize:
 
 merge:
 	$(PYTHON) -m scripts.merge_specs
+
+# Generate Scalar API viewer pages and Starlight MDX wrappers
+api-viewer:
+	$(PYTHON) -m scripts.generate_api_viewer
 
 # Lint specifications with Spectral (requires: npm install -g @stoplight/spectral-cli)
 lint:
@@ -202,6 +207,7 @@ build-enriched: check-deps download discover pipeline-enriched
 # Pipeline with discovery enrichment
 pipeline-enriched:
 	$(PYTHON) -m scripts.pipeline
+	$(PYTHON) -m scripts.generate_api_viewer
 	$(PYTHON) -m scripts.analyze_constraints
 
 # Serve documentation locally
@@ -213,6 +219,8 @@ serve:
 # Clean generated files (preserves original specs)
 clean:
 	rm -rf docs/specifications/api/*.json
+	rm -rf docs/specifications/api/viewer
+	rm -rf docs/api-reference
 	rm -rf reports
 	@echo "Cleaned generated files. Original specs preserved."
 
@@ -270,6 +278,7 @@ help:
 	@echo "  enrich         Apply branding, acronyms, grammar"
 	@echo "  normalize      Fix orphan refs, clean operations"
 	@echo "  merge          Combine specs by domain"
+	@echo "  api-viewer     Generate Scalar API viewer pages"
 	@echo "  lint           Validate specs with Spectral OpenAPI linter"
 	@echo "  validate       Test with live API (needs credentials)"
 	@echo "  validate-domains  Validate domain patterns against natural identifiers"

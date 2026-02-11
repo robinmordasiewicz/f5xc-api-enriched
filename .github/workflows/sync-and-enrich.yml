@@ -154,6 +154,9 @@ jobs:
         if: steps.check-discovery.outputs.has_full_discovery == 'true'
         run: python -m scripts.analyze_constraints
 
+      - name: Generate API viewer pages
+        run: python -m scripts.generate_api_viewer
+
       - name: Lint specifications with Spectral
         run: python scripts/lint.py --input-dir docs/specifications/api --fail-on-error --fail-on-warning
 
@@ -456,8 +459,8 @@ jobs:
           git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
 
           # Stage enriched outputs (NOT .version - it no longer exists)
-          # Use -f to add docs/specifications/api/ which is in .gitignore
-          git add -f CHANGELOG.md .github_release docs/specifications/api/
+          # Use -f to add docs/specifications/api/ and docs/api-reference/ which are in .gitignore
+          git add -f CHANGELOG.md .github_release docs/specifications/api/ docs/api-reference/
 
           if ! git diff --staged --quiet; then
             # Create release commit with [skip ci] to prevent recursive workflow triggers
