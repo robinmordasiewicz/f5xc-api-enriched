@@ -21,9 +21,7 @@ from pathlib import Path
 
 # Pinned Scalar CDN version for reproducible builds
 SCALAR_CDN_VERSION = "1.44.16"
-SCALAR_CDN_URL = (
-    f"https://cdn.jsdelivr.net/npm/@scalar/api-reference@{SCALAR_CDN_VERSION}"
-)
+SCALAR_CDN_URL = f"https://cdn.jsdelivr.net/npm/@scalar/api-reference@{SCALAR_CDN_VERSION}"
 
 SPEC_DIR = Path("docs/specifications/api")
 VIEWER_DIR = SPEC_DIR / "viewer"
