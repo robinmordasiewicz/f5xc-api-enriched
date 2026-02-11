@@ -105,10 +105,57 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
 
-      - name: Install dependencies
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Read release tag for cache key
+        id: release-info
         run: |
-          pip install -r requirements.txt
-          # Install Java for LanguageTool (grammar checking)
+          if [ -f .github_release ]; then
+            TAG=$(jq -r '.tag_name // "unknown"' .github_release)
+          else
+            TAG="unknown"
+          fi
+          echo "release_tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Restore specs cache
+        if: github.event_name == 'push'
+        id: specs-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: specs/original
+          key: specs-original-${{ steps.release-info.outputs.release_tag }}
+
+      - name: Download specifications from GitHub Releases
+        if: steps.specs-cache.outputs.cache-hit != 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python -m scripts.download --force
+
+      - name: Save specs cache
+        if: steps.specs-cache.outputs.cache-hit != 'true' && github.event_name == 'push'
+        uses: actions/cache/save@v4
+        with:
+          path: specs/original
+          key: specs-original-${{ steps.release-info.outputs.release_tag }}
+
+      - name: Compute specs fingerprint
+        id: specs-fingerprint
+        run: |
+          HASH=$(find specs/original -name '*.json' -type f -exec sha256sum {} + | sort | sha256sum | cut -d' ' -f1)
+          echo "hash=$HASH" >> "$GITHUB_OUTPUT"
+
+      - name: Restore enriched output cache
+        if: github.event_name != 'workflow_dispatch'
+        id: enriched-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: docs/specifications/api
+          key: enriched-${{ steps.specs-fingerprint.outputs.hash }}-${{ hashFiles('scripts/pipeline.py', 'scripts/merge_specs.py', 'scripts/enrich.py', 'scripts/normalize.py', 'scripts/utils/**', 'scripts/discovery/**', 'config/**', 'requirements.txt') }}
+
+      - name: Install Java (for LanguageTool)
+        if: steps.enriched-cache.outputs.cache-hit != 'true'
+        run: |
           sudo apt-get update
           sudo apt-get install -y default-jre
 
@@ -119,11 +166,6 @@ jobs:
 
       - name: Install Spectral CLI
         run: npm install -g @stoplight/spectral-cli
-
-      - name: Download specifications from GitHub Releases
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python -m scripts.download --force
 
       - name: Check for Discovery Data
         id: check-discovery
@@ -146,13 +188,21 @@ jobs:
           fi
 
       - name: Run enrichment pipeline
+        if: steps.enriched-cache.outputs.cache-hit != 'true'
         run: python -m scripts.pipeline
         env:
           DISCOVERY_ENRICHMENT_ENABLED: ${{ steps.check-discovery.outputs.has_discovery }}
 
       - name: Generate constraint analysis report
-        if: steps.check-discovery.outputs.has_full_discovery == 'true'
+        if: steps.check-discovery.outputs.has_full_discovery == 'true' && steps.enriched-cache.outputs.cache-hit != 'true'
         run: python -m scripts.analyze_constraints
+
+      - name: Save enriched output cache
+        if: steps.enriched-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: docs/specifications/api
+          key: enriched-${{ steps.specs-fingerprint.outputs.hash }}-${{ hashFiles('scripts/pipeline.py', 'scripts/merge_specs.py', 'scripts/enrich.py', 'scripts/normalize.py', 'scripts/utils/**', 'scripts/discovery/**', 'config/**', 'requirements.txt') }}
 
       - name: Generate API viewer pages
         run: python -m scripts.generate_api_viewer
