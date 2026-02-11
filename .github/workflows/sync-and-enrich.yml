@@ -622,7 +622,7 @@ jobs:
         env:
           VERSION: ${{ needs.sync-and-enrich.outputs.version }}
           REPO: ${{ github.repository }}
-        uses: peter-evans/repository-dispatch@v3
+        uses: peter-evans/repository-dispatch@v4
         with:
           token: ${{ secrets.DOWNSTREAM_DISPATCH_TOKEN }}
           repository: ${{ matrix.downstream.owner }}/${{ matrix.downstream.repo }}
