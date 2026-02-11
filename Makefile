@@ -207,8 +207,6 @@ pipeline-enriched:
 # Serve documentation locally
 serve:
 	@echo "Starting local server at http://localhost:8000"
-	@echo "Scalar UI: http://localhost:8000/scalar/"
-	@echo "Swagger UI: http://localhost:8000/swagger-ui/"
 	@echo "Press Ctrl+C to stop"
 	@cd docs && $(PYTHON) -m http.server 8000
 

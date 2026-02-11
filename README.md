@@ -47,7 +47,7 @@ This repository transforms F5 Distributed Cloud's 270+ OpenAPI specifications in
 3. Normalize   → Schema references, type fixes, consistency
 4. Merge       → Domain-specific spec generation
 5. Validate    → Spectral linting + live API validation
-6. Deploy      → GitHub Pages (Swagger UI + Scalar)
+6. Deploy      → GitHub Pages (Starlight docs)
 ```
 
 ### Enrichment Pipeline (17 Steps)
@@ -316,13 +316,10 @@ const longDesc = property.description;  // "Origin pool defines a collection of 
 ### Published Documentation
 
 - **API Specs Index**: <https://robinmordasiewicz.github.io/f5xc-api-enriched/>
-- **Swagger UI**: <https://robinmordasiewicz.github.io/f5xc-api-enriched/swagger-ui/>
-- **Scalar UI**: <https://robinmordasiewicz.github.io/f5xc-api-enriched/scalar/>
 
 ### Developer Documentation
 
 - **CLAUDE.md**: Comprehensive AI assistant instructions and technical details
-- **MIGRATION.md**: Extension namespace migration (x-ves-*→ x-f5xc-*)
 - **CHANGELOG.md**: Auto-generated release notes
 
 ## Configuration Files and Extensions

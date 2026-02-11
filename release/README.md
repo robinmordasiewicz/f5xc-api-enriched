@@ -91,8 +91,7 @@ The `domains/` directory contains individual API specifications organized by fun
 
 ## Documentation
 
-- **Scalar UI**: <https://robinmordasiewicz.github.io/f5xc-api-enriched/scalar/>
-- **Swagger UI**: <https://robinmordasiewicz.github.io/f5xc-api-enriched/swagger-ui/>
+- **API Specs**: <https://robinmordasiewicz.github.io/f5xc-api-enriched/>
 
 ## Enrichment Features
 
