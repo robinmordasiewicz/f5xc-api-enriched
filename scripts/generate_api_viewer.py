@@ -75,6 +75,7 @@ sidebar:
 ---
 
 import {{ LinkCard }} from '@astrojs/starlight/components';
+import ScalarViewer from '@components/ScalarApiViewerWrapper.astro';
 
 <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
   <LinkCard title="Back to API Catalog" href="/api-reference/" />
@@ -82,12 +83,7 @@ import {{ LinkCard }} from '@astrojs/starlight/components';
   <LinkCard title="Download Spec" href="{spec_path}" />
 </div>
 
-<iframe
-  src="{viewer_path}"
-  style="width: 100%; height: 80vh; border: 1px solid var(--sl-color-gray-5); border-radius: 0.5rem;"
-  title="{title} API Reference"
-  loading="lazy"
-/>
+<ScalarViewer specUrl="{spec_path}" title="{title}" />
 """
 
 
