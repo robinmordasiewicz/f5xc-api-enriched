@@ -20,14 +20,9 @@ from collections import defaultdict
 from pathlib import Path
 
 # Pinned Scalar CDN version for reproducible builds
-SCALAR_CDN_VERSION = "1.25"
+SCALAR_CDN_VERSION = "1.44.16"
 SCALAR_CDN_URL = (
     f"https://cdn.jsdelivr.net/npm/@scalar/api-reference@{SCALAR_CDN_VERSION}"
-    "/browser/standalone.min.js"
-)
-SCALAR_CSS_URL = (
-    f"https://cdn.jsdelivr.net/npm/@scalar/api-reference@{SCALAR_CDN_VERSION}"
-    "/browser/standalone.min.css"
 )
 
 SPEC_DIR = Path("docs/specifications/api")
@@ -44,16 +39,16 @@ def generate_viewer_html(domain: str, title: str) -> str:
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title} - API Reference</title>
-  <link rel="stylesheet" href="{SCALAR_CSS_URL}" />
   <style>
     body {{ margin: 0; padding: 0; }}
   </style>
 </head>
 <body>
-  <script id="api-reference" data-url="../{domain}.json"></script>
+  <div id="app"></div>
   <script src="{SCALAR_CDN_URL}"></script>
   <script>
-    document.getElementById('api-reference').dataset.configuration = JSON.stringify({{
+    Scalar.createApiReference('#app', {{
+      url: '../{domain}.json',
       theme: 'kepler',
       darkMode: true,
       defaultOpenAllTags: false,
@@ -187,6 +182,15 @@ def main() -> int:
     # Create output directories
     VIEWER_DIR.mkdir(parents=True, exist_ok=True)
     MDX_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Remove stale files from previous runs (domains may be added/removed)
+    valid_domains = {spec["domain"] for spec in specs}
+    for stale in VIEWER_DIR.glob("*.html"):
+        if stale.stem not in valid_domains:
+            stale.unlink()
+    for stale in MDX_DIR.glob("*.mdx"):
+        if stale.stem != "index" and stale.stem not in valid_domains:
+            stale.unlink()
 
     # Generate standalone HTML viewers + MDX wrappers per domain
     for spec in specs:
