@@ -10,6 +10,10 @@ on:
     branches:
       - 'version-bump/**'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate:
     name: Validate PR
