@@ -121,7 +121,7 @@ jobs:
       - name: Restore specs cache
         if: github.event_name == 'push'
         id: specs-cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: specs/original
           key: specs-original-${{ steps.release-info.outputs.release_tag }}
@@ -134,7 +134,7 @@ jobs:
 
       - name: Save specs cache
         if: steps.specs-cache.outputs.cache-hit != 'true' && github.event_name == 'push'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: specs/original
           key: specs-original-${{ steps.release-info.outputs.release_tag }}
@@ -161,7 +161,7 @@ jobs:
       - name: Restore enriched output cache
         if: github.event_name != 'workflow_dispatch'
         id: enriched-cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: docs/specifications/api
           key: enriched-${{ steps.specs-fingerprint.outputs.hash }}-${{ steps.pipeline-fingerprint.outputs.hash }}
@@ -212,7 +212,7 @@ jobs:
 
       - name: Save enriched output cache
         if: steps.enriched-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: docs/specifications/api
           key: enriched-${{ steps.specs-fingerprint.outputs.hash }}-${{ steps.pipeline-fingerprint.outputs.hash }}
