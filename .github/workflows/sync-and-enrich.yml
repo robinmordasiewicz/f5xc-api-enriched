@@ -500,7 +500,7 @@ jobs:
 
       - name: Upload docs artifact for deployment
         if: steps.version.outputs.has_changes == 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: docs-site
           path: docs
