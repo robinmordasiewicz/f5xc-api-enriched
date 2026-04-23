@@ -1,12 +1,12 @@
 # Changelog
 
-## Version 2.1.72 (2026-04-22)
+## Version 2.1.73 (2026-04-23)
 
 ### Version Information
-- **Full Version**: 2.1.72
+- **Full Version**: 2.1.73
 - **Upstream Timestamp**: unknown
 - **Upstream ETag**: unknown
-- **Enriched Version**: 2.1.72
+- **Enriched Version**: 2.1.73
 
 ### Release Type
 - **patch** release
@@ -45,7 +45,7 @@ docs/specifications/api/
 \`\`\`
 
 ### Download
-- ZIP Package: F5xc-api-(unknown-2.1.72).zip
+- ZIP Package: F5xc-api-(unknown-2.1.73).zip
 
 ### Source
 - Source: F5 Distributed Cloud OpenAPI specifications
